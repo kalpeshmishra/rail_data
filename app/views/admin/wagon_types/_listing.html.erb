@@ -1,0 +1,25 @@
+<tr id=<%=wagon_type.id.to_s%>>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.group_rake_type rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.rake_type rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.stock_type_code rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.wagon_type_code rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.wagon_type_desc rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.wagon_details_brake_type rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.wagon_details_covered_open rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.wagon_details_min_max_tare rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.allowed_cmdt rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.load_class_wagon rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= wagon_type.load_class_train rescue '' %></span></td>
+  
+  
+  <td class="text-center" style="white-space: nowrap">
+    <span class="view-location-<%= index %>">
+      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_wagon_type_path(wagon_type), :remote => true, class: "label label-default", title: "Edit Wagon Type" %>
+      
+     
+
+      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger wagon_type-delete', data: {toggle: "modal", method_type: "delete", link: admin_wagon_type_path(wagon_type.id), message: "You really want to delete this Division?", target: "#custom-confirm-box"}, remote: true, title: "Delete Wagon Type" %>
+    </span>
+  </td>
+</tr>
+     

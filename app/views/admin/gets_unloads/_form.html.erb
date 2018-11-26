@@ -1,0 +1,707 @@
+<script>
+  var rake_commodity_data = []
+</script>
+<% @method = "POST" %>
+<% @url = admin_gets_unloads_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >
+    <p style="font-size: 20px;color:red;">GETS-PU: &nbsp;
+      <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>
+    </p>
+  </div>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'gets-unloading-form',remote: true) do |form| %>
+<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+  <tr >
+
+    <th>SR NO</th>
+    <th>From_Station To_Station</th>
+    <th>TakenOver<br>Collary</th>  <!-- Collary(Consignor) ReceivedEx GER-MALB-VGDC-DHG-SIOB-->
+    <th>Received<br>Time_Date</th>
+    <th>Loaded/<br>TotalUnits</th>
+    <th>MajorWagonType <br>Rake_Count</th>
+    <th>Stock_Description</th>
+    <th>Commodity <br>Type </th>  <!-- Type(Imported-Domestic) -->
+    <th>BPC Stn<br>BPC Date</th>
+    <th>BPC Type<br>Validity</th> <!-- Validity on rake release date_time if present else today  -->
+    <th>Placement Time_Date</th>  <!-- Arrival & Placement details are same -->
+    <th>Release Time_Date</th>
+    <th>TOR<br>PM_RL</th>    <!-- TOR(IF ReceivedEX=GER(received-placement)else nil-->
+    <th>PowerArrival<br>Time_date</th>
+    <th>LoadDeparture<br>Time_date</th>
+    <th>HandedOver<br>Time_date</th>
+    <th>H/O_Point<br>Destination</th>
+    <th>Det_PA<br>PA_DEP</th>   <!-- Detention for power arrival to train departure -->
+    <th>TOR_GER<br>IN/OUT</th>
+    <th>Remarks</th>
+    <th>Action</th>
+    
+  </tr>
+  </thead>
+  <tbody>
+
+    <%(0..55).each_with_index do |no, index| %>
+      <tr class="rake-unload-tr rake-row-data gets_unload_row_<%= index %>", id= "gets_unload_row_id_<%= index %>">
+        <td align="center" style="font-size: 25;">
+          
+        </td>
+        <td>
+          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}", class: 'form-control input-md from_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+        <p></p>
+          
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+        </td>
+        <td>
+           <%= select_tag "takenover_point_#{index}", options_for_select([["GER","GER"],["SIOB","SIOB"],["VGDC","VGDC"],["DHG","DHG"],["MALB","MALB"]]), {prompt: "EX", class: 'form-control input-md takenover_point',style: "width: 90px; ", id: "takenover_point_#{index}", data_live_search: "true"} %>
+           <p></p>
+           <%= text_field_tag "collary_#{index}", '',placeholder: 'COL', id: "collary_#{index}", class: 'form-control input-md', style: "width: 90px; "%>
+        </td>
+        <td>
+          <%= text_field_tag "takenover_time_#{index}", '', type: 'time',placeholder: 'Takenover Time', id: "takenover_time_#{index}",class: 'form-control input-md takenover_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "takenover_date_#{index}", '', type: 'date',placeholder: 'Takenover Date', id: "takenover_date_#{index}", required: true, class: 'form-control input-md takenover_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
+        <p></p>
+          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,style: "width: 75px; font-size:16px;" %>
+        </td>
+        <td>
+          <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 120px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
+          <p></p>
+           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",style: "width: 120px;border: 1px solid #888;" %>
+        </td>
+        <td>
+           <%= text_area_tag "stock_description_#{index}", '',placeholder: "Stock Description", class: 'form-control input-md', title: 'Stock Description', id: "stock_description_#{index}", style: "width: 130px; font-size:13px; height:78px"%>
+        </td>
+        <td>
+          <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,style: "width: 100px;", data_live_search: "true"} %>
+          <p></p>
+          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md',style: "width: 105px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+        </td>
+        <td>
+          <%= text_field_tag "bpc_station_#{index}", '',placeholder: 'Bpc issue Stn', id: "bpc_station_#{index}", class: 'form-control input-md', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "bpc_date_#{index}", '', type: 'date',placeholder: 'Bpc Date', id: "bpc_date_#{index}", class: 'form-control input-md', style: "width: 152px; font-size:15px;"%>
+        </td>
+        <td>
+          <%= select_tag "bpc_type_#{index}", options_for_select([["CC30","CC30"],["CC35","CC35"],["PRE","PRE"],["EE","EE"],["RTRP","RTRP"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:16px", id: "bpc_type_#{index}", data_live_search: "true"} %>
+          <p></p>
+          <%= text_field_tag "bpc_validity_#{index}", '',placeholder: 'validity', id: "bpc_validity_#{index}", class: 'form-control input-md', style: "width: 80px; font-size:15px;"%>
+        </td>
+        <td>
+          <%= text_field_tag "placement_time_#{index}", '', type: 'time',placeholder: 'placement Date', id: "placement_time_#{index}", class: 'form-control input-md placement_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "placement_date_#{index}", '', type: 'date',placeholder: 'placement Date', id: "placement_date_#{index}", class: 'form-control input-md placement_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+
+        <td>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'release Date', id: "release_time_#{index}", class: 'form-control input-md release_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "release_date_#{index}", '', type: 'date',placeholder: 'release Date', id: "release_date_#{index}", class: 'form-control input-md release_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= text_field_tag "train_on_run_hours_#{index}",'', placeholder: "TOR", class: 'form-control input-md train_on_run_hours', id: "train_on_run_hours_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <p></p>
+          <%= text_field_tag "detention_placement_release_#{index}",'', placeholder: "PM-RL", class: 'form-control input-md detention_placement_release', id: "detention_placement_release_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+        </td>
+        <td>
+           <%= text_field_tag "powerarrival_time_#{index}", '', type: 'time',placeholder: 'power arrival Time', id: "powerarrival_time_#{index}", class: 'form-control input-md powerarrival_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "powerarrival_date_#{index}", '', type: 'date',placeholder: 'power arrival Date', id: "powerarrival_date_#{index}", class: 'form-control input-md powerarrival_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+           <%= text_field_tag "departure_time_#{index}", '', type: 'time',placeholder: 'Departure Time', id: "departure_time_#{index}", class: 'form-control input-md departure_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "departure_date_#{index}", '', type: 'date',placeholder: 'Departure Date', id: "departure_date_#{index}", class: 'form-control input-md departure_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= text_field_tag "handedover_time_#{index}", '', type: 'time',placeholder: 'HandedOver Time', id: "handedover_time_#{index}", class: 'form-control input-md handedover_time', style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "handedover_date_#{index}", '', type: 'date',placeholder: 'handedover Date', id: "handedover_date_#{index}", class: 'form-control input-md handedover_date', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+           <%= select_tag "handedover_point_#{index}", options_for_select([["GER","GER"],["SIOB","SIOB"],["VGDC","VGDC"],["DHG","DHG"],["MALB","MALB"],["LOCAL","LOCAL"]]), {prompt: "EX", class: 'form-control input-md handedover_point',style: "width: 90px; ", id: "handedover_point_#{index}", data_live_search: "true"} %>
+           <p></p>
+           <%= text_field_tag "empty_destination_#{index}", '',placeholder: 'DESTI.', id: "empty_destination_#{index}", class: 'form-control input-md empty_destination', style: "width: 90px; "%>
+        </td>
+        <td>
+           <%= text_field_tag "detention_for_power_#{index}",'', placeholder: "POWER", class: 'form-control input-md detention_for_power', id: "detention_for_power_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <p></p>
+          <%= text_field_tag "powerarrival_train_departure_#{index}",'', placeholder: "PA-DEP", class: 'form-control input-md powerarrival_train_departure', id: "powerarrival_train_departure_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+        </td>
+        <td>
+           <%= text_field_tag "detention_ger_to_ger_tor_#{index}",'', placeholder: "TOR", class: 'form-control input-md detention_ger_to_ger_tor', id: "detention_ger_to_ger_tor_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <p></p>
+          <%= text_field_tag "detention_in_out_#{index}",'', placeholder: "IN-OUT", class: 'form-control input-md detention_in_out',  id: "detention_in_out_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px; background-color:#ffe6e6;" %>
+        </td>
+        <td>
+          <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 290px; height:80px;"%>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+          
+        </td>
+        <td>
+          <a href="#" class="remove-ip label label-danger" id="<%= index %>-rake-unload_delete" style="padding: 20%"><i class="fa fa-trash-o"></i></a>
+        </td>
+      <%end%>  
+    </tbody>
+  </table>
+  <%= hidden_field_tag  "date", "", id: "date" %>
+  <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="gets_unload_add">
+    <div class="modal-footer" style="text-align: center !important;">
+        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+    </div>
+  <% end %>
+</div>
+
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+        
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_gets_load_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<script >
+$(function(){
+  $('table tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    $(".rake-row-data:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+
+  $(".cancel-btn").click(function () {
+    if (confirm('Are you sure?')) 
+    {
+      $(".rake-row-data").each(function(i) {
+        $(this).remove('');
+      });
+    } 
+    else 
+      {
+        return false;
+      }
+  });
+  
+
+    
+    <% (0..55).each_with_index do |no,index| %>
+      <%if index >= (@gets_unloads.count || 0)%>
+        var tr = '<%=".gets_unload_row_#{index}"%>';
+        $(tr).hide();
+      <%end%> 
+    <% end %>
+    <%if @gets_unloads.present?%>
+      <%@gets_unloads.each_with_index do |data,index|%>
+        from_station = "#from_station_"+<%=index%>
+        to_station = "#to_station_"+<%=index%>
+        takenover_point = "#takenover_point_"+<%=index%>
+        collary = "#collary_"+<%=index%>
+        takenover_time = "#takenover_time_"+<%=index%>
+        takenover_date = "#takenover_date_"+<%=index%>
+        loaded_unit = "#loaded_unit_"+<%=index%>
+        total_unit = "#total_unit_"+<%=index%>
+        wagon_type = "#wagon_type_"+<%=index%>
+        rake_count = "#rake_count_"+<%=index%>
+        stock_description = "#stock_description_"+<%=index%>
+        major_commodity = "#major_commodity_"+<%=index%>
+        commodity_type = "commodity_type_"+<%=index%>
+        bpc_station = "#bpc_station_"+<%=index%>
+        bpc_date = "#bpc_date_"+<%=index%>
+        bpc_type = "#bpc_type_"+<%=index%>
+        bpc_validity ="#bpc_validity_"+<%=index%>
+        placement_time = "#placement_time_"+<%=index%>
+        placement_date = "#placement_date_"+<%=index%>
+        release_time = "#release_time_"+<%=index%>
+        release_date = "#release_date_"+<%=index%>
+        train_on_run_hours = "#train_on_run_hours_"+<%=index%>
+        detention_placement_release = "#detention_placement_release_"+<%=index%>
+        powerarrival_time = "#powerarrival_time_"+<%=index%>
+        powerarrival_date = "#powerarrival_date_"+<%=index%>
+        departure_time = "#departure_time_"+<%=index%>
+        departure_date = "#departure_date_"+<%=index%>
+        handedover_time = "#handedover_time_"+<%=index%>
+        handedover_date = "#handedover_date_"+<%=index%>
+        handedover_point = "#handedover_point_"+<%=index%>
+        empty_destination = "#empty_destination_"+<%=index%>
+        detention_for_power = "#detention_for_power_"+<%=index%>
+        powerarrival_train_departure = "#powerarrival_train_departure_"+<%=index%>
+        detention_ger_to_ger_tor = "#detention_ger_to_ger_tor_"+<%=index%>
+        detention_in_out = "#detention_in_out_"+<%=index%>
+        remarks = "#remarks_"+<%=index%>
+        rake_id = "#record_id_"+<%=index%>
+
+        // $(from_station).val('<%=data.load_unload_id%>');
+        $(from_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
+        $(to_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
+        // $(to_station).val('<%=data.station_id%>');
+        $(takenover_point).val('<%=data.takenover_point%>');
+        $(collary).val('<%=data.collary%>'); 
+        $(takenover_time).val('<%=data.takenover_time%>'); 
+        $(takenover_date).val('<%=data.takenover_date%>'); 
+        $(loaded_unit).val('<%=data.loaded_unit%>');
+        $(total_unit).val('<%=data.total_unit%>');
+        $(wagon_type).val('<%=data.wagon_type_id%>');
+        $(rake_count).val('<%=data.rake_count%>');
+        $(stock_description).val('<%=data.stock_description%>');
+        $(major_commodity).val('<%=data.major_commodity_id%>');
+        $(commodity_type).val('<%=data.commodity_type%>');
+        $(bpc_station).val('<%=data.bpc_station%>');
+        $(bpc_date).val('<%=data.bpc_date%>');
+        $(bpc_type).val('<%=data.bpc_type%>');
+        $(bpc_validity).val('<%=data.bpc_validity%>');
+        $(placement_time).val('<%=data.placement_time%>');
+        $(placement_date).val('<%=data.placement_date%>');
+        $(release_time).val('<%=data.release_time%>');
+        $(release_date).val('<%=data.release_date%>');
+        $(train_on_run_hours).val('<%=data.train_on_run_hours%>');
+        $(detention_placement_release).val('<%=data.detention_placement_release%>');
+        $(powerarrival_time).val('<%=data.powerarrival_time%>');
+        $(powerarrival_date).val('<%=data.powerarrival_date%>');
+        $(departure_time).val('<%=data.departure_time%>');
+        $(departure_date).val('<%=data.departure_date%>');
+        $(handedover_time).val('<%=data.handedover_time%>');
+        $(handedover_date).val('<%=data.handedover_date%>');
+        $(handedover_point).val('<%=data.handedover_point%>');
+        $(empty_destination).val('<%=data.empty_destination%>');
+        $(detention_for_power).val('<%=data.detention_for_power%>');
+        $(powerarrival_train_departure).val('<%=data.powerarrival_train_departure%>');
+        $(detention_ger_to_ger_tor).val('<%=data.detention_ger_to_ger_tor%>');
+        $(detention_in_out).val('<%=data.detention_in_out%>');
+        $(remarks).val('<%=data.remarks%>');
+        $(rake_id).val('<%=data.id%>');
+          
+      <%end%>
+    <%end%>
+  
+  
+  $("#gets_unload_add").click(function() {
+   $(".rake-row-data:hidden").each(function( i ) {
+     if(i == 0){
+       $(this).show();
+     }
+   });
+ });
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_rake_id = $("#record_id_"+delete_index).val();
+    var visible_row_count = 0
+    $('.rake-unload-tr:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    // if(visible_row_count == 1){
+    //   return
+    // }
+    $("#delete-modal").modal('show');
+
+    
+  });
+
+  $("#confirm_gets_load_delete").click(function () {
+    $("#delete-modal").modal('hide');
+    if (delete_rake_id != "") {
+      
+          $.ajax({
+          type: "get",
+          url: "/delete_gets_unload.js?delete_rake_id=" + delete_rake_id
+        });
+      }
+
+    $('.rake-unload-tr:visible').each(function() {
+      if($(this).attr("id").split("_")[4] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+  // Modal 
+  <%if params[:action] == "new"%>
+    <%(0..55).each do |no|%>
+      rake_commodity_data.push([])
+    <%end%>
+  <%else%>  
+  <%end%>
+  
+  $(".add-rake-commodity").on('click',function(){
+    current_index = $(this).attr('id').split("_")[3]
+    rake_dropdown = "#major_commodity_"+current_index
+    rake_dropdown_value = $(rake_dropdown).val();
+    if (rake_dropdown_value != ""){
+      $("#add-ommodity-modal").modal('show');
+      set_rake_commodity_values(rake_dropdown_value);
+    }else{
+      alert("First select Major Commodity")
+    }
+  });
+
+  $("#rake_commodity_add").click(function() {
+   $(".rake-commodity-div:hidden").each(function( i ) {
+     if(i == 0){
+       $(this).show();
+      }
+    });
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    $(".rake-commodity-div:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+
+
+  $(".rake-commodity-delete").on('click',function(){
+    delete_index = $(this).attr('id').split("_")[0]
+    visible_row_count = 0
+    $('.rake-commodity-div:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    if(visible_row_count == 1){
+      return
+    }
+
+    $('.rake-commodity-div:visible').each(function() {
+      if($(this).attr("id").split("-")[3] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+});
+
+  $(document).ready(function(){
+    $('.release_date').each(function(i) {
+      
+      var row_no = $(this).attr('id').split('_')[2]
+      var release_date_id = "#release_date_"+row_no
+      setreleasedate = $("#datepicker").val();
+      $(release_date_id).attr("max", setreleasedate);
+      $(release_date_id).attr("min", setreleasedate);
+    
+    });  
+  });
+
+
+  $(".takenover_time,.takenover_date,.takenover_point,.placement_time,.placement_date,.release_time,.release_date,.powerarrival_time,.powerarrival_date,.departure_time,.departure_date,.handedover_point,.handedover_time,.handedover_date").on('keyup change', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    get_detention(row_no);
+    
+  });  
+     
+  function get_detention(row_no){
+    
+
+    var takenover_point_id = "#takenover_point_"+row_no 
+    var takenover_time_id = "#takenover_time_"+row_no 
+    var takenover_date_id = "#takenover_date_"+row_no
+    var placement_time_id = "#placement_time_"+row_no
+    var placement_date_id = "#placement_date_"+row_no
+    var release_time_id = "#release_time_"+row_no
+    var release_date_id = "#release_date_"+row_no
+    var powerarrival_time_id = "#powerarrival_time_"+row_no
+    var powerarrival_date_id = "#powerarrival_date_"+row_no
+    var departure_time_id = "#departure_time_"+row_no
+    var departure_date_id = "#departure_date_"+row_no
+    var handedover_point_id = "#handedover_point_"+row_no 
+    var handedover_time_id = "#handedover_time_"+row_no 
+    var handedover_date_id = "#handedover_date_"+row_no
+
+
+    var train_on_run_hours = "#train_on_run_hours_"+row_no
+    var detention_placement_release = "#detention_placement_release_"+row_no
+    var detention_for_power = "#detention_for_power_"+row_no
+    var powerarrival_train_departure = "#powerarrival_train_departure_"+row_no
+    var detention_ger_to_ger_tor = "#detention_ger_to_ger_tor_"+row_no
+    var detention_in_out = "#detention_in_out_"+row_no
+
+    var takenover_point = $(takenover_point_id).val();
+    var takenover_time = $(takenover_time_id).val();  
+    var takenover_date = $(takenover_date_id).val(); 
+    var placement_time = $(placement_time_id).val();
+    var placement_date = $(placement_date_id).val();
+    var release_time = $(release_time_id).val();
+    var release_date = $(release_date_id).val();
+    var powerarrival_time = $(powerarrival_time_id).val();
+    var powerarrival_date = $(powerarrival_date_id).val();
+    var departure_time = $(departure_time_id).val();
+    var departure_date = $(departure_date_id).val();
+    var handedover_point = $(handedover_point_id).val();
+    var handedover_time = $(handedover_time_id).val();
+    var handedover_date = $(handedover_date_id).val();
+    
+
+    var takenover = new Date(takenover_time +" "+takenover_date);
+    var placement = new Date(placement_time +" "+ placement_date);
+    var release = new Date(release_time +" "+ release_date);
+    var powerarrival = new Date(powerarrival_time +" "+ powerarrival_date);
+    var departure = new Date(departure_time +" "+ departure_date);
+    var handedover = new Date(handedover_time +" "+ handedover_date);
+
+    // Detention for power arrival starts
+    var detnpower = powerarrival - release; //  Train-on-run detn_hours(detention) start
+    if (detnpower>0) {
+      var detnpower_minutes = Math.floor(detnpower / 60000);
+      var detnpower_hours = Math.floor(detnpower_minutes / 60);
+      var detnpower_minutes2 = Math.floor(detnpower_minutes % 60);
+      
+      
+      if(detnpower_minutes2 < 10){
+          detnpower_minutes2 = "0"+detnpower_minutes2
+        }else{
+          detnpower_minutes2 = detnpower_minutes2
+        }
+      if(detnpower_hours < 10){
+          detnpower_hours = "0"+detnpower_hours
+        }else{
+          detnpower_hours = detnpower_hours
+        }
+
+       
+        var detnpower_time = detnpower_hours+":"+detnpower_minutes2;
+        // alert(final_time);
+        
+        $(detention_for_power).val(detnpower_time);
+       
+  
+      }
+      else{
+        $(detention_for_power).val("NA");
+      }
+    // Detention for power arrival Ends
+   
+
+    // Detention for power arrival to train departure Starts
+    
+    if (release < powerarrival) {
+     var powerdep = departure - powerarrival;
+      
+    }
+    else{
+      var powerdep = departure - release; 
+    }
+
+    if (powerdep>0) {
+      var powerdep_minutes = Math.floor(powerdep / 60000);
+      var powerdep_hours = Math.floor(powerdep_minutes / 60);
+      var powerdep_minutes2 = Math.floor(powerdep_minutes % 60);
+      
+      
+      if(powerdep_minutes2 < 10){
+          powerdep_minutes2 = "0"+powerdep_minutes2
+        }else{
+          powerdep_minutes2 = powerdep_minutes2
+        }
+      if(powerdep_hours < 10){
+          powerdep_hours = "0"+powerdep_hours
+        }else{
+          powerdep_hours = powerdep_hours
+        }
+
+       
+        var powerdep_time = powerdep_hours+":"+powerdep_minutes2;
+       
+        
+        $(powerarrival_train_departure).val(powerdep_time);
+       
+  
+      }
+      else{
+        $(powerarrival_train_departure).val("NA");
+      }
+
+    // Detention for power arrival to train departure Ends
+
+
+    // Detention for TRAIN arrival to train departure Starts
+    var inout = departure - placement; 
+    if (inout>0) {
+      var inout_minutes = Math.floor(inout / 60000);
+      var inout_hours = Math.floor(inout_minutes / 60);
+      var inout_minutes2 = Math.floor(inout_minutes % 60);
+      
+      
+      if(inout_minutes2 < 10){
+          inout_minutes2 = "0"+inout_minutes2
+        }else{
+          inout_minutes2 = inout_minutes2
+        }
+      if(inout_hours < 10){
+          inout_hours = "0"+inout_hours
+        }else{
+          inout_hours = inout_hours
+        }
+
+       
+        var inout_time = inout_hours+":"+inout_minutes2;
+        // alert(final_time);
+        
+        $(detention_in_out).val(inout_time);
+       
+  
+      }
+      else{
+        $(detention_in_out).val("NA");
+      }
+
+    // Detention for TRAIN arrival to train departure Ends
+
+    //  Train-on-run detn_hours(detention) start
+    var tor = placement - takenover; 
+    if (tor>0) {
+      var tor_minutes = Math.floor(tor / 60000);
+      var tor_hours = Math.floor(tor_minutes / 60);
+      var tor_minutes2 = Math.floor(tor_minutes % 60);
+      
+      
+      if(tor_minutes2 < 10){
+          tor_minutes2 = "0"+tor_minutes2
+        }else{
+          tor_minutes2 = tor_minutes2
+        }
+      if(tor_hours < 10){
+          tor_hours = "0"+tor_hours
+        }else{
+          tor_hours = tor_hours
+        }
+
+       
+        var tor_time = tor_hours+":"+tor_minutes2;
+        // alert(final_time);
+        
+        $(train_on_run_hours).val(tor_time);
+       
+  
+      }
+      else{
+        $(train_on_run_hours).val("NA");
+      }
+    //Train-on-run detn_hours(detention)--Ends
+
+    // Detention from placement to release --Start
+    var detn = release - placement; 
+    if (detn>0) {
+      var detn_minutes = Math.floor(detn / 60000);
+      var detn_hours = Math.floor(detn_minutes / 60);
+      var detn_minutes2 = Math.floor(detn_minutes % 60);
+      
+      
+      if(detn_minutes2 < 10){
+          detn_minutes2 = "0"+detn_minutes2
+        }else{
+          detn_minutes2 = detn_minutes2
+        }
+      if(detn_hours < 10){
+          detn_hours = "0"+detn_hours
+        }else{
+          detn_hours = detn_hours
+        }
+
+       
+        var detn_time = detn_hours+":"+detn_minutes2;
+        // alert(final_time);
+        
+        $(detention_placement_release).val(detn_time);
+        if(detn_hours > 23) {
+        $(detention_placement_release).css({"background-color":"#ff5c33"});
+        }
+        else
+        {
+          $(detention_placement_release).css({"background-color":"#ffe6e6"});
+        }
+  
+      }
+      else{
+        $(detention_placement_release).val("NA");
+      }
+      // Detention from placement to release --Ends
+
+      // Detention TOR-GER-TO-GER Starts
+      if (takenover_point == "GER" && handedover_point == "GER") {
+        
+        var gertor = handedover - takenover; 
+        if (gertor>0) {
+        var gertor_minutes = Math.floor(gertor / 60000);
+        var gertor_hours = Math.floor(gertor_minutes / 60);
+        var gertor_minutes2 = Math.floor(gertor_minutes % 60);
+        
+        
+        if(gertor_minutes2 < 10){
+            gertor_minutes2 = "0"+gertor_minutes2
+          }else{
+            gertor_minutes2 = gertor_minutes2
+          }
+        if(gertor_hours < 10){
+            gertor_hours = "0"+gertor_hours
+          }else{
+            gertor_hours = gertor_hours
+          }
+
+       
+        var gertor_time = gertor_hours+":"+gertor_minutes2;
+
+
+        $(detention_ger_to_ger_tor).val(gertor_time);
+        }
+      }
+      else{
+        $(detention_ger_to_ger_tor).val("NA");
+      }
+
+      // Detention TOR-GER-TO-GER Ends
+
+  }    
+
+  // Finds From station
+    $('.from_station').on('focusout', function () {
+    
+    var row_no = $(this).attr('id').split('_')[2]
+    var from_station_id = "from_station_"+row_no
+
+    var from_station_code = $(this).val();
+    // debugger
+      if (from_station_code != "") {
+          $.ajax({
+          type: "get",
+          url: "/find_from_station_gets_unloads.js?from_station_code=" + from_station_code + "&from_station_id=" + from_station_id
+        });
+      }
+    
+    });
+    // Finds to station
+   $('.to_station').on('focusout', function () {
+    
+    var row_no = $(this).attr('id').split('_')[2]
+    var to_station_id = "to_station_"+row_no
+
+    var station_code = $(this).val();
+    // debugger
+      if (station_code != "") {
+          $.ajax({
+          type: "get",
+          url: "/find_to_station_gets_unloads.js?station_code=" + station_code + "&to_station_id=" + to_station_id
+        });
+      }
+    
+    });
+
+
+  
+
+
+</script>

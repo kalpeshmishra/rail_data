@@ -1,0 +1,86 @@
+<html>
+<head>
+  <title>Sign In</title>
+    <link rel="shortcut icon" href="/assets/new_favicon.png">
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+  <!--<link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>-->
+  <script src="/assets/application.js" data-turbolinks-track="true"></script>
+  <link rel="stylesheet" media="all" href="/assets/application.css" data-turbolinks-track="true" />
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="" />
+  <script type="text/javascript">
+   
+  </script>
+</head>
+<body class="texture">
+
+<div id="cl-wrapper" class="login-container">
+
+  <div class="middle-login">
+    <div class="block-flat">
+      <div class="header" style="background-color: #42b6f4;border-color: #42b6f4">
+        <h3 class="text-center">Ahmedabad Division</h3>
+      </div>
+      <div class="content">
+        <style>
+    .login-container .middle-login {
+        left: 50%;
+        margin-left: -215px;
+        margin-top: -170px;
+        position: absolute;
+        top: 40%;
+        width: 430px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        $("#cl-wrapper").css({opacity: 1, 'margin-left': 0});
+    });
+</script>
+
+<h3 class="hthin no-margin" align="center">Sign In</h3>
+<hr class="hthin">
+    <%= form_for(resource, as: resource_name, url: session_url(resource_name), :validate => true) do |f| %>
+    <h4 class="lead">Enter Your Login Details</h4>
+
+    <div class="col-sm-12">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <%= f.text_field :user_code, autofocus: true, class: "form-control input-lg", placeholder: 'User Id',style: "text-transform:uppercase;"%>
+      </div>
+    </div>
+    <div class="col-sm-12 margin-top-10">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        <%= f.password_field :password, autocomplete: "off", class: "form-control  input-lg", placeholder: 'Password' %>
+      </div>
+    </div>
+    <div class="col-sm-12 margin-top-20 margin-bottom-30">
+      <%# if devise_mapping.rememberable? -%>
+          <%#= f.check_box :remember_me %> <!-- Remember Me -->
+      <%# end -%>
+      <button class="btn btn-primary pull-right" data-dismiss="modal" type="submit" style="background-color:#4CAF50;border-color:#4CAF50"><i class="fa fa-key"></i> Log Me In</button>
+
+      <%#= link_to 'Register', new_user_registration_path, class: "btn btn-default pull-right" %>
+      <br>
+      <%if false%>
+      <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+          <%= link_to "Forgot your Password?", new_password_url(resource_name), class: 'color-danger' %><br />
+      <% end -%>
+      <% end %>
+    </div>
+<% end %>
+
+      </div>
+    </div>
+    <div align="center">
+      <!-- <a href="#">Concept Development : Ashish Dhania-DOM(G)</a></br>
+      <a href="#">Project Coordinator: Subedar Rajput-TI</a></br>-->
+      <a href="#">Developed By: Kalpesh Mishra--CTNC</a> 
+    </div>
+  </div>
+
+</div>
+</body>
+
+</html>

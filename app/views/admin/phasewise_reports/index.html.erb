@@ -1,0 +1,110 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="phasewise-reports">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <span class="pull-left lead-text">
+            <%="PhasewiseReport"%>
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "report_from_date",Date.today.strftime('%Y-%m-%d'),placeholder: 'phasewise from date', id: "from-datepicker", class: 'form-control input_class'%>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "report_to_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'phasewise to date', id: "to-datepicker", class: 'form-control input_class'%>
+      </div>
+     
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" type="submit">Show Report</button>
+      </div>
+      
+    </caption>
+    </table>
+    
+  <div class="tab-container">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#division-loading-info" id="division-loading-tab" data-toggle="tab">Division</a>
+      </li>
+      <li>
+        <a href="#adi-area-loading-info" id="adi-area-loading-tab" data-toggle="tab">ADI</a>
+      </li>
+      <li>
+        <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB</a>
+      </li>
+      
+      
+    </ul>
+
+    <div class="tab-content">
+      <div id="division-loading-info" class="tab-pane active cont">
+        <%=render 'division_listing'%>
+        <div id="division_load_form"></div>
+      </div>
+      <div id="adi-area-loading-info" class="tab-pane cont">
+        <%=render 'adi_listing'%>
+        <div id="adi_load_form"></div>
+      </div>
+      <div id="gimb-area-loading-info" class="tab-pane cont">
+        <%=render 'gimb_listing'%>
+        <div id="gimb_load_form"></div>
+      </div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+
+
+
+
+
+<script>
+  
+
+  var old_from_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  var old_to_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#from-datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+    
+    $('#from-datepicker').datepicker('setDate', 'today');
+  });
+  $(function () {
+    $("#to-datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+    
+    $('#to-datepicker').datepicker('setDate', 'today');
+  });
+
+  $(".submit").click(function () {
+     effective_from = $("#from-datepicker").val();
+     effective_to = $("#to-datepicker").val();
+        $.ajax({
+          type: "get",
+          url: "/admin/phasewise_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
+        });
+        old_from_date = effective_from 
+        old_to_date = effective_to
+      
+  });
+
+  
+
+</script>

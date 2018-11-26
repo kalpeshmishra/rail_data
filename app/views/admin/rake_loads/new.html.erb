@@ -1,0 +1,102 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<style>
+  .modal-dialog {
+      margin: 30px auto;
+      width: 80%;
+  }
+  .add-cursor tr{
+   height: 5px;
+  }  
+  .table.table-dark tbody td {
+    padding: 5px;
+
+  }
+
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+/*.tax-and-statutory-settings-hide-show span:after {content: '»';position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}
+.tax-and-statutory-settings-hide-show span {padding-right: 25px;}
+.tax-and-statutory-settings-hide-show:hover span:after {opacity: 1;right: 0;}*/
+.input-group .form-control {
+    float: right;
+    width: 35%;
+  }
+  html {
+    overflow-x: scroll;
+  }
+
+  select.set-dropdown {
+    display: block !important;
+    opacity: 0;
+    height: 0px;
+  }
+  table th, table td { overflow: hidden; }
+  
+  
+</style>
+
+
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+<% @url = params[:id].present? ? admin_rake_load_path(params[:id]) : admin_rake_loads_path %>
+
+<%if false%>
+<h2 align="center">Add Rake Load </h2>
+<h3>Rake Loading:</h3>
+<%= text_field_tag "rake_load_date", Date.today.strftime('%Y-%m-%d'), type: 'date',placeholder: 'rake load date', id: "rake_load_date", class: 'form-control input-md', style: "width: 145px;"%>
+<%end%>
+
+<div class="table-responsive main-client-ldng" >
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="rake_load-ldng">
+    <caption>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >
+          <span class="pull-left lead-text">
+            Rake Loading 
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "rake_load_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
+
+        
+      </div>
+  </caption>
+  </table>
+  </div>
+
+<%=render 'rake_load_new'%>
+<div id="rake_load_new_form"></div>
+<script>
+  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    }).on('change', function(){
+      
+      effective_from = $("#datepicker").val();
+      if(old_date != effective_from){
+        $.ajax({
+          type: "get",
+          url: "/admin/rake_loads/new.js?data=" + effective_from
+        });
+        old_date = effective_from 
+      }
+    });
+    
+    $('#datepicker').datepicker('setDate', 'today');
+
+
+    
+  });
+  
+
+  
+
+</script>

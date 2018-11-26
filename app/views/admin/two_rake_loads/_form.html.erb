@@ -1,0 +1,214 @@
+<script>
+  var rake_commodity_data = []
+</script>
+<% @method = "POST" %>
+<% @url = admin_two_rake_loads_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+    <p style="font-size: 20px;color:red;">Total-Loading :<%=(@total_rake_loads)+(@total_other_loads)%>&nbsp;&nbsp;&nbsp;
+        Rake-Loading :<%=(@total_rake_loads)%>&nbsp;&nbsp;&nbsp;
+        Other-Loading :<%=(@total_other_loads)%></p>
+  </div>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'two-rake-loading-form',remote: true) do |form| %>
+<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+  <tr >
+
+    <th>SR NO</th>
+    <th>From<br>To</th>
+    <th>Loaded Units</th>
+    <th>Stock<br>Commodity</th>
+    <th>Release <br>Time_Date</th>
+    <th>GrossTons <br> NetTons</th>
+    <th>Cmdt_Import<br>/Domestic</th> <!-- Commodity Imported or Domestic -->
+    <th>Indent Date_Time</th>
+    <th>Consignor<br>Consignee</th>
+    <th>Remarks</th>
+  </tr>
+  </thead>
+  <tbody>
+
+    <%(0...@two_rake_loads.count).each_with_index do |no, index| %>
+      <tr class="two-rake-load-tr two-rake-row-data two_rake_load_row_<%= index %>", id= "two_rake_load_row_id_<%= index %>">
+        <td align="center" style="font-size: 25;">
+          
+        </td>
+       <td>
+          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}",disabled:true, class: 'form-control input-md from_station',maxlength:"4", style: "width: 65px; font-size:16px; text-transform:uppercase;"%>
+        <p></p>
+          
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}",disabled:true, class: 'form-control input-md to_station',maxlength:"4", style: "width: 65px; font-size:16px; text-transform:uppercase;"%>
+        </td>
+        <td>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 65px; font-size:16px;" %>
+        
+        </td>
+        <td>
+          <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true,disabled:true, style: "width: 90px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
+          <p></p>
+          <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,disabled:true,style: "width: 90px;", data_live_search: "true"} %>
+        </td>
+        <td>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md',disabled:true, style: "width: 95px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "release_date_#{index}", '',type:'date',placeholder: 'release Date', id: "release_date_#{index}",disabled:true, class: 'form-control input-md', style: "width: 141px; font-size:14px;"%>
+        </td>
+        <td align="center">
+          <%= number_field_tag "gross_tons_#{index}", '',placeholder: 'GrossTons', id: "gross_tons_#{index}", class: 'form-control input-md', style: "width: 100px; font-size:16px;"%>
+        <p></p>
+          <%= number_field_tag "net_tons_#{index}", '',placeholder: 'NetTons', id: "net_tons_#{index}", class: 'form-control input-md', style: "width: 100px; font-size:16px;"%>
+        </td>
+        <td style="vertical-align:top">
+          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md',style: "width: 105px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+      
+        </td>
+        <td>
+         <%= text_field_tag "odr_time_#{index}", '', type: 'time',placeholder: 'ODR Time', id: "odr_time_#{index}", class: 'form-control input-md', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "odr_date_#{index}", '', type: 'date',placeholder: 'ODR Date', id: "odr_date_#{index}", class: 'form-control input-md', style: "width: 152px; font-size:15px;"%> 
+        </td>
+
+        <td>
+          <%= text_field_tag "consignor_#{index}", '',placeholder: 'CNSR', id: "consignor_#{index}", class: 'form-control input-md', style: "width: 150px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "consignee_#{index}", '',placeholder: 'CNEE', id: "consignee_#{index}", class: 'form-control input-md', style: "width: 150px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 305px; height:80px;"%>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+          
+        </td>
+      </tr>
+    <%end%>  
+  </tbody>
+  </table>
+  <%= hidden_field_tag  "date", "", id: "date" %>
+    <div class="modal-footer" style="text-align: center !important;">
+        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+    </div>
+  <% end %>
+</div>
+
+
+<script >
+$(function(){
+  $('table tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    });
+  });
+
+ 
+    <%if @two_rake_loads.present?%>
+      <%@two_rake_loads.each_with_index do |data,index|%>
+        from_station = "#from_station_"+<%=index%>
+        to_station = "#to_station_"+<%=index%>
+        loaded_unit = "#loaded_unit_"+<%=index%>
+        wagon_type = "#wagon_type_"+<%=index%>
+        major_commodity = "#major_commodity_"+<%=index%>
+        release_time = "#release_time_"+<%=index%>
+        release_date = "#release_date_"+<%=index%>
+        gross_tons = "#gross_tons_"+<%=index%>
+        net_tons = "#net_tons_"+<%=index%>
+        commodity_type = "#commodity_type_"+<%=index%>
+        odr_time = "#odr_time_"+<%=index%>
+        odr_date = "#odr_date_"+<%=index%>
+        consignor = "#consignor_"+<%=index%>
+        consignee = "#consignee_"+<%=index%>
+        
+        
+        remarks = "#remarks_"+<%=index%>
+        rake_id = "#record_id_"+<%=index%>
+
+         // $(from_station).val('<%=data.load_unload_id%>');
+        $(from_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
+        // $(to_station).val('<%=data.station_id%>');
+        $(to_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
+        $(loaded_unit).val('<%=data.loaded_unit%>');
+        $(wagon_type).val('<%=data.wagon_type_id%>');
+        $(major_commodity).val('<%=data.major_commodity_id%>');
+        $(release_time).val('<%=data.release_time%>');
+        $(release_date).val('<%=data.release_date%>');
+        $(gross_tons).val('<%=data.gross_tons%>');
+        $(net_tons).val('<%=data.net_tons%>');
+        $(commodity_type).val('<%=data.commodity_type%>');
+        $(odr_time).val('<%=data.odr_time%>');
+        $(odr_date).val('<%=data.odr_date%>');
+        $(consignor).val('<%=data.consignor%>');
+        $(consignee).val('<%=data.consignee%>');
+        
+        $(remarks).val('<%=data.remark%>');
+        $(rake_id).val('<%=data.id%>');
+          
+      <%end%>
+    <%end%>
+  
+  
+
+
+ 
+
+  // Modal 
+  <%if params[:action] == "new"%>
+    <%(0..55).each do |no|%>
+      rake_commodity_data.push([])
+    <%end%>
+  <%else%>  
+  <%end%>
+  
+  $(".add-rake-commodity").on('click',function(){
+    current_index = $(this).attr('id').split("_")[3]
+    rake_dropdown = "#major_commodity_"+current_index
+    rake_dropdown_value = $(rake_dropdown).val();
+    if (rake_dropdown_value != ""){
+      $("#add-commodity-modal").modal('show');
+      set_rake_commodity_values(rake_dropdown_value);
+    }else{
+      alert("First select Major Commodity")
+    }
+  });
+
+  $("#rake_commodity_add").click(function() {
+   $(".rake-commodity-div:hidden").each(function( i ) {
+     if(i == 0){
+       $(this).show();
+     }
+   });
+ });
+
+
+  
+
+function set_rake_commodity_values(rake_dropdown_value){
+  <% if params[:action] == "new"%>
+    hide_rake_commodity_values();
+    <% (0..15).each_with_index do |no,index| %>
+      add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+rake_dropdown_value
+      $(add_rake_commodity).css('display', '');
+      <%if index != 0%>
+        var tr = '<%="#rake-commodity-div-#{index}"%>';
+        $(tr).hide();
+      <%end%> 
+    <% end %>
+  <%else%>
+
+  <%end%>
+
+}
+
+  function hide_rake_commodity_values(){
+    <%(0..15).each do |no| %>
+      <%@rake_commodity.each do |key,value|%>
+        add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+<%=key%>
+        $(add_rake_commodity).css('display', 'none');
+      <%end%>
+    <%end%>
+  }
+ 
+ 
+
+</script>

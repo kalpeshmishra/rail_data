@@ -1,0 +1,97 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<style>
+  .modal-dialog {
+      margin: 30px auto;
+      width: 80%;
+  }
+  .add-cursor tr{
+   height: 5px;
+  }  
+  .table.table-dark tbody td {
+    padding: 5px;
+
+  }
+
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+/*.tax-and-statutory-settings-hide-show span:after {content: '»';position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}
+.tax-and-statutory-settings-hide-show span {padding-right: 25px;}
+.tax-and-statutory-settings-hide-show:hover span:after {opacity: 1;right: 0;}*/
+.input-group .form-control {
+    float: right;
+    width: 35%;
+  }
+  html {
+    overflow-x: scroll;
+  }
+
+  select.set-dropdown {
+    display: block !important;
+    opacity: 0;
+    height: 0px;
+  }
+  table th, table td { overflow: hidden; }
+  
+  
+</style>
+
+
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+<% @url = params[:id].present? ? admin_gets_unload_path(params[:id]) : admin_gets_unloads_path %>
+
+
+<div class="table-responsive main-client-ldng" >
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="gets_unload-unldng">
+    <caption>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+          <span class="pull-left lead-text">
+            GETS Un-Loading 
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "gets_unload_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake unload date', id: "datepicker", class: 'form-control input_class'%>
+
+        
+      </div>
+  </caption>
+  </table>
+  </div>
+
+<%=render 'gets_unload_new'%>
+<div id="gets_unload_new_form"></div>
+<script>
+  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    }).on('change', function(){
+      
+      effective_from = $("#datepicker").val();
+      if(old_date != effective_from){
+        $.ajax({
+          type: "get",
+          url: "/admin/gets_unloads/new.js?data=" + effective_from
+        });
+        old_date = effective_from 
+      }
+    });
+    
+    $('#datepicker').datepicker('setDate', 'today');
+
+
+    
+  });
+  
+
+  
+
+</script>

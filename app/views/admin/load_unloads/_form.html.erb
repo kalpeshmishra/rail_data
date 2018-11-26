@@ -1,0 +1,56 @@
+<style>
+  
+  
+</style>
+
+
+<% input_class = (action_name == 'initial_setup') ? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup') ? 'btn-lg' : 'btn-md' %>
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+
+<% @url = params[:id].present? ? admin_load_unload_path(params[:id]) : admin_load_unloads_path() %>
+<%= form_for(@load_unload, url: @url,class: 'form-horizontal group-border-dashed', id: 'loadunload-form', remote: true) do |f| %>
+  
+     
+      
+     <div class="form-group">
+      <h4 class="no-margin">Select Status<span style="color:red;"> *</span></h4>
+      <%= f.select :status,[["LOADING","LOADING"],["UN-LOADING","UN-LOADING"],["BOTH(LOADING+UNLOADING)","BOTH(LOADING+UNLOADING)"]], {prompt: 'Select Status'},{required: true, class: 'form-control editing-family  input-md'}%>
+
+      
+      </div>
+      
+    <div class="form-group">
+      <h4 class="no-margin">Select Division<span style="color:red;"> *</span></h4>
+      <%selecte_id = @load_unload.division_id rescue ""%>
+      <%= f.select :division_id, @division = Division.all.map{|division|["#{division.code}-#{division.name}",division.id.to_s]}.sort_by{|code,name|code}, {prompt: 'Select Division',selected: selecte_id}, {required: true, class: 'form-control editing-family  input-md'}%>
+      
+    </div>
+    <div class="form-group">
+      <h4 class="no-margin">Select Area<span style="color:red;"> *</span></h4>
+      <%selecte_id = @load_unload.area_id rescue ""%>
+      <%= f.select :area_id, @area = Area.all.order(area_code: :asc).map{|area|["#{area.area_code}-#{area.area_name}",area.id.to_s]}, {selected: selecte_id}, {required: true, class: 'form-control editing-family  input-md'}%>
+      
+    </div>
+
+    <div class="form-group">
+      <h4 class="no-margin">Select Station<span style="color:red;"> *</span></h4>
+      <%selecte_id = @load_unload.station_id rescue ""%>
+      <%= f.select :station_id, @station = Station.all.map{|station|["#{station.code}-#{station.name}",station.id.to_s]}, {selected: selecte_id}, {required: true, class: 'form-control editing-family  input-md'}%>
+      
+    </div>
+
+    <div class="form-group">
+      <h4 class="no-margin">Description<span style="color:red;"> *</span></h4>
+      <%= f.text_field :desc,class: 'form-control input-md' %>
+      
+    </div>
+    
+   
+  <div class="modal-footer" style="text-align: center !important;">
+    <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
+      Cancel</a>
+    <%= f.button '<i class="fa fa-check"></i>&nbsp;Save'.html_safe, style: "font-size: 14px !important;", class: 'btn btn-primary btn-flat', id: 'submit' %>
+   
+  </div>
+<% end %>

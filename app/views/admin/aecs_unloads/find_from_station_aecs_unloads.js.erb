@@ -1,0 +1,12 @@
+var from_station = "#<%=@from_station%>"
+<%if(@stn == false)%>
+
+  var error_msg ="----From Station not found"
+  $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'170px'});
+  $(".station_error_msg").show();
+  $(from_station).focus(); 
+  
+<%else%>
+  $("#station_error_msg").text("");
+  $(".station_error_msg").hide();
+<%end%>

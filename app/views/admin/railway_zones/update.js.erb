@@ -1,0 +1,6 @@
+<%if @railway_zone%>
+var id = "#<%=@railway_zone.id%>"
+$(id).remove('');
+$("#railway_zone-listing").prepend("<%= j render partial: 'listing', locals: {:railway_zone => @railway_zone,:index => (50..500).to_a.sample} %>");
+<%end%>
+$('#add-railway_zone').find('.close').click();

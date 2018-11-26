@@ -1,0 +1,4 @@
+<%if @rake_commodity%>
+$("#rake_commodity-listing").prepend("<%= j render partial: 'listing', locals: {:rake_commodity => @rake_commodity,:index => (400..900).to_a.sample} %>");
+<%end%>
+$('#add-rake_commodity').find('.close').click();

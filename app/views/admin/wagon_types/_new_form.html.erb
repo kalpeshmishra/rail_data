@@ -1,0 +1,50 @@
+<style>
+  .red {
+    background-color: red;
+  }
+
+  /*.lead-radio {
+    font-size: 14px;
+  }*/
+</style>
+<% input_class = (action_name == 'initial_setup')? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup')? 'btn-lg' : 'btn-md' %>
+
+<div class="modal fade colored-header" id="add-wagon_type" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%if params[:action].present? and params[:import_export] == "true"%>
+          
+            <h3>Import Data through Excel</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <%= render 'import_export' %>
+            </div>
+          
+  
+          <%elsif params[:action] == "edit"%>
+            <h3>Edit Wagon Type</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <%= render 'form' %>
+            </div>
+          <%else%>
+            <h3>Add Wagon Type</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <%= render 'form' %>
+            </div>
+          <%end%>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+

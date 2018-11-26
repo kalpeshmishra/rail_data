@@ -1,0 +1,57 @@
+<style>
+  
+  
+</style>
+
+
+
+
+<% input_class = (action_name == 'initial_setup') ? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup') ? 'btn-lg' : 'btn-md' %>
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+
+<% @url = params[:id].present? ? admin_wagon_type_path(params[:id]) : admin_wagon_types_path() %>
+<%= form_for(@wagon_type, url: @url,class: 'form-horizontal group-border-dashed', id: 'wagon_type-form', remote: true) do |f| %>
+  <div class="form-group">
+    <h4 class="no-margin">Group Rake Type<span style="color:red;"> *</span></h4>
+    <%= f.text_field :group_rake_type, class: 'form-control input-md' %>
+  
+    <h4 class="no-margin">Rake Type<span style="color:red;"> *</span></h4>
+    <%= f.text_field :rake_type,class: 'form-control input-md' %>
+ 
+    <h4 class="no-margin">Stock Type Code<span style="color:red;"> *</span></h4>
+    <%= f.text_field :stock_type_code,class: 'form-control input-md' %>
+ 
+    <h4 class="no-margin">Wagon Type Code<span style="color:red;"> *</span></h4>
+    <%= f.text_field :wagon_type_code,class: 'form-control input-md' %>
+  
+    <h4 class="no-margin">Wagon Type Desc<span style="color:red;"> *</span></h4>
+    <%= f.text_field :wagon_type_desc,class: 'form-control input-md' %>
+ 
+    <h4 class="no-margin">Wagon Details Brake Type<span style="color:red;"> *</span></h4>
+    <%= f.text_field :wagon_details_brake_type,class: 'form-control input-md' %>
+ 
+    <h4 class="no-margin">Wagon Details Covered Open<span style="color:red;"> *</span></h4>
+    <%= f.text_field :wagon_details_covered_open,class: 'form-control input-md' %>
+ 
+    <h4 class="no-margin">Wagon Details Min Max Tare<span style="color:red;"> *</span></h4>
+    <%= f.text_field :wagon_details_min_max_tare,class: 'form-control input-md' %>
+
+    <h4 class="no-margin">Allowed Commodity<span style="color:red;"> *</span></h4>
+    <%= f.text_field :allowed_cmdt,class: 'form-control input-md' %>
+  
+    <h4 class="no-margin">Load Class Wagon<span style="color:red;"> *</span></h4>
+    <%= f.text_field :load_class_wagon,class: 'form-control input-md' %>
+  
+    <h4 class="no-margin">Load Class Train <span style="color:red;"> *</span></h4>
+    <%= f.text_field :load_class_train,class: 'form-control input-md' %>
+  </div>
+
+   
+  <div class="modal-footer" style="text-align: center !important;">
+    <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
+      Cancel</a>
+    <%= f.button '<i class="fa fa-check"></i>&nbsp;Save'.html_safe, style: "font-size: 14px !important;", class: 'btn btn-primary btn-flat', id: 'submit' %>
+   
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<div class="tab-container" id="gimb_listing">
+<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+  <p style="font-size: 18px;color:red;">
+    Rake :<%=(@gimb_rake)%>&nbsp;
+    Unit :<%=(@gimb_loaded_unit)%>&nbsp;
+  </p>
+</div>
+
+<table class="table hover table-dark" id="gimb-listing">
+  <thead>
+  <tr>
+     <th>Station</th>
+      <th>Rake</th>
+      <th>Units</th>
+      <th>Total<br>AR-PM</th>
+      <th>Total<br>PM-RL</th>
+      <th>Total<br>RL-DP</th>
+      <th>AVG.<br>AR-PM</th>
+      <th>AVG.<br>PM-RL</th>
+      <th>AVG.<br>RL-DP</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% @rake_and_load_unit_data_for_gimb.each do |key,value| %>
+       <%load = LoadUnload.find(key) rescue nil%>
+       
+       <%next unless load%>
+       <tr id=<%=key%>>
+
+        <td class="text-center"><span class="view-location-<%= key %>"><%= load.station.code rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:rake_count] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:loaded_unit] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_arrival_placement] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_placement_release] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_removal_departure] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_arrival_placement_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_placement_release_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_removal_departure_average] rescue '' %></span></td>
+      </tr>
+       
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>

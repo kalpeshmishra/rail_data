@@ -1,0 +1,4 @@
+<%if @major_commodity%>
+$("#major_commodity-listing").prepend("<%= j render partial: 'listing', locals: {:major_commodity => @major_commodity,:index => (50..500).to_a.sample} %>");
+<%end%>
+$('#add-major_commodity').find('.close').click();

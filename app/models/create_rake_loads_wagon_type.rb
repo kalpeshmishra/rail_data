@@ -1,0 +1,2 @@
+class CreateRakeLoadsWagonType < ApplicationRecord
+end

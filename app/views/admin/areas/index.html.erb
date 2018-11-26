@@ -1,0 +1,69 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="area-listing">
+    <caption>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+          <span class="pull-left lead-text">
+            <%="Areas : #{@areas.count} "%>
+          </span>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Area'.html_safe, new_admin_area_path, remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Import/Export'.html_safe, new_admin_area_path(import_export: "true"), remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px;" %>
+        
+      </div>
+      <% if false %>
+          <div class="row">
+            <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
+              <p class="filter-link">Show Advanced Search</p>
+            </a>
+          </div>
+          <%= render 'filters' %>
+      <% end %>
+    </caption>
+    <thead>
+    <tr>
+      <th>Zone</th>
+      <th>Division</th>
+      <th>Area Code</th>
+      <th>Area Name</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @areas.each_with_index do |area, index| %>
+        <%= render :partial => 'listing', :locals => {:area => area, :index => index} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="row no-margin no-margin">
+
+  <div class="col-md-8 col-md-offset-2" id="com-pagination"><%= will_paginate @areas, renderer: BootstrapPagination::Rails %></div>
+  
+</div>
+
+<div id="area-popup"></div>
+
+
+<script>
+  $('.area-delete').on('click', function () {
+    $('#custom-confirm-box').find('.area').attr("data-remote", true);
+  });
+</script>

@@ -1,0 +1,2 @@
+module Admin::OtherLoadsHelper
+end

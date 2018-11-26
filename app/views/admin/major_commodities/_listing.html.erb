@@ -1,0 +1,16 @@
+<tr id=<%=major_commodity.id.to_s%>>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= major_commodity.id rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= major_commodity.major_commodity rescue '' %></span></td>
+ <td class="text-center"><span class="view-location-<%= index %>"><%= major_commodity.name rescue '' %></span></td>
+  
+  <td class="text-center" style="white-space: nowrap">
+    <span class="view-location-<%= index %>">
+      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_major_commodity_path(major_commodity), :remote => true, class: "label label-default", title: "Edit MajorCommodity" %>
+      
+     
+
+      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger major_commodity-delete', data: {toggle: "modal", method_type: "delete", link: admin_major_commodity_path(major_commodity.id), message: "You really want to delete this MajorCommodity?", target: "#custom-confirm-box"}, remote: true, title: "Delete MajorCommodity" %>
+	  </span>
+  </td>
+</tr>
+     

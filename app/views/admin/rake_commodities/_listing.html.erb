@@ -1,0 +1,18 @@
+<tr id=<%=rake_commodity.id.to_s%>>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= rake_commodity.major_commodity.major_commodity rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= rake_commodity.group_rake_commodity rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= rake_commodity.rake_commodity_code rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= rake_commodity.rake_commodity_name rescue '' %></span></td>
+  
+  
+  <td class="text-center" style="white-space: nowrap">
+    <span class="view-location-<%= index %>">
+      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_rake_commodity_path(rake_commodity), :remote => true, class: "label label-default", title: "Edit Commodtiy" %>
+      
+     
+
+      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger rake_commoditie-delete', data: {toggle: "modal", method_type: "delete", link: admin_rake_commodity_path(rake_commodity.id), message: "You really want to delete this Commodtiy?", target: "#custom-confirm-box"}, remote: true, title: "Delete Commodtiy" %>
+    </span>
+  </td>
+</tr>
+     

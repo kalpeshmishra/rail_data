@@ -1,0 +1,6 @@
+<%if @wagon_type%>
+var id = "#<%=@wagon_type.id%>"
+$(id).remove('');
+$("#wagon_type-listing").prepend("<%= j render partial: 'listing', locals: {:wagon_type => @wagon_type,:index => (500..900).to_a.sample} %>");
+<%end%>
+$('#add-wagon_type').find('.close').click();

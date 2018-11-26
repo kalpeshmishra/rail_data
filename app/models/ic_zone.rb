@@ -1,0 +1,2 @@
+class IcZone < ApplicationRecord
+end

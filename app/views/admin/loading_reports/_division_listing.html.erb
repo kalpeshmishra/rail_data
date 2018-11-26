@@ -1,0 +1,40 @@
+<div class="tab-container" id="division_listing">
+  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+    <p style="font-size: 18px;color:red;">Total :<%=(@total_rake_loads)%>&nbsp;&nbsp;&nbsp;</p>
+  </div>
+
+<table class="table hover table-dark" id="division-listing">
+    <thead>
+    <tr>
+      <tr>
+        <th>FROM</th>
+        <th>TO</th>
+        <th>Units</th>
+        <th>Stock</th>
+        <th>Commodity</th>
+        <th>Arrival</th>
+        <th>Placement</th>
+        <th>Release</th>
+        <th>ShortRouteIC</th>
+        <th>Short Km</th>
+      </tr>
+    </tr>
+    </thead>
+    <tbody>
+      <% @rake_loads.each_with_index do |rake_load, index| %>
+        <tr id=<%=rake_load.id.to_s%>>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.load_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.loaded_unit rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.wagon_type.wagon_type_code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.major_commodity.major_commodity rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.arrival_time.first(5) rescue '' %><p></p><%= rake_load.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.placement_time.first(5) rescue '' %><p></p><%= rake_load.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.release_time.first(5) rescue '' %><p></p><%= rake_load.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.short_interchange rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.short_km rescue '' %></span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>  

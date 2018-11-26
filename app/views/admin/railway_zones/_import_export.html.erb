@@ -1,0 +1,25 @@
+<style>
+  
+  
+</style>
+
+
+<% input_class = (action_name == 'initial_setup') ? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup') ? 'btn-lg' : 'btn-md' %>
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+
+<% @url = params[:id].present? ? admin_railway_zone_path(params[:id]) : admin_railway_zones_path() %>
+ <%= form_tag(@url, method: @method, class: 'form-horizontal group-border-dashed', remote: true) do |form| %>
+
+  <div class="form-group">
+    <h4 class="no-margin">Name<span style="color:red;"> *</span></h4>
+    <%= file_field_tag "railway_zone_attachment", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "railway_zone_attachment",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
+  </div>
+  <p>Upload only .xls, .xlsx or .csv type</p>
+  <div class="modal-footer" style="text-align: center !important;">
+      <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
+        Cancel</a>
+      <button class="btn btn-primary btn-flat upload" type="submit"><i class="fa fa-upload upload"></i>Upload</button>
+     
+  </div>
+<%end%> 

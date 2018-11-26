@@ -1,0 +1,5 @@
+$("#area_division_id").empty();
+
+<%@divisions.each do |data|%>
+$("#area_division_id").append('<option><%=data[0]%></option>');
+<%end%>

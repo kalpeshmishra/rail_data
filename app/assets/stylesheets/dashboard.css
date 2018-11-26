@@ -1,0 +1,371 @@
+.cl-vnavigation > .parent > a:before {
+    content: none !important;
+}
+
+.post-box {
+  font-family: robotoregular, Arial, sans-serif;
+  flex: 1;
+  padding-left: 5px;
+}
+
+.user-post, .user-comment-post {
+  /*color: black;*/
+  font-family: robotoregular, Arial, sans-serif;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: white;
+  margin-top: 20px;
+  max-width: 550px;
+  display: flex;
+}
+
+.edit-post-btn, .post-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  height: 28px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: 600;
+  width: 60px;
+  float: right;
+}
+
+.share-btn, .edit-share-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 8px;
+  padding-right: 10px;
+  padding-top: 3px;
+  margin-right: 21px;
+  background-color: #ccccb3;
+  color: #3d3d29;
+  font-weight: 600;
+  width: auto;
+  float: right;
+  text-align: center;
+  height: 28px;
+}
+
+.cancel-field-custom-btn, .save-field-custom-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 8px;
+  padding-right: 10px;
+  padding-top: 3px;
+  margin-right: 21px;
+  background-color: #fe8637;
+  color: #3d3d29;
+  font-weight: 600;
+  width: auto;
+  float: right;
+  text-align: center;
+  height: 28px;
+}
+
+.cancel-custom-btn, .save-custom-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 8px;
+  padding-right: 10px;
+  padding-top: 3px;
+  margin-right: 21px;
+  background-color: #fe8637;
+  color: white;
+  font-weight: 600;
+  width: auto;
+  float: right;
+  text-align: center;
+  height: 28px;
+}
+
+.cancel-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.see_all_stats:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #33adff !important;
+}
+
+.task_stat:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #33adff !important;
+}
+
+.cancel-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-location-custom-btn, .save-location-custom-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 8px;
+  padding-right: 10px;
+  padding-top: 3px;
+  margin-right: 21px;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: 600;
+  width: auto;
+  float: right;
+  text-align: center;
+  height: 28px;
+}
+
+.cancel-location-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-location-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-location-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-location-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-location-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-location-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-field-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-field-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.cancel-field-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-field-custom-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-field-custom-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.save-field-custom-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: white;
+}
+
+.share-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.share-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.share-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.edit-share-btn > a:hover {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.edit-share-btn > a:focus {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.edit-share-btn > a {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #3d3d29;
+}
+
+.share-post {
+  color: black;
+  font-family: robotoregular, Arial, sans-serif;
+  /*background-color: white;*/
+  max-width: 550px;
+  padding-top: 20px;
+  padding-bottom: 8px;
+}
+
+#thumbnail-div {
+  font-family: robotoregular, Arial, sans-serif;
+  background-color: white;
+  max-width: 550px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+}
+
+.comment-post {
+  /*color: black;*/
+  font-family: robotoregular, Arial, sans-serif;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  margin-top: -11px;
+  max-width: 550px;
+  display: flex;
+  background-color: #f7f7f7;
+}
+
+.load-more-comments {
+  font-family: robotoregular, Arial, sans-serif;
+  width: 550px;
+  background-color: #f7f7f7;
+  padding-bottom: 17px;
+}
+
+.load-more-replies {
+  font-family: robotoregular, Arial, sans-serif;
+  width: 550px;
+  margin-top: -33px;
+  background-color: #f7f7f7;
+}
+
+.subcomment-post {
+  /*color: black;*/
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 36px;
+  padding-bottom: 10px;
+  background-color: #f7f7f7;
+  max-width: 550px;
+  display: flex;
+  background-color: #f7f7f7;
+}
+
+.post-actions, .comment-actions {
+  font-family: robotoregular, Arial, sans-serif;
+  margin-bottom: -15px;
+}
+
+.comment-actions {
+  padding-bottom: 8px;
+}
+.like-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #33adff;
+  margin-left: -70px;
+}
+
+.comment-btn, .subcomment-btn {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #33adff;
+  margin-left: 15px;
+}
+
+.subcomment-actions {
+  padding-bottom: 6px;
+  font-family: robotoregular, Arial, sans-serif;
+  padding-left: 27px;
+  margin-top: 8px;
+}
+
+.thumsup-icon, .comment-icon {
+  margin-left: 15px;
+}
+
+.user-comment-subcomment {
+  color: black;
+  padding-bottom: 12px;
+  font-family: robotoregular, Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin-top: 20px;
+  max-width: 550px;
+  display: flex;
+  padding-left: 50px;
+}
+
+.emp-icon {
+  font-family: robotoregular, Arial, sans-serif;
+  float: left;
+  font-size: 42px;
+}
+
+.quik_stats {
+  font-family: robotoregular, Arial, sans-serif;
+  padding-top: 9px;
+}
+
+.stats_text {
+  font-family: robotoregular, Arial, sans-serif;
+  /*color:black;*/
+  width: 201px;
+  float: left;
+  font-size: 16px;
+  padding-left: 17px;
+}
+
+.stats_desc {
+  font-family: robotoregular, Arial, sans-serif;
+  /*color:black;*/
+  width: 256px;
+  padding-left: 17px;
+}
+
+.emp-icon{
+    height: 26px;
+}
+
+.stats_headline {
+  color: white;
+  font-weight: 400;
+  margin-bottom: 3px;
+  font-family: robotoregular, Arial, sans-serif;
+  font-size: 20px;
+  padding: 9px;
+  margin-left: -15px;
+  margin-top: -9px;
+  margin-right: -15px;
+
+}
+
+.morecontent span {
+  font-family: robotoregular, Arial, sans-serif;
+  display: none;
+}
+
+.morelink {
+  font-family: robotoregular, Arial, sans-serif;
+  color: #fe8637;
+  display: block;
+}

@@ -1,0 +1,7 @@
+<%if @state%>
+var id = "#<%=@state.id%>"
+$(id).remove('');
+$("#state-listing").prepend("<%= j render partial: 'listing', locals: {:state => @state,:index => (50..500).to_a.sample} %>");
+<%end%>
+
+$('#add-state').find('.close').click();

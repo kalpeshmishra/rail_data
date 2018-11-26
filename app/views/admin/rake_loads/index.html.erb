@@ -1,0 +1,78 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="rake_load-head">
+    <caption>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+          <span class="pull-left lead-text">
+            <%="RakeLoads "%>
+          </span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
+        <%= text_field_tag "rake_load_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
+
+        
+      </div>
+     
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
+        </div>
+      </div>
+      
+      
+      <% if false %>
+          <div class="row">
+            <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
+              <p class="filter-link">Show Advanced Search</p>
+            </a>
+          </div>
+          <%= render 'filters' %>
+      <% end %>
+    </caption>
+    </table>
+    <%=render 'listform'%>
+
+    <div id="rake_load_list_form"></div>
+
+</div>
+
+
+
+
+
+<script>
+  
+
+  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    }).on('change', function(){
+      effective_from = $("#datepicker").val();
+      if(old_date != effective_from){
+        $.ajax({
+          type: "get",
+          url: "/admin/rake_loads.js?data=" + effective_from
+        });
+        old_date = effective_from 
+
+      }
+    });
+    
+    $('#datepicker').datepicker('setDate', 'today');
+
+
+    
+  });
+  
+</script>

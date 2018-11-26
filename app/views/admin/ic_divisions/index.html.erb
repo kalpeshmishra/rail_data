@@ -1,0 +1,76 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="ic_division-listing">
+    <caption>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+          <span class="pull-left lead-text">
+            <%="Interchange Point : #{@ic_divisions.count} "%>
+          </span>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
+        </div>
+      </div>
+     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add IC Point'.html_safe, new_admin_ic_division_path, remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Import/Export'.html_safe, new_admin_ic_division_path(import_export: "true"), remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+        
+      </div>
+      <% if false %>
+          <div class="row">
+            <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
+              <p class="filter-link">Show Advanced Search</p>
+            </a>
+          </div>
+          <%= render 'filters' %>
+      <% end %>
+    </caption>
+    <thead>
+    <tr>
+      <th>From-Zone</th>
+      <th>From-Division</th>
+      <th>FromSection</th>
+      <th>IC-Code</th>
+      <th>IC-Name</th>
+      <th>To-Section</th>
+      <th>To-Division</th>
+      <th>To-Zone</th>
+      <th>IC By</th>
+      <th>IC Type</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @ic_divisions.each_with_index do |ic_division, index| %>
+        <%= render :partial => 'listing', :locals => {:ic_division => ic_division, :index => index} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="row no-margin no-margin">
+
+  <div class="col-md-9 col-md-offset-2" id="com-pagination"><%= will_paginate @ic_divisions, renderer: BootstrapPagination::Rails %></div>
+  
+</div>
+
+<div id="ic_division-popup"></div>
+
+
+<script>
+  $('.ic_division-delete').on('click', function () {
+    $('#custom-confirm-box').find('.delete').attr("data-remote", true);
+  });
+</script>
+

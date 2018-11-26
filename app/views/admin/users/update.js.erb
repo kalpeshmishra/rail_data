@@ -1,0 +1,7 @@
+<%if @user%>
+var id = "#<%=@user.id%>"
+$(id).remove('');
+$("#user-listing").prepend("<%= j render partial: 'listing', locals: {:user => @user,:index => (50..500).to_a.sample} %>");
+<%end%>
+
+$('#add-user').find('.close').click();

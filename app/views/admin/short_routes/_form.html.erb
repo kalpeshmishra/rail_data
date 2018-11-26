@@ -1,0 +1,60 @@
+<style>
+  
+  
+</style>
+
+
+
+
+<% input_class = (action_name == 'initial_setup') ? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup') ? 'btn-lg' : 'btn-md' %>
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+
+<% @url = params[:id].present? ? admin_short_route_path(params[:id]) : admin_short_routes_path() %>
+<%= form_for(@short_route, url: @url,class: 'form-horizontal group-border-dashed', id: 'short_route-form', remote: true) do |f| %>
+  <div class="form-group">
+    <h4 class="no-margin">From Stn<span style="color:red;"> *</span></h4>
+    <%= f.text_field :from_station, class: 'form-control input-md' %>
+  </div>
+    
+  <div class="form-group">
+    <h4 class="no-margin">To Stn<span style="color:red;"> *</span></h4>
+    <%= f.text_field :to_station,class: 'form-control input-md' %>
+    
+  </div>
+
+  <div class="form-group">
+    <h4 class="no-margin">Short Distance(KM)<span style="color:red;"> *</span></h4>
+    <%= f.text_field :short_route_distance,class: 'form-control input-md' %>
+    
+  </div>
+
+  <div class="form-group">
+    <h4 class="no-margin">Interchange<span style="color:red;"> *</span></h4>
+    <%= f.select :short_interchange_point,[["GER","GER"],["PNU","PNU"],["BLDI","BLDI"],["VGDC","VGDC"],["DHG","DHG"],["MALB","MALB"]], {prompt: 'Select IC Point'},{required: true, class: 'form-control editing-family  input-md'}%>
+  </div>
+
+  <div class="form-group">
+    <h4 class="no-margin">Other Distance(KM)<span style="color:red;"> *</span></h4>
+    <%= f.text_field :other_route_distance,class: 'form-control input-md' %>
+    
+  </div>
+
+  <div class="form-group">
+    <h4 class="no-margin">Other Interchange<span style="color:red;"> *</span></h4>
+    <%= f.select :other_interchange_point,[["GER","GER"],["PNU","PNU"],["BLDI","BLDI"],["VGDC","VGDC"],["DHG","DHG"],["MALB","MALB"]], {prompt: 'Select IC Point'},{required: true, class: 'form-control editing-family  input-md'}%>
+  </div>
+  
+  <div class="form-group">
+    <h4 class="no-margin">Other Description<span style="color:red;"> *</span></h4>
+    <%= f.text_field :description,class: 'form-control input-md' %>
+    
+  </div>
+
+  <div class="modal-footer" style="text-align: center !important;">
+    <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
+      Cancel</a>
+    <%= f.button '<i class="fa fa-check"></i>&nbsp;Save'.html_safe, style: "font-size: 14px !important;", class: 'btn btn-primary btn-flat', id: 'submit' %>
+   
+  </div>
+<% end %>

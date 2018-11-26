@@ -1,0 +1,6 @@
+<%if @station%>
+var id = "#<%=@station.id%>"
+$(id).remove('');
+$("#station-listing").prepend("<%= j render partial: 'listing', locals: {:station => @station,:index => (100..500).to_a.sample} %>");
+<%end%>
+$('#add-station').find('.close').click();

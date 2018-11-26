@@ -1,0 +1,2 @@
+module Admin::OneRakeLoadsHelper
+end

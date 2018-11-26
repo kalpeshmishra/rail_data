@@ -1,0 +1,255 @@
+<% @method = "POST" %>
+<% @url = admin_other_loads_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+    <p style="font-size: 20px;color:red;">Total-Loading :<%=(@total_rake_loads)+(@total_other_loads)%>&nbsp;&nbsp;&nbsp;
+        Rake-:<%=(@total_rake_loads)%>&nbsp;&nbsp;&nbsp;
+        Other-:<%=(@total_other_loads)%>
+    
+    </p>
+  </div>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'other-loading-form',remote: true) do |form| %>
+<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+  <tr>
+
+    <th>SR NO</th>
+    <th>From_Station To_Station</th>
+    <th>Loaded_Unit RakeCount</th>
+    <th>Commodity Wagon_Type</th>
+    <th>GrossTons NetTons</th>
+    <th>ODR_Type<br> ODR_Date</th>
+    <th>Release Time-Date</th>
+    <th>Remarks</th>
+    <th>Action</th>
+    
+  </tr>
+  </thead>
+  <tbody>
+    
+      <%(0..25).each_with_index do |no, index| %>
+
+       <tr class="other-load-tr other-row-data other_load_row_<%= index %>", id= "other_load_row_id_<%= index %>">
+
+        <td align="center" style="font-size: 25;">
+        </td>
+        <td>
+          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}", class: 'form-control input-md from_station',maxlength:"4", required: true, style: "width: 85px; font-size:16px; text-transform:uppercase;"%>
+        <p></p>
+          
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", required: true, style: "width: 85px; font-size:16px; text-transform:uppercase;"%>
+        </td>
+        <td>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',title: 'Enter loaded Units', id: "loaded_unit_#{index}",required: true, style: "width: 75px; font-size:16px;" %>
+        <p></p>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Count", class: 'form-control input-md',id: "rake_count_#{index}",required: true, style: "width: 75px;border: 1px solid #888;" %>
+        </td>
+        <td>
+          <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control input-md',required: true, style: "width: 110px;", id: "major_commodity_#{index}",data_live_search: "true"} %>
+        <p></p>
+          <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 110px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
+        </td>
+        <td>
+          <%= number_field_tag "gross_tons_#{index}", '',placeholder: 'Gross', id: "gross_tons_#{index}", class: 'form-control input-md',required: true, style: "width: 80px; font-size:16px;"%>
+        <p></p>
+          <%= number_field_tag "net_tons_#{index}", '',placeholder: 'Net', id: "net_tons_#{index}", class: 'form-control input-md',required: true, style: "width: 80px; font-size:16px;"%>
+        </td>
+        
+        <td>
+          <%= select_tag "odr_type_#{index}", options_for_select([["A","A"],["B","B"],["C","C"],["D","D"],["E","E"]]), {prompt: "ODR", class: 'form-control input-md', required: true, style: "width: 75px;", id: "odr_type_#{index}", data_live_search: "true"}%>
+        <p></p>
+          <%= text_field_tag "odr_date_#{index}", '', type: 'date',placeholder: 'ODR Date', id: "odr_date_#{index}", class: 'form-control input-md', style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'placement Date', id: "release_time_#{index}", class: 'form-control input-md', required: true, style: "width: 160px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "release_date_#{index}", '', type: 'date',placeholder: 'placement Date', id: "release_date_#{index}", class: 'form-control input-md release_date',required: true, style: "width: 160px; font-size:16px;"%>
+        </td>
+        <td>
+          <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 155px; height:80px;"%>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+          
+        </td>
+        <td align="center">
+          <a href="#" class="remove-ip label label-danger" id="<%= index %>-other-load_delete" style="padding: 20%"><i class="fa fa-trash-o"></i></a>          
+        </td>
+        
+      </tr>    
+    <%end%>  
+  </tbody>
+</table>
+  <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>
+  <%= hidden_field_tag  "date", "", id: "date" %>
+  <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="other_load_add">
+    <div class="modal-footer" style="text-align: center !important;">
+        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+    </div>
+  <% end %>
+</div>
+
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+        
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_other_load_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+<script >
+$(function(){
+
+  $('table tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+  $(document).ready(function(){
+    $('.release_date').each(function(i) {
+      var row_no = $(this).attr('id').split('_')[2]
+      var release_date_id = "#release_date_"+row_no
+      var mydate = $("#datepicker").val();
+      var parts = mydate.split('/');
+      var set_release_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+      $(release_date_id).attr("max", set_release_date);
+      $(release_date_id).attr("min", set_release_date);
+    });  
+  });
+
+  <% (0..25).each_with_index do |no,index| %>
+    <%if index >= (@other_loads.count || 0)%>
+      var tr = '<%=".other_load_row_#{index}"%>';
+      $(tr).hide();
+    <%end%> 
+  <% end %>
+   <%if @other_loads.present?%>
+      <%@other_loads.each_with_index do |data,index|%>
+          from_station = "#from_station_"+<%=index%>
+          to_station = "#to_station_"+<%=index%>
+          loaded_unit = "#loaded_unit_"+<%=index%>
+          rake_count = "#rake_count_"+<%=index%>
+          major_commodity = "#major_commodity_"+<%=index%>
+          wagon_type = "#wagon_type_"+<%=index%>
+          gross_tons ="#gross_tons_"+<%=index%>
+          net_tons =  "#net_tons_"+<%=index%>
+          odr_type = "#odr_type_"+<%=index%>
+          odr_date = "#odr_date_"+<%=index%>
+          release_time = "#release_time_"+<%=index%>
+          release_date = "#release_date_"+<%=index%>
+          remarks = "#remarks_"+<%=index%>
+          rake_id = "#record_id_"+<%=index%>
+
+           // $(from_station).val('<%=data.load_unload_id%>');
+          $(from_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
+          // $(to_station).val('<%=data.station_id%>');
+          $(to_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
+          $(loaded_unit).val('<%=data.loaded_unit%>');
+          $(rake_count).val('<%=data.rake_count%>');
+          $(major_commodity).val('<%=data.major_commodity_id%>');
+          $(wagon_type).val('<%=data.wagon_type_id%>');
+          $(gross_tons).val('<%=data.gross_tons%>');
+          $(net_tons).val('<%=data.net_tons%>');
+          $(odr_type).val('<%=data.odr_type%>');
+          $(odr_date).val('<%=data.odr_date%>');
+          $(release_time).val('<%=data.release_time%>');
+          $(release_date).val('<%=data.release_date%>');
+          $(remarks).val('<%=data.remark%>');
+          $(rake_id).val('<%=data.id%>');
+          
+      <%end%>
+    <%end%>
+
+  $("#other_load_add").click(function(){
+    $(".other-row-data:hidden").each(function(i){
+      if (i==0) {
+        $(this).show();
+      }
+    });
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    $(".other-row-data:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+   
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_other_load_id = $("#record_id_"+delete_index).val();
+    var visible_row_count = 0
+    
+    $('.other-load-tr:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    // if(visible_row_count == 1){
+    //   return
+    // }
+    $("#delete-modal").modal('show');
+   
+
+  });
+
+  $("#confirm_other_load_delete").click(function () {
+    $("#delete-modal").modal('hide');
+
+    if (delete_other_load_id != "") {
+          $.ajax({
+          type: "get",
+          url: "/delete_other_load.js?delete_other_load_id=" + delete_other_load_id
+        });
+      }
+
+     $('.other-load-tr:visible').each(function() {
+      if($(this).attr("id").split("_")[4] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+
+ 
+});
+
+   // Finds From station
+    $('.from_station').on('focusout', function () {
+    
+    var row_no = $(this).attr('id').split('_')[2]
+    var from_station_id = "from_station_"+row_no
+
+    var from_station_code = $(this).val();
+    // debugger
+      if (from_station_code != "") {
+          $.ajax({
+          type: "get",
+          url: "/find_from_station_other_loads.js?from_station_code=" + from_station_code + "&from_station_id=" + from_station_id
+        });
+      }
+    
+    });
+    // Finds to station
+   $('.to_station').on('focusout', function () {
+    
+    var row_no = $(this).attr('id').split('_')[2]
+    var to_station_id = "to_station_"+row_no
+
+    var station_code = $(this).val();
+      if (station_code != "") {
+          $.ajax({
+          type: "get",
+          url: "/find_to_station_other_loads.js?station_code=" + station_code + "&to_station_id=" + to_station_id
+        });
+      }
+    
+    });
+
+</script>

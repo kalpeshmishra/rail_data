@@ -1,0 +1,33 @@
+<style>
+  
+  
+</style>
+
+
+
+
+<% input_class = (action_name == 'initial_setup') ? 'input-lg' : 'input-md' %>
+<% btn_class = (action_name == 'initial_setup') ? 'btn-lg' : 'btn-md' %>
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+
+<% @url = params[:id].present? ? admin_ic_zone_path(params[:id]) : admin_ic_zones_path() %>
+<%= form_for(@ic_zone, url: @url,class: 'form-horizontal group-border-dashed', id: 'ic_zone-form', remote: true) do |f| %>
+  <div class="form-group">
+    <h4 class="no-margin">Name<span style="color:red;"> *</span></h4>
+    <%= f.text_field :name, class: 'form-control input-md' %>
+  </div>
+    
+    
+    <div class="form-group">
+      <h4 class="no-margin">Code<span style="color:red;"> *</span></h4>
+      <%= f.text_field :code,class: 'form-control input-md' %>
+      
+    </div>
+    
+    <div class="modal-footer" style="text-align: center !important;">
+      <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
+        Cancel</a>
+      <%= f.button '<i class="fa fa-check"></i>&nbsp;Save'.html_safe, style: "font-size: 14px !important;", class: 'btn btn-primary btn-flat', id: 'submit' %>
+     
+    </div>
+<% end %>

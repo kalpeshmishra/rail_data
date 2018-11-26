@@ -1,0 +1,15 @@
+<tr id=<%=state.id.to_s%>>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= state.name rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= state.code rescue '' %></span></td>
+  
+  <td class="text-center" style="white-space: nowrap">
+    <span class="view-location-<%= index %>">
+      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_state_path(state), :remote => true, class: "label label-default", title: "Edit State" %>
+      
+     
+
+      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger state-delete', data: {toggle: "modal", method_type: "delete", link: admin_state_path(state.id), message: "You really want to delete this State?", target: "#custom-confirm-box"}, remote: true, title: "Delete State" %>
+	  </span>
+  </td>
+</tr>
+     

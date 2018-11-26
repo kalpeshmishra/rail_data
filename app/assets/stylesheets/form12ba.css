@@ -1,0 +1,33 @@
+.address {
+	max-width: 222px;
+}
+
+.tag {
+	max-width: 500px;
+	vertical-align:top;
+	padding-right: 440px;
+}
+
+.value {
+	font-weight: 200;
+}
+
+.subdetails {
+	padding-left: 25px;
+}
+
+.closing-details {
+	padding-left: 60%;
+}
+
+.signature {
+	max-width: 90%;
+}
+
+.place {
+	float: left;
+}
+
+.date {
+	float: left;
+}

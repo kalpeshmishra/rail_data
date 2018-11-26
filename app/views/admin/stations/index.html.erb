@@ -1,0 +1,72 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="station-listing">
+    <caption>
+      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+          <span class="pull-left lead-text">
+            <%="Station : #{@stations.count} "%>
+          </span>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Station'.html_safe, new_admin_station_path, remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Import Station'.html_safe, new_admin_station_path(import_export: "true"), remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+        
+      </div>
+      <% if false %>
+          <div class="row">
+            <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
+              <p class="filter-link">Show Advanced Search</p>
+            </a>
+          </div>
+          <%= render 'filters' %>
+      <% end %>
+    </caption>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Code</th>
+      <th>Section</th>
+      <th>Area</th>
+      <th>Division</th>
+      <th>Zone</th>
+      <th>State</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      <%@stations.each_with_index do |station, index| %>
+        <%= render :partial => 'listing', :locals => {:station => station, :index => index} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="row no-margin no-margin">
+
+  <div class="col-md-9 col-md-offset-2" id="com-pagination"><%= will_paginate @stations, renderer: BootstrapPagination::Rails %></div>
+  
+</div>
+
+<div id="station-popup"></div>
+
+
+<script>
+  $('.station-delete').on('click', function () {
+    $('#custom-confirm-box').find('.delete').attr("data-remote", true);
+  });
+</script>

@@ -1,0 +1,452 @@
+<script>
+  var rake_commodity_data = []
+</script>
+<% @method = "POST" %>
+<% @url = admin_one_rake_unloads_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+     <p style="font-size: 20px;color:red;">Total-Unloading :<%=(@total_rake_unloads)+(@total_other_unloads)%>&nbsp;&nbsp;&nbsp;
+        Rake-Unloading :<%=(@total_rake_unloads)%>&nbsp;&nbsp;&nbsp;
+        Other-Unloading :<%=(@total_other_unloads)%></p>
+  </div>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'one-rake-unloading-form',remote: true) do |form| %>
+<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+  <tr >
+
+    <th>SR NO</th>
+    <th>From<br>To</th>
+    <th>Loaded Units</th>
+    <th>Stock<br>Commodity</th>
+    <th>Release <br>Time_Date</th>
+    <th>Removal Time_Date</th>
+    <th>CommodityDetail<br>CommodityType</th>
+    <th>TUES_First<br>Second_Row</th> <!-- enabled only for Major-commodity Type=CONT-container -->
+    <th>Consignor<br>Consignee</th> 
+    <th>Status<br>PowerNo</th>
+    <th>Stable Time_Date</th>
+    <th>PowerArrival Time_Date</th>
+    <th>Departure Time_Date</th>
+    <th>RL-RM <br> RM-DP</th>
+    <th>Remarks</th>
+    <th>Release_ID</th>
+    
+  </tr>
+  </thead>
+  <tbody>
+
+    <%(0...@one_rake_unloads.count).each_with_index do |no, index| %>
+      <tr class="one-rake-unload-tr one-rake-row-data one_rake_unload_row_<%= index %>", id= "one_rake_unload_row_id_<%= index %>">
+        <td align="center" style="font-size: 25;">
+          
+        </td>
+        <td>
+          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}",disabled:true, class: 'form-control input-md from_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+        <p></p>
+          
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+        </td>
+        <td>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 65px; font-size:16px;" %>
+        
+        </td>
+        <td>
+          <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true,disabled:true, style: "width: 90px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
+          <p></p>
+          <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,disabled:true,style: "width: 90px;", data_live_search: "true"} %>
+        </td>
+        <td>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md release_time',disabled:true, style: "width: 141px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "release_date_#{index}", '',type:'date',placeholder: 'release Date', id: "release_date_#{index}",disabled:true, class: 'form-control input-md release_date', style: "width: 141px; font-size:14px;"%>
+        </td>
+
+       <td>
+          <%= text_field_tag "removal_time_#{index}", '', type: 'time',placeholder: 'removal Time', id: "removal_time_#{index}", class: 'form-control input-md removal_time', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "removal_date_#{index}", '', type: 'date',placeholder: 'Removal Date', id: "removal_date_#{index}", class: 'form-control input-md removal_date', style: "width: 152px; font-size:15px;"%>
+        </td>
+        
+        <td>
+         <%if false%>
+            
+            <h5 class="add-rake-commodity", id="add_rake_commodity_<%= index %>">ADD Commodity</h5>
+          <%end%>
+          <p>Comm</p>
+          <p></p> 
+         <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 110px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+       </td>
+
+        <td>
+          <%= number_field_tag "tue_first_row_#{index}", '',placeholder: "1st Row", class: 'form-control input-md', title: 'TUES on first or Bottom Row', id: "tue_first_row_#{index}", style: "width: 85px; font-size:16px;"%>
+          <p></p>
+          <%= number_field_tag "tue_second_row_#{index}", '',placeholder: "2nd Row", class: 'form-control input-md', title: 'TUES on second or UPPER Row', id: "tue_second_row_#{index}", style: "width: 85px; font-size:16px;"%>
+        </td>
+
+        <td align="center">
+     
+          <%= text_field_tag "consignor_#{index}", '',placeholder: 'CNSR', id: "consignor_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "consignee_#{index}", '',placeholder: 'CNEE', id: "consignee_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;"%>
+        </td>
+
+        <td>
+           <%= select_tag "status_#{index}", options_for_select([["Stable","Stable"],["BackLoad","BackLoad"],["Departure","Departure"],["Stable+BackLoad","Stable+BackLoad"],["Stable+Departure","Stable+Departure"]]), {prompt: "Status", class: 'form-control input-md',style: "width: 145px;", id: "status_#{index}", data_live_search: "true"}%>
+          <p></p>
+          <%= number_field_tag "power_no_#{index}", '', placeholder: "Power", class: 'form-control input-md',title: 'Enter Power No', id: "power_no_#{index}",style: "width: 145px; font-size:16px;" %>
+        </td>
+        <td>
+          <%= text_field_tag "stable_time_#{index}", '', type: 'time',placeholder: 'Stable Time', id: "stable_time_#{index}", class: 'form-control input-md stable_time', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "stable_date_#{index}", '', type: 'date',placeholder: 'Stable Date', id: "stable_date_#{index}", class: 'form-control input-md stable_date', style: "width: 152px; font-size:15px;"%> 
+        </td>
+        <td>
+          <%= text_field_tag "powerarrival_time_#{index}", '', type: 'time',placeholder: 'power arrival Time', id: "powerarrival_time_#{index}", class: 'form-control input-md powerarrival_time', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "powerarrival_date_#{index}", '', type: 'date',placeholder: 'Powerarrival Date', id: "powerarrival_date_#{index}", class: 'form-control input-md powerarrival_date', style: "width: 152px; font-size:15px;"%>   
+        </td>
+        <td>
+          <%= text_field_tag "departure_time_#{index}", '', type: 'time',placeholder: 'Departure Time', id: "departure_time_#{index}", class: 'form-control input-md departure_time', style: "width: 152px; font-size:16px;"%>
+        <p></p>
+          <%= text_field_tag "departure_date_#{index}", '', type: 'date',placeholder: 'Departure Date', id: "departure_date_#{index}", class: 'form-control input-md departure_date', style: "width: 152px; font-size:15px;"%>
+        </td>
+        <td>
+          <%= text_field_tag "detention_release_removal_#{index}",'', placeholder: "RL-RM", class: 'form-control input-md detention_release_removal',id: "detention_release_removal_#{index}",readonly: true,style: "width: 80px;border: 1px solid #888; font-size:16px;background-color:#ffe6e6;" %>
+          <p></p>
+          <%= text_field_tag "detention_removal_departure_#{index}",'', placeholder: "RM-DP", class: 'form-control input-md detention_removal_departure',id: "detention_removal_departure_#{index}",readonly: true,style: "width: 80px;border: 1px solid #888; font-size:16px;background-color:#ffe6e6;" %>
+        </td>
+       
+        <td>
+          <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 305px; height:80px;"%>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+        </td>
+        <td>
+          <%= text_area_tag "empty_rake_release_id_#{index}", '', placeholder: '', id: "empty_rake_release_id_#{index}", class: 'form-control input-md', style: "width: 75px; height:80px;"%>
+          
+        </td>
+      </tr>
+    <%end%>  
+  </tbody>
+  </table>
+  <%= hidden_field_tag  "date", "", id: "date" %>
+    <div class="modal-footer" style="text-align: center !important;">
+        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+    </div>
+  <% end %>
+</div>
+
+<%if false%>
+<div class="modal fade colored-header" id="add-commodity-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 500px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>ADD Rake Commodity</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+      <%(0..15).each_with_index do |index| %>
+        <div class="rake-commodity-div" id="rake-commodity-div-<%= index %>">
+          <div id="add-old">
+            <div class="row">
+              <%@rake_commodity.each do |key,value|%>
+                <div class="col-md-5" id="major_commodity_dropdown_id_<%=index%>_<%=key%>" style="display: none">
+                  <%= select_tag "rake_code_#{index}", options_for_select(value[:data]), {prompt: 'Select rake comm',class: 'input-lg form-control', id: "rake_code_#{index}"} %>
+                </div>
+              <%end%>  
+              <div class="col-md-3">
+               <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency ctc_variable_allowance input-lg',id: "rake_unit_#{index}" %>
+              </div>
+              
+              <div class="col-md-2">
+                <a href="#" class="remove-ip rake-commodity-delete" id="<%= index %>_variable_allowance_delete"><i class="fa fa-trash-o btn btn-lg btn-danger"></i></a>
+              </div>
+            </div>
+            </div>
+        </div>
+      <%end%>  
+      <input type="button" class="btn btn-primary btn-lg" value="Add Rake Commodity" id="rake_commodity_add">
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%end%>
+<script >
+$(function(){
+  $('table tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    });
+  });
+
+ 
+    <%if @one_rake_unloads.present?%>
+      <%@one_rake_unloads.each_with_index do |data,index|%>
+        from_station = "#from_station_"+<%=index%>
+        to_station = "#to_station_"+<%=index%>
+        loaded_unit = "#loaded_unit_"+<%=index%>
+        wagon_type = "#wagon_type_"+<%=index%>
+        major_commodity = "#major_commodity_"+<%=index%>
+        release_time = "#release_time_"+<%=index%>
+        release_date = "#release_date_"+<%=index%>
+
+        removal_time = "#removal_time_"+<%=index%>
+        removal_date = "#removal_date_"+<%=index%>
+        // commodity breakup/details pending
+        commodity_type = "#commodity_type_"+<%=index%>
+        tue_first_row = "#tue_first_row_"+<%=index%>
+        tue_second_row = "#tue_second_row_"+<%=index%>
+        consignor = "#consignor_"+<%=index%>
+        consignee = "#consignee_"+<%=index%>
+        status = "#status_"+<%=index%>
+        power_no = "#power_no_"+<%=index%>
+        powerarrival_time = "#powerarrival_time_"+<%=index%>
+        powerarrival_date = "#powerarrival_date_"+<%=index%>
+        stable_time = "#stable_time_"+<%=index%>
+        stable_date = "#stable_date_"+<%=index%>
+        departure_time = "#departure_time_"+<%=index%>
+        departure_date = "#departure_date_"+<%=index%>
+        detention_release_removal = "#detention_release_removal_"+<%=index%>
+        detention_removal_departure = "#detention_removal_departure_"+<%=index%>
+        remarks = "#remarks_"+<%=index%>
+        empty_rake_release_id ="#empty_rake_release_id_"+<%=index%>
+        rake_id = "#record_id_"+<%=index%>
+
+        // $(from_station).val('<%=data.load_unload_id%>');
+        $(from_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
+        $(to_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
+        // $(to_station).val('<%=data.station_id%>');
+        $(loaded_unit).val('<%=data.loaded_unit%>');
+        $(wagon_type).val('<%=data.wagon_type_id%>');
+        $(major_commodity).val('<%=data.major_commodity_id%>');
+        $(release_time).val('<%=data.release_time%>');
+        $(release_date).val('<%=data.release_date%>');
+        $(removal_time).val('<%=data.removal_time%>');
+        $(removal_date).val('<%=data.removal_date%>');
+        // commodity breakup/details pending
+        $(commodity_type).val('<%=data.commodity_type%>');
+        $(tue_first_row).val('<%=data.tue_first_row%>');
+        $(tue_second_row).val('<%=data.tue_second_row%>');
+        $(consignor).val('<%=data.consignor%>');
+        $(consignee).val('<%=data.consignee%>');
+        $(status).val('<%=data.status%>');
+        $(power_no).val('<%=data.power_no%>');
+        $(powerarrival_time).val('<%=data.powerarrival_time%>');
+        $(powerarrival_date).val('<%=data.powerarrival_date%>');
+        $(stable_time).val('<%=data.stable_time%>');
+        $(stable_date).val('<%=data.stable_date%>');
+        $(departure_time).val('<%=data.departure_time%>');
+        $(departure_date).val('<%=data.departure_date%>');
+        $(detention_release_removal).val('<%=data.detention_release_removal%>');
+        $(detention_removal_departure).val('<%=data.detention_removal_departure%>');
+        $(remarks).val('<%=data.remarks%>');
+        $(empty_rake_release_id).val('<%=data.empty_rake_release_id%>');
+        $(rake_id).val('<%=data.id%>');
+          
+      <%end%>
+    <%end%>
+  
+  
+
+
+ 
+
+  // Modal 
+  <%if params[:action] == "new"%>
+    <%(0..55).each do |no|%>
+      rake_commodity_data.push([])
+    <%end%>
+  <%else%>  
+  <%end%>
+  
+  $(".add-rake-commodity").on('click',function(){
+    current_index = $(this).attr('id').split("_")[3]
+    rake_dropdown = "#major_commodity_"+current_index
+    rake_dropdown_value = $(rake_dropdown).val();
+    if (rake_dropdown_value != ""){
+      $("#add-ommodity-modal").modal('show');
+      set_rake_commodity_values(rake_dropdown_value);
+    }else{
+      alert("First select Major Commodity")
+    }
+  });
+
+  $("#rake_commodity_add").click(function() {
+   $(".rake-commodity-div:hidden").each(function( i ) {
+     if(i == 0){
+       $(this).show();
+     }
+   });
+ });
+
+
+  
+
+function set_rake_commodity_values(rake_dropdown_value){
+  <% if params[:action] == "new"%>
+    hide_rake_commodity_values();
+    <% (0..15).each_with_index do |no,index| %>
+      add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+rake_dropdown_value
+      $(add_rake_commodity).css('display', '');
+      <%if index != 0%>
+        var tr = '<%="#rake-commodity-div-#{index}"%>';
+        $(tr).hide();
+      <%end%> 
+    <% end %>
+  <%else%>
+
+  <%end%>
+
+}
+
+  function hide_rake_commodity_values(){
+    <%(0..15).each do |no| %>
+      <%@rake_commodity.each do |key,value|%>
+        add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+<%=key%>
+        $(add_rake_commodity).css('display', 'none');
+      <%end%>
+    <%end%>
+  }
+
+  $(".release_time,.release_date, .removal_time, .removal_date, .powerarrival_time, .powerarrival_date,.stable_time, .stable_date,.departure_time, .departure_date").on('keyup change', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    get_detention(row_no);
+    
+  }); 
+
+  function get_detention(row_no){
+    
+    var release_time_id = "#release_time_"+row_no
+    var release_date_id = "#release_date_"+row_no
+    var removal_time_id = "#removal_time_"+row_no
+    var removal_date_id = "#removal_date_"+row_no
+    var stable_time_id = "#stable_time_"+row_no
+    var stable_date_id = "#stable_date_"+row_no
+    var powerarrival_time_id = "#powerarrival_time_"+row_no
+    var powerarrival_date_id = "#powerarrival_date_"+row_no
+    var departure_time_id = "#departure_time_"+row_no
+    var departure_date_id = "#departure_date_"+row_no
+    
+    var detention_release_removal = "#detention_release_removal_"+row_no
+    var detention_removal_departure = "#detention_removal_departure_"+row_no
+    
+    var release_time = $(release_time_id).val();
+    var release_date = $(release_date_id).val();
+    var removal_time = $(removal_time_id).val();
+    var removal_date = $(removal_date_id).val();
+    var stable_time = $(stable_time_id).val();
+    var stable_date = $(stable_date_id).val();
+    var powerarrival_time = $(powerarrival_time_id).val();
+    var powerarrival_date = $(powerarrival_date_id).val();
+    var departure_time = $(departure_time_id).val();
+    var departure_date = $(departure_date_id).val();
+
+    var release = new Date(release_time +" "+ release_date);
+    var removal = new Date(removal_time +" "+ removal_date);
+    if (stable_time !="" && stable_date !="") {
+      var stable = new Date(stable_time + " "+ stable_date);
+    }
+    else{
+      var stable =""; 
+    }
+    debugger
+    var powerarrival = new Date(powerarrival_time +" "+ powerarrival_date);
+    var departure = new Date(departure_time +" "+ departure_date);
+
+    // Detention from release to removal --Start
+    var detnrmvl = removal - release;
+
+    if (detnrmvl>=0) {
+      var detnrmvl_minutes = Math.floor(detnrmvl / 60000);
+      var detnrmvl_hours = Math.floor(detnrmvl_minutes / 60);
+      var detnrmvl_minutes2 = Math.floor(detnrmvl_minutes % 60);
+      
+      
+      if(detnrmvl_minutes2 < 10){
+          detnrmvl_minutes2 = "0"+ detnrmvl_minutes2
+        }else{
+          detnrmvl_minutes2 = detnrmvl_minutes2
+        }
+      if(detnrmvl_hours < 10){
+          detnrmvl_hours = "0"+detnrmvl_hours
+        }else{
+          detnrmvl_hours = detnrmvl_hours
+        }
+
+       
+        var detnrmvl_final_time = detnrmvl_hours+":"+detnrmvl_minutes2;
+        // alert(final_time);
+        
+        $(detention_release_removal).val(detnrmvl_final_time);
+        if(detnrmvl_hours > 23) {
+        $(detention_release_removal).css({"background-color":"#ff5c33"});
+        }
+        else
+        {
+          $(detention_release_removal).css({"background-color":"#ffe6e6"});
+        }
+  
+      }
+      else{
+        $(detention_release_removal).val("NA");
+      }
+
+    // Detention from release to removal --Ends
+
+    // Detention from removal to departure --Starts
+      
+      if (stable != "") {
+        var detndep = departure - powerarrival;
+      }
+      else{
+        var detndep = departure - removal;
+      }
+      if (detndep>=0) {
+      var detndep_minutes = Math.floor(detndep / 60000);
+      var detndep_hours = Math.floor(detndep_minutes / 60);
+      var detndep_minutes2 = Math.floor(detndep_minutes % 60);
+      
+      
+      if(detndep_minutes2 < 10){
+          detndep_minutes2 = "0"+ detndep_minutes2
+        }else{
+          detndep_minutes2 = detndep_minutes2
+        }
+      if(detndep_hours < 10){
+          detndep_hours = "0"+detndep_hours
+        }else{
+          detndep_hours = detndep_hours
+        }
+
+       
+        var detndep_final_time = detndep_hours+":"+detndep_minutes2;
+        // alert(final_time);
+        
+        $(detention_removal_departure).val(detndep_final_time);
+        if(detndep_hours > 23) {
+        $(detention_removal_departure).css({"background-color":"#ff5c33"});
+        }
+        else
+        {
+          $(detention_removal_departure).css({"background-color":"#ffe6e6"});
+        }
+  
+      }
+      else{
+        $(detention_removal_departure).val("NA");
+      }
+
+    // Detention from removal to departure --Ends
+
+  
+
+  } 
+ 
+ 
+
+</script>

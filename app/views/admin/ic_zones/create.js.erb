@@ -1,0 +1,4 @@
+<%if @ic_zone%>
+$("#ic_zone-listing").prepend("<%= j render partial: 'listing', locals: {:ic_zone => @ic_zone,:index => (50..500).to_a.sample} %>");
+<%end%>
+$('#add-ic_zone').find('.close').click();

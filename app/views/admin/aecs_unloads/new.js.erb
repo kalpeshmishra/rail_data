@@ -1,0 +1,12 @@
+$("#aecs_unload_form").remove('');
+$("#aecs_unload_new_form").html('<%= j render 'aecs_unload_new'%>');
+$('.release_date').each(function(i) {
+  var row_no = $(this).attr('id').split('_')[2]
+  var release_date_id = "#release_date_"+row_no
+  var mydate = $("#datepicker").val();
+  var parts = mydate.split('/');
+  var setreleasedate = parts[2] + '-' + parts[1] + '-' + parts[0];
+  $(release_date_id).attr("max", setreleasedate);
+  $(release_date_id).attr("min", setreleasedate);
+});
+

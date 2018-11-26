@@ -1,0 +1,4 @@
+<%if @area%>
+$("#area-listing").prepend("<%= j render partial: 'listing', locals: {:area => @area,:index => (500..900).to_a.sample} %>");
+<%end%>
+$('#add-area').find('.close').click();

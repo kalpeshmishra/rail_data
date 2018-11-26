@@ -1,0 +1,2 @@
+module Admin::MajorCommodityHelper
+end

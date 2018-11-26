@@ -1,0 +1,4 @@
+<%if @division%>
+$("#division-listing").prepend("<%= j render partial: 'listing', locals: {:division => @division,:index => (100..500).to_a.sample} %>");
+<%end%>
+$('#add-division').find('.close').click();

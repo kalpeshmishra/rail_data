@@ -1,0 +1,6 @@
+<%if @area%>
+var id = "#<%=@area.id%>"
+$(id).remove('');
+$("#area-listing").prepend("<%= j render partial: 'listing', locals: {:area => @area,:index => (100..500).to_a.sample} %>");
+<%end%>
+$('#add-area').find('.close').click();

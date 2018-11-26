@@ -1,0 +1,7 @@
+<%if @short_route%>
+var id = "#<%=@short_route.id%>"
+$(id).remove('');
+$("#short_route-listing").prepend("<%= j render partial: 'listing', locals: {:short_route => @short_route,:index => (50..500).to_a.sample} %>");
+<%end%>
+
+$('#add-short_route').find('.close').click();

@@ -1,0 +1,5 @@
+<%if @user%>
+var id = "#<%=@user.id%>"
+$(id).remove('');
+<%end%>
+$('#add-user-role').find('.close').click();
