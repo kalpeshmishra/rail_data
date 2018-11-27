@@ -73,7 +73,7 @@
         <td>
           <%= select_tag "bpc_type_#{index}", options_for_select([["CC30","CC30"],["CC35","CC35"],["PRE","PRE"],["EE","EE"],["RTRP","RTRP"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:16px", id: "bpc_type_#{index}", data_live_search: "true"} %>
           <p></p>
-          <%= text_field_tag "bpc_validity_#{index}", '',placeholder: 'validity', id: "bpc_validity_#{index}", class: 'form-control input-md', style: "width: 80px; font-size:15px;"%>
+          <%= text_field_tag "bpc_validity_#{index}", '',placeholder: 'validity', id: "bpc_validity_#{index}", class: 'form-control input-md',title: 'Enter validity as per Rake Release', style: "width: 80px; font-size:15px;"%>
         </td>
         <td align="center">
           <%= text_field_tag "arrival_time_#{index}", '', type: 'time',placeholder: 'arrival Time', id: "arrival_time_#{index}", class: 'form-control input-md arrival_time', style: "width: 160px; font-size:16px;"%>

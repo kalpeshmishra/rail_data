@@ -254,12 +254,9 @@ after_destroy :remove_rake_commodity_breakup_data
     phasewise_data= {}
     phasewise_loaded_unit =0
     phasewise_rake_count = 0
-    total_detn_ar_pl =[]
+    total_detn_ar_pl = []
     total_detn_pm_rl = []
     total_detn_rm_dp = []
-    total_average_ar_pm = []
-    total_average_pm_rl = []
-    total_average_rm_dp = []  
     temp.each do |key,value|
    
         rake_count = value.map{|x| x.rake_count || 0.0}.sum
@@ -274,22 +271,19 @@ after_destroy :remove_rake_commodity_breakup_data
        
         phasewise_loaded_unit +=loaded_unit  
         phasewise_rake_count +=rake_count
-        total_detn_ar_pl.push(detention_arrival_placement)
-        total_detn_pm_rl.push(detention_placement_release)
-        total_detn_rm_dp.push(detention_removal_departure)
-        total_average_ar_pm.push(detention_arrival_placement_average)
-        total_average_pm_rl.push(detention_placement_release_average)
-        total_average_rm_dp.push(detention_removal_departure_average)  
-
+        total_detn_ar_pl<< detention_arrival_placement
+        total_detn_pm_rl << detention_placement_release
+        total_detn_rm_dp << detention_removal_departure
+        
         phasewise_data[key] = {rake_count: rake_count,loaded_unit: loaded_unit, detention_arrival_placement: detention_arrival_placement, detention_placement_release: detention_placement_release, detention_removal_departure: detention_removal_departure ,detention_placement_release_average: detention_placement_release_average, detention_arrival_placement_average: detention_arrival_placement_average, detention_removal_departure_average: detention_removal_departure_average}
       end
         total_detn_arrival_placement = total_detn_ar_pl.reject(&:blank?).sum_strings(':')
         total_detn_placement_release  = total_detn_pm_rl.reject(&:blank?).sum_strings(':')
         total_detn_removal_departure  = total_detn_rm_dp.reject(&:blank?).sum_strings(':')
-        total_average_arrival_placement  = total_average_ar_pm.reject(&:blank?).sum_strings(':')
-        total_average_placement_release  = total_average_pm_rl.reject(&:blank?).sum_strings(':')
-        total_average_removal_departure  = total_average_rm_dp.reject(&:blank?).sum_strings(':')
-        # binding.pry
+        total_average_arrival_placement  = total_detn_arrival_placement.present? ? RakeLoad.get_average_detention(total_detn_arrival_placement, phasewise_rake_count) : ""
+        total_average_placement_release  = total_detn_placement_release.present? ? RakeLoad.get_average_detention(total_detn_placement_release, phasewise_rake_count) : ""
+        total_average_removal_departure  = total_detn_removal_departure.present? ? RakeLoad.get_average_detention(total_detn_removal_departure, phasewise_rake_count) : ""
+        
         phasewise_data["Total"] ={phasewise_loaded_unit: phasewise_loaded_unit, phasewise_rake_count: phasewise_rake_count, total_detn_arrival_placement: total_detn_arrival_placement, total_detn_placement_release: total_detn_placement_release, total_detn_removal_departure: total_detn_removal_departure, total_average_arrival_placement: total_average_arrival_placement, total_average_placement_release: total_average_placement_release, total_average_removal_departure: total_average_removal_departure}
       return(phasewise_data)
          

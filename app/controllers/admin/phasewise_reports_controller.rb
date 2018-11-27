@@ -7,12 +7,12 @@ class Admin::PhasewiseReportsController < ApplicationController
 		from_date = Date.today if from_date.blank?
 		to_date = Date.today if to_date.blank?
 				
-		rake_load_data = RakeLoad.where(release_date: from_date..to_date,rakeform_otherform: "R")
-		
 		adi_area = Area.find_by(area_code: "ADI")
 	 	gimb_area = Area.find_by(area_code: "GIMB")
 	 	adi_load_unload = LoadUnload.where(area_id: adi_area.id)
 	 	gimb_load_unload = LoadUnload.where(area_id: gimb_area.id)
+
+		rake_load_data = RakeLoad.where(release_date: from_date..to_date,rakeform_otherform: "R")
 
 	 	rake_load_adi = adi_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact
  		rake_load_gimb = gimb_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact

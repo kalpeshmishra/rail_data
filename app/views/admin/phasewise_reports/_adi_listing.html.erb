@@ -6,19 +6,19 @@
   </p>
 </div>
 
-<table class="table hover table-dark" id="adi-listing">
-  <thead>
-  <tr>
-     <th>Station</th>
-      <th>Rake</th>
-      <th>Units</th>
+<table class="table hover table-bordered" id="adi-listing">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Station</th>
+      <th style="vertical-align: middle;">Rake</th>
+      <th style="vertical-align: middle;">Units</th>
       <th>Total<br>AR-PM</th>
       <th>Total<br>PM-RL</th>
       <th>Total<br>RL-DP</th>
       <th>AVG.<br>AR-PM</th>
       <th>AVG.<br>PM-RL</th>
       <th>AVG.<br>RL-DP</th>
-  </tr>
+    </tr>
   </thead>
   <tbody>
     <% @rake_and_load_unit_data.each do |key,value| %>
