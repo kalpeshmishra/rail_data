@@ -39,6 +39,9 @@
       <li>
         <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB</a>
       </li>
+      <li class="active">
+        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">StationWise(ADI)</a>
+      </li>
       
       
     </ul>
@@ -55,6 +58,10 @@
       <div id="gimb-area-loading-info" class="tab-pane cont">
         <%=render 'gimb_listing'%>
         <div id="gimb_load_form"></div>
+      </div>
+      <div id="adi-area-stationwise-info" class="tab-pane cont">
+        <%=render 'adi_stationwise'%>
+        <div id="adi_stationwise_form"></div>
       </div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>

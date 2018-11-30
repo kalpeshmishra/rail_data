@@ -102,6 +102,13 @@ $(function(){
     });
   });
 
+  $('#two-rake-loading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+
  
     <%if @two_rake_loads.present?%>
       <%@two_rake_loads.each_with_index do |data,index|%>

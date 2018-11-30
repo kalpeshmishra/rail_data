@@ -266,6 +266,13 @@ $(function(){
     $("#date").val($("#datepicker").val());
     });
   });
+  
+  $('#one-rake-loading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
 
  
     <%if @one_rake_loads.present?%>

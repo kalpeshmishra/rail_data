@@ -22,22 +22,21 @@
   </thead>
   <tbody>
     <% @rake_and_load_unit_data_for_gimb.each do |key,value| %>
-       <%load = LoadUnload.find(key) rescue nil%>
-       
-       <%next unless load%>
-       <tr id=<%=key%>>
+      <%if key != "Total"%>
+        <%load = LoadUnload.find(key) rescue nil%>
+        <%next unless load%>
+      <% end %>
+      <tr id=<%=key%>>
 
-        <td class="text-center"><span class="view-location-<%= key %>"><%= load.station.code rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:rake_count] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:loaded_unit] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_arrival_placement] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_placement_release] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_removal_departure] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_arrival_placement_average] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_placement_release_average] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= value[:detention_removal_departure_average] rescue '' %></span></td>
-      </tr>
-       
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? "TOTAL" : load.station.code rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_rake_count] : value[:rake_count] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_loaded_unit] : value[:loaded_unit] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_placement] : value[:detention_arrival_placement] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_placement_release] : value[:detention_placement_release] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_removal_departure] : value[:detention_removal_departure] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_placement] : value[:detention_arrival_placement_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_placement_release] : value[:detention_placement_release_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_removal_departure] : value[:detention_removal_departure_average] rescue '' %></span></td>
       </tr>
     <% end %>
   </tbody>

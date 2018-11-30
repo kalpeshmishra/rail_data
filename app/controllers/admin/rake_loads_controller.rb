@@ -62,7 +62,6 @@ class Admin::RakeLoadsController < ApplicationController
         current_user_area = current_user.area rescue nil
         
         if rake_area == current_user_area
-          # load_unit = load_unit+rake_load.loaded_unit
           current_user_rake_load << rake_load
         end
       end
@@ -80,7 +79,17 @@ class Admin::RakeLoadsController < ApplicationController
       end
     @total_rake_loads = load_unit
     
-    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O").pluck(:loaded_unit)).sum
+    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O"))
+      load_unit = 0
+      @total_other_loads.each do |total_other_load|
+        rake_area =  total_other_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_other_load.loaded_unit
+        end
+      end
+    @total_other_loads = load_unit
 
     get_data_for_form
   end

@@ -184,6 +184,13 @@ $(function(){
     });
   });
 
+  $('#one-rake-unloading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+
  
     <%if @one_rake_unloads.present?%>
       <%@one_rake_unloads.each_with_index do |data,index|%>

@@ -54,7 +54,7 @@
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 100px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
           <p></p>
-           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",style: "width: 100px;border: 1px solid #888;" %>
+           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",max: "1",style: "width: 100px;border: 1px solid #888;" %>
         </td>
         <td>
            <%= text_area_tag "stock_description_#{index}", '',placeholder: "Stock Description", class: 'form-control input-md', title: 'Stock Description', id: "stock_description_#{index}", style: "width: 155px; font-size:16px; height:78px"%>
@@ -180,6 +180,13 @@ $(function(){
     $(".rake-row-data:hidden").each(function(i) {
       $(this).remove('');
     });
+  });
+
+  $('#rake-unloading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
   });
 
   $(".cancel-btn").click(function () {

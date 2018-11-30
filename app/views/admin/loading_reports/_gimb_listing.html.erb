@@ -3,12 +3,12 @@
     <p style="font-size: 18px;color:red;">Total :<%=(@total_gimb_loads)%>&nbsp;&nbsp;&nbsp;</p>
   </div>
 
-<table class="table hover table-dark" id="gimb-listing">
-    <thead>
-    <tr>
-     <tr>
+<table class="table hover table-bordered" id="gimb-listing">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
         <th>FROM</th>
         <th>TO</th>
+        <th>Rake</th>
         <th>Units</th>
         <th>Stock</th>
         <th>Commodity</th>
@@ -18,23 +18,22 @@
         <th>ShortRouteIC</th>
         <th>Short Km</th>
       </tr>
-    </tr>
     </thead>
     <tbody>
-      <% @gimb_loads.each_with_index do |rake_load, index| %>
-      <tr id=<%=rake_load.id.to_s%>>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.load_unload.station.code rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.station.code rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.loaded_unit rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.wagon_type.wagon_type_code rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.major_commodity.major_commodity rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.arrival_time.first(5) rescue '' %><p></p><%= rake_load.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.placement_time.first(5) rescue '' %><p></p><%= rake_load.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.release_time.first(5) rescue '' %><p></p><%= rake_load.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.short_interchange rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.short_km rescue '' %></span></td>
-       
-      </tr>
+      <% @gimb_loads.each_with_index do |gimb_load, index| %>
+        <tr id=<%=gimb_load.id.to_s%>>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.load_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.rake_count rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.loaded_unit rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.wagon_type.wagon_type_code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.major_commodity.major_commodity rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.arrival_time.first(5) rescue '' %>  <%= gimb_load.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.placement_time.first(5) rescue '' %>  <%= gimb_load.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.release_time.first(5) rescue '' %>  <%= gimb_load.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.short_interchange rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.short_km rescue '' %></span></td>
+        </tr>
       <% end %>
     </tbody>
   </table>

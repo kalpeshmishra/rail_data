@@ -186,6 +186,13 @@ $(function(){
     });
   });
 
+  $('#gets-unloading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+
   $(".cancel-btn").click(function () {
     if (confirm('Are you sure?')) 
     {

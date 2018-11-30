@@ -55,7 +55,7 @@
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,style: "width: 75px; font-size:16px;" %>
+          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,max: "1",style: "width: 75px; font-size:16px;" %>
         </td>
 
         <td style="padding-bottom: 1%;padding-top: 1%;">
@@ -190,8 +190,15 @@ $(function(){
     $(".rake-row-data:hidden").each(function(i) {
       $(this).remove('');
     });
-  });
 
+  });
+  $('#rake-loading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+  
   $(".cancel-btn").click(function () {
     if (confirm('Are you sure?')) 
     {
@@ -529,14 +536,6 @@ function set_rake_commodity_values(rake_dropdown_value){
     
     });
 
-    
-     // $.ajax({
-     //   type: "get",
-     //   url: "/get_division.js?zone_id=" + zone_id
-     // });
-   
-  
-  
     
      
  

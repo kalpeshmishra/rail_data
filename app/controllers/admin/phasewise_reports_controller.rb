@@ -40,6 +40,29 @@ class Admin::PhasewiseReportsController < ApplicationController
 		@rake_and_load_unit_data_for_adi = RakeLoad.get_phasewise_data(adi_temp) if adi_temp.present?
 		@rake_and_load_unit_data_for_gimb = RakeLoad.get_phasewise_data(gimb_temp) if gimb_temp.present?
 	
+		#Login for Summary Start
+		data_hash = {}
+		rake_load_data.each do |data|
+		release_date = data.release_date.strftime("%d-%m-%Y")
+		load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+
+			if data.release_date.present?
+				if data_hash[release_date].present?
+
+				 if data_hash[release_date].keys.include?(load_unload_code)
+				   data_hash[release_date][load_unload_code] << data
+				 else
+				   data_hash[release_date].merge!("#{load_unload_code}" => [data])
+				 end
+				else
+				 data_hash[release_date] = {}
+				 data_hash[release_date].merge!("#{load_unload_code}" => [data])
+				end
+			end
+		end
+		# binding.pry
+		#Login for Summary Ends
+
 	end
 
 	def show

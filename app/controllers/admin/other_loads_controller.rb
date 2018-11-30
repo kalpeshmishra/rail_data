@@ -14,9 +14,44 @@ class Admin::OtherLoadsController < ApplicationController
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
     # data = data.strftime("%Y-%m-%d")
+    # binding.pry
     @other_loads = RakeLoad.where(release_date: data,rakeform_otherform: "O")
-    @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R").pluck(:loaded_unit)).sum
-    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O").pluck(:loaded_unit)).sum
+
+    current_user_other_load = []
+      @other_loads.each do |other_load|
+        rake_area =  other_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          # load_unit = load_unit+other_load.loaded_unit
+          current_user_other_load << other_load
+        end
+      end
+    @other_loads = current_user_other_load
+
+    @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R"))
+      load_unit = 0
+      @total_rake_loads.each do |total_rake_load|
+        rake_area =  total_rake_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_rake_load.loaded_unit
+        end
+      end
+    @total_rake_loads = load_unit
+    
+    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O"))
+      load_unit = 0
+      @total_other_loads.each do |total_other_load|
+        rake_area =  total_other_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_other_load.loaded_unit
+        end
+      end
+    @total_other_loads = load_unit
 
     get_data_for_form
   end
@@ -42,6 +77,7 @@ class Admin::OtherLoadsController < ApplicationController
     RakeLoad.create_or_update_other_load(params)
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
+    # binding.pry
     # data = data.strftime("%Y-%m-%d")
     @other_loads = RakeLoad.where(release_date: data,rakeform_otherform: "O")
     @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R").pluck(:loaded_unit)).sum

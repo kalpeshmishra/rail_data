@@ -8,7 +8,7 @@
       <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>      
     </p>
   </div>
-<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'other-loading-form',remote: true) do |form| %>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'other-unloading-form',remote: true) do |form| %>
 <table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
   <thead>
   <tr>
@@ -40,7 +40,7 @@
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',title: 'Enter loaded Units', id: "loaded_unit_#{index}",required: true, style: "width: 105px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Count", class: 'form-control input-md',id: "rake_count_#{index}",required: true, style: "width: 105px;border: 1px solid #888;" %>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Count", class: 'form-control input-md',id: "rake_count_#{index}",required: true, max: "1", style: "width: 105px;border: 1px solid #888;" %>
         </td>
         <td>
           <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control input-md',required: true, style: "width: 110px;", id: "major_commodity_#{index}",data_live_search: "true"} %>
@@ -162,7 +162,12 @@ $(function(){
     });
   });
    
-
+  $('#other-unloading-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
 
   $(".label-danger").on('click',function(){
 

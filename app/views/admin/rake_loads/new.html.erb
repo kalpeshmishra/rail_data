@@ -45,11 +45,7 @@
 <% @method = params[:id].present? ? "PATCH" : "POST" %>
 <% @url = params[:id].present? ? admin_rake_load_path(params[:id]) : admin_rake_loads_path %>
 
-<%if false%>
-<h2 align="center">Add Rake Load </h2>
-<h3>Rake Loading:</h3>
-<%= text_field_tag "rake_load_date", Date.today.strftime('%Y-%m-%d'), type: 'date',placeholder: 'rake load date', id: "rake_load_date", class: 'form-control input-md', style: "width: 145px;"%>
-<%end%>
+
 
 <div class="table-responsive main-client-ldng" >
   <div id="client-message"></div>
