@@ -12,6 +12,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 	 	adi_load_unload = LoadUnload.where(area_id: adi_area.id)
 	 	gimb_load_unload = LoadUnload.where(area_id: gimb_area.id)
 
+	 	#Rake load phasewsie code starts
 		rake_load_data = RakeLoad.where(release_date: from_date..to_date,rakeform_otherform: "R")
 
 	 	rake_load_adi = adi_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact
@@ -39,10 +40,45 @@ class Admin::PhasewiseReportsController < ApplicationController
 		@rake_and_load_unit_data = RakeLoad.get_phasewise_data(temp) if temp.present?
 		@rake_and_load_unit_data_for_adi = RakeLoad.get_phasewise_data(adi_temp) if adi_temp.present?
 		@rake_and_load_unit_data_for_gimb = RakeLoad.get_phasewise_data(gimb_temp) if gimb_temp.present?
+		# binding.pry
+		#Rake load phasewsie code Ends
+
+		#Rake un-load phasewsie code starts
+		rake_unload_data = RakeUnload.where(release_date: from_date..to_date,form_status: "RAKE")
+		
+		rake_unload_adi = adi_load_unload.map{|load| load.rake_unloads.map{|rake| rake if rake_unload_data.include?(rake)}}.flatten.compact
+ 		rake_unload_gimb = gimb_load_unload.map{|load| load.rake_unloads.map{|rake| rake if rake_unload_data.include?(rake)}}.flatten.compact
+		
+ 		temp_unloading = rake_unload_data.group_by { |rake| rake.load_unload_id }
+ 		adi_temp_unloading = rake_unload_adi.group_by { |rake| rake.load_unload_id } if rake_unload_adi.present?
+		gimb_temp_unloading = rake_unload_gimb.group_by { |rake| rake.load_unload_id } if rake_unload_gimb.present?
 	
-		#Login for Summary Start
+		@adi_unloading_rake = rake_unload_adi.map{|x|x.rake_count}.compact.sum
+		@gimb_unloading_rake =rake_unload_gimb.map{|x|x.rake_count}.compact.sum
+		@total_unloading_rake = @adi_unloading_rake + @gimb_unloading_rake
+
+		@adi_unloaded_unit = rake_unload_adi.map{|x|x.loaded_unit}.compact.sum
+		@gimb_unloaded_unit = rake_unload_gimb.map{|x|x.loaded_unit}.compact.sum
+		@total_unloaded_unit= @adi_unloaded_unit + @gimb_unloaded_unit
+
+		@rake_and_unload_unit_data= {}
+		@rake_and_unload_unit_data_for_adi = {}
+		@rake_and_unload_unit_data_for_gimb = {}
+		
+		@rake_and_unload_unit_data = RakeLoad.get_phasewise_data(temp_unloading) if temp_unloading.present?
+		@rake_and_unload_unit_data_for_adi = RakeLoad.get_phasewise_data(adi_temp_unloading) if adi_temp_unloading.present?
+		@rake_and_unload_unit_data_for_gimb = RakeLoad.get_phasewise_data(gimb_temp_unloading) if gimb_temp_unloading.present?
+		
+		#Rake un-load phasewsie code Ends
+		#Total Division phase-wise starts
+		total_temp = {}
+		total_temp.merge!(temp).merge!(temp_unloading)
+		@total_division_phasewise_data = RakeLoad.get_phasewise_data(total_temp) if total_temp.present?
+		# binding.pry
+		#Total Division phase-wise ends
+		#stationwise Start
 		data_hash = {}
-		rake_load_data.each do |data|
+		rake_load_adi.each do |data|
 		release_date = data.release_date.strftime("%d-%m-%Y")
 		load_unload_code = LoadUnload.find(data.load_unload_id).station.code
 
@@ -60,8 +96,9 @@ class Admin::PhasewiseReportsController < ApplicationController
 				end
 			end
 		end
-		# binding.pry
-		#Login for Summary Ends
+		@rake_load_stationwise = data_hash.sort.to_h
+		@loading_header = @rake_load_stationwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		#stationwise Ends
 
 	end
 

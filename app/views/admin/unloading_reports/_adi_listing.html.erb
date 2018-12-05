@@ -1,0 +1,38 @@
+<div class="tab-container" id="adi_listing">
+  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+    <p style="font-size: 18px;color:red;">Total :<%=(@total_adi_unloads)%>&nbsp;&nbsp;&nbsp;</p>
+  </div>
+
+<table class="table hover table-bordered" id="adi-listing">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th>FROM</th>
+        <th>TO</th>
+        <th>Rake</th>
+        <th>Release<br>Units</th>
+        <th>Total<br>Units</th>
+        <th>Stock</th>
+        <th>Commodity</th>
+        <th>Arrival</th>
+        <th>Placement</th>
+        <th>Release</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @adi_unloads.each_with_index do |adi_unload, index| %>
+        <tr id=<%=adi_unload.id.to_s%>>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.load_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.rake_count rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.loaded_unit rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.total_unit rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.wagon_type.wagon_type_code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.major_commodity.major_commodity rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.arrival_time.first(5) rescue '' %>  <%= adi_unload.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.placement_time.first(5) rescue '' %>  <%= adi_unload.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.release_time.first(5) rescue '' %>  <%= adi_unload.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>  

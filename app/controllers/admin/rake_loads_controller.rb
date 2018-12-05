@@ -55,8 +55,29 @@ class Admin::RakeLoadsController < ApplicationController
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
     
+    get_user_area_wise_data(data)
+    get_data_for_form
+  
+  end
 
-    current_user_rake_load = []
+  def create
+    RakeLoad.create_or_update_rake_load(params)
+    data = params["date"].to_date if params["date"].present?
+    data = Date.today if data.blank?
+    @rake_loads = RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
+    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
+    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
+    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
+    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
+    
+    get_user_area_wise_data(data)
+    get_data_for_form
+    
+
+  end
+
+  def get_user_area_wise_data(data)
+     current_user_rake_load = []
       @rake_loads.each do |rake_load|
         rake_area =  rake_load.load_unload.station.area.area_code rescue nil
         current_user_area = current_user.area rescue nil
@@ -90,8 +111,6 @@ class Admin::RakeLoadsController < ApplicationController
         end
       end
     @total_other_loads = load_unit
-
-    get_data_for_form
   end
 
   
@@ -170,42 +189,7 @@ class Admin::RakeLoadsController < ApplicationController
       end
   end
 
-  def create
-    RakeLoad.create_or_update_rake_load(params)
-    data = params["date"].to_date if params["date"].present?
-    data = Date.today if data.blank?
-    # data = data.strftime("%Y-%m-%d")
-    # @rake_loads = RakeLoad.where(release_date: data,rakeform_otherform: "R")
-    # @rake_loads += RakeLoad.where(release_date: nil,rakeform_otherform: "R")
-    # @rake_loads += RakeLoad.where(release_date: "",rakeform_otherform: "R")
-    @rake_loads = RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
-    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
-    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
-    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
-    @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R")))
-    
-
-    current_user_rake_load = []
-      load_unit = 0
-      @rake_loads.each do |rake_load|
-        rake_area =  rake_load.load_unload.station.area.area_code rescue nil
-        current_user_area = current_user.area rescue nil
-        
-        if rake_area == current_user_area
-          load_unit = load_unit+rake_load.loaded_unit
-          current_user_rake_load << rake_load
-        end
-      end
-    @rake_loads = current_user_rake_load
-
-    # @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R").pluck(:loaded_unit)).sum
-    @total_rake_loads = load_unit
-    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O").pluck(:loaded_unit)).sum
-
-    get_data_for_form
-    
-
-  end
+  
 
   def edit
     get_data_for_form

@@ -9,35 +9,30 @@
 <table class="table hover table-bordered" id="adi-stationwise">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      <th style="vertical-align: middle;">Station</th>
-      <th style="vertical-align: middle;">Rake</th>
-      <th style="vertical-align: middle;">Units</th>
-      <th>Total<br>AR-PM</th>
-      <th>Total<br>PM-RL</th>
-      <th>Total<br>RL-DP</th>
-      <th>AVG.<br>AR-PM</th>
-      <th>AVG.<br>PM-RL</th>
-      <th>AVG.<br>RL-DP</th>
+      <th style="vertical-align: middle;">Date</th>  
+        <%@loading_header.each do |label| %>
+           <th style="vertical-align: middle;"><%=label%></th>
+        <% end %>
     </tr>
   </thead>
   <tbody>
-    <% @rake_and_load_unit_data_for_adi.each do |key,value| %>
-
+    <% @rake_load_stationwise.each do |key,value| %>
       <%if key != "Total"%>
-        <%load = LoadUnload.find(key) rescue nil%>
-        <%next unless load%>
+        <%data = key rescue nil%>
+
+        <%next unless data%>
       <% end %>
       <tr id=<%=key%>>
-
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? "TOTAL" : load.station.code rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_rake_count] : value[:rake_count] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_loaded_unit] : value[:loaded_unit] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_placement] : value[:detention_arrival_placement] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_placement_release] : value[:detention_placement_release] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_removal_departure] : value[:detention_removal_departure] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_placement] : value[:detention_arrival_placement_average] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_placement_release] : value[:detention_placement_release_average] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_removal_departure] : value[:detention_removal_departure_average] rescue '' %></span></td>
+        
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? "TOTAL" : data rescue '' %></span></td>
+        <%@rake_load_stationwise[data].each do |key,value| %>
+          
+          <%total_loaded_unit = 0%>
+          <%value.each do |value| %>
+            <%total_loaded_unit = total_loaded_unit+ value.loaded_unit%>
+          <% end %>
+          <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

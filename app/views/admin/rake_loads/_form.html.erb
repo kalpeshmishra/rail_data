@@ -55,13 +55,13 @@
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,max: "1",style: "width: 75px; font-size:16px;" %>
+          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true, min: "1",max: "65",style: "width: 75px; font-size:16px;" %>
         </td>
 
         <td style="padding-bottom: 1%;padding-top: 1%;">
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 100px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
         <p></p>
-          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",style: "width: 100px;border: 1px solid #888;" %>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",max: "1",style: "width: 100px;border: 1px solid #888;" %>
         </td>
         
         <td>

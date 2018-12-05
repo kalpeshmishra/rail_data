@@ -18,11 +18,61 @@ class Admin::RakeUnloadsController < ApplicationController
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("RAKE")))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE")))
-    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
     
-
+    get_user_area_wise_data(data)
     get_data_for_form
+  end
+
+  def create
+    RakeUnload.create_or_update_rake_unload(params)
+
+    data = params[:data].to_date if params[:data].present?
+    data = Date.today if data.blank?
+    @rake_unloads = RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
+    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
+    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
+    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("RAKE")))
+    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE")))
+    
+    get_user_area_wise_data(data)
+    get_data_for_form
+  end
+
+  def get_user_area_wise_data(data)
+    current_user_rake_unload = []
+      @rake_unloads.each do |rake_unload|
+        rake_area =  rake_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          current_user_rake_unload << rake_unload
+        end
+      end
+    @rake_unloads = current_user_rake_unload
+    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE"))
+      load_unit = 0
+      @total_rake_unloads.each do |total_rake_unload|
+        rake_area =  total_rake_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit + total_rake_unload.loaded_unit
+        end
+      end
+    @total_rake_unloads = load_unit  
+
+    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER"))
+      load_unit = 0
+      @total_other_unloads.each do |total_other_unload|
+        rake_area =  total_other_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_other_unload.loaded_unit
+        end
+      end
+    @total_other_unloads = load_unit
+    
   end
 
   def find_station_unloads # finds to station
@@ -39,7 +89,7 @@ class Admin::RakeUnloadsController < ApplicationController
     
   end
 
-  def find_from_station_unloads
+  def find_from_station_unloads # finds from station
     
     from_station_code = params[:from_station_code]
     @from_station = params[:from_station_id]
@@ -64,29 +114,7 @@ class Admin::RakeUnloadsController < ApplicationController
       end
   end
 
-  def create
-    RakeUnload.create_or_update_rake_unload(params)
-
-    data = params[:data].to_date if params[:data].present?
-    data = Date.today if data.blank?
-    @rake_unloads = RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
-    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
-    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE"))))
-    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("RAKE")))
-    @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].eq("").and(RakeUnload.arel_table[:form_status].eq("RAKE")))
-    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
-    
-    get_data_for_form
-  end
-
   def get_data_for_form
-    # @from_stations = Station.all.map{|station| ["#{station.code}-#{station.name}",station.id]}
-    # @to_stations = []
-    # LoadUnload.all.each do |load|
-    #   station = Station.find(load.station_id) rescue nil
-    #   @to_stations << ["#{station.code}-#{station.name}", station.id] if station.present?
-    # end 
     @major_commodity = MajorCommodity.all.map{|major|["#{major.major_commodity}--#{major.name}",major.id]}
     @wagon_type = WagonType.all.order(wagon_type_code: :asc).map{|wagon| ["#{wagon.wagon_type_code}--#{wagon.wagon_type_desc}",wagon.id]}
     @rake_commodity = {}
