@@ -33,10 +33,10 @@
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_loaded_unit] : value[:loaded_unit] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_placement] : value[:detention_arrival_placement] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_placement_release] : value[:detention_placement_release] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_removal_departure] : value[:detention_removal_departure] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_release_removal_departure] : value[:detention_release_removal_departure] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_placement] : value[:detention_arrival_placement_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_placement_release] : value[:detention_placement_release_average] rescue '' %></span></td>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_removal_departure] : value[:detention_removal_departure_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_release_removal_departure] : value[:detention_release_removal_departure_average] rescue '' %></span></td>
       </tr>
     <% end %>
   </tbody>
