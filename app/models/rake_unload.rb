@@ -108,7 +108,7 @@ belongs_to :wagon_type
       one_rake_unloads.departure_time =value["departure_time"] rescue nil
       one_rake_unloads.departure_date = value["departure_date"] rescue nil
       one_rake_unloads.detention_release_removal =value["detention_release_removal"] rescue nil
-      one_rake_unloads.detention_removal_departure = value["detention_removal_departure"] rescue nil
+      one_rake_unloads.detention_release_removal = value["detention_release_removal"] rescue nil
       one_rake_unloads.remarks = value["remarks"] rescue nil
       one_rake_unloads.empty_rake_release_id = value["empty_rake_release_id"] rescue nil
       one_rake_unloads.save
@@ -202,7 +202,10 @@ belongs_to :wagon_type
       gets_unload.bpc_date = value["bpc_date"] rescue nil
       gets_unload.bpc_type = value["bpc_type"] rescue nil
       gets_unload.bpc_validity = value["bpc_validity"] rescue nil
-      placement_time = get_time(value["placement_time"]) 
+      #Arrival and placement are same at powerhouse i.e. GETS & AECS
+      placement_time = get_time(value["placement_time"])
+      gets_unload.arrival_time = placement_time rescue nil
+      gets_unload.arrival_date = value["placement_date"] rescue nil 
       gets_unload.placement_time = placement_time rescue nil
       gets_unload.placement_date = value["placement_date"] rescue nil
       release_time = get_time(value["release_time"])
@@ -276,7 +279,10 @@ belongs_to :wagon_type
       aecs_unload.bpc_date = value["bpc_date"] rescue nil
       aecs_unload.bpc_type = value["bpc_type"] rescue nil
       aecs_unload.bpc_validity = value["bpc_validity"] rescue nil
-      placement_time = get_time(value["placement_time"]) 
+      #Arrival and placement are same at powerhouse i.e. GETS & AECS
+      placement_time = get_time(value["placement_time"])
+      aecs_unload.arrival_time = placement_time rescue nil
+      aecs_unload.arrival_date = value["placement_date"] rescue nil 
       aecs_unload.placement_time = placement_time rescue nil
       aecs_unload.placement_date = value["placement_date"] rescue nil
       release_time = get_time(value["release_time"])
@@ -322,6 +328,45 @@ belongs_to :wagon_type
     end
     proper_time
   end  
+
+  def self.get_phasewise_data(temp)
+    phasewise_data= {}
+    phasewise_loaded_unit =0
+    phasewise_rake_count = 0
+    total_detn_ar_pl = []
+    total_detn_pm_rl = []
+    total_detn_rm_dp = []
+      temp.each do |key,value|
+   
+        rake_count = value.map{|x| x.rake_count || 0.0}.sum
+        loaded_unit = value.map{|x|x.loaded_unit || 0}.sum
+        #sum_strings gem used to calculate detention
+        detention_arrival_placement = value.map{|x|x.detention_arrival_placement}.reject(&:blank?).sum_strings(':')
+        detention_placement_release = value.map{|x|x.detention_placement_release}.reject(&:blank?).sum_strings(':')
+        detention_release_removal = value.map{|x|x.detention_release_removal}.reject(&:blank?).sum_strings(':') 
+        detention_arrival_placement_average = detention_arrival_placement.present? ? RakeLoad.get_average_detention(detention_arrival_placement,rake_count) : ""
+        detention_placement_release_average = detention_placement_release.present? ? RakeLoad.get_average_detention(detention_placement_release,rake_count) : ""
+        detention_release_removal_average = detention_release_removal.present? ? RakeLoad.get_average_detention(detention_release_removal,rake_count) : ""
+       
+        phasewise_loaded_unit +=loaded_unit  
+        phasewise_rake_count +=rake_count
+        total_detn_ar_pl<< detention_arrival_placement
+        total_detn_pm_rl << detention_placement_release
+        total_detn_rm_dp << detention_release_removal
+        
+        phasewise_data[key] = {rake_count: rake_count,loaded_unit: loaded_unit, detention_arrival_placement: detention_arrival_placement, detention_placement_release: detention_placement_release, detention_release_removal: detention_release_removal ,detention_placement_release_average: detention_placement_release_average, detention_arrival_placement_average: detention_arrival_placement_average, detention_release_removal_average: detention_release_removal_average}
+      end
+        total_detn_arrival_placement = total_detn_ar_pl.reject(&:blank?).sum_strings(':')
+        total_detn_placement_release  = total_detn_pm_rl.reject(&:blank?).sum_strings(':')
+        total_detn_release_removal  = total_detn_rm_dp.reject(&:blank?).sum_strings(':')
+        total_average_arrival_placement  = total_detn_arrival_placement.present? ? RakeLoad.get_average_detention(total_detn_arrival_placement, phasewise_rake_count) : ""
+        total_average_placement_release  = total_detn_placement_release.present? ? RakeLoad.get_average_detention(total_detn_placement_release, phasewise_rake_count) : ""
+        total_average_release_removal  = total_detn_release_removal.present? ? RakeLoad.get_average_detention(total_detn_release_removal, phasewise_rake_count) : ""
+        
+        phasewise_data["Total"] ={phasewise_loaded_unit: phasewise_loaded_unit, phasewise_rake_count: phasewise_rake_count, total_detn_arrival_placement: total_detn_arrival_placement, total_detn_placement_release: total_detn_placement_release, total_detn_release_removal: total_detn_release_removal, total_average_arrival_placement: total_average_arrival_placement, total_average_placement_release: total_average_placement_release, total_average_release_removal: total_average_release_removal}
+      return(phasewise_data)
+         
+  end
 
 
 

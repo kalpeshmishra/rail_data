@@ -51,7 +51,7 @@
   <div id="client-message"></div>
   <table class="table hover table-dark" id="rake_load-ldng">
     <caption>
-      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
           <span class="pull-left lead-text">
             Rake Loading 
           </span>
@@ -77,13 +77,13 @@
     }).on('change', function(){
       
       effective_from = $("#datepicker").val();
-      if(old_date != effective_from){
+      // if(old_date != effective_from){
         $.ajax({
           type: "get",
           url: "/admin/rake_loads/new.js?data=" + effective_from
         });
         old_date = effective_from 
-      }
+      // }
     });
     
     $('#datepicker').datepicker('setDate', 'today');

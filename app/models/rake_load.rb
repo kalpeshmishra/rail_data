@@ -257,7 +257,7 @@ after_destroy :remove_rake_commodity_breakup_data
     total_detn_ar_pl = []
     total_detn_pm_rl = []
     total_detn_rm_dp = []
-    temp.each do |key,value|
+      temp.each do |key,value|
    
         rake_count = value.map{|x| x.rake_count || 0.0}.sum
         loaded_unit = value.map{|x|x.loaded_unit || 0}.sum

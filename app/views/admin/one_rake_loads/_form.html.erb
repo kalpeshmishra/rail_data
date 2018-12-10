@@ -62,11 +62,11 @@
 
        
         <td align="center">
-          <%= text_field_tag "commodity_breakup_#{index}", '',placeholder: '', id: "commodity_breakup_#{index}", class: 'form-control input-md commodity_breakup', style: "width: 165px; height: 50px; font-size:16px; text-transform:uppercase;"%>
+          <%= text_field_tag "commodity_breakup_#{index}", '',placeholder: '', id: "commodity_breakup_#{index}", class: 'form-control input-md commodity_breakup', style: "width: 135px; height: 50px; font-size:13px; text-transform:uppercase;"%>
          
           <p></p>
           <a href="#" style="color: #326b2c" class="add-rake-commodity", id="add_rake_commodity_<%= index %>">
-          <i class="fa fa-plus"></i>ClickToAdd
+          <i class="fa fa-plus"></i>ClickToAdd/View
           </a>
         </td>
 
@@ -321,7 +321,7 @@ $(function(){
           flag = "Data Present"
         }
         else{
-          flag = "No data present"
+          flag = "No data"
         }
         $(commodity_breakup).val(flag)
         $(tue_first_row).val('<%=data.tue_first_row%>');

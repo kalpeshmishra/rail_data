@@ -1,17 +1,20 @@
 <div class="tab-container" id="gimb_listing">
   <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-    <p style="font-size: 18px;color:red;">Total :<%=(@total_gimb_loads)%>&nbsp;&nbsp;&nbsp;</p>
+    <p style="font-size: 18px;color:red;">Rake :<%=(@total_gimb_rake)%>&nbsp;&nbsp;
+    Unit :<%=(@total_gimb_loads)%>&nbsp;&nbsp;</p>
   </div>
 
-<table class="table hover table-bordered" id="gimb-listing">
+<table class="table hover table-bordered gimb_listing" id="gimb-listing">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
+        <th>Sr</th>
         <th>FROM</th>
         <th>TO</th>
         <th>Rake</th>
         <th>Units</th>
         <th>Stock</th>
         <th>Commodity</th>
+        <th>ODR</th>
         <th>Arrival</th>
         <th>Placement</th>
         <th>Release</th>
@@ -22,15 +25,17 @@
     <tbody>
       <% @gimb_loads.each_with_index do |gimb_load, index| %>
         <tr id=<%=gimb_load.id.to_s%>>
+          <td align="center" style="font-size: 15;"></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.rake_count rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.loaded_unit rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.wagon_type.wagon_type_code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.major_commodity.major_commodity rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.arrival_time.first(5) rescue '' %>  <%= gimb_load.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.placement_time.first(5) rescue '' %>  <%= gimb_load.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.release_time.first(5) rescue '' %>  <%= gimb_load.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.odr_type rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.arrival_time.first(5) rescue '' %>  <%= gimb_load.arrival_date.strftime('%d-%m') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.placement_time.first(5) rescue '' %>  <%= gimb_load.placement_date.strftime('%d-%m') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.release_time.first(5) rescue '' %>  <%= gimb_load.release_date.strftime('%d-%m') rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.short_interchange rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.short_km rescue '' %></span></td>
         </tr>
@@ -38,3 +43,13 @@
     </tbody>
   </table>
 </div>  
+<script >
+$(function(){
+  $('table.gimb_listing tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+
+
+});
+</script>

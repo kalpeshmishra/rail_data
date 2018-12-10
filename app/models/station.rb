@@ -78,27 +78,48 @@ class Station < ApplicationRecord
 
    # rakeload =[]
    
-  def self.kal(rakeload)
+  # def self.kal(rakeload)
     
-    error_rakeload = []
-    rakeload.each do |rakeload|      
-      load_unload_id = LoadUnload.find_by(station_id: Station.find_by(code: rakeload[0]).id).id rescue nil
-      station_id = Station.find_by(code: rakeload[1]).id rescue nil
-      wagon_type_id = WagonType.find_by(wagon_type_code: rakeload[6]).id rescue nil
-      major_commodity_id = MajorCommodity.find_by(major_commodity: rakeload[8]).id rescue nil
+  #   error_rakeload = []
+  #   rakeload.each do |rakeload|      
+  #     load_unload_id = LoadUnload.find_by(station_id: Station.find_by(code: rakeload[0]).id).id rescue nil
+  #     station_id = Station.find_by(code: rakeload[1]).id rescue nil
+  #     wagon_type_id = WagonType.find_by(wagon_type_code: rakeload[6]).id rescue nil
+  #     major_commodity_id = MajorCommodity.find_by(major_commodity: rakeload[8]).id rescue nil
      
-      # r = RakeLoad.create(load_unload_id: load_unload_id,station_id: station_id, forecast_date: rakeload[2].to_date,rake_received: rakeload[3],loaded_unit: rakeload[4],total_unit: rakeload[5],wagon_type_id: wagon_type_id,rake_count: rakeload[7],major_commodity_id: major_commodity_id,odr_type: rakeload[9],arrival_time: rakeload[10],arrival_date: rakeload[11].to_date,placement_time: rakeload[12],placement_date: rakeload[13].to_date,release_time: rakeload[14],release_date: rakeload[15].to_date,powerarrival_time: rakeload[16],powerarrival_date: rakeload[17].to_date,departure_time: rakeload[18],departure_date: rakeload[19].to_date,power_no: rakeload[20],rakeform_otherform: "R",detention_arrival_placement: rakeload[21],detention_placement_release: rakeload[22],detention_removal_departure: rakeload[23],detention_release_powerarrival: rakeload[24],detention_powerarrival_departure: rakeload[25])
+  #     # r = RakeLoad.create(load_unload_id: load_unload_id,station_id: station_id, forecast_date: rakeload[2].to_date,rake_received: rakeload[3],loaded_unit: rakeload[4],total_unit: rakeload[5],wagon_type_id: wagon_type_id,rake_count: rakeload[7],major_commodity_id: major_commodity_id,odr_type: rakeload[9],arrival_time: rakeload[10],arrival_date: rakeload[11].to_date,placement_time: rakeload[12],placement_date: rakeload[13].to_date,release_time: rakeload[14],release_date: rakeload[15].to_date,powerarrival_time: rakeload[16],powerarrival_date: rakeload[17].to_date,departure_time: rakeload[18],departure_date: rakeload[19].to_date,power_no: rakeload[20],rakeform_otherform: "R",detention_arrival_placement: rakeload[21],detention_placement_release: rakeload[22],detention_removal_departure: rakeload[23],detention_release_powerarrival: rakeload[24],detention_powerarrival_departure: rakeload[25])
 
-      r = RakeLoad.create(load_unload_id: load_unload_id,station_id: station_id, forecast_date: rakeload[2].to_date,rake_received: rakeload[3],loaded_unit: rakeload[4],total_unit: rakeload[5],wagon_type_id: wagon_type_id,rake_count: rakeload[7],major_commodity_id: major_commodity_id,odr_type: rakeload[9],arrival_time: rakeload[10],arrival_date: rakeload[11].to_date,placement_time: rakeload[12],placement_date: rakeload[13].to_date,release_time: rakeload[14],release_date: rakeload[15].to_date,rakeform_otherform: "R",detention_arrival_placement: rakeload[16],detention_placement_release: rakeload[17],net_tons: rakeload[18],stack: rakeload[19],short_km:rakeload[20], short_interchange:rakeload[21])
+  #     r = RakeLoad.create(load_unload_id: load_unload_id,station_id: station_id, forecast_date: rakeload[2].to_date,rake_received: rakeload[3],loaded_unit: rakeload[4],total_unit: rakeload[5],wagon_type_id: wagon_type_id,rake_count: rakeload[7],major_commodity_id: major_commodity_id,odr_type: rakeload[9],arrival_time: rakeload[10],arrival_date: rakeload[11].to_date,placement_time: rakeload[12],placement_date: rakeload[13].to_date,release_time: rakeload[14],release_date: rakeload[15].to_date,rakeform_otherform: "R",detention_arrival_placement: rakeload[16],detention_placement_release: rakeload[17],net_tons: rakeload[18],stack: rakeload[19],short_km:rakeload[20], short_interchange:rakeload[21])
 
-      if r.save
-      else
-        error_rakeload << rakeload
-        binding.pry
-      end
+  #     if r.save
+  #     else
+  #       error_rakeload << rakeload
+  #       # binding.pry
+  #     end
       
-    end
-  end
+  #   end
+  # end
+
+  # rakeunload = []
+  # def self.kal(rakeunload)
+    
+  #   error_rakeunload = []
+  #   rakeunload.each do |rakeunload|      
+  #     station_id = Station.find_by(code: rakeunload[0]).id rescue nil
+  #     load_unload_id = LoadUnload.find_by(station_id: Station.find_by(code: rakeunload[1]).id).id rescue nil
+  #     wagon_type_id = WagonType.find_by(wagon_type_code: rakeunload[4]).id rescue nil
+  #     major_commodity_id = MajorCommodity.find_by(major_commodity: rakeunload[7]).id rescue nil
+     
+  #     r = RakeUnload.create(station_id: station_id, load_unload_id: load_unload_id, loaded_unit: rakeunload[2],total_unit: rakeunload[3],wagon_type_id: wagon_type_id,stock_description: rakeunload[5],rake_count: rakeunload[6],major_commodity_id: major_commodity_id,arrival_time: rakeunload[8],arrival_date: rakeunload[9].to_date,placement_time: rakeunload[10],placement_date: rakeunload[11].to_date,release_time: rakeunload[12],release_date: rakeunload[13].to_date,removal_time:rakeunload[14],removal_date:rakeunload[15],remarks:rakeunload[16],form_status: "RAKE",detention_arrival_placement: rakeunload[17],detention_placement_release: rakeunload[18],detention_release_removal: rakeunload[19])
+
+  #     if r.save
+  #     else
+  #       error_rakeunload << rakeunload
+  #       binding.pry
+  #     end
+      
+  #   end
+  # end
 
 
 

@@ -31,16 +31,16 @@
   <div class="tab-container">
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#division-loading-info" id="division-loading-tab" data-toggle="tab">Division(LDNG)</a>
+        <a href="#division-loading-info" id="division-loading-tab" data-toggle="tab">DIVN(LD)</a>
       </li>
       <li>
-        <a href="#adi-area-loading-info" id="adi-area-loading-tab" data-toggle="tab">ADI(LDNG)</a>
+        <a href="#adi-area-loading-info" id="adi-area-loading-tab" data-toggle="tab">ADI(LD)</a>
       </li>
       <li>
-        <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB(LDNG)</a>
+        <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB(LD)</a>
       </li>
       <li>
-        <a href="#division-unloading-info" id="division-unloading-tab" data-toggle="tab">Division(PU)</a>
+        <a href="#division-unloading-info" id="division-unloading-tab" data-toggle="tab">DIVN(PU)</a>
       </li>
       <li>
         <a href="#adi-area-unloading-info" id="adi-area-unloading-tab" data-toggle="tab">ADI(PU)</a>
@@ -52,7 +52,13 @@
         <a href="#total-division-info" id="total-division-tab" data-toggle="tab">Division</a>
       </li>
       <li>
-        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">StationWise(ADI)</a>
+        <a href="#total-adi-info" id="total-adi-tab" data-toggle="tab">ADI</a>
+      </li>
+      <li>
+        <a href="#total-gimb-info" id="total-gimb-tab" data-toggle="tab">GIMB</a>
+      </li>
+      <li>
+        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">Station(ADI)</a>
       </li>
       
     </ul>
@@ -85,6 +91,14 @@
       <div id="total-division-info" class="tab-pane cont">
         <%=render 'total_division'%>
         <div id="total_division_load_form"></div>
+      </div>
+      <div id="total-adi-info" class="tab-pane cont">
+        <%=render 'total_adi'%>
+        <div id="total_adi_load_form"></div>
+      </div>
+      <div id="total-gimb-info" class="tab-pane cont">
+        <%=render 'total_gimb'%>
+        <div id="total_gimb_load_form"></div>
       </div>
       <div id="adi-area-stationwise-info" class="tab-pane cont">
         <%=render 'adi_stationwise'%>

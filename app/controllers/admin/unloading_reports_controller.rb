@@ -4,7 +4,7 @@ class Admin::UnloadingReportsController < ApplicationController
 	def index
 		data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
-
+    # binding.pry
     @rake_unloads = RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data)))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil)))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("")))
@@ -31,7 +31,7 @@ class Admin::UnloadingReportsController < ApplicationController
     
     @total_adi_unloads = adi_unit
 		@total_gimb_unloads = gimb_unit
-    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
+    @total_rake_unloads = adi_unit + gimb_unit 
     
   end
   

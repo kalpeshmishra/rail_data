@@ -52,13 +52,13 @@
       </li>
       
       <li>
-        <a href="#division-summary" id="division-summary-tab" data-toggle="tab">Div(Summary)</a>
+        <a href="#division-summary" id="division-summary-tab" data-toggle="tab">Div(Summ)</a>
       </li>
       <li>
-        <a href="#adi-summary" id="adi-summary-tab" data-toggle="tab">ADI(Summary)</a>
+        <a href="#adi-summary" id="adi-summary-tab" data-toggle="tab">ADI(Summ)</a>
       </li>
       <li>
-        <a href="#gimb-summary" id="gimb-summary-tab" data-toggle="tab">GIMB(Summary)</a>
+        <a href="#gimb-summary" id="gimb-summary-tab" data-toggle="tab">GIMB(Summ)</a>
       </li>
       
     </ul>
@@ -114,19 +114,19 @@
           todayHighlight: true,
     }).on('change', function(){
       effective_from = $("#datepicker").val();
-      if(old_date != effective_from){
+      // if(old_date != effective_from){
         $.ajax({
           type: "get",
           url: "/admin/loading_reports.js?data=" + effective_from
         });
         old_date = effective_from 
 
-      }
+      // }
     });
     
     $('#datepicker').datepicker('setDate', 'today');
 
-
+    
     
   });
   

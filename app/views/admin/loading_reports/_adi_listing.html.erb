@@ -1,17 +1,20 @@
 <div class="tab-container" id="adi_listing">
   <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-    <p style="font-size: 18px;color:red;">Total :<%=(@total_adi_loads)%>&nbsp;&nbsp;&nbsp;</p>
+    <p style="font-size: 18px;color:red;">Rake :<%=(@total_adi_rake)%>&nbsp;&nbsp;
+    Unit :<%=(@total_adi_loads)%>&nbsp;&nbsp;</p>
   </div>
 
-<table class="table hover table-bordered" id="adi-listing">
+<table class="table hover table-bordered adi_lisiting" id="adi-listing">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
+        <th>SR</th>
         <th>FROM</th>
         <th>TO</th>
         <th>Rake</th>
         <th>Units</th>
         <th>Stock</th>
         <th>Commodity</th>
+        <th>ODR</th>
         <th>Arrival</th>
         <th>Placement</th>
         <th>Release</th>
@@ -22,15 +25,17 @@
     <tbody>
       <% @adi_loads.each_with_index do |adi_load, index| %>
         <tr id=<%=adi_load.id.to_s%>>
+          <td align="center" style="font-size: 15;"></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.rake_count rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.loaded_unit rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.wagon_type.wagon_type_code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.major_commodity.major_commodity rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.arrival_time.first(5) rescue '' %>  <%= adi_load.arrival_date.strftime('%d-%m-%y') rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.placement_time.first(5) rescue '' %>  <%= adi_load.placement_date.strftime('%d-%m-%y') rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.release_time.first(5) rescue '' %>  <%= adi_load.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.odr_type rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.arrival_time.first(5) rescue '' %>  <%= adi_load.arrival_date.strftime('%d-%m') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.placement_time.first(5) rescue '' %>  <%= adi_load.placement_date.strftime('%d-%m') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.release_time.first(5) rescue '' %>  <%= adi_load.release_date.strftime('%d-%m') rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.short_interchange rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_load.short_km rescue '' %></span></td>
         </tr>
@@ -38,3 +43,15 @@
     </tbody>
   </table>
 </div>  
+
+<script >
+$(function(){
+
+  $('table.adi_lisiting tr').each(function(index) {
+    $(this).find('td:nth-child(1)').html(index-1+1);
+  });
+
+
+
+});
+</script>

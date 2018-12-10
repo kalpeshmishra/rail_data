@@ -49,12 +49,12 @@
           <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}", class: 'form-control input-md from_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         <p></p>
           
-          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4",value: "GETS",readonly: true, style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         </td>
         <td>
            <%= select_tag "takenover_point_#{index}", options_for_select([["GER","GER"],["SIOB","SIOB"],["VGDC","VGDC"],["DHG","DHG"],["MALB","MALB"]]), {prompt: "EX", class: 'form-control input-md takenover_point',style: "width: 90px; ", id: "takenover_point_#{index}", data_live_search: "true"} %>
            <p></p>
-           <%= text_field_tag "collary_#{index}", '',placeholder: 'COL', id: "collary_#{index}", class: 'form-control input-md', style: "width: 90px; "%>
+           <%= text_field_tag "collary_#{index}", '',placeholder: 'COL', id: "collary_#{index}", class: 'form-control input-md', style: "width: 90px;text-transform:uppercase;"%>
         </td>
         <td>
           <%= text_field_tag "takenover_time_#{index}", '', type: 'time',placeholder: 'Takenover Time', id: "takenover_time_#{index}",class: 'form-control input-md takenover_time', style: "width: 160px; font-size:16px;"%>
@@ -101,9 +101,9 @@
           <%= text_field_tag "release_date_#{index}", '', type: 'date',placeholder: 'release Date', id: "release_date_#{index}", class: 'form-control input-md release_date', style: "width: 160px; font-size:16px;"%>
         </td>
         <td>
-          <%= text_field_tag "train_on_run_hours_#{index}",'', placeholder: "TOR", class: 'form-control input-md train_on_run_hours', id: "train_on_run_hours_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <%= text_field_tag "train_on_run_hours_#{index}",'', placeholder: "TOR", class: 'form-control input-md train_on_run_hours', id: "train_on_run_hours_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
           <p></p>
-          <%= text_field_tag "detention_placement_release_#{index}",'', placeholder: "PM-RL", class: 'form-control input-md detention_placement_release', id: "detention_placement_release_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <%= text_field_tag "detention_placement_release_#{index}",'', placeholder: "PM-RL", class: 'form-control input-md detention_placement_release', id: "detention_placement_release_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
         <td>
            <%= text_field_tag "powerarrival_time_#{index}", '', type: 'time',placeholder: 'power arrival Time', id: "powerarrival_time_#{index}", class: 'form-control input-md powerarrival_time', style: "width: 160px; font-size:16px;"%>
@@ -126,14 +126,14 @@
            <%= text_field_tag "empty_destination_#{index}", '',placeholder: 'DESTI.', id: "empty_destination_#{index}", class: 'form-control input-md empty_destination', style: "width: 90px; "%>
         </td>
         <td>
-           <%= text_field_tag "detention_for_power_#{index}",'', placeholder: "POWER", class: 'form-control input-md detention_for_power', id: "detention_for_power_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+           <%= text_field_tag "detention_for_power_#{index}",'', placeholder: "RL-PA", class: 'form-control input-md detention_for_power', id: "detention_for_power_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
           <p></p>
-          <%= text_field_tag "powerarrival_train_departure_#{index}",'', placeholder: "PA-DEP", class: 'form-control input-md powerarrival_train_departure', id: "powerarrival_train_departure_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+          <%= text_field_tag "powerarrival_train_departure_#{index}",'', placeholder: "PA-DEP", class: 'form-control input-md powerarrival_train_departure', id: "powerarrival_train_departure_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
         <td>
-           <%= text_field_tag "detention_ger_to_ger_tor_#{index}",'', placeholder: "TOR", class: 'form-control input-md detention_ger_to_ger_tor', id: "detention_ger_to_ger_tor_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+           <%= text_field_tag "detention_ger_to_ger_tor_#{index}",'', placeholder: "TOR", class: 'form-control input-md detention_ger_to_ger_tor', id: "detention_ger_to_ger_tor_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
           <p></p>
-          <%= text_field_tag "detention_in_out_#{index}",'', placeholder: "IN-OUT", class: 'form-control input-md detention_in_out',  id: "detention_in_out_#{index}",style: "width: 70px;border: 1px solid #888; font-size:15px; background-color:#ffe6e6;" %>
+          <%= text_field_tag "detention_in_out_#{index}",'', placeholder: "IN-OUT", class: 'form-control input-md detention_in_out',  id: "detention_in_out_#{index}",readonly: true, style: "width: 70px;border: 1px solid #888; font-size:15px; background-color:#ffe6e6;" %>
         </td>
         <td>
           <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 290px; height:80px;"%>

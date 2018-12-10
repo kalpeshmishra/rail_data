@@ -11,10 +11,10 @@
     <caption>
       <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
           <span class="pull-left lead-text">
-            <%="DayWiseunloadingReport"%>
+            <%="Unloading Report DayWise"%>
           </span>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
         <%= text_field_tag "load_report_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
 
         
@@ -66,15 +66,15 @@
     <div class="tab-content">
       <div id="division-unloading-info" class="tab-pane active cont">
         <%=render 'division_listing'%>
-        <div id="division_load_form"></div>
+        <div id="division_unload_form"></div>
       </div>
       <div id="adi-area-unloading-info" class="tab-pane cont">
         <%=render 'adi_listing'%>
-        <div id="adi_load_form"></div>
+        <div id="adi_unload_form"></div>
       </div>
       <div id="gimb-area-unloading-info" class="tab-pane cont">
         <%=render 'gimb_listing'%>
-        <div id="gimb_load_form"></div>
+        <div id="gimb_unload_form"></div>
       </div>
     <%if false%>
       <div id="division-summary" class="tab-pane active cont">
@@ -114,14 +114,14 @@
           todayHighlight: true,
     }).on('change', function(){
       effective_from = $("#datepicker").val();
-      if(old_date != effective_from){
+      // if(old_date != effective_from){
         $.ajax({
           type: "get",
           url: "/admin/unloading_reports.js?data=" + effective_from
         });
         old_date = effective_from 
 
-      }
+      // }
       
     });
     
