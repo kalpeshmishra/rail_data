@@ -216,9 +216,12 @@ belongs_to :wagon_type
       powerarrival_time = value["powerarrival_time"]
       gets_unload.powerarrival_time = powerarrival_time rescue nil
       gets_unload.powerarrival_date = value["powerarrival_date"] rescue nil
+      # Removal and departure are same in PowerHouse(GETS-AECS)
       departure_time = value["departure_time"]
       gets_unload.departure_time = departure_time rescue nil
       gets_unload.departure_date = value["departure_date"] rescue nil
+      gets_unload.removal_time = departure_time rescue nil
+      gets_unload.removal_date = value["departure_date"] rescue nil
       handedover_time = value["handedover_time"]
       gets_unload.handedover_time = handedover_time rescue nil
       gets_unload.handedover_date = value["handedover_date"] rescue nil
@@ -293,9 +296,12 @@ belongs_to :wagon_type
       powerarrival_time = value["powerarrival_time"]
       aecs_unload.powerarrival_time = powerarrival_time rescue nil
       aecs_unload.powerarrival_date = value["powerarrival_date"] rescue nil
+      # Removal and departure are same in PowerHouse(GETS-AECS)
       departure_time = value["departure_time"]
       aecs_unload.departure_time = departure_time rescue nil
       aecs_unload.departure_date = value["departure_date"] rescue nil
+      aecs_unload.removal_time = departure_time rescue nil
+      aecs_unload.removal_date = value["departure_date"] rescue nil
       handedover_time = value["handedover_time"]
       aecs_unload.handedover_time = handedover_time rescue nil
       aecs_unload.handedover_date = value["handedover_date"] rescue nil

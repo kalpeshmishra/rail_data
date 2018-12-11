@@ -121,6 +121,27 @@ class Station < ApplicationRecord
   #   end
   # end
 
+  rakeunload = []
+  def self.kal(rakeunload)
+    
+    error_rakeunload = []
+    rakeunload.each do |rakeunload|      
+      station_id = Station.find_by(code: rakeunload[0]).id rescue nil
+      load_unload_id = LoadUnload.find_by(station_id: Station.find_by(code: rakeunload[1]).id).id rescue nil
+      wagon_type_id = WagonType.find_by(wagon_type_code: rakeunload[8]).id rescue nil
+      major_commodity_id = MajorCommodity.find_by(major_commodity: rakeunload[11]).id rescue nil
+     
+      r = RakeUnload.create(station_id: station_id, load_unload_id: load_unload_id, takenover_point:rakeunload[2],collary: rakeunload[3],takenover_time: rakeunload[4],takenover_date: rakeunload[5].to_date,loaded_unit: rakeunload[6],total_unit: rakeunload[7],wagon_type_id: wagon_type_id,rake_count: rakeunload[9],stock_description: rakeunload[10],major_commodity_id: major_commodity_id,commodity_type:rakeunload[12],bpc_type:rakeunload[13],arrival_time: rakeunload[14],arrival_date: rakeunload[15].to_date,placement_time: rakeunload[16],placement_date: rakeunload[17].to_date,release_time: rakeunload[18],release_date: rakeunload[19].to_date,powerarrival_time: rakeunload[20],powerarrival_date: rakeunload[21].to_date,removal_time:rakeunload[22],removal_date:rakeunload[23].to_date,departure_time:rakeunload[22],departure_date:rakeunload[23].to_date,handedover_point:rakeunload[24],empty_destination:rakeunload[25],form_status: "GETS",detention_arrival_placement: rakeunload[26],detention_placement_release: rakeunload[27],detention_release_removal: rakeunload[28])
+
+      if r.save
+      else
+        error_rakeunload << rakeunload
+        binding.pry
+      end
+      
+    end
+  end
+
 
 
 

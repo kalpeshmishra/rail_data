@@ -123,8 +123,20 @@ class Admin::PhasewiseReportsController < ApplicationController
 				end
 			end
 		end
+
 		@rake_load_stationwise = data_hash.sort.to_h
 		@loading_header = @rake_load_stationwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		
+		# temp = Array.new(30, 0)  
+		# header_hash = @loading_header.zip(temp).to_h
+
+		# temp_rake = @rake_load_stationwise
+		# temp_rake.each do |key,value|
+		# 	temp_rake[key].merge!(header_hash){|key,oldval,newval| [*oldval].to_a + [*newval].to_a }
+		# end
+			
+		# @rake_load_stationwise = temp_rake.sort.to_h
+		
 		#stationwise Ends
 		
 	end

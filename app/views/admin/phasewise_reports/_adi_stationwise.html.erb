@@ -29,7 +29,8 @@
           
           <%total_loaded_unit = 0%>
           <%value.each do |value| %>
-            <%total_loaded_unit = total_loaded_unit+ value.loaded_unit%>
+            
+            <%total_loaded_unit = total_loaded_unit+ value.loaded_unit %>
           <% end %>
           <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
         <% end %>
