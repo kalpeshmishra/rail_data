@@ -88,13 +88,16 @@
     <a href="#"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
     <ul class="sub-menu">
       <li class="">
-        <a <%= "href=#{admin_loading_reports_path }"%> title="Loading"><span>Loading</span></a>
+        <a <%= "href=#{admin_loading_reports_path }"%> title="DayWise Loading"><span>DayWise Loading</span></a>
       </li>
       <li class="">
-        <a <%= "href=#{admin_unloading_reports_path }"%> title="PU_Release"><span>PU_Release</span></a>
+        <a <%= "href=#{admin_unloading_reports_path }"%> title="DayWise PU Release"><span>DayWise PU</span></a>
       </li>
       <li class="">
         <a <%= "href=#{admin_phasewise_reports_path }"%> title="Phasewise Reports"><span>Phasewise</span></a>
+      </li>
+      <li class="">
+        <a <%= "href=#{admin_one_loading_reports_path }"%> title="Loading Reports"><span>Loading Reports</span></a>
       </li>
     </ul>
   </li>  

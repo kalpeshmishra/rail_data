@@ -11,27 +11,26 @@
     <tr style="color: #fff; background: #4B4B4D;">
       <th style="vertical-align: middle;">Date</th>  
         <%column_hash = {}%>
-        <%@loading_header = @loading_header + ["Total"]%>
-        <%@loading_header.each do |label| %>
+        <%@adi_loading_header = @adi_loading_header + ["Total"]%>
+        <%@adi_loading_header.each do |label| %>
           <%column_hash[label] = []%>
           <th style="vertical-align: middle;"><%=label%></th>
         <% end %>
     </tr>
   </thead>
   <tbody>
-    
-    <%@rake_load_stationwise.merge!("column_total" => column_hash)%>
-    <% @rake_load_stationwise.each do |key,value| %>
+    <%@adi_rake_load_stationwise.merge!("column_total" => column_hash)%>
+    <% @adi_rake_load_stationwise.each do |key,value| %>
       <%next unless key%>
       <%date = key%>
       <tr id=<%=date%>>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.gsub('2018', '18') rescue '' %></span></td>
         <%if key != "column_total"%>
           <%row_total = 0%>
-          <%@loading_header.each do |label|%>
+          <%@adi_loading_header.each do |label|%>
             <%next if label == "Total"%>
-            <%if @rake_load_stationwise[date][label].present?%>
-              <%total_loaded_unit = @rake_load_stationwise[date][label].map{|v|v.loaded_unit || 0}.sum%>
+            <%if @adi_rake_load_stationwise[date][label].present?%>
+              <%total_loaded_unit = @adi_rake_load_stationwise[date][label].map{|v|v.loaded_unit || 0}.sum%>
 
               <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
               <%row_total = row_total + total_loaded_unit%>

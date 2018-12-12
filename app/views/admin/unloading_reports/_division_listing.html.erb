@@ -21,8 +21,8 @@
     <tbody>
       <% @rake_unloads.each_with_index do |rake_unload, index| %>
         <tr id=<%=rake_unload.id.to_s%>>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.rake_count rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.loaded_unit rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_unload.total_unit rescue '' %></span></td>

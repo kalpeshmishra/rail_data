@@ -305,4 +305,75 @@ after_destroy :remove_rake_commodity_breakup_data
          
   end
 
+
+
+  def self.get_stationwise_loading(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+    release_date = data.release_date.strftime("%d-%m-%Y")
+    load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+
+      if data.release_date.present?
+        if data_hash[release_date].present?
+
+         if data_hash[release_date].keys.include?(load_unload_code)
+           data_hash[release_date][load_unload_code] << data
+         else
+           data_hash[release_date].merge!("#{load_unload_code}" => [data])
+         end
+        else
+         data_hash[release_date] = {}
+         data_hash[release_date].merge!("#{load_unload_code}" => [data])
+        end
+      end
+    end
+    return(data_hash)
+  end
+
+  def self.get_stockwise_loading(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+    release_date = data.release_date.strftime("%d-%m-%Y")
+    wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
+
+      if data.release_date.present?
+        if data_hash[release_date].present?
+
+         if data_hash[release_date].keys.include?(wagon_code)
+           data_hash[release_date][wagon_code] << data
+         else
+           data_hash[release_date].merge!("#{wagon_code}" => [data])
+         end
+        else
+         data_hash[release_date] = {}
+         data_hash[release_date].merge!("#{wagon_code}" => [data])
+        end
+      end
+    end
+    return(data_hash)
+  end
+
+  def self.get_commodity_loading(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+    release_date = data.release_date.strftime("%d-%m-%Y")
+    commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+
+      if data.release_date.present?
+        if data_hash[release_date].present?
+
+         if data_hash[release_date].keys.include?(commodity_code)
+           data_hash[release_date][commodity_code] << data
+         else
+           data_hash[release_date].merge!("#{commodity_code}" => [data])
+         end
+        else
+         data_hash[release_date] = {}
+         data_hash[release_date].merge!("#{commodity_code}" => [data])
+        end
+      end
+    end
+    return(data_hash)
+  end
+
 end

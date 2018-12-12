@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   match '/delete_aecs_unload', controller: 'admin/aecs_unloads', action: 'delete_aecs_unload', via: [:get], as: 'delete_aecs_unload'
   
   namespace :admin do
-  	resources :railway_zones,:states,:divisions, :areas,:stations,:rake_commodities,:major_commodities, :wagon_types, :load_unloads, :rake_loads, :rake_unloads, :other_loads, :one_rake_loads, :two_rake_loads, :one_rake_unloads, :other_unloads, :gets_unloads, :aecs_unloads, :short_routes, :ic_divisions, :users, :user_roles, :loading_reports,:unloading_reports, :phasewise_reports
+  	resources :railway_zones,:states,:divisions, :areas,:stations,:rake_commodities,:major_commodities, :wagon_types, :load_unloads, :rake_loads, :rake_unloads, :other_loads, :one_rake_loads, :two_rake_loads, :one_rake_unloads, :other_unloads, :gets_unloads, :aecs_unloads, :short_routes, :ic_divisions, :users, :user_roles, :loading_reports,:unloading_reports, :phasewise_reports, :one_loading_reports
   end
 
   

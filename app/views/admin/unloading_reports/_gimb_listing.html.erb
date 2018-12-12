@@ -21,8 +21,8 @@
     <tbody>
       <% @gimb_unloads.each_with_index do |gimb_unload, index| %>
         <tr id=<%=gimb_unload.id.to_s%>>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.rake_count rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.loaded_unit rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_unload.total_unit rescue '' %></span></td>

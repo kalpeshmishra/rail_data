@@ -1,0 +1,142 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="one-loading-reports">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <span class="pull-left lead-text">
+            <%="OneLoadingReport"%>
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "report_from_date",Date.today.strftime('%Y-%m-%d'),placeholder: 'one_loading from date', id: "from-datepicker", class: 'form-control input_class'%>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag "report_to_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'one_loading to date', id: "to-datepicker", class: 'form-control input_class'%>
+      </div>
+     
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" type="submit">Show Report</button>
+      </div>
+      
+    </caption>
+    </table>
+    
+  <div class="tab-container">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">STN(A)</a>
+      </li>
+      <li>
+        <a href="#gimb-area-stationwise-info" id="gimb-area-stationwise-tab" data-toggle="tab">STN(G)</a>
+      </li>
+      <li>
+        <a href="#adi-area-stockwise-info" id="adi-area-stockwise-tab" data-toggle="tab">Stock(A)</a>
+      </li>
+      <li>
+        <a href="#gimb-area-stockwise-info" id="gimb-area-stockwise-tab" data-toggle="tab">Stock(G)</a>
+      </li>
+      <li>
+        <a href="#division-stockwise-info" id="division-stockwise-tab" data-toggle="tab">Stock(D)</a>
+      </li>
+      <li>
+        <a href="#adi-area-commodity-info" id="adi-area-commodity-tab" data-toggle="tab">CMDT(A)</a>
+      </li>
+      <li>
+        <a href="#gimb-area-commodity-info" id="gimb-area-commodity-tab" data-toggle="tab">CMDT(G)</a>
+      </li>
+      <li>
+        <a href="#division-commodity-info" id="division-commodity-tab" data-toggle="tab">CMDT(D)</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="adi-area-stationwise-info" class="tab-pane active cont">
+        <%=render 'adi_stationwise'%>
+        <div id="adi_stationwise_form"></div>
+      </div>
+      <div id="gimb-area-stationwise-info" class="tab-pane cont">
+        <%=render 'gimb_stationwise'%>
+        <div id="gimb_stationwise_form"></div>
+      </div>
+      <div id="adi-area-stockwise-info" class="tab-pane cont">
+        <%=render 'adi_stockwise'%>
+        <div id="adi_stockwise_form"></div>
+      </div>
+      <div id="gimb-area-stockwise-info" class="tab-pane cont">
+        <%=render 'gimb_stockwise'%>
+        <div id="gimb_stockwise_form"></div>
+      </div>
+      <div id="division-stockwise-info" class="tab-pane cont">
+        <%=render 'division_stockwise'%>
+        <div id="division_stockwise_form"></div>
+      </div>
+      <div id="adi-area-commodity-info" class="tab-pane cont">
+        <%=render 'adi_commodity'%>
+        <div id="adi_commodity_form"></div>
+      </div>
+      <div id="gimb-area-commodity-info" class="tab-pane cont">
+        <%=render 'gimb_commodity'%>
+        <div id="gimb_commodity_form"></div>
+      </div>
+      <div id="division-commodity-info" class="tab-pane cont">
+        <%=render 'division_commodity'%>
+        <div id="division_commodity_form"></div>
+      </div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+
+
+
+
+
+<script>
+  
+
+  var old_from_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  var old_to_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#from-datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+    $('#from-datepicker').datepicker('setDate', 'today');
+ 
+    $("#to-datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+    $('#to-datepicker').datepicker('setDate', 'today');
+  
+
+  });
+
+  $(".submit").click(function () {
+     effective_from = $("#from-datepicker").val();
+     effective_to = $("#to-datepicker").val();
+        $.ajax({
+          type: "get",
+          url: "/admin/one_loading_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
+        });
+        old_from_date = effective_from 
+        old_to_date = effective_to
+      
+  });
+
+  
+
+</script>
