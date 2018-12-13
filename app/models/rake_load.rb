@@ -376,4 +376,27 @@ after_destroy :remove_rake_commodity_breakup_data
     return(data_hash)
   end
 
+  def self.get_station_commodity_rake_load(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+    release_date = data.release_date.strftime("%d-%m-%Y")
+    load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+    commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+    
+      if data.load_unload_id.present?
+        if data_hash[load_unload_code].present?
+          if data_hash[load_unload_code].keys.include?(commodity_code)
+            data_hash[load_unload_code][commodity_code] << data
+          else
+            data_hash[load_unload_code].merge!("#{commodity_code}" => [data])
+          end
+        else
+          data_hash[load_unload_code] = {}
+          data_hash[load_unload_code].merge!("#{commodity_code}" => [data])
+        end
+      end
+    end
+    return(data_hash)
+  end
+
 end

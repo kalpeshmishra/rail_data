@@ -54,6 +54,12 @@
       <li>
         <a href="#division-commodity-info" id="division-commodity-tab" data-toggle="tab">CMDT(D)</a>
       </li>
+      <li>
+        <a href="#rake-station-commodity-info" id="rake-station-commodity-tab" data-toggle="tab">Rake</a>
+      </li>
+      <li>
+        <a href="#loaded-unit-station-commodity-info" id="loaded-unit-station-commodity-tab" data-toggle="tab">Unit</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -88,6 +94,14 @@
       <div id="division-commodity-info" class="tab-pane cont">
         <%=render 'division_commodity'%>
         <div id="division_commodity_form"></div>
+      </div>
+      <div id="rake-station-commodity-info" class="tab-pane cont">
+        <%=render 'rake_station_commodity'%>
+        <div id="rake_station_commodity_form"></div>
+      </div>
+      <div id="loaded-unit-station-commodity-info" class="tab-pane cont">
+        <%=render 'loaded_unit_station_commodity'%>
+        <div id="loaded_unit_station_commodity_form"></div>
       </div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>

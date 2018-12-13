@@ -69,6 +69,17 @@ class Admin::OneLoadingReportsController < ApplicationController
 		@division_commodity_header = @division_rake_load_commodity.map{|k,v|v.keys}.flatten.compact.uniq.sort
 		#Commodity Division Loading Ends
 
+		#Rake-Station-Commodity-Loading & Loaded-Unit-Station-Commodity-Loading Start
+		adi_station_commodity_data_hash = RakeLoad.get_station_commodity_rake_load(rake_load_adi)
+		gimb_station_commodity_data_hash = RakeLoad.get_station_commodity_rake_load(rake_load_gimb)
+		@adi_station_commodity_rake = adi_station_commodity_data_hash.sort.to_h
+		@gimb_station_commodity_rake = gimb_station_commodity_data_hash.sort.to_h
+		@adi_station_commodity_header = @adi_station_commodity_rake.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		@gimb_station_commodity_header = @gimb_station_commodity_rake.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		@rake_load_station_commodity_header = (@gimb_station_commodity_header+@adi_station_commodity_header).uniq.sort
+		#Rake-Station-Commodity-Loading & Loaded-Unit-Station-Commodity-Loading Ends
+
+		
 	end
 
 	def show

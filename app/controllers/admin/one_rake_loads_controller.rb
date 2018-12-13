@@ -55,12 +55,7 @@ class Admin::OneRakeLoadsController < ApplicationController
     get_data_for_form
   end
 
-  # def addcommodity
-  #    respond_to do |format|
-  #     format.js 
-  #   end
-    
-  # end
+
   def get_data_for_form
     # @from_stations = []
     # LoadUnload.all.each do |load|
@@ -73,8 +68,9 @@ class Admin::OneRakeLoadsController < ApplicationController
     @rake_commodity = {}
     MajorCommodity.all.each do |major|
     rake_commodity_array = major.rake_commodities.map{|rake_commodity| ["#{rake_commodity.rake_commodity_code}-#{rake_commodity.rake_commodity_name}",rake_commodity.id]}
-      @rake_commodity[major.id] = {data: rake_commodity_array}
+      @rake_commodity[major.id] = {data: rake_commodity_array.sort}
     end
+    
   end  
 
   def create
