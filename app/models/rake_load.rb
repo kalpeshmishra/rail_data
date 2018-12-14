@@ -353,6 +353,29 @@ after_destroy :remove_rake_commodity_breakup_data
     return(data_hash)
   end
 
+  def self.get_received_stockwise_loading(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+    arrival_date = data.arrival_date.strftime("%d-%m-%Y")
+    wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
+
+      if data.arrival_date.present?
+        if data_hash[arrival_date].present?
+
+         if data_hash[arrival_date].keys.include?(wagon_code)
+           data_hash[arrival_date][wagon_code] << data
+         else
+           data_hash[arrival_date].merge!("#{wagon_code}" => [data])
+         end
+        else
+         data_hash[arrival_date] = {}
+         data_hash[arrival_date].merge!("#{wagon_code}" => [data])
+        end
+      end
+    end
+    return(data_hash)
+  end
+
   def self.get_commodity_loading(rake_load)
     data_hash = {}
     rake_load.each do |data|
@@ -376,6 +399,7 @@ after_destroy :remove_rake_commodity_breakup_data
     return(data_hash)
   end
 
+ 
   def self.get_station_commodity_rake_load(rake_load)
     data_hash = {}
     rake_load.each do |data|

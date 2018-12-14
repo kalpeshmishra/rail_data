@@ -197,14 +197,11 @@ $(function(){
           url: "/load_commodity_breakup.js?rake_load_id=" + rake_load_id
         });
       }
-      
-    
     $("#add-commodity-modal").modal('show');
     set_rake_commodity_values(major_commodity_id);
   });
 
   $(".commodity-rake-unit").on('keyup',function(){
-
     var current_count = 0;
     $(".commodity-rake-unit:visible").each(function(index){
       if(isNaN(parseInt($(this).val()))){
@@ -254,7 +251,6 @@ $(function(){
       });
     
     $("#add-commodity-modal").find('.close').click();
-
   });
 
   
@@ -464,11 +460,7 @@ function set_rake_commodity_values(rake_dropdown_value){
 
        
         var detnpower_time = detnpower_hours+":"+detnpower_minutes2;
-        
-        
         $(detention_release_powerarrival).val(detnpower_time);
-       
-  
       }
       else{
         $(detention_release_powerarrival).val("NA");
@@ -491,7 +483,6 @@ function set_rake_commodity_values(rake_dropdown_value){
       var powerdep_hours = Math.floor(powerdep_minutes / 60);
       var powerdep_minutes2 = Math.floor(powerdep_minutes % 60);
       
-      
       if(powerdep_minutes2 < 10){
           powerdep_minutes2 = "0"+powerdep_minutes2
         }else{
@@ -502,14 +493,8 @@ function set_rake_commodity_values(rake_dropdown_value){
         }else{
           powerdep_hours = powerdep_hours
         }
-
-       
         var powerdep_time = powerdep_hours+":"+powerdep_minutes2;
-       
-        
         $(detention_powerarrival_departure).val(powerdep_time);
-       
-  
       }
       else{
         $(detention_powerarrival_departure).val("NA");
@@ -524,7 +509,6 @@ function set_rake_commodity_values(rake_dropdown_value){
       var detn_rl_dep_hours = Math.floor(detn_rl_dep_minutes / 60);
       var detn_rl_dep_minutes2 = Math.floor(detn_rl_dep_minutes % 60);
       
-      
       if(detn_rl_dep_minutes2 < 10){
           detn_rl_dep_minutes2 = "0"+detn_rl_dep_minutes2
         }else{
@@ -536,13 +520,8 @@ function set_rake_commodity_values(rake_dropdown_value){
           detn_rl_dep_hours = detn_rl_dep_hours
         }
 
-       
         var detn_rl_dep_time = detn_rl_dep_hours+":"+detn_rl_dep_minutes2;
-        // alert(final_time);
-        
         $(detention_release_departure).val(detn_rl_dep_time);
-       
-  
       }
       else{
         $(detention_release_departure).val("NA");

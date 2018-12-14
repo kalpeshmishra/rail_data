@@ -26,7 +26,7 @@ class Admin::UnloadingReportsController < ApplicationController
     		gimb_unit = gimb_unit + rake_unload.loaded_unit
     	end
     end
-    @adi_unloads = adi_area_unloads
+    @adi_unloads = adi_area_unloads.sort_by(&:load_unload_id)
     @gimb_unloads = gimb_area_unloads
     
     @total_adi_unloads = adi_unit

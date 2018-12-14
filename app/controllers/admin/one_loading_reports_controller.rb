@@ -19,7 +19,7 @@ class Admin::OneLoadingReportsController < ApplicationController
 	 	rake_load_adi = adi_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact
  		rake_load_gimb = gimb_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact
 		
-
+ 		
  		#Stationwise ADI Loading Start
 		adi_data_hash = RakeLoad.get_stationwise_loading(rake_load_adi)
 		@adi_rake_load_stationwise = adi_data_hash.sort.to_h

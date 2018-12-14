@@ -1,0 +1,53 @@
+<div class="tab-container" id="adi_stationwise">
+<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+  <p style="font-size: 18px;color:red;">
+    
+  </p>
+</div>
+
+<table class="table hover table-bordered" id="adi-stationwise">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Date</th>  
+        <%column_hash = {}%>
+        <%@adi_unloading_header = @adi_unloading_header + ["Total"]%>
+        <%@adi_unloading_header.each do |label| %>
+          <%column_hash[label] = []%>
+          <th style="vertical-align: middle;"><%=label%></th>
+        <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%@adi_rake_unload_stationwise.merge!("column_total" => column_hash)%>
+    <% @adi_rake_unload_stationwise.each do |key,value| %>
+      <%next unless key%>
+      <%date = key%>
+      <tr id=<%=date%>>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.gsub('2018', '18') rescue '' %></span></td>
+        <%if key != "column_total"%>
+          <%row_total = 0%>
+          <%@adi_unloading_header.each do |label|%>
+            <%next if label == "Total"%>
+            <%if @adi_rake_unload_stationwise[date][label].present?%>
+              <%total_loaded_unit = @adi_rake_unload_stationwise[date][label].map{|v|v.loaded_unit || 0}.sum%>
+
+              <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
+              <%row_total = row_total + total_loaded_unit%>
+              <%column_hash[label] << total_loaded_unit%>
+              
+            <%else%>
+              <td class="text-center"><span class="view-location-<%= key %>"><%= "" %></span></td>
+            <%end%>
+          <%end%>
+          <td class="text-center" style="font-weight: bold;"><span class="view-location-<%= key %>"><%= row_total%></span></td>
+          <%column_hash["Total"] << row_total%>
+        <%else%>
+          <%value.each do |total_key,total_value|%>
+            <td class="text-center" style="font-weight: bold;"><span class="view-location-<%= key %>"><%= total_value.sum%></span></td>
+          <%end%>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
