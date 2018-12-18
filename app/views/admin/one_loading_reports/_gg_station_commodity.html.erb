@@ -1,0 +1,60 @@
+<div class="tab-container" id="gg_station_commodity">
+<h3 align="center">Loading Unit Commodity and Station Wise</h3>
+<p id="adi_gg_heading" style="font-size: 16px;color:#cc3d16;"></p>
+<table class="table hover table-condensed" id="gg-station-commodity">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Date</th>  
+      <th style="vertical-align: middle;">From</th>
+      <th style="vertical-align: middle;">To</th>
+      <th style="vertical-align: middle;">Unit</th>
+        <%@gg_header_hash.each do |h_key,h_value| %>
+          <th style="vertical-align: middle;" title="<%=h_value.values[1]%>"><%=h_value.values[0]%></th>
+        <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%grand_total=0%>
+    <% @gg_rake_loads.each_with_index do |load,index| %>
+      <%date = load.release_date.strftime("%d-%m-%y")%>
+      <tr id=<%=load.id%>>
+        <%from_station = LoadUnload.find(load.load_unload_id).station.code rescue ""%>
+        <%to_station = Station.find(load.station_id).code rescue ""%>
+        <%unit = load.loaded_unit rescue ""%>
+        <%grand_total = grand_total+ unit rescue ""%>
+        <%outer_output = [date, from_station,to_station,unit]%>
+        <%outer_output.each do |output|%>
+          <td class="text-center"><span class="view-location-<%= output %>"><%= (output) rescue '' %></span></td>
+        <%end%>
+        
+        <%@gg_header_hash.keys.each do |header_key|%>
+          <%if @create_rake_loads_rake_commoditie_id_hash[header_key].keys.include?(load.id.to_s)%>
+            <%ans = @create_rake_loads_rake_commoditie_id_hash[header_key][load.id.to_s] rescue ""%>
+            <td class="text-center"><span class="view-location"><%= ans %></span></td>
+          <%else%>
+            <td class="text-center"><span class="view-location"><%= "" %></span></td>
+          <%end%>
+        <%end%>
+        
+      </tr>
+    <%end%>
+      <td></td><td></td>
+      <td class="text-center" style="font-weight:bold;">Total</td>
+      <td class="text-center" style="font-weight:bold;"><%= grand_total %></td>
+      <% @create_rake_loads_rake_commoditie_total.each do |total|%>
+        <td class="text-center" style="font-weight:bold;"><%= total[1] %></td>
+      <%end%>
+  </tbody>
+</table>
+
+</div>
+
+<script>
+  
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_gg_heading").innerHTML="ADI Area GG Loading Details: "+effective_from+" To: "+effective_to;
+    
+  });
+</script>

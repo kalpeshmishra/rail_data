@@ -79,6 +79,36 @@ class Admin::OneLoadingReportsController < ApplicationController
 		@rake_load_station_commodity_header = (@gimb_station_commodity_header+@adi_station_commodity_header).uniq.sort
 		#Rake-Station-Commodity-Loading & Loaded-Unit-Station-Commodity-Loading Ends
 
+		# GG Loading Details Starts
+		gg_major_commodity = MajorCommodity.find_by(major_commodity: "GG")
+    @gg_rake_loads = gg_major_commodity.rake_loads.where(release_date: from_date..to_date)
+    @gg_rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
+    @create_rake_loads_rake_commoditie_id_hash = {}
+    @gg_rake_loads.each do |load|
+      load.create_rake_loads_rake_commodities.each do |create_rake_commoditie|
+        if @create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].present?
+          rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+        else
+        	@create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {}
+        	rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+          # @create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {rake_load_ids: [load.id]}
+        end
+      end
+    end
+
+    @gg_header_hash = {}
+    @create_rake_loads_rake_commoditie_id_hash.keys.each do|id|
+      rake_commodity = RakeCommodity.find(id) rescue nil
+      @gg_header_hash[id] = {code: rake_commodity.rake_commodity_code,name: rake_commodity.rake_commodity_name}
+    end
+    @create_rake_loads_rake_commoditie_total = []
+    @create_rake_loads_rake_commoditie_id_hash.each do|k,v|
+    	@create_rake_loads_rake_commoditie_total << [k,v.values.sum]
+    end
+    	
+		# GG Loading Details Ends
 		
 	end
 

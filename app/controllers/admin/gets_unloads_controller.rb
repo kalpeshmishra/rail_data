@@ -26,7 +26,7 @@ class Admin::GetsUnloadsController < ApplicationController
   def create
     RakeUnload.create_or_update_gets_unload(params)
 
-    data = params[:data].to_date if params[:data].present?
+    data = params["date"].to_date if params["date"].present?
     data = Date.today if data.blank?
 
     @gets_unloads = RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("GETS"))))

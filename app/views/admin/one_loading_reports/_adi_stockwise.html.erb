@@ -45,6 +45,7 @@
         <%else%>
           <%value.each do |total_key,total_value|%>
             <td class="text-center"><span class="view-location-<%= key %>"><%= total_value.sum%></span></td>
+            
           <%end%>
         <%end%>
       </tr>

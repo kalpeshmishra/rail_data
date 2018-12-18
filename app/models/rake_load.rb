@@ -423,4 +423,28 @@ after_destroy :remove_rake_commodity_breakup_data
     return(data_hash)
   end
 
+  # def self.kalpesh
+  #    binding.pry
+  #    # -loads.last.create_rake_loads_rake_commodities.last.rake_commodity
+  #   gg_major_commodity = MajorCommodity.find_by(major_commodity: "GG")
+  #   rake_loads = gg_major_commodity.rake_loads
+  #   rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
+  #   create_rake_loads_rake_commoditie_id_hash = {}
+  #   rake_loads.each do |load|
+  #     load.create_rake_loads_rake_commodities.each do |create_rake_commoditie|
+  #       if create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].present?
+  #         create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id][:rake_load_ids] << load.id
+  #       else
+  #         create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {rake_load_ids: [load.id]}
+  #       end
+  #     end
+  #   end
+
+  #   @gg_header_hash = {}
+  #   create_rake_loads_rake_commoditie_id_hash.keys.each do|id|
+  #     rake_commodity = RakeCommodity.find(id) rescue nil
+  #     @gg_header_hash[id] = {name: rake_commodity.rake_commodity_name}
+  #   end
+  # end
+  
 end
