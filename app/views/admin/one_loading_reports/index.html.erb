@@ -35,31 +35,31 @@
   <div class="tab-container">
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">STN(A)</a>
+        <a href="#adi-area-stationwise-info" title="StationWise Loading ADI Area" id="adi-area-stationwise-tab" data-toggle="tab">STN(A)</a>
       </li>
       <li>
-        <a href="#gimb-area-stationwise-info" id="gimb-area-stationwise-tab" data-toggle="tab">STN(G)</a>
+        <a href="#gimb-area-stationwise-info" title="StationWise Loading GIMB Area" id="gimb-area-stationwise-tab" data-toggle="tab">STN(G)</a>
       </li>
       <li>
-        <a href="#adi-area-stockwise-info" id="adi-area-stockwise-tab" data-toggle="tab">Stock(A)</a>
+        <a href="#adi-area-stockwise-info" title="StockWise Loading ADI Area" id="adi-area-stockwise-tab" data-toggle="tab">Stock(A)</a>
       </li>
       <li>
-        <a href="#gimb-area-stockwise-info" id="gimb-area-stockwise-tab" data-toggle="tab">Stock(G)</a>
+        <a href="#gimb-area-stockwise-info" title="StockWise Loading GIMB Area" id="gimb-area-stockwise-tab" data-toggle="tab">Stock(G)</a>
       </li>
       <li>
-        <a href="#division-stockwise-info" id="division-stockwise-tab" data-toggle="tab">Stock(D)</a>
+        <a href="#division-stockwise-info" title="StockWise Loading Division" id="division-stockwise-tab" data-toggle="tab">Stock(D)</a>
       </li>
       <li>
-        <a href="#adi-area-commodity-info" id="adi-area-commodity-tab" data-toggle="tab">CMDT(A)</a>
+        <a href="#adi-area-commodity-info" title="CommodityWise Loading ADI Area" id="adi-area-commodity-tab" data-toggle="tab">CMDT(A)</a>
       </li>
       <li>
-        <a href="#gimb-area-commodity-info" id="gimb-area-commodity-tab" data-toggle="tab">CMDT(G)</a>
+        <a href="#gimb-area-commodity-info" title="CommodityWise Loading GIMB Area" id="gimb-area-commodity-tab" data-toggle="tab">CMDT(G)</a>
       </li>
       <li>
-        <a href="#division-commodity-info" id="division-commodity-tab" data-toggle="tab">CMDT(D)</a>
+        <a href="#division-commodity-info" title="CommodityWise Loading Division" id="division-commodity-tab" data-toggle="tab">CMDT(D)</a>
       </li>
       <li>
-        <a href="#rake-station-commodity-info" id="rake-station-commodity-tab" data-toggle="tab">Rake</a>
+        <a href="#rake-station-commodity-info" title="No of Rake Loading" id="rake-station-commodity-tab" data-toggle="tab">Rake</a>
       </li>
       <li>
         <a href="#loaded-unit-station-commodity-info" id="loaded-unit-station-commodity-tab" data-toggle="tab">Unit</a>
@@ -134,7 +134,8 @@
   var old_to_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
   $(".start_date_time").datepicker({
       format: 'dd-mm-yyyy',
-      autoclose: true
+      autoclose: true,
+      todayHighlight: true,
     }).on('change.dp', function (e) {
       if($("#end_date").val() != ""){
         date_validation();
@@ -142,10 +143,12 @@
         $("#submit_data").prop('disabled', false);
       }
     });
+    // $('#start_date').datepicker('setDate', 'today');
 
     $(".end_date_time").datepicker({
       format: 'dd-mm-yyyy',
-      autoclose: true
+      autoclose: true,
+      todayHighlight: true,
     }).on('change.dp', function (e) {
       if($("#start_date").val() != ""){
         date_validation();
@@ -194,5 +197,5 @@
   });
 
   
-
+ 
 </script>

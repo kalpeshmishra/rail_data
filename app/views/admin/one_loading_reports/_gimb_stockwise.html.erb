@@ -1,10 +1,6 @@
 <div class="tab-container" id="gimb_stockwise">
-<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-  <p style="font-size: 18px;color:red;">
-    Rake :<%=(@gimb_rake)%>&nbsp;
-    Unit :<%=(@gimb_loaded_unit)%>&nbsp;
-  </p>
-</div>
+<h3 align="center">Loading Unit StockWise (GIMB Area)</h3>
+<p id="gimb_stock_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="gimb-stockwise">
   <thead class="thead-dark">
@@ -24,7 +20,7 @@
       <%next unless key%>
       <%date = key%>
       <tr id=<%=date%>>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.gsub('2018', '18') rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d-%m-%y") rescue '' %></span></td>
         <%if key != "column_total"%>
           <%row_total = 0%>
           <%@gimb_stockwise_header.each do |label|%>
@@ -52,3 +48,12 @@
   </tbody>
 </table>
 </div>
+<script>
+  
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("gimb_stock_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+    
+  });
+</script>

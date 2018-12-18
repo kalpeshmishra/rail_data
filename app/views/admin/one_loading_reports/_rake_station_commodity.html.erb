@@ -1,6 +1,6 @@
 <div class="tab-container" id="rake_station_commodity">
 <h3 align="center">Loading Rake's Commodity and Station Wise</h3>
-<p style="font-size: 18px;color:#cc3d16;">ADI Area Rakes</p>
+<p id="rake_station_adi_heading" style="font-size: 18px;color:#cc3d16;">ADI Area Rakes</p>
 
 <table class="table hover table-condensed" id="adi-station-commodity">
   <thead class="thead-dark">
@@ -15,6 +15,7 @@
     </tr>
   </thead>
   <tbody>
+    <%adi_total= 0%>
     <%@adi_station_commodity_rake.merge!("column_total" => column_hash)%>
     <% @adi_station_commodity_rake.each do |key,value| %>
       <%next unless key%>
@@ -31,7 +32,6 @@
               <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
               <%row_total = row_total + total_loaded_unit%>
               <%column_hash[label] << total_loaded_unit%>
-              
             <%else%>
               <td class="text-center"><span class="view-location-<%= key %>"><%= "" %></span></td>
             <%end%>
@@ -41,6 +41,7 @@
         <%else%>
           <%value.each do |total_key,total_value|%>
             <td class="text-center" style="font-weight: bold;"><span class="view-location-<%= key %>"><%= total_value.sum%></span></td>
+          <%adi_total= adi_total + total_value.sum%>
           <%end%>
         <%end%>
       </tr>
@@ -48,7 +49,7 @@
   </tbody>
 </table>
 
-<p style="font-size: 18px;color:#cc3d16;">GIMB Area Rakes</p>
+<p id="rake_station_gimb_heading" style="font-size: 18px;color:#cc3d16;">GIMB Area Rakes</p>
 <table class="table hover table-condensed" id="gimb-station-commodity">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
@@ -92,6 +93,20 @@
         <%end%>
       </tr>
     <% end %>
+    <tr>
+      <td>DivnTTL</td>
+      <td><%=adi_total%></td>
+    </tr>
   </tbody>
 </table>
 </div>
+<script>
+  
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("rake_station_adi_heading").innerHTML+=" Period From: "+effective_from+" To: "+effective_to;
+    document.getElementById("rake_station_gimb_heading").innerHTML+=" Period From: "+effective_from+" To: "+effective_to;
+    
+  });
+</script>

@@ -15,7 +15,7 @@ class Admin::CustomReportsController < ApplicationController
 			commodity_list << [rake_load.major_commodity.id , rake_load.major_commodity.major_commodity]
 		end
 		@custom_station_list = station_list.compact.uniq 
-		@custom_commodity_list = commodity_list.compact.uniq 
+		@custom_commodity_list = commodity_list.compact.uniq.sort
 			
 
 
