@@ -1,6 +1,5 @@
-<%@custom_station_list.each do |station|%>
-$("#station-list").append('<option id="<%=station[0]%>" ><%=station[1]%></option>');
-<%end%>
-<%@custom_commodity_list.each do |commodity|%>
-$("#commodity-list").append('<option id="<%=commodity[0]%>" ><%=commodity[1]%></option>');
-<%end%>
+$("#station").empty();
+$("#station").html('<%= j render partial: 'station_list_filter', :locals => {:custom_station_list => @custom_station_list.map do |s| s[1] end} %>');
+$("#commodity").empty();
+$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list.map do |c| c[1] end} %>');
+

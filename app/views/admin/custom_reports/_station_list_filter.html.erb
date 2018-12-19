@@ -1,0 +1,17 @@
+<%= select_tag "station-list", options_for_select(custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm'} %>
+
+<script>
+    $(function () {
+        $('.primary-filters').multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            includeSelectAllOption: true,
+            buttonWidth: '100%',
+            buttonClass: 'btn btn-default',
+            numberDisplayed: 0
+        });
+    });
+
+   
+
+</script>

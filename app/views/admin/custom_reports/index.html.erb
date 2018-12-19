@@ -35,11 +35,14 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm' ,data_live_search: "true"} %>
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
+        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm'} %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {prompt: "Commodity", class: 'form-control input-md',style: "width: 100px;", data_live_search: "true"} %>
+      
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
+        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {class: 'primary-filters form-control input-md',style: "width: 100px;", } %>
       </div>
      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
@@ -81,7 +84,8 @@
 
     $(".start_date_time").datepicker({
       format: 'dd-mm-yyyy',
-      autoclose: true
+      autoclose: true,
+
     }).on('change.dp', function (e) {
       if($("#end_date").val() != ""){
         date_validation();
@@ -137,6 +141,8 @@
         });
 
     }
+
+
    
   });
 </script>
