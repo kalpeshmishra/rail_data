@@ -11,14 +11,13 @@ class Admin::CustomReportsController < ApplicationController
 		commodity_list = []
 		rake_load_data = RakeLoad.where(release_date: from_date..to_date)
 		rake_load_data.each do |rake_load|
-			station_list << [rake_load.load_unload.station.id , rake_load.load_unload.station.code]
-			commodity_list << [rake_load.major_commodity.id , rake_load.major_commodity.major_commodity]
+			station_list << [rake_load.load_unload.station.code,rake_load.load_unload_id ]
+			commodity_list << [rake_load.major_commodity.major_commodity, rake_load.major_commodity.id]
 		end
 		@custom_station_list = station_list.compact.uniq 
 		@custom_commodity_list = commodity_list.compact.uniq.sort
 			
-		
-
+		# binding.pry
 
   end
 

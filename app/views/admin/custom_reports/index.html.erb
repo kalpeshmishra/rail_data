@@ -1,12 +1,20 @@
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 180px;
+    overflow: auto;
+
+  }
+</style>
 <script>
     $(function () {
         $('.primary-filters-main-page').multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            includeSelectAllOption: true,
-            buttonWidth: '100%',
-            buttonClass: 'btn btn-default',
-            numberDisplayed: 0
+          enableFiltering: true,
+          enableCaseInsensitiveFiltering: true,
+          includeSelectAllOption: true,
+          buttonWidth: '100%',
+          buttonClass: 'btn btn-default',
+          numberDisplayed: 0
         });
     });
 

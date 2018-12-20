@@ -3,7 +3,7 @@ $("#commodity").empty();
 $("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_station_commodity_list} %>');
 <%else%>
 $("#station").empty();
-$("#station").html('<%= j render partial: 'station_list_filter', :locals => {:custom_station_list => @custom_station_list.map do |s| s[1] end} %>');
+$("#station").html('<%= j render partial: 'station_list_filter', :locals => {:custom_station_list => @custom_station_list} %>');
 $("#commodity").empty();
 $("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list} %>');
 <%end%>

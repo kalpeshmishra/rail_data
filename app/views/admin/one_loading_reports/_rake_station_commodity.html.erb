@@ -46,6 +46,7 @@
         <%end%>
       </tr>
     <% end %>
+    <%adi_rake_total = column_hash.values.map{|x| x.sum}%>
   </tbody>
 </table>
 
@@ -75,11 +76,9 @@
             <%next if label == "Total"%>
             <%if @gimb_station_commodity_rake[date][label].present?%>
               <%total_loaded_unit = @gimb_station_commodity_rake[date][label].map{|v|v.rake_count || 0}.sum%>
-
               <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
               <%row_total = row_total + total_loaded_unit%>
               <%column_hash[label] << total_loaded_unit%>
-              
             <%else%>
               <td class="text-center"><span class="view-location-<%= key %>"><%= "" %></span></td>
             <%end%>
@@ -93,9 +92,14 @@
         <%end%>
       </tr>
     <% end %>
+    <%gimb_rake_total = column_hash.values.map{|x| x.sum}%>
+    <%division_rake_total = [adi_rake_total,gimb_rake_total].transpose.map{|a| a.sum} %>
+    <tr> <td></td></tr>
     <tr>
-      <td>DivnTTL</td>
-      <td><%=adi_total%></td>
+      <td class="text-center" style="font-weight: bold;">DivnTTL</td>
+      <%division_rake_total.each do |division_total| %>
+          <td class="text-center" style="font-weight: bold;"><span class="view-location"><%= division_total%></span></td>
+      <% end %>
     </tr>
   </tbody>
 </table>
