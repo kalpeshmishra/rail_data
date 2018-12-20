@@ -1,33 +1,14 @@
-<%= select_tag "commodity-list", options_for_select(custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters form-control input-sm'} %>
+<%= select_tag "commodity-list", options_for_select(custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-second-page form-control input-sm'} %>
 
 <script>
-    $(function () {
-        $('.primary-filters').multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            includeSelectAllOption: true,
-            buttonWidth: '100%',
-            buttonClass: 'btn btn-default',
-            numberDisplayed: 0
-        });
+  $(function () {
+      $('.primary-filters-second-page').multiselect({
+      enableFiltering: true,
+      enableCaseInsensitiveFiltering: true,
+      includeSelectAllOption: true,
+      buttonWidth: '100%',
+      buttonClass: 'btn btn-default',
+      numberDisplayed: 0
     });
-
-    
-      // $("#station-list").on("focusout",function(){
-      //   debugger
-        
-      // });
-
-    
-
-    //    $(document).ready(function() {
-    //     $('#station-list').function({
-    //         onDropdownHide: function(event) {
-    //             alert('Dropdown closed.');
-    //         }
-    //     });
-    // });
-     
-   
-
+  });
 </script>

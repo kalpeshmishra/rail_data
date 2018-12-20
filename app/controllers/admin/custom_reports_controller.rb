@@ -17,6 +17,7 @@ class Admin::CustomReportsController < ApplicationController
 		@custom_station_list = station_list.compact.uniq 
 		@custom_commodity_list = commodity_list.compact.uniq.sort
 			
+		
 
 
   end

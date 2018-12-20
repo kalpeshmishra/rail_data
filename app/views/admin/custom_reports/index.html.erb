@@ -1,6 +1,6 @@
 <script>
     $(function () {
-        $('.primary-filters').multiselect({
+        $('.primary-filters-main-page').multiselect({
             enableFiltering: true,
             enableCaseInsensitiveFiltering: true,
             includeSelectAllOption: true,
@@ -37,12 +37,12 @@
       </div>
       
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
-        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm'} %>
+        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       
       
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
-        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {class: 'primary-filters form-control input-md',style: "width: 100px;", } %>
+        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >

@@ -1,16 +1,28 @@
-<%= select_tag "station-list", options_for_select(custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm'} %>
+<%= select_tag "station-list", options_for_select(custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters-second-page form-control input-sm'} %>
 
 <script>
-    $(function () {
-        $('.primary-filters').multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            includeSelectAllOption: true,
-            buttonWidth: '100%',
-            buttonClass: 'btn btn-default',
-            numberDisplayed: 0
-        });
+  count = 0
+  $(document).ready(function() {
+    $('#station-list').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_stations = $('#station-list').val();
+          effective_from = $("#start_date").val();
+          effective_to = $("#end_date").val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_reports.js?selected_stations=" + selected_stations + "&is_station_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+          });
+        }
     });
+  });
+
+  
 
    
 
