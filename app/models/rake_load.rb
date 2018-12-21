@@ -305,25 +305,58 @@ after_destroy :remove_rake_commodity_breakup_data
          
   end
 
-
+  def self.get_custom_report_loading(rake_load)
+    data_hash = {}
+    rake_load.each do |data|
+      release_date = data.release_date.strftime("%d-%m-%Y")
+      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+      major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      
+      if data.release_date.present?
+        if data_hash[release_date].present?
+          if data_hash[release_date].keys.include?(load_unload_code)
+            # binding.pry
+            # data_hash[release_date][load_unload_code] << data
+              temp = data_hash[release_date][load_unload_code]
+              data_hash[release_date][load_unload_code] = Hash[temp.map {|key, value| [key, value]}]
+            if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+              data_hash[release_date][load_unload_code][major_commodity_code] << data
+              # binding.pry
+            else
+              # binding.pry
+              # data_hash[release_date][load_unload_code] = {}
+              temp = data_hash[release_date][load_unload_code]
+              data_hash[release_date][load_unload_code] = Hash[temp.map {|key, value| [key, value]}]
+              data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
+            end
+          else
+            data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          end
+        else
+          data_hash[release_date] = {}
+          data_hash[release_date].merge!("#{load_unload_code}" => [data])
+        end
+      end
+    end
+    # binding.pry
+  end
 
   def self.get_stationwise_loading(rake_load)
     data_hash = {}
     rake_load.each do |data|
-    release_date = data.release_date.strftime("%d-%m-%Y")
-    load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+      release_date = data.release_date.strftime("%d-%m-%Y")
+      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
 
       if data.release_date.present?
         if data_hash[release_date].present?
-
-         if data_hash[release_date].keys.include?(load_unload_code)
-           data_hash[release_date][load_unload_code] << data
-         else
-           data_hash[release_date].merge!("#{load_unload_code}" => [data])
-         end
+          if data_hash[release_date].keys.include?(load_unload_code)
+            data_hash[release_date][load_unload_code] << data
+          else
+            data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          end
         else
-         data_hash[release_date] = {}
-         data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          data_hash[release_date] = {}
+          data_hash[release_date].merge!("#{load_unload_code}" => [data])
         end
       end
     end
@@ -384,12 +417,11 @@ after_destroy :remove_rake_commodity_breakup_data
 
       if data.release_date.present?
         if data_hash[release_date].present?
-
-         if data_hash[release_date].keys.include?(commodity_code)
-           data_hash[release_date][commodity_code] << data
-         else
-           data_hash[release_date].merge!("#{commodity_code}" => [data])
-         end
+          if data_hash[release_date].keys.include?(commodity_code)
+            data_hash[release_date][commodity_code] << data
+          else
+            data_hash[release_date].merge!("#{commodity_code}" => [data])
+          end
         else
          data_hash[release_date] = {}
          data_hash[release_date].merge!("#{commodity_code}" => [data])

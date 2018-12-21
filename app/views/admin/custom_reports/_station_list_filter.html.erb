@@ -3,6 +3,7 @@
 <script>
   count = 0
   $(document).ready(function() {
+    
     $('#station-list').multiselect({
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true,
@@ -19,6 +20,10 @@
             url: "/admin/custom_reports.js?selected_stations=" + selected_stations + "&is_station_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
           });
         }
+    });
+
+    $('#station-list').on("change",function(){
+      $("#submit_error_msg").css('display','none');
     });
   });
 

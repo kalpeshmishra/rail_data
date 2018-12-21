@@ -3,7 +3,7 @@
 
 <script>
   $(function () {
-      $('.primary-filters-second-page').multiselect({
+    $('.primary-filters-second-page').multiselect({
       enableFiltering: true,
       enableCaseInsensitiveFiltering: true,
       includeSelectAllOption: true,
@@ -12,5 +12,9 @@
       numberDisplayed: 0,
       
     });
+    $('#commodity-list').on("change",function(){
+      $("#submit_error_msg").css('display','none');
+    });
+
   });
 </script>
