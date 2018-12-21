@@ -307,38 +307,73 @@ after_destroy :remove_rake_commodity_breakup_data
 
   def self.get_custom_report_loading(rake_load)
     data_hash = {}
+    date_array = []
     rake_load.each do |data|
       release_date = data.release_date.strftime("%d-%m-%Y")
+      date_array << release_date
       load_unload_code = LoadUnload.find(data.load_unload_id).station.code
       major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      puts "=========#{release_date}=======#{load_unload_code}==#{major_commodity_code} ========="
       
-      if data.release_date.present?
-        if data_hash[release_date].present?
-          if data_hash[release_date].keys.include?(load_unload_code)
-            # binding.pry
-            # data_hash[release_date][load_unload_code] << data
-              temp = data_hash[release_date][load_unload_code]
-              data_hash[release_date][load_unload_code] = Hash[temp.map {|key, value| [key, value]}]
-            if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
-              data_hash[release_date][load_unload_code][major_commodity_code] << data
-              # binding.pry
-            else
-              # binding.pry
-              # data_hash[release_date][load_unload_code] = {}
-              temp = data_hash[release_date][load_unload_code]
-              data_hash[release_date][load_unload_code] = Hash[temp.map {|key, value| [key, value]}]
-              data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
-            end
+      if data.release_date.present? and data_hash[release_date].present?
+        load_unload_data = {"load_unload" => [data]}
+        data_hash[release_date].merge!("#{load_unload_code}" => load_unload_data)
+          if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+                data_hash[release_date][load_unload_code][major_commodity_code] << data
           else
-            data_hash[release_date].merge!("#{load_unload_code}" => [data])
+            data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
           end
+      else
+        data_hash[release_date] = {}
+        load_unload_data = {"load_unload" => [data]}
+        data_hash[release_date].merge!("#{load_unload_code}" => load_unload_data)
+          if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+            data_hash[release_date][load_unload_code][major_commodity_code] << data
+          else
+            data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
+          end
+      end
+
+      # if data.release_date.present?
+      #   if data_hash[release_date].present?
+      #     binding.pry
+      #     if data_hash[release_date].keys.include?(load_unload_code)
+      #      if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+      #         data_hash[release_date][load_unload_code][major_commodity_code] << data
+      #       else
+      #         data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
+      #       end
+      #     else
+      #       binding.pry
+      #       load_unload_data = {"load_unload" => [data]}
+      #       data_hash[release_date].merge!("#{load_unload_code}" => load_unload_data)
+      #     end
+      #   else
+      #     binding.pry
+      #     data_hash[release_date] = {}
+      #     load_unload_data = {"load_unload" => [data]}
+      #     data_hash[release_date].merge!("#{load_unload_code}" => load_unload_data)
+      #   end
+      # end
+      # binding.pry
+    end
+    
+    date_array = date_array.uniq
+    header_hash = {}
+    date_array.each do |date|
+      data_hash[date].keys.each do |key|
+        if header_hash[key].present?
+          data = data_hash[date][key].keys.map{|x|x unless x == "load_unload"}.compact.flatten.uniq
+          data = header_hash[key][:header] + data
+          header_hash[key][:header] = []
+          header_hash[key][:header] = data.compact.flatten.uniq
         else
-          data_hash[release_date] = {}
-          data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          data = data_hash[date][key].keys.map{|x|x unless x == "load_unload"}.compact.flatten.uniq
+          header_hash[key] = {header: data}
         end
       end
     end
-    # binding.pry
+    return {data_hash: data_hash,header_hash: header_hash }
   end
 
   def self.get_stationwise_loading(rake_load)
