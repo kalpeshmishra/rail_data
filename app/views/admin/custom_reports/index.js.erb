@@ -7,3 +7,5 @@ $("#station").html('<%= j render partial: 'station_list_filter', :locals => {:cu
 $("#commodity").empty();
 $("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list} %>');
 <%end%>
+$("#custom_reports").remove('');
+$("#custom_reports_form").html('<%= j render 'custom_reports'%>');

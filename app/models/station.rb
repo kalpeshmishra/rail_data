@@ -136,7 +136,7 @@ class Station < ApplicationRecord
       if r.save
       else
         error_rakeunload << rakeunload
-        binding.pry
+        # binding.pry
       end
       
     end
