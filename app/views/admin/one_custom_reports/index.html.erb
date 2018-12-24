@@ -1,7 +1,7 @@
 <style>
   ul.dropdown-menu {
     width: 200px;
-    max-height: 180px;
+    max-height: 200px;
     overflow: auto;
 
   }
@@ -34,7 +34,7 @@
     <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
     <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
   </div>
-  <table class="table hover table-dark" id="custom-reports">
+  <table class="table hover table-dark" id="one-custom-reports">
     <caption>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         <span class="pull-left lead-text">
@@ -47,11 +47,8 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
-        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters-main-page form-control input-sm'} %>
-      </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
-        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <%= select_tag "commodity-list", options_for_select(@one_custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
@@ -60,7 +57,7 @@
     </caption>
   </table>
       
-      <div id="custom_reports_form"></div>
+      <div id="one_custom_reports_form"></div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
@@ -117,18 +114,18 @@
         $("#date_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
         $("#submit_error_msg").css('display','none');  
-        station_commodity_data();
+        commodity_data();
 
       }
 
     }
 
-    function station_commodity_data(){
+    function commodity_data(){
       effective_from = $("#start_date").val();
       effective_to = $("#end_date").val();
         $.ajax({
           type: "get",
-          url: "/admin/custom_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
+          url: "/admin/one_custom_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
         });
 
     }
@@ -136,13 +133,12 @@
     $(".submit").on("click",function(){
       effective_from = $("#start_date").val();
       effective_to = $("#end_date").val();
-      selected_stations = $('#station-list').val();
       selected_commodity = $('#commodity-list').val();
       
-      if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
+      if (effective_from != "" && effective_to!="" && selected_commodity != null) {
         $.ajax({
             type: "get",
-            url: "/admin/custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+            url: "/admin/one_custom_reports.js?selected_commodity="+selected_commodity+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
         });
       }
       else{

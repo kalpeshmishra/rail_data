@@ -1,0 +1,2 @@
+module Admin::OneCustomReportsHelper
+end

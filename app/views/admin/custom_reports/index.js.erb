@@ -1,11 +1,12 @@
-<%if params[:is_station_filter].present?%>
-$("#commodity").empty();
-$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_station_commodity_list} %>');
-<%else%>
-$("#station").empty();
-$("#station").html('<%= j render partial: 'station_list_filter', :locals => {:custom_station_list => @custom_station_list} %>');
-$("#commodity").empty();
-$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list} %>');
+<%if params[:is_data_filter].blank?%>
+	<%if params[:is_station_filter].present?%>
+	$("#commodity").empty();
+	$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_station_commodity_list} %>');
+	<%else%>
+	$("#station").empty();
+	$("#station").html('<%= j render partial: 'station_list_filter', :locals => {:custom_station_list => @custom_station_list} %>');
+	$("#commodity").empty();
+	$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list} %>');
 <%end%>
-$("#custom_reports").remove('');
+<%end%>
 $("#custom_reports_form").html('<%= j render 'custom_reports'%>');

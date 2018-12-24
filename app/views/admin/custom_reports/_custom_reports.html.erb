@@ -1,44 +1,55 @@
-<div class="tab-container" id="custom_reports">
-<h3 align="center">Loading Unit Station Wise (ADI Area)</h3>
+<div id="custom_reports">
+<h3 align="center">Loading Data Station-Commodity Wise </h3>
 <p id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="custom-reports">
   <thead class="thead-dark">
-    <tr  style="color: #fff; background: #4B4B4D;">
-      <%column_hash = {}%>
-      <%puts @custom_report_header_hash%>
+    <tr style="color: #fff; background: #4B4B4D;">
       <%if @custom_report_header_hash.present?%>
         <%header = ["Date"] + @custom_report_header_hash.keys%>
-        <%header.each do |label| %>
-          <%colspan = @custom_report_header_hash[label].present? ? @custom_report_header_hash[label][:header].count : 1%>
-
-          <th style="vertical-align: middle;" colspan="<%=colspan%>"><%=label%></th>
+        <%header.each do |station| %>
+          <%colspan = @custom_report_header_hash[station].present? ? @custom_report_header_hash[station][:header].count : 1%>
+          <th style="vertical-align: middle;" colspan="<%=colspan%>"><%=station%></th>
         <%end%>
       <%end%>
     </tr>
-
     <tr  style="color: #fff; background: #4B4B4D;">
-      <%column_hash = {}%>
-      <%puts @custom_report_header_hash%>
       <%if @custom_report_header_hash.present?%>
-        <%header.each do |label| %>
-          <%if @custom_report_header_hash[label].present?%>
-            <%@custom_report_header_hash[label][:header].each do |child_label|%>
-              <td style="vertical-align: middle;"><%=child_label%></td>
+        <%header.each do |station| %>
+          <%if @custom_report_header_hash[station].present?%>
+            <%@custom_report_header_hash[station][:header].each do |commodity|%>
+              <th style="vertical-align: middle;"><%=commodity%></th>
             <%end%>
           <%else%>
-            <td style="vertical-align: middle;"></td>
+            <th style="vertical-align: middle;"></th>
           <%end%>
-          
-          
         <%end%>
       <%end%>
     </tr>
-
-
   </thead>
   <tbody>
-    
+    <%if @custom_report_data_hash.present? && @custom_report_header_hash.present?%>
+      <% @custom_report_data_hash.each do |date,value| %>
+        <tr id=<%=date%>>
+          <td class="text-center"><span class="view-location-<%= date %>"><%=date.to_date.strftime("%d-%m-%y")%></td>
+            <%station = @custom_report_header_hash.keys%>
+            <%station.each do |station|%>
+              <%if @custom_report_data_hash[date][station].present?%>
+                <%@custom_report_header_hash[station][:header].each do |commodity|%>
+                  <%if @custom_report_data_hash[date][station][commodity].present?%> 
+                    <%total_loaded_unit = @custom_report_data_hash[date][station][commodity].map{|v| v.loaded_unit || 0}.sum%>  
+                    <td class="text-center" id="<%=station%>-<%=commodity%>"><%= total_loaded_unit rescue '' %></td>
+                  <%else%>
+                    <td class="text-center" id="<%=station-%><%=commodity%>"><%= "" %></td>  
+                  <% end %>  
+                <% end %>
+              <%else%>
+                    <td class="text-center" id="<%=station-%>"><%= "" %></td>     
+              <% end %>
+            <% end %>
+        </tr>
+      <% end %>
+    <% end %>  
   </tbody>
 </table>
 </div>
