@@ -20,7 +20,7 @@
       <%next unless key%>
       <%date = key%>
       <tr id=<%=date%>>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d-%m-%y") rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></span></td>
         <%if key != "column_total"%>
           <%row_total = 0%>
           <%@gimb_commodity_header.each do |label|%>

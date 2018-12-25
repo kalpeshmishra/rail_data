@@ -11,6 +11,12 @@
 </style>
 <script>
     $(function () {
+
+      $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue'
+        });
+
         $('.primary-filters-main-page').multiselect({
           enableFiltering: true,
           enableCaseInsensitiveFiltering: true,
@@ -52,6 +58,11 @@
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
         <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
+
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="odr_type">
+         <label class="odr-selection-label"><%= check_box_tag("odr_type", 'odr_type', false, class: 'icheck-odr') %> &nbsp;&nbsp;&nbsp;ODR Type</label>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
@@ -132,13 +143,20 @@
         });
 
     }
+    if($('#odr_type').is(':checked')){}
+    else{ }
 
     $(".submit").on("click",function(){
       effective_from = $("#start_date").val();
       effective_to = $("#end_date").val();
       selected_stations = $('#station-list').val();
       selected_commodity = $('#commodity-list').val();
-      
+      // if($('.icheck-odr').is(':checked')){
+      //  odr_type_selected = true
+      // }else{
+      //   odr_type_selected = false
+      // }
+      odr_type_selected = $('.icheck-odr').is(':checked') ? true : false
       if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
         $.ajax({
             type: "get",

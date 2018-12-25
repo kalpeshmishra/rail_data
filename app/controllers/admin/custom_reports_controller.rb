@@ -19,9 +19,11 @@ class Admin::CustomReportsController < ApplicationController
 			
 		if params[:is_station_filter].present? and params[:selected_stations].present?
      	load_and_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
-     	@custom_station_commodity_list = load_and_unload_ids.map{|load_unload_id| MajorCommodity.find(rake_load_data.find_by(load_unload_id: load_unload_id).major_commodity_id) rescue nil}
-     	@custom_station_commodity_list = @custom_station_commodity_list.map{|x| [x.major_commodity,x.id]}.uniq
-		end
+     	# @custom_station_commodity_list = load_and_unload_ids.map{|load_unload_id| MajorCommodity.find(rake_load_data.find_by(load_unload_id: load_unload_id).major_commodity_id) rescue nil}
+      @custom_station_commodity_list = load_and_unload_ids.uniq.map{|load_unload_id| MajorCommodity.find(rake_load_data.where(load_unload_id: load_unload_id).map{|maj_comm|maj_comm.major_commodity_id}) rescue nil}.flatten
+      @custom_station_commodity_list = @custom_station_commodity_list.map{|x| [x.major_commodity,x.id]}.uniq
+		  
+    end
 
 		if params[:is_data_filter].present?
 			load_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}

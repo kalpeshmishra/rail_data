@@ -29,22 +29,25 @@
   </thead>
   <tbody>
     <%if @custom_report_data_hash.present? && @custom_report_header_hash.present?%>
+    
       <% @custom_report_data_hash.each do |date,value| %>
         <tr id=<%=date%>>
-          <td class="text-center"><span class="view-location-<%= date %>"><%=date.to_date.strftime("%d-%m-%y")%></td>
+          <td class="text-center -<%= date %>"><%=date.to_date.strftime("%d/%m/%y")%></td>
             <%station = @custom_report_header_hash.keys%>
             <%station.each do |station|%>
               <%if @custom_report_data_hash[date][station].present?%>
                 <%@custom_report_header_hash[station][:header].each do |commodity|%>
                   <%if @custom_report_data_hash[date][station][commodity].present?%> 
                     <%total_loaded_unit = @custom_report_data_hash[date][station][commodity].map{|v| v.loaded_unit || 0}.sum%>  
-                    <td class="text-center" id="<%=station%>-<%=commodity%>"><%= total_loaded_unit rescue '' %></td>
+                    <td class="text-center <%=station%>-<%=commodity%>"><%= total_loaded_unit rescue '' %></td>
                   <%else%>
-                    <td class="text-center" id="<%=station-%><%=commodity%>"><%= "" %></td>  
+                    <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
                   <% end %>  
                 <% end %>
               <%else%>
-                    <td class="text-center" id="<%=station-%>"><%= "" %></td>     
+                <%@custom_report_header_hash[station][:header].each do |commodity|%>
+                  <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
+                <%end%>   
               <% end %>
             <% end %>
         </tr>

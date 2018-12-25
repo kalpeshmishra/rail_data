@@ -48,7 +48,8 @@
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
-        <%= select_tag "commodity-list", options_for_select(@one_custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <%data_value = [["SALT", "SALT"], ["SODA", "SODA"], ["FERT", "FERT"], ["CONT", "CONT"], ["CEMT", "CEMT"], ["BPOW", "BPOW"], ["COAL", "COAL"], ["GAS", "GAS"], ["RMC", "RMC"], ["FG", "FG"]]%>
+        <%= select_tag "commodity-list", options_for_select(data_value), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
