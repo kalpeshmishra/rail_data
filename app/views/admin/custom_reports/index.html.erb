@@ -157,11 +157,18 @@
       //   odr_type_selected = false
       // }
       odr_type_selected = $('.icheck-odr').is(':checked') ? true : false
+      if (odr_type_selected == true){
+        odr_selected = 1
+      } 
+      else{
+        odr_selected = 2
+      } 
       if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
         $.ajax({
             type: "get",
-            url: "/admin/custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+            url: "/admin/custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+"&odr_selected="+odr_selected+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
         });
+        
       }
       else{
         $("#submit_error_msg").css('display','');

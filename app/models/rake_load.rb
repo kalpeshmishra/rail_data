@@ -305,7 +305,8 @@ after_destroy :remove_rake_commodity_breakup_data
          
   end
 
-  def self.get_custom_report_loading(rake_load)
+  def self.get_custom_report_loading(rake_load , odr_selected)
+    
     data_hash = {}
     date_array = []
     rake_load.each do |data|
@@ -313,13 +314,13 @@ after_destroy :remove_rake_commodity_breakup_data
       date_array << release_date
       load_unload_code = LoadUnload.find(data.load_unload_id).station.code
       major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
-      puts "=========#{release_date}=======#{load_unload_code}==#{major_commodity_code} ========="
-      # binding.pry
+      odr_type = data.odr_type
+      
       if data.release_date.present? and data_hash[release_date].present?
         load_unload_data = {"load_unload" => [data]}
         data_hash[release_date].merge!("#{load_unload_code}" => load_unload_data) if data_hash[release_date][load_unload_code].blank?
           if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
-                data_hash[release_date][load_unload_code][major_commodity_code] << data
+            data_hash[release_date][load_unload_code][major_commodity_code] << data
           else
             data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
           end
@@ -333,7 +334,7 @@ after_destroy :remove_rake_commodity_breakup_data
             data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => [data])
           end
       end
-
+    binding.pry
       
     end
     
