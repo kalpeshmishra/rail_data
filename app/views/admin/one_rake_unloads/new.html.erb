@@ -49,15 +49,16 @@
   <div id="client-message"></div>
   <table class="table hover table-dark" id="one_rake_unload-ldng">
     <caption>
-      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
           <span class="pull-left lead-text">
             One Un-Rake Loading 
           </span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <%= text_field_tag "rake_unload_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
-
-        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
       </div>
   </caption>
   </table>
@@ -72,7 +73,12 @@
           autoclose: true, 
           format:"dd/mm/yyyy",
           todayHighlight: true,
-    }).on('change', function(){
+    });
+
+    $('#datepicker').datepicker('setDate', 'today');
+    
+  });
+  $(".submit").click(function () {
 
       effective_from = $("#datepicker").val();
       if(old_date != effective_from){
@@ -84,10 +90,6 @@
         old_date = effective_from 
 
       }
-    });
-    
-    $('#datepicker').datepicker('setDate', 'today');
-    
   });
   
 

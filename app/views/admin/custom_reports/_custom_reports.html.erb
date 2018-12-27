@@ -28,17 +28,31 @@
     </tr>
   </thead>
   <tbody>
+    <%b = {}%>
     <%if @custom_report_data_hash.present? && @custom_report_header_hash.present?%>
-    
+      <%total_hash = {}%>
+      <%@custom_report_data_hash.merge!("total_hash" => total_hash)%>
       <% @custom_report_data_hash.each do |date,value| %>
         <tr id=<%=date%>>
-          <td class="text-center -<%= date %>"><%=date.to_date.strftime("%d/%m/%y")%></td>
-            <%station = @custom_report_header_hash.keys%>
-            <%station.each do |station|%>
+          <td class="text-center -<%= date %>"><%= (date == "total_hash") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></td>
+          <%station = @custom_report_header_hash.keys%>
+          <%station.each do |station|%>
+            <%if date != "total_hash"%>
               <%if @custom_report_data_hash[date][station].present?%>
                 <%@custom_report_header_hash[station][:header].each do |commodity|%>
                   <%if @custom_report_data_hash[date][station][commodity].present?%> 
-                    <%total_loaded_unit = @custom_report_data_hash[date][station][commodity].map{|v| v.loaded_unit || 0}.sum%>  
+                    <%total_loaded_unit = @custom_report_data_hash[date][station][commodity].map{|v| v.loaded_unit || 0}.sum%>
+                    <%total_loaded_unit = 0 if total_loaded_unit.blank?%>  
+                    <%if total_hash[station].present?%>
+                      <%if total_hash[station].keys.include?(commodity)%>
+                        <%total_hash[station][commodity] << total_loaded_unit%>
+                      <%else%>
+                        <%total_hash[station].merge!("#{commodity}" => [total_loaded_unit])%>
+                      <%end%>
+                    <%else%>
+                      <%total_hash[station] = {}%>
+                      <%total_hash[station].merge!("#{commodity}" => [total_loaded_unit])%>
+                    <%end%>
                     <td class="text-center <%=station%>-<%=commodity%>"><%= total_loaded_unit rescue '' %></td>
                   <%else%>
                     <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
@@ -49,10 +63,15 @@
                   <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
                 <%end%>   
               <% end %>
-            <% end %>
+            <%else%>
+              <%total_hash[station].keys.each do |commodity|%>
+                <td class="text-center <%=station%>-<%=commodity%>" style="font-weight: bold;"><%= total_hash[station][commodity].sum%></td>
+              <%end%>  
+            <% end %>  
+          <% end %>
         </tr>
       <% end %>
-    <% end %>  
+    <% end %>
   </tbody>
 </table>
 </div>
