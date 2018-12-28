@@ -5,19 +5,19 @@
 <table class="table hover table-bordered" id="custom-reports">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      <%if @custom_report_header_hash.present?%>
-        <%header = ["Date"] + @custom_report_header_hash.keys%>
+      <%if @custom_report_header.present?%>
+        <%header = ["Date"] + @custom_report_header.keys%>
         <%header.each do |station| %>
-          <%colspan = @custom_report_header_hash[station].present? ? @custom_report_header_hash[station][:header].count : 1%>
+          <%colspan = @custom_report_header[station].present? ? @custom_report_header[station][:header].count : 1%>
           <th style="vertical-align: middle;" colspan="<%=colspan%>"><%=station%></th>
         <%end%>
       <%end%>
     </tr>
     <tr  style="color: #fff; background: #4B4B4D;">
-      <%if @custom_report_header_hash.present?%>
+      <%if @custom_report_header.present?%>
         <%header.each do |station| %>
-          <%if @custom_report_header_hash[station].present?%>
-            <%@custom_report_header_hash[station][:header].each do |commodity|%>
+          <%if @custom_report_header[station].present?%>
+            <%@custom_report_header[station][:header].each do |commodity|%>
               <th style="vertical-align: middle;"><%=commodity%></th>
             <%end%>
           <%else%>
@@ -28,47 +28,51 @@
     </tr>
   </thead>
   <tbody>
-    <%b = {}%>
-    <%if @custom_report_data_hash.present? && @custom_report_header_hash.present?%>
+    <%if @custom_report_data.present? && @custom_report_header.present?%>
+      <%@total_loaded_unit =[]%>
       <%total_hash = {}%>
-      <%@custom_report_data_hash.merge!("total_hash" => total_hash)%>
-      <% @custom_report_data_hash.each do |date,value| %>
+      <%@custom_report_data.merge!("total_hash" => total_hash)%>
+      <% @custom_report_data.each do |date,value| %>
         <tr id=<%=date%>>
           <td class="text-center -<%= date %>"><%= (date == "total_hash") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></td>
-          <%station = @custom_report_header_hash.keys%>
+          <%station = @custom_report_header.keys%>
           <%station.each do |station|%>
             <%if date != "total_hash"%>
-              <%if @custom_report_data_hash[date][station].present?%>
-                <%@custom_report_header_hash[station][:header].each do |commodity|%>
-                  <%if @custom_report_data_hash[date][station][commodity].present?%> 
-                    <%total_loaded_unit = @custom_report_data_hash[date][station][commodity].map{|v| v.loaded_unit || 0}.sum%>
-                    <%total_loaded_unit = 0 if total_loaded_unit.blank?%>  
-                    <%if total_hash[station].present?%>
-                      <%if total_hash[station].keys.include?(commodity)%>
-                        <%total_hash[station][commodity] << total_loaded_unit%>
-                      <%else%>
-                        <%total_hash[station].merge!("#{commodity}" => [total_loaded_unit])%>
-                      <%end%>
-                    <%else%>
-                      <%total_hash[station] = {}%>
-                      <%total_hash[station].merge!("#{commodity}" => [total_loaded_unit])%>
+              <%if @custom_report_data[date][station].present?%>
+                <%@custom_report_header[station][:header].each do |commodity|%>
+                  <%if @custom_report_data[date][station][commodity].present?%> 
+                    <%@custom_report_data[date][station][commodity].keys.each do |odr|%>
+                      <%loaded_unit = @custom_report_data[date][station][commodity][odr].map{|v| v.loaded_unit || 0}.sum%>
+                      <%@total_loaded_unit << loaded_unit%>
                     <%end%>
-                    <td class="text-center <%=station%>-<%=commodity%>"><%= total_loaded_unit rescue '' %></td>
+                      <%@total_loaded_unit = 0 if @total_loaded_unit.blank?%>  
+                      <%if total_hash[station].present?%>
+                        <%if total_hash[station].keys.include?(commodity)%>
+                          <%total_hash[station][commodity] << @total_loaded_unit%>
+                        <%else%>
+                          <%total_hash[station].merge!("#{commodity}" => [@total_loaded_unit])%>
+                        <%end%>
+                      <%else%>
+                        <%total_hash[station] = {}%>
+                        <%total_hash[station].merge!("#{commodity}" => [@total_loaded_unit])%>
+                      <%end%>
+                      <td class="text-center <%=station%>-<%=commodity%>"><%= @total_loaded_unit.sum rescue '' %></td>
+                      <%@total_loaded_unit = []%>
                   <%else%>
                     <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
                   <% end %>  
                 <% end %>
               <%else%>
-                <%@custom_report_header_hash[station][:header].each do |commodity|%>
+                <%@custom_report_header[station][:header].each do |commodity|%>
                   <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
                 <%end%>   
-              <% end %>
+              <%end%>
             <%else%>
               <%total_hash[station].keys.each do |commodity|%>
-                <td class="text-center <%=station%>-<%=commodity%>" style="font-weight: bold;"><%= total_hash[station][commodity].sum%></td>
+                <td class="text-center <%=station%>-<%=commodity%>" style="font-weight: bold;"><%= total_hash[station][commodity].flatten.sum%></td>
               <%end%>  
-            <% end %>  
-          <% end %>
+            <%end%>
+          <%end%>
         </tr>
       <% end %>
     <% end %>

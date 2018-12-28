@@ -9,4 +9,8 @@
 	$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @custom_commodity_list} %>');
 <%end%>
 <%end%>
-$("#custom_reports_form").html('<%= j render 'custom_reports'%>');
+<%if params[:odr_selected].to_i == 1%>
+	$("#custom_reports_form").html('<%= j render 'custom_reports_with_odr'%>');
+<%else%>
+	$("#custom_reports_form").html('<%= j render 'custom_reports'%>');
+<%end%>

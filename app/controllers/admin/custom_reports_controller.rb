@@ -31,10 +31,11 @@ class Admin::CustomReportsController < ApplicationController
 			custom_rake_load_data = rake_load_data.where(load_unload_id: load_unload_ids,major_commodity_id: major_commodity_ids)
 			
 			custom_data_hash = RakeLoad.get_custom_report_loading(custom_rake_load_data,odr_selected)
-      @custom_report_data_hash = custom_data_hash[:data_hash]
-      @custom_report_header_hash = custom_data_hash[:header_hash]
-			
-			
+      
+      @custom_report_data = custom_data_hash[:data_hash]
+      @custom_report_header = custom_data_hash[:header_hash]
+      
+
 		end
 
   end
