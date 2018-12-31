@@ -34,7 +34,7 @@ class Admin::CustomReportsController < ApplicationController
       
       @custom_report_data = custom_data_hash[:data_hash]
       @custom_report_header = custom_data_hash[:header_hash]
-      
+      @custom_report_header_with_odr = custom_data_hash[:header_hash_with_odr]
 
 		end
 

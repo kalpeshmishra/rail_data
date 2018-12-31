@@ -82,17 +82,17 @@
     });
 
     $('#datepicker').datepicker('setDate', 'today');
-    
+
   });
-
   $(".submit").click(function () {
-
+      
       effective_from = $("#datepicker").val();
         $.ajax({
           type: "get",
           url: "/admin/one_rake_loads/new.js?data=" + effective_from
-        old_date = effective_from 
       });
+        old_date = effective_from 
   });
+  
 
 </script>

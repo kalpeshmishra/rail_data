@@ -57,9 +57,11 @@
       <li class="">
         <a <%= "href=#{new_admin_rake_load_path}"%> title="Loading-One"><span>RakeLoading</span></a>
       </li>
-      <li class="">
-        <a <%= "href=#{new_admin_one_rake_load_path}"%> title="RakeLoadingOne"><span>RakeLoadingOne</span></a>
-      </li>
+      <%if is_one_rake_load_applicable%>
+        <li class="">
+          <a <%= "href=#{new_admin_one_rake_load_path}"%> title="RakeLoadingOne"><span>RakeLoadingOne</span></a>
+        </li>
+      <%end%>
       <li class="">
         <a <%= "href=#{new_admin_two_rake_load_path}"%> title="RakeLoadingTwo"><span>RakeLoadingTwo</span></a>
       </li>

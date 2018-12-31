@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     if current_user.present? and current_user.admin?
       new_admin_rake_load_path
     else
-      admin_rake_loads_path
+      root_path
     end
   end
 

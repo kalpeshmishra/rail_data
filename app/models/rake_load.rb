@@ -363,34 +363,21 @@ after_destroy :remove_rake_commodity_breakup_data
       end
     end
 
+    total = 0
     header_hash_with_odr = {}
     date_array.each do |date|
       data_hash[date].each do |station,value|
-        # binding.pry
-          header_hash_with_odr[station] = {}  
-        # binding.pry
-        if header_hash_with_odr[station].present?
-        #   # data = data_hash[date][key].keys.map{|x|x}.compact.flatten.uniq
-        #   # data = header_hash_with_odr[key][:header] + data
-        #   # header_hash_with_odr[key][:header] = []
-        #   # header_hash_with_odr[key][:header] = data.compact.flatten.uniq
-        else
-          # commodity = data_hash[date][station].keys.map{|x|x }.compact.flatten.uniq
-          # binding.pry
-          # com = value.keys
-          commodity = value.keys[0]
-          header_hash_with_odr[station].merge!("#{commodity}" =>  {})
+        header_hash_with_odr[station] = {} if header_hash_with_odr[station].blank?
+        value.keys.each do |commodity|
+          header_hash_with_odr[station].merge!("#{commodity}" =>  {}) if header_hash_with_odr[station].keys.exclude?(commodity)
           value[commodity].keys.each do |odr|
-            header_hash_with_odr[station][commodity].merge!("#{odr}" =>  "")
+            header_hash_with_odr[station][commodity].merge!("#{odr}" =>  "") 
           end
         end
-        old_date = station
-        # binding.pry
       end
-      # binding.pry
     end
-      
-    return {data_hash: data_hash,header_hash: header_hash }
+     
+    return {data_hash: data_hash,header_hash: header_hash, header_hash_with_odr: header_hash_with_odr}
   end
 
   def self.get_stationwise_loading(rake_load)
