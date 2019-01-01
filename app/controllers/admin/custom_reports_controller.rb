@@ -33,6 +33,7 @@ class Admin::CustomReportsController < ApplicationController
 			custom_data_hash = RakeLoad.get_custom_report_loading(custom_rake_load_data,odr_selected)
       
       @custom_report_data = custom_data_hash[:data_hash]
+      @custom_report_data = @custom_report_data.sort.to_h
       @custom_report_header = custom_data_hash[:header_hash]
       @custom_report_header_with_odr = custom_data_hash[:header_hash_with_odr]
 

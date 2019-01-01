@@ -60,31 +60,56 @@
           <td class="text-center -<%= date %>"><%= (date == "total_hash") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></td>
           <%station = @custom_report_header_with_odr.keys%>
           <%station.each do |station|%>
-            <%if @custom_report_data[date][station].present?%>
+            <%if date != "total_hash"%>
+              <%if @custom_report_data[date][station].present?%>
                 <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
                   <%if @custom_report_data[date][station][commodity].present?%> 
                     <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
-                        
                       <%if @custom_report_data[date][station][commodity][odr].present?%>
                         <%loaded_unit = @custom_report_data[date][station][commodity][odr].map{|v| v.loaded_unit || 0}.sum%>
                         <%@total_loaded_unit << loaded_unit%>
-                        <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>"><%= @total_loaded_unit.sum rescue '' %></td>
+                        <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--1"><%= @total_loaded_unit.sum rescue '' %></td>
+                        <%if total_hash[station].present?%>
+                          <%if total_hash[station][commodity].present?%>
+                            <%if total_hash[station][commodity].keys.include?(odr)%>
+                              <%total_hash[station][commodity][odr] << @total_loaded_unit%>
+                            <%else%>
+                              <%total_hash[station][commodity] = {}%>
+                              <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
+                            <%end%>
+                          <%else%>
+                            <%total_hash[station][commodity] = {}%>
+                            <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
+                          <%end%>      
+                        <%else%>
+                          <%total_hash[station] = {}%>
+                          <%total_hash[station].merge!("#{commodity}" => {})%>
+                        <%end%>
                         <%@total_loaded_unit = []%>
                       <%else%>
-                        
-                         <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>"><%= "" %></td> 
-                         
+                        <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--2"><%= "" %></td> 
                       <%end%>
                     <%end%>
                   <%else%>
-                    <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
+                    <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                      <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--3"><%= "" %></td>  
+                    <%end%>  
                   <%end%>
                 <%end%>
+              <%else%>
+                <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+                  <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                    <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--4"><%= "" %></td>  
+                  <%end%>
+                <%end%>   
+              <%end%>
             <%else%>
-              <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
-                <td class="text-center <%=station%>-<%=commodity%>"><%= "" %></td>  
-              <%end%>   
-            <%end%>
+              <%total_hash[station].keys.each do |commodity|%>
+                <%total_hash[station][commodity].keys.each do |odr|%>
+                <td class="text-center <%=station%>-<%=commodity%>" style="font-weight: bold;"><%= total_hash[station][commodity][odr].flatten.sum%></td>
+                <%end%>
+              <%end%>
+            <%end%>  
           <%end%>    
       <%end%>  
     <%end%>
