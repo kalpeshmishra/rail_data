@@ -42,27 +42,47 @@
   </div>
   <table class="table hover table-dark" id="custom-load-reports">
     <caption>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <span class="pull-left lead-text">
-          <%="Report"%>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Report<p></p>
+        <span>
+        <%= (select_tag "report-period", options_for_select([['ByDate', 'ByDate'], ['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
         </span>
+      </div> 
+      <div id ="by-date-feilds">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Start Date<p></p>
+           <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+        </div>   
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >End Date<p></p>  
+           <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-station" >Station<p></p>
+          <%= select_tag "date-station-list", options_for_select(@custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-commodity">Commodity<p></p>
+          <%= select_tag "date-commodity-list", options_for_select(["A"]), {multiple: true, id: "date-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-      <p><%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %></p>
-      <p><%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %></p>
+      <div id ="by-month-feilds">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Months<p></p>
+           <%= text_field_tag :by_month, "", placeholder: 'Select Months', required: true, class: "form-control input-md by_month" %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Station<p></p>
+          <%= select_tag "month-station-list", options_for_select(["A"]), {multiple: true, id: "month-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Commodity<p></p>
+          <%= select_tag "month-commodity-list", options_for_select(["A"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-      <p id="station"> <%= select_tag "station-list", options_for_select(["A","A"],["B","B"]), {multiple: true, id: "station-list", class: 'primary-filters-main-page form-control input-sm'} %></p>
-      <p id="commodity"> <%= select_tag "station-list", options_for_select(["A","A"],["B","B"]), {multiple: true, id: "station-list", class: 'primary-filters-main-page form-control input-sm'} %></p>
-      </div>   
-
-      <div class="radio">
-        <label><%=radio_button_tag :by_rake_unit, true,{checked: true, class: 'icheck by_rake_wise'} %>ByRake</label>
+      <div id ="by-year-feilds">
+         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Years<p></p>
+           <%= text_field_tag :by_year, "", placeholder: 'Select Year', required: true, class: "form-control input-md by_year" %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Station<p></p>
+          <%= select_tag "year-station-list", options_for_select(["A"]), { id: "year-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Commodity<p></p>
+          <%= select_tag "year-commodity-list", options_for_select(["A"]), {multiple: true, id: "year-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
       </div>
-      <div class="radio">
-        <label><%=radio_button_tag :by_rake_unit, false,{class: 'icheck by_rake_wise'} %>ByUnit</label>
-      </div>
-      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
       </div>
@@ -80,6 +100,38 @@
 
 <script>
   $(function () {
+
+    $(document).ready(function() {
+      $("#by-date-feilds").hide();
+      $("#by-month-feilds").hide();
+      $("#by-year-feilds").hide();
+    });
+
+    $(".report_period").on("change",function(){
+      period_selected = $(this).val();  
+      if (period_selected == "ByDate") {
+        $("#by-date-feilds").show();
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+      }
+      else if (period_selected == "ByMonth"){
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").show();
+        $("#by-year-feilds").hide();
+      } 
+      else if (period_selected == "ByYear"){
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").show();
+      }
+      else{
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+      }
+
+    });
+
     $(".start_date_time").datepicker({
       format: 'dd-mm-yyyy',
       autoclose: true,
@@ -127,49 +179,62 @@
         $("#date_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
         $("#submit_error_msg").css('display','none');  
-        
-
+        station_commodity_data();
       }
-
     }
 
     function station_commodity_data(){
       effective_from = $("#start_date").val();
       effective_to = $("#end_date").val();
-        $.ajax({
+      $.ajax({
           type: "get",
           url: "/admin/custom_load_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
-        });
+      }); 
 
     }
 
-    
-    $(".submit").on("click",function(){
-      effective_from = $("#start_date").val();
-      effective_to = $("#end_date").val();
-      selected_stations = $('#station-list').val();
-      selected_commodity = $('#commodity-list').val();
-      
-      odr_type_selected = $('.icheck-odr').is(':checked') ? true : false
-      if (odr_type_selected == true){
-        odr_selected = 1
-      } 
-      else{
-        odr_selected = 2
-      } 
-      if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
-        $.ajax({
-            type: "get",
-            url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+"&odr_selected="+odr_selected+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
-        });
-        
-      }
-      else{
-        $("#submit_error_msg").css('display','');
-      }
-      
+    $(".by_month").datepicker( {
+      format: "M/yy",
+      startView: "year", 
+      minView: "year",
+      multidate: 3,
+      autoclose: true
     });
 
-   
+    $(".by_year").datepicker( {
+      format: "yyyy",
+      startView: "year", 
+      minView: "year",
+      multidate: 2,
+      autoclose: true
+    });
+
+    $(".submit").on("click",function(){
+      period_selected = $(".report_period").val(); 
+      if (period_selected == "ByDate") {
+        effective_from = $("#start_date").val();
+        effective_to = $("#end_date").val();
+        selected_stations = $('#date-station-list').val();
+        selected_commodity = $('#date-commodity-list').val();
+        
+        if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
+          $.ajax({
+              type: "get",
+              url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_date_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+          });
+          
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
+      }
+      else if (period_selected == "ByMonth"){
+        selected_month = $("#by_month").val();
+      }
+
+
+    });
+  
   });
+  
 </script>

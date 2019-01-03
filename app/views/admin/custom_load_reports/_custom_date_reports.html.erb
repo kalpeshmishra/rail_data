@@ -1,0 +1,44 @@
+<div id="custom_date_reports">
+<span id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></span>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="font-size: 16px;color:#cc3d16;">Rake :<%=(@custom_date_total_rake)%>&nbsp;&nbsp;
+    Unit :<%=(@custom_date_total_unit)%>&nbsp;&nbsp;</span>
+
+<table class="table hover table-bordered" id="custom-date-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Date</th>
+      <th style="vertical-align: middle;">From</th>
+      <th style="vertical-align: middle;">To</th>
+      <th style="vertical-align: middle;">Stock</th>
+      <th style="vertical-align: middle;">Rake</th>
+      <th style="vertical-align: middle;">Unit</th>
+      <th style="vertical-align: middle;">Commodity</th>
+      <th style="vertical-align: middle;">Stack</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%if @custom_date_report_data.present?%>
+      <% @custom_date_report_data.each_with_index do |data,index| %>
+         <tr id=<%=data.id.to_s%>>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.load_unload.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.station.code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.wagon_type.wagon_type_code rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.rake_count rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.loaded_unit rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.major_commodity.major_commodity rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= data.stack rescue '' %></span></td>
+        </tr>
+      <%end%>
+    <%end%>
+  </tbody>
+</table>
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_station_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

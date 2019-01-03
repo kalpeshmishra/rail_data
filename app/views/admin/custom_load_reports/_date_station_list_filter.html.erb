@@ -1,0 +1,34 @@
+Station<p></p>
+<%= select_tag "date-station-list", options_for_select(custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-second-page form-control input-sm'} %>
+
+<script>
+  count = 0
+  $(document).ready(function() {
+    $('#date-station-list').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_stations = $('#date-station-list').val();
+          effective_from = $("#start_date").val();
+          effective_to = $("#end_date").val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations + "&is_date_station_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+          });
+        }
+    });
+
+    $('#date-station-list').on("change",function(){
+      $("#submit_error_msg").css('display','none');
+    });
+  });
+
+  
+
+   
+
+</script>

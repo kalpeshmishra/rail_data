@@ -1,1 +1,12 @@
-$("#custom_load_reports_form").html('<%= j render 'custom_load_reports'%>');
+<%if params[:is_date_data_filter].blank?%>
+	<%if params[:is_date_station_filter].present?%>	
+		$("#date-commodity").empty();
+		$("#date-commodity").html('<%= j render partial: 'date_commodity_list_filter', :locals => {:custom_date_commodity_list => @custom_date_station_commodity_list} %>');
+	<%else%>
+		$("#date-station").empty();
+		$("#date-station").html('<%= j render partial: 'date_station_list_filter', :locals => {:custom_date_station_list => @custom_date_station_list} %>');
+		$("#date-commodity").empty();
+		$("#date-commodity").html('<%= j render partial: 'date_commodity_list_filter', :locals => {:custom_date_commodity_list => @custom_date_commodity_list} %>');
+	<%end%>
+<%end%>
+$("#custom_load_reports_form").html('<%= j render 'custom_date_reports'%>');
