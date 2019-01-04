@@ -9,4 +9,17 @@
 		$("#date-commodity").html('<%= j render partial: 'date_commodity_list_filter', :locals => {:custom_date_commodity_list => @custom_date_commodity_list} %>');
 	<%end%>
 <%end%>
-$("#custom_load_reports_form").html('<%= j render 'custom_date_reports'%>');
+<%if params[:is_date_data_filter].present? || params[:is_date_station_filter].present?%>
+	$("#custom_load_reports_form").html('<%= j render 'custom_date_reports'%>');
+<%end%>
+<%if params[:is_month_filter].present? %>
+		$("#month-station").empty();
+		$("#month-station").html('<%= j render partial: 'month_station_list_filter', :locals => {:custom_month_station_list => @custom_load_report_station} %>');
+<%end%>
+<%if params[:is_month_station_filter].present?%>	
+		$("#month-commodity").empty();
+		$("#month-commodity").html('<%= j render partial: 'month_commodity_list_filter', :locals => {:custom_month_commodity_list => @custom_month_station_commodity} %>');
+<%end%>	
+<%if params[:is_month_data_filter].present?%>
+	
+<%end%>

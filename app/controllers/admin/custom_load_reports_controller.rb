@@ -33,6 +33,58 @@ class Admin::CustomLoadReportsController < ApplicationController
 			@custom_date_total_unit = @custom_date_report_data.map{|x| [x.loaded_unit]}.flatten.sum
 			# binding.pry
 		end
+
+		if params[:is_month_filter].present? and params[:selected_months].present?
+			months = params[:selected_months].split(",")
+			# no_of_month = months.length
+			data_hash = {}
+			months.each do |month|
+			 	month_name = month.upcase
+			 	from_date = month.to_date.beginning_of_month 
+			 	to_date =	month.to_date.end_of_month
+			 	rake_load_data = RakeLoad.where(release_date: from_date..to_date)
+				data_hash.merge!("#{month_name}" => [rake_load_data])
+			end
+			
+			station_list = []
+			data_hash.values.each do |data|
+			 	data.flatten.each do |value|	
+			 		load_unload_code = LoadUnload.find(value.load_unload_id).station.code
+			 		station_list << [load_unload_code,value.load_unload_id ]
+			 	end
+		 	end	
+			@custom_load_report_station = station_list.compact.uniq
+
+		end
+
+		if params[:is_month_station_filter].present? and params[:selected_stations].present?
+			load_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+			months = params[:selected_months].split(",")
+			data_hash = {}
+			months.each do |month|
+			 	month_name = month.upcase
+			 	from_date = month.to_date.beginning_of_month 
+			 	to_date =	month.to_date.end_of_month
+			 	rake_load_data = RakeLoad.where(release_date: from_date..to_date, load_unload_id: load_unload_ids)
+				data_hash.merge!("#{month_name}" => [rake_load_data])
+			end
+			
+			commodity_list = []
+			data_hash.values.each do |data|
+			 	data.flatten.each do |value|	
+			 		commodity_code = MajorCommodity.find(value.major_commodity.id).major_commodity
+			 		commodity_list << [commodity_code,value.major_commodity.id ]
+			 	end
+		 	end	
+			@custom_month_station_commodity = commodity_list.compact.uniq
+		end
+
+		if params[:is_month_data_filter].present?
+			load_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+			months = params[:selected_months].split(",")
+			# binding.pry
+		end
+
 	end
 
 	def show

@@ -1,7 +1,7 @@
 <style>
   ul.dropdown-menu {
     width: 200px;
-    max-height: 180px;
+    max-height: 280px;
     overflow: auto;
 
   }
@@ -13,18 +13,35 @@
     $(function () {
 
       $('.icheck').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue'
-        });
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+      });
 
-        $('.primary-filters-main-page').multiselect({
-          enableFiltering: true,
-          enableCaseInsensitiveFiltering: true,
-          includeSelectAllOption: true,
-          buttonWidth: '100%',
-          buttonClass: 'btn btn-default',
-          numberDisplayed: 0
-        });
+      $('.primary-filters-main-page').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-month').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_months = $('#by-month').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_load_reports.js?selected_months=" + selected_months + "&is_month_filter=" + true 
+          });
+        }
+        
+      });
+
     });
 
     $(document).ready(function () {
@@ -58,18 +75,25 @@
           <%= select_tag "date-station-list", options_for_select(@custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-commodity">Commodity<p></p>
-          <%= select_tag "date-commodity-list", options_for_select(["A"]), {multiple: true, id: "date-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+          <%= select_tag "date-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "date-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
       </div>
       <div id ="by-month-feilds">
+        <% months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+          month_years_list = []
+          (2018..2020).each do |year|
+          months.each do |month|
+            month_years_list << ["#{month}-#{year}"]
+          end
+        end %>  
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Months<p></p>
-           <%= text_field_tag :by_month, "", placeholder: 'Select Months', required: true, class: "form-control input-md by_month" %>
+          <%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Station<p></p>
-          <%= select_tag "month-station-list", options_for_select(["A"]), {multiple: true, id: "month-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-station">Station<p></p>
+          <%= select_tag "month-station-list", options_for_select(["NoValue"]), {multiple: true, id: "month-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Commodity<p></p>
-          <%= select_tag "month-commodity-list", options_for_select(["A"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-commodity">Commodity<p></p>
+          <%= select_tag "month-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
       </div>
       <div id ="by-year-feilds">
@@ -90,7 +114,9 @@
     </caption>
   </table>
       
-      <div id="custom_load_reports_form"></div>
+      <div id="custom_load_reports_form">
+         <br><br><br><br><br><br>
+      </div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
@@ -130,6 +156,14 @@
         $("#by-year-feilds").hide();
       }
 
+    });
+
+    $("#by-month").on('change', function(){
+      if ($(this).val().length > 3) {
+        $(this).removeAttr("selected");
+        alert('You can select upto 3 options only');
+      }
+      
     });
 
     $(".start_date_time").datepicker({
@@ -193,13 +227,13 @@
 
     }
 
-    $(".by_month").datepicker( {
-      format: "M/yy",
-      startView: "year", 
-      minView: "year",
-      multidate: 3,
-      autoclose: true
-    });
+    // $(".by_month").datepicker( {
+    //   format: "M/yy",
+    //   startView: "year", 
+    //   minView: "year",
+    //   multidate: 3,
+    //   autoclose: true
+    // });
 
     $(".by_year").datepicker( {
       format: "yyyy",
@@ -229,7 +263,19 @@
         }
       }
       else if (period_selected == "ByMonth"){
-        selected_month = $("#by_month").val();
+        selected_months = $('#by-month').val();
+        selected_stations = $('#month-station-list').val();
+        selected_commodity = $('#month-commodity-list').val();
+        if (selected_months != null && selected_stations!= null && selected_commodity != null) {
+          $.ajax({
+              type: "get",
+              url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_month_data_filter=" + true + "&selected_months=" + selected_months
+          });
+          
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
       }
 
 
