@@ -134,7 +134,8 @@
     });
 
     $(".report_period").on("change",function(){
-      period_selected = $(this).val();  
+      $("#submit_error_msg").css('display','none');
+      period_selected = $(this).val();
       if (period_selected == "ByDate") {
         $("#by-date-feilds").show();
         $("#by-month-feilds").hide();
