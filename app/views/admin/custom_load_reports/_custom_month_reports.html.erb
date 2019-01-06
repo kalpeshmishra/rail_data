@@ -1,0 +1,65 @@
+<div id="custom_month_reports">
+<span style="font-size: 16px;color:#cc3d16;">Month Wise Loading&nbsp;&nbsp;</span>
+
+<table class="table hover table-bordered" id="custom-month-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;" rowspan="2">Station</th>
+      <th style="vertical-align: middle;" rowspan="2">Commodity</th>
+      <%if @custom_month_report_header.present?%>
+        <% @custom_month_report_header.each_with_index do |month| %>
+          <th style="vertical-align: middle;" colspan="2"><%= month%></th>
+        <%end%>
+      <%end%>
+      <th style="vertical-align: middle;" colspan="2">Total</th>
+    </tr>
+    <tr style="color: #fff; background: #4B4B4D;">
+      <%if @custom_month_report_header.present?%>
+        <% i = @custom_month_report_header.count+1%>
+        <% (1..i).each do |i| %>
+          <th style="vertical-align: middle;">Rake</th>
+          <th style="vertical-align: middle;">Unit</th>
+        <%end%>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <%if @custom_month_report_data.present?%>
+      <% @custom_month_report_data.each do |station,commodity_data| %>
+        <tr class="<%=station%>" >
+          <th  class="text-center" rowspan="<%=commodity_data.keys.count+1%>"> <%=station%> </th>
+        </tr>
+        <% commodity_data.each do |commodity,month_data|%>
+          <%total_rakes = []%>
+          <%total_units = []%>
+          <%rakes = 0.0%>
+          <%units = 0%>
+          <tr>
+            <td class="text-center"> <%=commodity%> </td>
+            <%if @custom_month_report_header.present?%>
+              <% @custom_month_report_header.each do |month|%>
+                <%if month_data[month].present?%>
+                  <%rakes = month_data[month].map{|x|x.rake_count}.sum%>
+                  <%units = month_data[month].map{|x|x.loaded_unit}.sum%>
+                  <%total_rakes << rakes%>
+                  <%total_units << units%>
+                  <td class="text-center <%=station%>-<%=commodity%>-rakes"> <%= rakes%></td>
+                  <td class="text-center <%=station%>-<%=commodity%>-units"> <%= units%></td>   
+                <%else%>
+                  <td></td>
+                  <td></td>
+                <%end%>
+              <%end%>
+            <%end%>
+          </tr> 
+        <%end%>
+
+          
+      <%end%>
+    <%end%>
+  </tbody>
+</table>
+</div>
+<script>
+  
+</script>

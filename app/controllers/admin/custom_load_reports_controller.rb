@@ -31,7 +31,6 @@ class Admin::CustomLoadReportsController < ApplicationController
 			@custom_date_report_data = @custom_date_report_data.order(:release_date)
 			@custom_date_total_rake = @custom_date_report_data.map{|x| [x.rake_count]}.flatten.sum
 			@custom_date_total_unit = @custom_date_report_data.map{|x| [x.loaded_unit]}.flatten.sum
-			# binding.pry
 		end
 
 		if params[:is_month_filter].present? and params[:selected_months].present?
@@ -78,7 +77,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 		 	end	
 			@custom_month_station_commodity = commodity_list.compact.uniq
 		end
-		i= 0
+		# i= 0
 		if params[:is_month_data_filter].present?
 			load_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
 			major_commodity_ids = params[:selected_commodity].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
@@ -95,8 +94,12 @@ class Admin::CustomLoadReportsController < ApplicationController
 					load_unload_code = LoadUnload.find(data.load_unload_id).station.code
 					major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
 					if data_hash[load_unload_code].present?
-						# data_hash[load_unload_code][major_commodity_code].merge!("#{month}" => [data])
-					# binding.pry if i<500
+						data_hash[load_unload_code].merge!("#{major_commodity_code}" => {}) if data_hash[load_unload_code][major_commodity_code].blank?
+						if data_hash[load_unload_code][major_commodity_code].keys.include?(month)
+							data_hash[load_unload_code][major_commodity_code][month] << data
+						else
+							data_hash[load_unload_code][major_commodity_code].merge!("#{month}" => [data])
+						end
 					else	
 						data_hash[load_unload_code] ={}
 						data_hash[load_unload_code].merge!("#{major_commodity_code}" => {})
@@ -107,9 +110,12 @@ class Admin::CustomLoadReportsController < ApplicationController
 						end
 					end
 				end
-				# data_hash.merge!("#{month_name}" => [rake_load_data])
+				
 			end
-
+			@custom_month_report_header = months
+			@custom_month_report_data = data_hash
+					# binding.pry if i<500
+					# binding.pry 
 		end
 
 	end

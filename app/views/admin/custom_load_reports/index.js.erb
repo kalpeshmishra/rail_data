@@ -21,5 +21,5 @@
 		$("#month-commodity").html('<%= j render partial: 'month_commodity_list_filter', :locals => {:custom_month_commodity_list => @custom_month_station_commodity} %>');
 <%end%>	
 <%if params[:is_month_data_filter].present?%>
-	
+	$("#custom_load_reports_form").html('<%= j render 'custom_month_reports'%>');
 <%end%>
