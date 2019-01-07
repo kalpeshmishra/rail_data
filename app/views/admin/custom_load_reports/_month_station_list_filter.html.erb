@@ -13,7 +13,6 @@ Station<p></p>
         numberDisplayed: 0,
         onDropdownHide: function(event) {
           selected_months = $('#by-month').val();
-          debugger
           selected_stations = $('#month-station-list').val();
           $.ajax({
             type: "get",

@@ -42,6 +42,22 @@
         
       });
 
+      $('.primary-filters-year').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_year = $('#by-year').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_load_reports.js?selected_year=" + selected_year + "&is_year_filter=" + true 
+          });
+        }
+        
+      });
+
     });
 
     $(document).ready(function () {
@@ -86,7 +102,7 @@
             month_years_list << ["#{month}-#{year}"]
           end
         end %>  
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Months<p></p>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Months<p></p>
           <%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-station">Station<p></p>
@@ -95,17 +111,27 @@
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-commodity">Commodity<p></p>
           <%= select_tag "month-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
+        <%= (select_tag "report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
+        </div> 
       </div>
       <div id ="by-year-feilds">
-         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Years<p></p>
-           <%= text_field_tag :by_year, "", placeholder: 'Select Year', required: true, class: "form-control input-md by_year" %>
+        <%year_list =[]
+          (2017..2020).each do |year|
+            year_list << year 
+        end %>  
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Year<p></p>
+          <%= select_tag "by-year", options_for_select(year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Station<p></p>
-          <%= select_tag "year-station-list", options_for_select(["A"]), { id: "year-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="year-station">Station<p></p>
+          <%= select_tag "year-station-list", options_for_select(["NoValue"]), {multiple: true, id: "year-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Commodity<p></p>
-          <%= select_tag "year-commodity-list", options_for_select(["A"]), {multiple: true, id: "year-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="year-commodity">Commodity<p></p>
+          <%= select_tag "year-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "year-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
+        <%= (select_tag "year-report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock']]), {prompt: 'Select', class: "form-control  input-sm year_report_type"}).html_safe %>
+        </div> 
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
@@ -115,8 +141,8 @@
   </table>
       
       <div id="custom_load_reports_form">
-         <br><br><br><br><br><br>
       </div>
+      <div><br><br><br><br><br><br></div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
@@ -135,6 +161,7 @@
 
     $(".report_period").on("change",function(){
       $("#submit_error_msg").css('display','none');
+      $("#custom_load_reports_form").empty();
       period_selected = $(this).val();
       if (period_selected == "ByDate") {
         $("#by-date-feilds").show();
@@ -228,22 +255,6 @@
 
     }
 
-    // $(".by_month").datepicker( {
-    //   format: "M/yy",
-    //   startView: "year", 
-    //   minView: "year",
-    //   multidate: 3,
-    //   autoclose: true
-    // });
-
-    $(".by_year").datepicker( {
-      format: "yyyy",
-      startView: "year", 
-      minView: "year",
-      multidate: 2,
-      autoclose: true
-    });
-
     $(".submit").on("click",function(){
       period_selected = $(".report_period").val(); 
       if (period_selected == "ByDate") {
@@ -267,12 +278,27 @@
         selected_months = $('#by-month').val();
         selected_stations = $('#month-station-list').val();
         selected_commodity = $('#month-commodity-list').val();
-        if (selected_months != null && selected_stations!= null && selected_commodity != null) {
+        selected_report_type = $('#report-type').val();
+        if (selected_months != null && selected_stations!= null && selected_commodity != null && selected_report_type != "") {
           $.ajax({
               type: "get",
-              url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_month_data_filter=" + true + "&selected_months=" + selected_months
+              url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_month_data_filter=" + true + "&selected_months=" + selected_months+ "&selected_report_type=" +selected_report_type
           });
-          
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
+      }
+      else if (period_selected == "ByYear"){
+        selected_year = $('#by-year').val();
+        selected_stations = $('#year-station-list').val();
+        selected_commodity = $('#year-commodity-list').val();
+        selected_report_type = $('#year-report-type').val();
+        if (selected_year != null && selected_stations!= null && selected_commodity != null && selected_report_type != "") {
+          $.ajax({
+              type: "get",
+              url: "/admin/custom_load_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_year_data_filter=" + true + "&selected_year=" + selected_year+ "&selected_report_type=" +selected_report_type
+          });
         }
         else{
           $("#submit_error_msg").css('display','');

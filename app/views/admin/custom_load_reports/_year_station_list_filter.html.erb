@@ -1,0 +1,33 @@
+Station<p></p>
+<%= select_tag "year-station-list", options_for_select(custom_year_station_list), {multiple: true, id: "year-station-list", class: 'primary-filters-second-page form-control input-sm'} %>
+
+<script>
+  count = 0
+  $(document).ready(function() {
+    $('#year-station-list').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_year = $('#by-year').val();
+          selected_stations = $('#year-station-list').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_load_reports.js?selected_year=" + selected_year +"&selected_stations="+selected_stations+ "&is_year_station_filter=" + true 
+          });
+        }
+    });
+
+    $('#year-station-list').on("change",function(){
+      $("#submit_error_msg").css('display','none');
+    });
+  });
+
+  
+
+   
+
+</script>
