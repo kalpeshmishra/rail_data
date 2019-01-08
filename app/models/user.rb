@@ -6,7 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   # belongs_to :division
   # belongs_to :area
-  has_one :user_roles
+  has_one :user_role
 
   after_create :set_default_user_roles
 

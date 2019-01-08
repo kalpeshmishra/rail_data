@@ -24,14 +24,15 @@
     </tr>
   </thead>
   <tbody>
+    <%column_total_hash = {}%>
     <%if @custom_year_report_data.present?%>
       <% @custom_year_report_data.each do |station,commodity_data| %>
         <tr class="<%=station%>" >
-          <th  class="text-center" rowspan="<%=commodity_data.keys.count+1%>"> <%=station%> </th>
+          <th  style="vertical-align: middle;" rowspan="<%=commodity_data.keys.count+1%>"> <%=station%> </th>
         </tr>
         <% commodity_data.each do |commodity,year_data|%>
-          <%total_rakes = []%>
-          <%total_units = []%>
+          <%row_total_rakes = []%>
+          <%row_total_units = []%>
           <%rakes = 0.0%>
           <%units = 0%>
           <tr>
@@ -42,8 +43,14 @@
                   <%if year_data[year].present?%>
                     <%rakes = year_data[year].map{|x|x.rake_count}.sum%>
                     <%units = year_data[year].map{|x|x.loaded_unit}.sum%>
-                    <%total_rakes << rakes%>
-                    <%total_units << units%>
+                    <%row_total_rakes << rakes%>
+                    <%row_total_units << units%>
+                    <%if column_total_hash[year].present?%>
+                      <%column_total_hash[year][0] << rakes rescue nil%>
+                      <%column_total_hash[year][1] << units rescue nil%>
+                    <%else%>
+                      <%column_total_hash.merge!("#{year}" => [[rakes],[units]])%>
+                    <%end%>
                     <td class="text-center <%=station%>-<%=commodity%>-rakes"> <%= rakes%></td>
                     <td class="text-center <%=station%>-<%=commodity%>-units"> <%= units%></td>   
                   <%else%>
@@ -51,17 +58,33 @@
                     <td></td>
                   <%end%>
                 <%else%>
-                  <td class="text-center"> <%= total_rakes.sum%></td>
-                  <td class="text-center"> <%= total_units.sum%></td>   
+                  <td class="text-center"> <%= row_total_rakes.sum%></td>
+                  <td class="text-center"> <%= row_total_units.sum%></td> 
+                  <%if column_total_hash["Total"].present?%>
+                    <%column_total_hash["Total"][0] << row_total_rakes.compact.sum%>
+                    <%column_total_hash["Total"][1] << row_total_units.compact.sum%>
+                  <%else%>
+                    <%column_total_hash.merge!("Total" => [[row_total_rakes.compact.sum],[row_total_units.compact.sum]])%>  
+                  <%end%>  
                 <%end%>
               <%end%>
             <%end%>
-          </tr> 
+          </tr>
         <%end%>
-
-          
       <%end%>
     <%end%>
+    <tr>
+      <td class="text-center" colspan="2">Total</td>
+      <% @custom_year_report_header.each do |year|%>
+        <%if column_total_hash[year].present?%>
+          <td class="text-center"><%=column_total_hash[year][0].sum%></td>
+          <td class="text-center"><%=column_total_hash[year][1].sum%></td>
+        <%else%>
+          <td></td>
+          <td></td>
+        <%end%>  
+      <%end%>  
+    </tr>
   </tbody>
 </table>
 </div>
