@@ -1,44 +1,84 @@
-<div id="custom_date_reports">
-<span id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></span>
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span style="font-size: 16px;color:#cc3d16;">Rake :<%=(@custom_date_total_rake)%>&nbsp;&nbsp;
-    Unit :<%=(@custom_date_total_unit)%>&nbsp;&nbsp;</span>
-
-<table class="table hover table-bordered" id="custom-date-reports">
-  <thead class="thead-dark">
-    <tr style="color: #fff; background: #4B4B4D;">
-      <th style="vertical-align: middle;">Date</th>
-      <th style="vertical-align: middle;">From</th>
-      <th style="vertical-align: middle;">To</th>
-      <th style="vertical-align: middle;">Stock</th>
-      <th style="vertical-align: middle;">Rake</th>
-      <th style="vertical-align: middle;">Unit</th>
-      <th style="vertical-align: middle;">Commodity</th>
-      <th style="vertical-align: middle;">Stack</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%if @custom_date_report_data.present?%>
-      <% @custom_date_report_data.each_with_index do |data,index| %>
-         <tr id=<%=data.id.to_s%>>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.load_unload.station.code rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.station.code rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.wagon_type.wagon_type_code rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.rake_count rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.loaded_unit rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.major_commodity.major_commodity rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= data.stack rescue '' %></span></td>
-        </tr>
+<style>
+.add-cursor tr{
+   height: 5px;
+ }  
+ .table.table-dark tbody td {
+    padding: 5px;
+}
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+</style>
+<div id="custom_date_reports" class="custom-date-reports">
+  <div class="date-report-setting" >
+  <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-date-data">+</b> Date Wise Data </span><br>
+  <span id="adi_station_heading" class="table-custom-date-reports" style="font-size: 16px;color:#cc3d16;"></span>
+  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  <span style="font-size: 16px;color:#cc3d16;" class="table-custom-date-reports">Rake :<%=(@custom_date_total_rake)%>&nbsp;&nbsp;
+      Unit :<%=(@custom_date_total_unit)%>&nbsp;&nbsp; DoubleStack(CONT):<%=(@custom_date_total_double_stack)%></span>
+  <table class="table hover table-bordered table-custom-date-reports" id="table-custom-date-reports">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th style="vertical-align: middle;">Date</th>
+        <th style="vertical-align: middle;">From</th>
+        <th style="vertical-align: middle;">To</th>
+        <th style="vertical-align: middle;">Stock</th>
+        <th style="vertical-align: middle;">Rake</th>
+        <th style="vertical-align: middle;">Unit</th>
+        <th style="vertical-align: middle;">Commodity</th>
+        <th style="vertical-align: middle;">Stack</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if @custom_date_report_data.present?%>
+        <% @custom_date_report_data.each_with_index do |data,index| %>
+          <tr id=<%=data.id.to_s%>>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.load_unload.station.code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.station.code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.wagon_type.wagon_type_code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.rake_count rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.loaded_unit rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.major_commodity.major_commodity rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.stack rescue '' %></span></td>
+          </tr>
+        <%end%>
       <%end%>
-    <%end%>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  </div>
+  <div class="graph-report-setting">
+    <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-graph-data">+</b> Graph Data </span><br>
+    <table class="table hover table-bordered table-custom-graph-reports" id="table-custom-graph-reports">
+      <tr><td>Date</td></tr>
+    </table>
+  </div>  
 </div>
 <script>
   $(function () {
     effective_from = $("#start_date").val();
     effective_to = $("#end_date").val();
     document.getElementById("adi_station_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+  
+  $(".table-custom-date-reports").hide();
+  $(".table-custom-graph-reports").hide();
+
+  $(".date-report-setting").click(function () {
+      var sign = $(this).find('#custom-report-date-data').text().trim();
+      if (sign == '+') {
+          $(this).find('#custom-report-date-data').text('-')
+      } else {
+          $(this).find('#custom-report-date-data').text('+')
+      }
+      $(".table-custom-date-reports").toggle();
+  });
+  $(".graph-report-setting").click(function () {
+      var sign = $(this).find('#custom-report-graph-data').text().trim();
+      if (sign == '+') {
+          $(this).find('#custom-report-graph-data').text('-')
+      } else {
+          $(this).find('#custom-report-graph-data').text('+')
+      }
+      $(".table-custom-graph-reports").toggle();
   });
 </script>

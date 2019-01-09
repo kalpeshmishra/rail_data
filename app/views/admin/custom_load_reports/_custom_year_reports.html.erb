@@ -9,7 +9,7 @@
       <%if @custom_year_report_header.present?%>
         <% @custom_year_report_header << "Total"%>
         <% @custom_year_report_header.each_with_index do |year| %>
-          <th style="vertical-align: middle;" colspan="2"><%= (year == "Total") ? "Total" : year rescue ''%></th>
+          <th style="vertical-align: middle;" colspan="3"><%= (year == "Total") ? "Total" : year rescue ''%></th>
         <%end%>
       <%end%>
     </tr>
@@ -19,6 +19,7 @@
         <% (1..i).each do |i| %>
           <th style="vertical-align: middle;">Rake</th>
           <th style="vertical-align: middle;">Unit</th>
+          <th style="vertical-align: middle;">Double-Stack</th>
         <%end%>
       <%end%>
     </tr>
@@ -33,8 +34,10 @@
         <% commodity_data.each do |commodity,year_data|%>
           <%row_total_rakes = []%>
           <%row_total_units = []%>
+          <%row_total_double_stack =[]%>
           <%rakes = 0.0%>
           <%units = 0%>
+          <%double_stack = 0%>
           <tr>
             <td class="text-center"> <%=commodity%> </td>
             <%if @custom_year_report_header.present?%>
@@ -43,28 +46,35 @@
                   <%if year_data[year].present?%>
                     <%rakes = year_data[year].map{|x|x.rake_count}.sum%>
                     <%units = year_data[year].map{|x|x.loaded_unit}.sum%>
+                    <%double_stack = year_data[year].map{|x|x.stack}.reject(&:blank?).count("DOUBLE") rescue nil%>
                     <%row_total_rakes << rakes%>
                     <%row_total_units << units%>
+                    <%row_total_double_stack << double_stack%>
                     <%if column_total_hash[year].present?%>
                       <%column_total_hash[year][0] << rakes rescue nil%>
                       <%column_total_hash[year][1] << units rescue nil%>
+                      <%column_total_hash[year][2] << double_stack rescue nil%>
                     <%else%>
-                      <%column_total_hash.merge!("#{year}" => [[rakes],[units]])%>
+                      <%column_total_hash.merge!("#{year}" => [[rakes],[units],[double_stack]])%>
                     <%end%>
                     <td class="text-center <%=station%>-<%=commodity%>-rakes"> <%= rakes%></td>
-                    <td class="text-center <%=station%>-<%=commodity%>-units"> <%= units%></td>   
+                    <td class="text-center <%=station%>-<%=commodity%>-units"> <%= units%></td>
+                    <td class="text-center <%=station%>-<%=commodity%>-double_stack"> <%= double_stack%></td>   
                   <%else%>
+                    <td></td>
                     <td></td>
                     <td></td>
                   <%end%>
                 <%else%>
                   <td class="text-center"> <%= row_total_rakes.sum%></td>
-                  <td class="text-center"> <%= row_total_units.sum%></td> 
+                  <td class="text-center"> <%= row_total_units.sum%></td>
+                  <td class="text-center"> <%= row_total_double_stack.sum%></td> 
                   <%if column_total_hash["Total"].present?%>
                     <%column_total_hash["Total"][0] << row_total_rakes.compact.sum%>
                     <%column_total_hash["Total"][1] << row_total_units.compact.sum%>
+                    <%column_total_hash["Total"][2] << row_total_double_stack.compact.sum%>
                   <%else%>
-                    <%column_total_hash.merge!("Total" => [[row_total_rakes.compact.sum],[row_total_units.compact.sum]])%>  
+                    <%column_total_hash.merge!("Total" => [[row_total_rakes.compact.sum],[row_total_units.compact.sum],[row_total_double_stack.compact.sum]])%>  
                   <%end%>  
                 <%end%>
               <%end%>
@@ -79,7 +89,9 @@
         <%if column_total_hash[year].present?%>
           <td class="text-center"><%=column_total_hash[year][0].sum%></td>
           <td class="text-center"><%=column_total_hash[year][1].sum%></td>
+          <td class="text-center"><%=column_total_hash[year][2].sum%></td>
         <%else%>
+          <td></td>
           <td></td>
           <td></td>
         <%end%>  

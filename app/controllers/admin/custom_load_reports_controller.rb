@@ -31,6 +31,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 			@custom_date_report_data = @custom_date_report_data.order(:release_date)
 			@custom_date_total_rake = @custom_date_report_data.map{|x| [x.rake_count]}.flatten.sum
 			@custom_date_total_unit = @custom_date_report_data.map{|x| [x.loaded_unit]}.flatten.sum
+			@custom_date_total_double_stack = @custom_date_report_data.map{|x| x.stack}.reject(&:blank?).count("DOUBLE")
 		end
 
 		if params[:is_month_filter].present? and params[:selected_months].present?
