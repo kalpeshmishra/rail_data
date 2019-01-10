@@ -47,10 +47,25 @@
   </table>
   </div>
   <div class="graph-report-setting">
-    <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-graph-data">+</b> Graph Data </span><br>
-    <table class="table hover table-bordered table-custom-graph-reports" id="table-custom-graph-reports">
-      <tr><td>Date</td></tr>
-    </table>
+  <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-graph-data">+</b> Graph Data </span><br>
+    <div class="table-custom-graph-reports">
+      <div id="emp_head_count" style="background: white;text-align: center;margin-bottom: 3%; width:49%;float: left;margin-right: 0.5%;margin-left: 0.5%;padding: 0% 2% 1%;">
+        <h3>Employee Head Count</h3>
+        
+        <%data = [["Feb17", 147],["Mar17", 144],
+      ["Apr17", 139],["May17", 137],
+      ["Jun17", 37],["Jul17", 137],
+      ["Aug17", 135],["Sep17", 132],
+      ["Oct17", 125],["Nov17", 125],
+      ["Dec17", 122],["Jan18", 119]]
+      [name: "Employees", data: data]%>
+      <%= column_chart [name: "Employees", data: data],
+        # xtitle: "Date",
+        # ytitle: "Count",
+        library: { scales: { yAxes: [{ gridLines: { display: true }}]}},
+        colors: ['rgb(254, 102, 1)'], height: "180px"%>
+      </div>
+    </div>
   </div>  
 </div>
 <script>
