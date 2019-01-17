@@ -20,14 +20,16 @@
           <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
         </div>
       </div>
-     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add short_route'.html_safe, new_admin_short_route_path, remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
-        
-      </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Import/Export'.html_safe, new_admin_short_route_path(import_export: "true"), remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
-        
-      </div>
+      <%if is_viewable%>
+       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add short_route'.html_safe, new_admin_short_route_path, remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+          
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Import/Export'.html_safe, new_admin_short_route_path(import_export: "true"), remote: true, class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+          
+        </div>
+      <%end%>
       <% if false %>
           <div class="row">
             <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
@@ -46,7 +48,9 @@
       <th>Other-Distance(KM)</th>
       <th>Other-Interchange</th> 
       <th>Description</th>
-      <th>Actions</th>
+      <%if is_viewable%>
+        <th>Actions</th>
+      <%end%>
     </tr>
     </thead>
     <tbody>

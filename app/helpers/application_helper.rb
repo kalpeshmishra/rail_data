@@ -1,4 +1,17 @@
 module ApplicationHelper
+	def is_admin
+		role = current_user.user_role rescue nil
+		flag = role.present? ? role.is_admin : false
+	end
+	def is_subadmin
+		role = current_user.user_role rescue nil
+		flag = role.present? ? role.is_admin : false
+	end
+
+	def is_viewable
+		role = current_user.user_role rescue nil
+		flag = role.present? ? role.is_viewable : false
+	end
 	def is_rake_load_access
 		role = current_user.user_role rescue nil
 		flag = role.present? ? role.rake_load_access : false
