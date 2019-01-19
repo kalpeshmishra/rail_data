@@ -102,16 +102,21 @@ class Admin::OneCustomReportsController < ApplicationController
 		end
 		@one_custom_commodity_list = []
 		data_hash.each do |station,data|
-			@one_custom_commodity_list <<data.keys[0]
+			@one_custom_commodity_list <<data.keys
 		end
-		@one_custom_commodity_list = @one_custom_commodity_list.uniq
-		@one_custom_commodity_list = @one_custom_commodity_list.map{|x| [x,x]}
+		@one_custom_commodity_list = @one_custom_commodity_list.flatten.compact.uniq
+		@one_custom_commodity_list = @one_custom_commodity_list.map{|commodity_code| 
+			if MajorCommodity.find_by(major_commodity: commodity_code).present?
+				commodity_name = MajorCommodity.find_by(major_commodity: commodity_code).name
+				["#{commodity_code}--#{commodity_name}",commodity_code]
+			else
+				commodity_name = RakeCommodity.find_by(rake_commodity_code: commodity_code).rake_commodity_name
+				["#{commodity_code}--#{commodity_name}",commodity_code]
+			end
+		}
 		if params[:is_data_filter].present?
-		# binding.pry if i <700
-		
+			# binding.pry if i <700
 			selected_commodity_codes = params[:selected_commodity].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
-			# binding.pry
-			
 			
 		end
 
