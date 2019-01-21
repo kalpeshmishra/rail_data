@@ -48,7 +48,7 @@
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
-        <%data_value = [["SALT", "SALT"], ["SODA", "SODA"], ["FERT", "FERT"], ["CONT", "CONT"], ["CEMT", "CEMT"], ["BPOW", "BPOW"], ["COAL", "COAL"], ["GAS", "GAS"], ["RMC", "RMC"], ["FG", "FG"]]%>
+        <%data_value = [["SALT", "SALT"], ["SODA", "SODA"], ["FERT", "FERT"], ["CONT", "CONT"], ["CEMT", "CEMT"], ["BPOW", "BPOW"], ["COAL", "COAL"], ["GAS", "GAS"], ["RMC", "RMC"]]%>
         <%= select_tag "commodity-list", options_for_select(data_value), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >

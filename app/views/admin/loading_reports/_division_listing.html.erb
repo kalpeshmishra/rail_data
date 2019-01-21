@@ -1,9 +1,28 @@
-<div class="tab-container" id="division_listing">
-  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-    <p style="font-size: 18px;color:red;">Rake :<%=(@total_division_rake)%>&nbsp;&nbsp;
-    Unit :<%=(@total_division_loads)%>&nbsp;&nbsp;</p>
-  </div>
+<style>
+  .no-border tr td, .no-border tr th {
+  border-width: 0;
 
+</style>
+<div class="tab-container" id="division_listing">
+  <table class="no-border">
+    <tr>
+      <td style="width:90%;">
+        <p style="font-size: 18px;color:red;">Rake :<%=(@total_division_rake)%>&nbsp;&nbsp;Unit :<%=(@total_division_loads)%>&nbsp;&nbsp;</p>
+      </td>
+      <td style="width:10%; text-align: right;">
+        <%if false%>
+        <button class="btn btn-link excel_download" id="excel_download" type="submit">Excel</button>
+        <%end%>
+      </td>
+    </tr>
+  </table>
+  <div>
+    <%= form_tag('', id: 'record-selector-form') do %>
+      <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-timesheet-record">
+         <i class="fa fa-download"></i> Excel
+      </a>
+    <% end %>
+  </div>
   <table class="table hover table-condensed division_listing" id="division-listing">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
@@ -45,12 +64,26 @@
 </div>  
 
 <script >
-$(function(){
-  $('table.division_listing tr').each(function(index) {
+$(function () {
+
+  $('table.division_lisiting tr').each(function(index) {
     $(this).find('td:nth-child(1)').html(index-1+1);
   });
 
+  $("#download-timesheet-record").click(function () {
 
+   var report_date = $("#datepicker").val();
+   var report_type = "day_wise_division_loading"
+
+   var data = report_date + "," + report_type
+   var url = "<%= rake_load_excel_download_path () %>";
+
+   window.open('<%= root_url%>' + url + '?data=' + data, "_self")
+   // var html = "<form id='submit-record' action=" + url + "><input type='hidden' name='data' value='" + data + "'></form>";
+   $(html).submit();
+
+
+  });
 
 });
 </script>
