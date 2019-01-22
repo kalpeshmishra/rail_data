@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   match '/load_commodity_breakup', controller: 'admin/one_rake_loads', action: 'load_commodity_breakup', via: [:get], as: 'load_commodity_breakup'
     
 
-
   match '/find_station_unloads', controller: 'admin/rake_unloads', action: 'find_station_unloads', via: [:get], as: 'find_station_unloads'
   match '/find_from_station_unloads', controller: 'admin/rake_unloads', action: 'find_from_station_unloads', via: [:get], as: 'find_from_station_unloads'
   match '/delete_rake_unload', controller: 'admin/rake_unloads', action: 'delete_rake_unload', via: [:get], as: 'delete_rake_unload'
@@ -37,8 +36,10 @@ Rails.application.routes.draw do
   match '/find_from_station_aecs_unloads', controller: 'admin/aecs_unloads', action: 'find_from_station_aecs_unloads', via: [:get], as: 'find_from_station_aecs_unloads'
   match '/delete_aecs_unload', controller: 'admin/aecs_unloads', action: 'delete_aecs_unload', via: [:get], as: 'delete_aecs_unload'
 
+  #--------------Excel Reports Download Starts-----------------
   match '/rake_load_excel_download', controller: 'admin/loading_reports', action: 'rake_load_excel_download', via: [:get], as: 'rake_load_excel_download'
-  
+  match '/custom_load_report_excel_download', controller: 'admin/custom_load_reports', action: 'custom_load_report_excel_download', via: [:get], as: 'custom_load_report_excel_download'
+  #--------------Excel Reports Download Ends-----------------
   namespace :admin do
   	resources :railway_zones,:states,:divisions, :areas,:stations,:rake_commodities,:major_commodities, :wagon_types, :load_unloads, :rake_loads, :rake_unloads, :other_loads, :one_rake_loads, :two_rake_loads, :one_rake_unloads, :other_unloads, :gets_unloads, :aecs_unloads, :short_routes, :ic_divisions, :users, :user_roles, :loading_reports,:unloading_reports, :phasewise_reports, :one_loading_reports, :one_unloading_reports, :custom_reports, :one_custom_reports, :custom_load_reports
   end

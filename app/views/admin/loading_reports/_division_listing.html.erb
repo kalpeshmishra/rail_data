@@ -1,28 +1,20 @@
 <style>
   .no-border tr td, .no-border tr th {
   border-width: 0;
-
 </style>
 <div class="tab-container" id="division_listing">
-  <table class="no-border">
+  <table class="no-border head">
     <tr>
       <td style="width:90%;">
         <p style="font-size: 18px;color:red;">Rake :<%=(@total_division_rake)%>&nbsp;&nbsp;Unit :<%=(@total_division_loads)%>&nbsp;&nbsp;</p>
       </td>
       <td style="width:10%; text-align: right;">
-        <%if false%>
-        <button class="btn btn-link excel_download" id="excel_download" type="submit">Excel</button>
-        <%end%>
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-division-loading-daywise">
+           <i class="fa fa-download"></i> Excel
+        </a>
       </td>
     </tr>
   </table>
-  <div>
-    <%= form_tag('', id: 'record-selector-form') do %>
-      <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-timesheet-record">
-         <i class="fa fa-download"></i> Excel
-      </a>
-    <% end %>
-  </div>
   <table class="table hover table-condensed division_listing" id="division-listing">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
@@ -44,7 +36,7 @@
     <tbody>
       <% @rake_loads.each_with_index do |rake_load, index| %>
         <tr id=<%=rake_load.id.to_s%>>
-          <td align="center" style="font-size: 15;"></td>
+          <td align="center" style="font-size: 15;"><%= index+1 %></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= rake_load.rake_count rescue '' %></span></td>
@@ -66,23 +58,14 @@
 <script >
 $(function () {
 
-  $('table.division_lisiting tr').each(function(index) {
-    $(this).find('td:nth-child(1)').html(index-1+1);
-  });
+  $("#download-division-loading-daywise").click(function () {
+    var report_date = $("#datepicker").val();
+    var report_type = "day_wise_division_loading"
+    var data = report_date + "," + report_type
+    var url = "<%= rake_load_excel_download_path () %>";
 
-  $("#download-timesheet-record").click(function () {
-
-   var report_date = $("#datepicker").val();
-   var report_type = "day_wise_division_loading"
-
-   var data = report_date + "," + report_type
-   var url = "<%= rake_load_excel_download_path () %>";
-
-   window.open('<%= root_url%>' + url + '?data=' + data, "_self")
-   // var html = "<form id='submit-record' action=" + url + "><input type='hidden' name='data' value='" + data + "'></form>";
-   $(html).submit();
-
-
+    window.open('<%= root_url%>' + url + '?data=' + data, "_self")
+    $(html).submit();
   });
 
 });

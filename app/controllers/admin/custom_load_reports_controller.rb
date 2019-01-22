@@ -8,6 +8,11 @@ class Admin::CustomLoadReportsController < ApplicationController
 		from_date = Date.today if from_date.blank?
 		to_date = Date.today if to_date.blank?
 
+		get_report_data(from_date,to_date)
+
+	end
+
+	def get_report_data(from_date,to_date)
 		station_list = []
 		commodity_list = []
 		rake_load_data = RakeLoad.where(release_date: from_date..to_date)
@@ -24,7 +29,7 @@ class Admin::CustomLoadReportsController < ApplicationController
       @custom_date_station_commodity_list = @custom_date_station_commodity_list.map{|x| [x.major_commodity,x.id]}.uniq
 		end
 
-		if params[:is_date_data_filter].present?
+		if params[:is_date_data_filter].present? 
 			load_unload_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
 			major_commodity_ids = params[:selected_commodity].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
 			@custom_date_report_data = rake_load_data.where(load_unload_id: load_unload_ids,major_commodity_id: major_commodity_ids)
@@ -211,7 +216,49 @@ class Admin::CustomLoadReportsController < ApplicationController
 			@custom_year_report_header = year
 			@custom_year_report_data = data_hash
 		end
+	end
 
+	def custom_load_report_excel_download
+		require 'roo'
+		data = params[:data].split(",")
+		from_date = data[0].to_date if data[0].present?
+		to_date = data[1].to_date if data[1].present?
+		
+		from_date = Date.today if from_date.blank?
+		to_date = Date.today if to_date.blank?
+
+		get_report_data(from_date,to_date)
+
+		statement_xls = Spreadsheet::Workbook.new
+    sheet = statement_xls.create_worksheet :name => "CustomLoadingReport"
+    
+    header = [["Loading Report DateWise From:"+data[0]+"-To:"+data[1]],["SrNo.","Release Date", "From ", "To   ", "Stock", "Rake", "Unit", "Commodity","Stack   "]]
+    sheet.row(0).default_format = Spreadsheet::Format.new(:weight => :bold)
+    sheet.row(1).default_format = Spreadsheet::Format.new(:weight => :bold)
+    row = 0
+    header.each_with_index do |data, i|
+      data.each_with_index do |label, index|
+        sheet[row, index] = label
+        header_width = label.length + 3
+        sheet.column(index).width = header_width
+      end
+      row = row + 1
+    end
+
+    row_count = 0
+    @custom_date_report_data.each.with_index(1) do |load_data, index|
+      row_count = index + 1
+      rake_load_row_values = [index,load_data.release_date.strftime('%d-%m-%y'),load_data.load_unload.station.code, load_data.station.code, load_data.wagon_type.wagon_type_code, load_data.rake_count, load_data.loaded_unit, load_data.major_commodity.major_commodity, load_data.stack]
+      rake_load_row_values.each_with_index do |content, index|
+          sheet[row_count, index] = content
+      end
+    end
+
+    report_content = statement_xls
+    report_content.write "public/report_content.xls"
+    report_name = "Custom-DateWise-LoadingReport-From-"+data[0]+"-To-"+data[1]+".xls"
+    send_file "public/report_content.xls", :type => "application/vnd.ms-excel", :filename => report_name, disposition: 'attachment'
+		# binding.pry
 	end
 
 	def show
