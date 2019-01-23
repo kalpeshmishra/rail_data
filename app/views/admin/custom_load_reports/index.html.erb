@@ -88,7 +88,7 @@
            <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-station" >Station<p></p>
-          <%= select_tag "date-station-list", options_for_select(@custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+          <%= select_tag "date-station-list", options_for_select(@custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm date-station-list'} %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-commodity">Commodity<p></p>
           <%= select_tag "date-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "date-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
@@ -97,7 +97,7 @@
       <div id ="by-month-feilds">
         <% months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
           month_years_list = []
-          (2018..2020).each do |year|
+          (2018..2019).each do |year|
           months.each do |month|
             month_years_list << ["#{month}-#{year}"]
           end
@@ -139,15 +139,28 @@
       
     </caption>
   </table>
-      
+  <table>
+    <tr>
+      <td>
+        <p id="from_date_select"></p>
+      </td>
+      <td>
+        <p id="to_date_select"></p>
+      </td>
+      <td>
+        <p id="station_select"></p>
+      </td>
+      <td>
+        <div id="commodity_select"></div>
+      </td>
+    </tr>
+  </table>
       <div id="custom_load_reports_form">
       </div>
       <div><br><br><br><br><br><br></div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -175,9 +188,7 @@
 
         $(".start_date_time").val('');
         $(".end_date_time").val('');
-        debugger
-        $('#date-station-list').val(["NoValue"]);
-
+        
       } 
       else if (period_selected == "ByYear"){
         $("#by-date-feilds").hide(); 
@@ -211,6 +222,9 @@
       }else{
         $("#submit_data").prop('disabled', false);
       }
+
+      effective_from = $("#start_date").val();
+      document.getElementById("from_date_select").innerHTML="From: "+effective_from;
     });
 
     $(".end_date_time").datepicker({
@@ -224,6 +238,10 @@
         $("#date_range_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
       }
+
+      effective_to = $("#end_date").val();
+      document.getElementById("to_date_select").innerHTML="To: "+effective_to;
+      
     });
 
     function date_validation(){

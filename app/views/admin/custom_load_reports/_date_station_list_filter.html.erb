@@ -1,5 +1,5 @@
 Station<p></p>
-<%= select_tag "date-station-list", options_for_select(custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-second-page form-control input-sm'} %>
+<%= select_tag "date-station-list", options_for_select(custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-second-page form-control input-sm date-station-list'} %>
 
 <script>
   count = 0
@@ -23,6 +23,8 @@ Station<p></p>
     });
 
     $('#date-station-list').on("change",function(){
+      select_station = $('#date-station-list').text();
+      document.getElementById("station_select").innerHTML="STN: "+select_station;
       $("#submit_error_msg").css('display','none');
     });
   });
