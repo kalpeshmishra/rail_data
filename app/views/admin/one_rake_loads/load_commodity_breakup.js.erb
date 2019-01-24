@@ -1,8 +1,7 @@
 <%all_data_records = @rake_commodity[@major_commodity_id][:data]%>
 <%if @load_commodity_breakup_values.present?%>
-
 value_count = parseInt('<%=@load_commodity_breakup_values.count%>');
-<%@load_commodity_breakup_values.to_a.each_with_index do |data,index|%>
+  <%@load_commodity_breakup_values.to_a.each_with_index do |data,index|%>
     rake_code = "#rake_code_"+"<%=index%>"
     rake_unit = "#rake_unit_"+"<%=index%>"
     commodity_rake_count = "#commodity_rake_count_"+"<%=index%>"
@@ -18,10 +17,6 @@ value_count = parseInt('<%=@load_commodity_breakup_values.count%>');
     $(rake_unit).val('<%=data.rake_unit%>');
     $(commodity_rake_count).val('<%=data.commodity_rake_count%>');
 
-    
-    
-
-        
   <%end%>
   
   $(".rake-commodity-div:hidden").each(function( i ) {
@@ -33,10 +28,10 @@ value_count = parseInt('<%=@load_commodity_breakup_values.count%>');
     });
 <%else%>
   $(".rake-commodity-div:hidden").each(function( i ) {
-      
-     
-      rake_unit_0
-       $(this).hide();
-     
+      var rake_unit = "#rake_unit_" + i;
+      var commodity_rake_count = "#commodity_rake_count_" + i;
+      $(rake_unit).val('');
+      $(commodity_rake_count).val('');
+      $(this).hide();
     });
 <%end%>

@@ -22,8 +22,16 @@ Station<p></p>
     });
 
     $('#month-station-list').on("change",function(){
+      var station = new Array();
+      $("#month-station-list :selected").each(function (i,select) {
+        station.push(" "+$(select).text());
+      });
+      var select_station = station.filter(function(e) { return e !== '  Select all' })
+      document.getElementById("station_select").innerHTML="STN: "+select_station;
+      document.getElementById("commodity_select").innerHTML="";
       $("#submit_error_msg").css('display','none');
     });
+    
   });
 
   

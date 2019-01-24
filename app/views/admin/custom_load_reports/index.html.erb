@@ -8,6 +8,10 @@
   html {
     overflow-x: scroll;
   }
+
+  .no-border tr td, .no-border tr th {
+  vertical-align: top;
+  border-width: 0;
 </style>
 <script>
     $(function () {
@@ -39,9 +43,18 @@
             url: "/admin/custom_load_reports.js?selected_months=" + selected_months + "&is_month_filter=" + true 
           });
         }
-        
       });
-
+      $('#by-month').on("change",function(){
+        var month = new Array();
+        $("#by-month :selected").each(function (i,select) {
+          month.push(" "+$(select).text());
+        });
+        var select_month = month.filter(function(e) { return e !== '  Select all' })
+        document.getElementById("from_date_select").innerHTML="Month: "+select_month;
+        document.getElementById("to_date_select").innerHTML ="";
+        document.getElementById("station_select").innerHTML ="";
+        document.getElementById("commodity_select").innerHTML ="";
+      });
       $('.primary-filters-year').multiselect({
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true,
@@ -136,31 +149,28 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
       </div>
-      
     </caption>
   </table>
-  <table>
+  <table class="no-border">
     <tr>
-      <td>
+      <td style="width:20%;">
         <p id="from_date_select"></p>
-      </td>
-      <td>
         <p id="to_date_select"></p>
       </td>
-      <td>
+      <td style="width:50%;">
         <p id="station_select"></p>
       </td>
-      <td>
-        <div id="commodity_select"></div>
+      <td style="width:30%;">
+        <p id="commodity_select"></p>
       </td>
     </tr>
   </table>
-      <div id="custom_load_reports_form">
-      </div>
-      <div><br><br><br><br><br><br></div>
-      <div id="loading-indicator">
-        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
-      </div>
+    <div id="custom_load_reports_form">
+    </div>
+    <div><br><br><br><br><br><br></div>
+    <div id="loading-indicator">
+      <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+    </div>
 </div>
 
 <script>
@@ -175,33 +185,88 @@
     $(".report_period").on("change",function(){
       $("#submit_error_msg").css('display','none');
       $("#custom_load_reports_form").empty();
+      
+      document.getElementById("from_date_select").innerHTML ="";
+      document.getElementById("to_date_select").innerHTML ="";
+      document.getElementById("station_select").innerHTML ="";
+      document.getElementById("commodity_select").innerHTML ="";
+      
       period_selected = $(this).val();
       if (period_selected == "ByDate") {
         $("#by-date-feilds").show();
         $("#by-month-feilds").hide();
         $("#by-year-feilds").hide();
+        clear_month_fields();
+        clear_year_fields();
       }
       else if (period_selected == "ByMonth"){
         $("#by-date-feilds").hide(); 
         $("#by-month-feilds").show();
         $("#by-year-feilds").hide();
-
-        $(".start_date_time").val('');
-        $(".end_date_time").val('');
-        
+        clear_date_fields();
+        clear_year_fields();
       } 
       else if (period_selected == "ByYear"){
         $("#by-date-feilds").hide(); 
         $("#by-month-feilds").hide();
         $("#by-year-feilds").show();
+        clear_date_fields();
+        clear_month_fields();
       }
       else{
         $("#by-date-feilds").hide(); 
         $("#by-month-feilds").hide();
         $("#by-year-feilds").hide();
+        clear_date_fields();
+        clear_month_fields();
+        clear_year_fields();
       }
 
     });
+
+    function clear_date_fields(){
+      $(".start_date_time").val('');
+      $(".end_date_time").val('');
+      $('option', $('#date-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#date-station-list").multiselect('refresh');
+      $('option', $('#date-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#date-commodity-list").multiselect('refresh');
+    }
+    function clear_month_fields(){
+      $('option', $('#by-month')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-month").multiselect('refresh');
+      $('option', $('#month-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#month-station-list").multiselect('refresh');
+      $('option', $('#month-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#month-commodity-list").multiselect('refresh');
+      $("#report-type").val('');
+    }
+
+    function clear_year_fields(){
+      $('option', $('#by-year')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-year").multiselect('refresh');
+      $('option', $('#year-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#year-station-list").multiselect('refresh');
+      $('option', $('#year-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#year-commodity-list").multiselect('refresh');
+      $("#year-report-type").val('');
+    }
 
     $("#by-month").on('change', function(){
       if ($(this).val().length > 3) {
