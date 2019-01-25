@@ -123,10 +123,9 @@
     var selected_stations = $('#date-station-list').val();
     var selected_commodity = $('#date-commodity-list').val();
     var report_type = "datewise_custom_loading_report"
-    var data = effective_from+ ","+ effective_to+ "," + report_type
     var url = "<%= custom_load_report_excel_download_path () %>";
 
-    window.open('<%= root_url%>' + url + '?data=' + data+"&selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+"&is_date_data_filter="+true, "_self")
+    window.open('<%= root_url%>' + url + '?from_date=' + effective_from+"&to_date=" + effective_to+"&selected_stations=" + selected_stations+'&report_type='+report_type +"&selected_commodity="+selected_commodity+"&is_date_data_filter="+true, "_self")
     $(html).submit();
   });
 </script>

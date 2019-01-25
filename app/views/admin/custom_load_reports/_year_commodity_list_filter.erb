@@ -15,6 +15,12 @@ Commodity<p></p>
     });
 
     $('#year-commodity-list').on("change",function(){
+      var commodity = new Array();
+      $("#year-commodity-list :selected").each(function (i,select) {
+        commodity.push(" "+$(select).text());
+      });
+      var select_commodity = commodity.filter(function(e) { return e !== '  Select all' })
+      document.getElementById("commodity_select").innerHTML="CMDT: "+select_commodity;
       $("#submit_error_msg").css('display','none');
     });
 

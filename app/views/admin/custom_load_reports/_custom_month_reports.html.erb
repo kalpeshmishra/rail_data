@@ -1,6 +1,23 @@
+<style>
+.no-border tr td, .no-border tr th {
+  border-width: 0;
+</style>
 <div id="custom_month_reports">
 <span style="font-size: 16px;color:#cc3d16;">Month Wise Loading&nbsp;&nbsp;</span>
-
+<table class="no-border head">
+  <tr>
+    <td style="width:90%;">
+      
+    </td>
+    <td style="width:10%;">
+      <span class="table-custom-month-reports">
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-month-custom-loading-report">
+         <i class="fa fa-download"></i> Excel
+        </a>
+      </span>
+    </td>
+  </tr>
+</table>
 <table class="table hover table-bordered" id="custom-month-reports">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
@@ -101,5 +118,20 @@
 </table>
 </div>
 <script>
-  
+$(function () {
+    
+  $("#download-month-custom-loading-report").click(function () {
+    var selected_months = $("#by-month").val();
+    var selected_stations = $('#month-station-list').val();
+    var selected_commodity = $('#month-commodity-list').val();
+    var report_type =  $('#report-type').val();
+    var report_name = "monthwise_custom_loading_report"
+    var url = "<%= month_custom_load_report_excel_download_path () %>";
+
+    window.open('<%= root_url%>' + url + '?selected_months=' + selected_months+"&selected_stations="+ selected_stations +'&report_name='+report_name +'&report_type='+report_type+"&selected_commodity="+selected_commodity+"&is_month_data_filter="+true, "_self")
+    $(html).submit();
+  });
+
+
+});
 </script>

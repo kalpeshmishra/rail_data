@@ -68,7 +68,17 @@
             url: "/admin/custom_load_reports.js?selected_year=" + selected_year + "&is_year_filter=" + true 
           });
         }
-        
+      });
+      $('#by-year').on("change",function(){
+        var year = new Array();
+        $("#by-year :selected").each(function (i,select) {
+          year.push(" "+$(select).text());
+        });
+        var select_year = year.filter(function(e) { return e !== '  Select all' })
+        document.getElementById("from_date_select").innerHTML="Year: "+select_year;
+        document.getElementById("to_date_select").innerHTML ="";
+        document.getElementById("station_select").innerHTML ="";
+        document.getElementById("commodity_select").innerHTML ="";
       });
 
     });
@@ -125,7 +135,7 @@
           <%= select_tag "month-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
-        <%= (select_tag "report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
+        <%= (select_tag "report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock'], ['Divisionwise', 'Divisionwise'], ['Statewise', 'Statewise']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
         </div> 
       </div>
       <div id ="by-year-feilds">
@@ -143,7 +153,7 @@
           <%= select_tag "year-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "year-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
-        <%= (select_tag "year-report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock']]), {prompt: 'Select', class: "form-control  input-sm year_report_type"}).html_safe %>
+        <%= (select_tag "year-report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock'], ['Divisionwise', 'Divisionwise'], ['Statewise', 'Statewise']]), {prompt: 'Select', class: "form-control  input-sm year_report_type"}).html_safe %>
         </div> 
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
