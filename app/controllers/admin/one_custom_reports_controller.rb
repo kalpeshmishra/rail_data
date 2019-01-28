@@ -2,7 +2,6 @@ class Admin::OneCustomReportsController < ApplicationController
 	layout "admin/application"
 
 	def index
-		i =0
 		from_date = params[:from_date].to_date if params[:from_date].present?
 		to_date = params[:to_date].to_date if params[:to_date].present?
 		
@@ -49,7 +48,6 @@ class Admin::OneCustomReportsController < ApplicationController
 							data_hash[station].merge!("#{commodity}" => loaded_unit) 
 					end
 				end
-
 			elsif major_commodity.major_commodity == "FG" and load.create_rake_loads_rake_commodities.count > 0
 				load.create_rake_loads_rake_commodities.each do |fg_load|
 					loaded_unit = fg_load.rake_unit
@@ -86,20 +84,23 @@ class Admin::OneCustomReportsController < ApplicationController
 						loaded_unit = other_load.rake_unit
 						major_id = RakeCommodity.find(other_load.rake_commodity_id).major_commodity_id
 						other_commodity = MajorCommodity.find(major_id).major_commodity
-						if other_commodity.present? and data_hash[station][other_commodity].present?
-							final = data_hash[station][other_commodity].to_i + loaded_unit
-							data_hash[station][other_commodity] = final
+						if station.present? and data_hash[station].present?
+							if other_commodity.present? and data_hash[station][other_commodity].present?
+								final = data_hash[station][other_commodity].to_i + loaded_unit
+								data_hash[station][other_commodity] = final
+							else
+								# data_hash[station] = {} if data_hash[station].blank?
+								data_hash[station].merge!("#{other_commodity}" => loaded_unit) if other_commodity.present?
+							end
 						else
-							data_hash[station] = {} if data_hash[station].blank?
-							data_hash[station].merge!("#{other_commodity}" => loaded_unit) if other_commodity.present?
+							data_hash[station] = {}
+							data_hash[station].merge!("#{other_commodity}" => loaded_unit)
 						end
-
 					end
-
 				end
 			end
-			
 		end
+				
 		@one_custom_commodity_list = []
 		data_hash.each do |station,data|
 			@one_custom_commodity_list <<data.keys
@@ -115,9 +116,20 @@ class Admin::OneCustomReportsController < ApplicationController
 			end
 		}
 		if params[:is_data_filter].present?
-			# binding.pry if i <700
-			selected_commodity_codes = params[:selected_commodity].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
-			
+			final_data = {}
+			selected_commodities = params[:selected_commodity].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
+			@one_custom_commodity_header = selected_commodities
+			@one_custom_commodity_header << "Other"
+			data_hash.each do |station,value|
+				if selected_commodities.include? value.keys[0]
+					final_data[station] = {} if final_data[station].blank?
+					final_data[station].merge!("#{value.keys[0]}" => value.values[0])
+				else
+					final_data[station] = {} if final_data[station].blank?
+					final_data[station].merge!("Other" => value.values[0])
+				end
+			end
+					# binding.pry  
 		end
 
 

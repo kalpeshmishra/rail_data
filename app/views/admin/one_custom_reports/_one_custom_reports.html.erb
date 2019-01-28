@@ -5,10 +5,12 @@
 <table class="table hover table-bordered" id="one-custom-reports">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      
-    </tr>
-    <tr  style="color: #fff; background: #4B4B4D;">
-      
+      <%if @one_custom_commodity_header.present?%>
+        <%header = ["Station"] + @one_custom_commodity_header+["Total"]%>
+        <%header.each do |commodity| %>
+          <th style="vertical-align: middle;"><%=commodity%></th>
+        <%end%>
+      <%end%>   
     </tr>
   </thead>
   <tbody>

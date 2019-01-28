@@ -195,6 +195,7 @@ belongs_to :wagon_type
       gets_unload.total_unit = value["total_unit"] rescue nil
       gets_unload.wagon_type_id = value["wagon_type"].to_i rescue nil
       gets_unload.rake_count = value["rake_count"] rescue nil
+      gets_unload.incoming_power = value["incoming_power"] rescue nil
       gets_unload.stock_description = value["stock_description"] rescue nil
       gets_unload.major_commodity_id = value["major_commodity"].to_i rescue nil
       gets_unload.commodity_type = value["commodity_type"] rescue nil
@@ -213,6 +214,7 @@ belongs_to :wagon_type
       gets_unload.release_date = value["release_date"] rescue nil
       gets_unload.train_on_run_hours =value["train_on_run_hours"] rescue nil
       gets_unload.detention_placement_release = value["detention_placement_release"] rescue nil
+      gets_unload.power_no = value["power_no"] rescue nil
       powerarrival_time = value["powerarrival_time"]
       gets_unload.powerarrival_time = powerarrival_time rescue nil
       gets_unload.powerarrival_date = value["powerarrival_date"] rescue nil
@@ -275,6 +277,7 @@ belongs_to :wagon_type
       aecs_unload.total_unit = value["total_unit"] rescue nil
       aecs_unload.wagon_type_id = value["wagon_type"].to_i rescue nil
       aecs_unload.rake_count = value["rake_count"] rescue nil
+      aecs_unload.incoming_power = value["incoming_power"] rescue nil
       aecs_unload.stock_description = value["stock_description"] rescue nil
       aecs_unload.major_commodity_id = value["major_commodity"].to_i rescue nil
       aecs_unload.commodity_type = value["commodity_type"] rescue nil
@@ -282,6 +285,7 @@ belongs_to :wagon_type
       aecs_unload.bpc_date = value["bpc_date"] rescue nil
       aecs_unload.bpc_type = value["bpc_type"] rescue nil
       aecs_unload.bpc_validity = value["bpc_validity"] rescue nil
+      aecs_unload.power_no = value["power_no"] rescue nil
       #Arrival and placement are same at powerhouse i.e. GETS & AECS
       placement_time = get_time(value["placement_time"])
       aecs_unload.arrival_time = placement_time rescue nil
