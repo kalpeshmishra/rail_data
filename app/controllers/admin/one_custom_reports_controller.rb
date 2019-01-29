@@ -118,18 +118,24 @@ class Admin::OneCustomReportsController < ApplicationController
 		if params[:is_data_filter].present?
 			final_data = {}
 			selected_commodities = params[:selected_commodity].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
-			@one_custom_commodity_header = selected_commodities
-			@one_custom_commodity_header << "Other"
+			@one_custom_report_header = selected_commodities.sort
+			@one_custom_report_header << "Other"
 			data_hash.each do |station,value|
-				if selected_commodities.include? value.keys[0]
+				data_hash[station].each do |commodity,data|
 					final_data[station] = {} if final_data[station].blank?
-					final_data[station].merge!("#{value.keys[0]}" => value.values[0])
-				else
-					final_data[station] = {} if final_data[station].blank?
-					final_data[station].merge!("Other" => value.values[0])
+					if selected_commodities.include? commodity
+						final_data[station].merge!("#{commodity}" => data)
+					else
+						if final_data[station]["Other"].present?
+							final = final_data[station]["Other"] + data
+							final_data[station]["Other"] = final
+						else
+							final_data[station].merge!("Other" => data)
+						end
+					end
 				end
 			end
-					# binding.pry  
+			@one_custom_report_data = final_data
 		end
 
 
