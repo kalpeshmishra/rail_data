@@ -100,7 +100,7 @@ class Admin::OneCustomReportsController < ApplicationController
 				end
 			end
 		end
-				
+		
 		@one_custom_commodity_list = []
 		data_hash.each do |station,data|
 			@one_custom_commodity_list <<data.keys
@@ -135,7 +135,7 @@ class Admin::OneCustomReportsController < ApplicationController
 					end
 				end
 			end
-			@one_custom_report_data = final_data
+				@one_custom_report_data = final_data
 		end
 
 
