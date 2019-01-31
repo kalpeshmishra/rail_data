@@ -1,0 +1,17 @@
+current directory: /home/kalp/8mywork/rail_data/vendor/bundle/ruby/2.6.0/gems/ruby-ll-2.1.2/ext/c
+/usr/share/rvm/rubies/ruby-2.6.0/bin/ruby -I /usr/share/rvm/rubies/ruby-2.6.0/lib/ruby/2.6.0 -r ./siteconf20190117-3847-1woeotu.rb extconf.rb
+creating Makefile
+
+current directory: /home/kalp/8mywork/rail_data/vendor/bundle/ruby/2.6.0/gems/ruby-ll-2.1.2/ext/c
+make "DESTDIR=" clean
+
+current directory: /home/kalp/8mywork/rail_data/vendor/bundle/ruby/2.6.0/gems/ruby-ll-2.1.2/ext/c
+make "DESTDIR="
+compiling driver.c
+compiling driver_config.c
+compiling libll.c
+linking shared-object libll.so
+
+current directory: /home/kalp/8mywork/rail_data/vendor/bundle/ruby/2.6.0/gems/ruby-ll-2.1.2/ext/c
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 libll.so ./.gem.20190117-3847-118fh73

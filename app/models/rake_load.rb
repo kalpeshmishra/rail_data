@@ -305,25 +305,97 @@ after_destroy :remove_rake_commodity_breakup_data
          
   end
 
+  def self.get_custom_report_loading(rake_load , odr_selected)
+    data_hash = {}
+    date_array = []
+    rake_load.each do |data|
+      release_date = data.release_date.strftime("%d-%m-%Y")
+      date_array << release_date
+      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+      major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      odr_type = data.odr_type
+      if data.release_date.present? and data_hash[release_date].present?
+        data_hash[release_date].merge!("#{load_unload_code}" => {}) if data_hash[release_date][load_unload_code].blank?
+          if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+            if data_hash[release_date][load_unload_code][major_commodity_code].keys.include?(odr_type)
+              data_hash[release_date][load_unload_code][major_commodity_code][odr_type] << data
+            else
+              data_hash[release_date][load_unload_code][major_commodity_code].merge!("#{odr_type}" => [data])
+            end
+          else
+            data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => {})
+            if data_hash[release_date][load_unload_code][major_commodity_code].keys.include?(odr_type)
+              data_hash[release_date][load_unload_code][major_commodity_code][odr_type] << data
+            else
+              data_hash[release_date][load_unload_code][major_commodity_code].merge!("#{odr_type}" => [data])
+            end
+          end
+      else
+        data_hash[release_date] = {}
+        data_hash[release_date].merge!("#{load_unload_code}" => {})
+          if data_hash[release_date][load_unload_code].keys.include?(major_commodity_code)
+            if data_hash[release_date][load_unload_code][major_commodity_code].keys.include?(odr_type)
+              data_hash[release_date][load_unload_code][major_commodity_code][odr_type] << data
+            else
+              data_hash[release_date][load_unload_code][major_commodity_code].merge!("#{odr_type}" => [data])
+            end
+          else
+            data_hash[release_date][load_unload_code].merge!("#{major_commodity_code}" => {})
+            data_hash[release_date][load_unload_code][major_commodity_code].merge!("#{odr_type}" => [data])
+          end
+      end
+      
+    end
+    
+    date_array = date_array.uniq
+    header_hash = {}
+    date_array.each do |date|
+      data_hash[date].keys.each do |key|
+        if header_hash[key].present?
+          data = data_hash[date][key].keys.map{|x|x unless x == "load_unload"}.compact.flatten.uniq
+          data = header_hash[key][:header] + data
+          header_hash[key][:header] = []
+          header_hash[key][:header] = data.compact.flatten.uniq
+        else
+          data = data_hash[date][key].keys.map{|x|x }.compact.flatten.uniq
+          header_hash[key] = {header: data}
+        end
+      end
+    end
 
+    total = 0
+    header_hash_with_odr = {}
+    date_array.each do |date|
+      data_hash[date].each do |station,value|
+        header_hash_with_odr[station] = {} if header_hash_with_odr[station].blank?
+        value.keys.each do |commodity|
+          header_hash_with_odr[station].merge!("#{commodity}" =>  {}) if header_hash_with_odr[station].keys.exclude?(commodity)
+          value[commodity].keys.each do |odr|
+            header_hash_with_odr[station][commodity].merge!("#{odr}" =>  "") 
+          end
+        end
+      end
+    end
+     
+    return {data_hash: data_hash,header_hash: header_hash, header_hash_with_odr: header_hash_with_odr}
+  end
 
   def self.get_stationwise_loading(rake_load)
     data_hash = {}
     rake_load.each do |data|
-    release_date = data.release_date.strftime("%d-%m-%Y")
-    load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+      release_date = data.release_date.strftime("%d-%m-%Y")
+      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
 
       if data.release_date.present?
         if data_hash[release_date].present?
-
-         if data_hash[release_date].keys.include?(load_unload_code)
-           data_hash[release_date][load_unload_code] << data
-         else
-           data_hash[release_date].merge!("#{load_unload_code}" => [data])
-         end
+          if data_hash[release_date].keys.include?(load_unload_code)
+            data_hash[release_date][load_unload_code] << data
+          else
+            data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          end
         else
-         data_hash[release_date] = {}
-         data_hash[release_date].merge!("#{load_unload_code}" => [data])
+          data_hash[release_date] = {}
+          data_hash[release_date].merge!("#{load_unload_code}" => [data])
         end
       end
     end
@@ -384,12 +456,11 @@ after_destroy :remove_rake_commodity_breakup_data
 
       if data.release_date.present?
         if data_hash[release_date].present?
-
-         if data_hash[release_date].keys.include?(commodity_code)
-           data_hash[release_date][commodity_code] << data
-         else
-           data_hash[release_date].merge!("#{commodity_code}" => [data])
-         end
+          if data_hash[release_date].keys.include?(commodity_code)
+            data_hash[release_date][commodity_code] << data
+          else
+            data_hash[release_date].merge!("#{commodity_code}" => [data])
+          end
         else
          data_hash[release_date] = {}
          data_hash[release_date].merge!("#{commodity_code}" => [data])

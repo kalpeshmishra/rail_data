@@ -107,8 +107,69 @@ class Admin::OneLoadingReportsController < ApplicationController
     @create_rake_loads_rake_commoditie_id_hash.each do|k,v|
     	@create_rake_loads_rake_commoditie_total << [k,v.values.sum]
     end
-    	
-		# GG Loading Details Ends
+    # GG Loading Details Ends
+
+    # Salt Loading GIMB Area Starts
+    salt_major_commodity = MajorCommodity.find_by(major_commodity: "SALT")
+    salt_rake_loads = salt_major_commodity.rake_loads.where(release_date: from_date..to_date)
+    @salt_gimb_rake_loads = gimb_load_unload.map{|load| load.rake_loads.map{|rake| rake if salt_rake_loads.include?(rake)}}.flatten.compact
+    @salt_gimb_rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
+    @gimb_salt_rake_loads_rake_commoditie_id_hash = {}
+    @salt_gimb_rake_loads.each do |load|
+      load.create_rake_loads_rake_commodities.each do |create_rake_commoditie|
+        if @gimb_salt_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].present?
+          rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@gimb_salt_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+        else
+        	@gimb_salt_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {}
+        	rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@gimb_salt_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+        end
+      end
+    end
+
+    @gimb_salt_header_hash = {}
+    @gimb_salt_rake_loads_rake_commoditie_id_hash.keys.each do|id|
+      rake_commodity = RakeCommodity.find(id) rescue nil
+      @gimb_salt_header_hash[id] = {code: rake_commodity.rake_commodity_code,name: rake_commodity.rake_commodity_name}
+    end
+    @gimb_salt_rake_loads_rake_commoditie_total = []
+    @gimb_salt_rake_loads_rake_commoditie_id_hash.each do|k,v|
+    	@gimb_salt_rake_loads_rake_commoditie_total << [k,v.values.sum]
+    end
+    # Salt Loading GIMB Area Ends
+
+    # Fertilizer Loading GIMB Area Starts
+    fert_major_commodity = MajorCommodity.find_by(major_commodity: "FERT")
+    fert_rake_loads = fert_major_commodity.rake_loads.where(release_date: from_date..to_date)
+    @fert_gimb_rake_loads = gimb_load_unload.map{|load| load.rake_loads.map{|rake| rake if fert_rake_loads.include?(rake)}}.flatten.compact
+    @fert_gimb_rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
+    @gimb_fert_rake_loads_rake_commoditie_id_hash = {}
+    @fert_gimb_rake_loads.each do |load|
+      load.create_rake_loads_rake_commodities.each do |create_rake_commoditie|
+        if @gimb_fert_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].present?
+          rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@gimb_fert_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+        else
+        	@gimb_fert_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {}
+        	rake_unit = create_rake_commoditie.rake_unit rescue 0
+        	@gimb_fert_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
+        end
+      end
+    end
+
+    @gimb_fert_header_hash = {}
+    @gimb_fert_rake_loads_rake_commoditie_id_hash.keys.each do|id|
+      rake_commodity = RakeCommodity.find(id) rescue nil
+      @gimb_fert_header_hash[id] = {code: rake_commodity.rake_commodity_code,name: rake_commodity.rake_commodity_name}
+    end
+    @gimb_fert_rake_loads_rake_commoditie_total = []
+    @gimb_fert_rake_loads_rake_commoditie_id_hash.each do|k,v|
+    	@gimb_fert_rake_loads_rake_commoditie_total << [k,v.values.sum]
+    end
+
+   
+    # Fertilizer Loading GIMB Area Ends
 		
 	end
 

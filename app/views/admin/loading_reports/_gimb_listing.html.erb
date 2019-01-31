@@ -1,10 +1,21 @@
+<style>
+  .no-border tr td, .no-border tr th {
+  border-width: 0;
+</style>
 <div class="tab-container" id="gimb_listing">
-  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-    <p style="font-size: 18px;color:red;">Rake :<%=(@total_gimb_rake)%>&nbsp;&nbsp;
-    Unit :<%=(@total_gimb_loads)%>&nbsp;&nbsp;</p>
-  </div>
-
-<table class="table hover table-bordered gimb_listing" id="gimb-listing">
+  <table class="no-border head">
+    <tr>
+      <td style="width:90%;">
+        <p style="font-size: 18px;color:red;">Rake :<%=(@total_gimb_rake)%>&nbsp;&nbsp;Unit :<%=(@total_gimb_loads)%>&nbsp;&nbsp;</p>
+      </td>
+      <td style="width:10%; text-align: right;">
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-gimb-loading-daywise">
+           <i class="fa fa-download"></i> Excel
+        </a>
+      </td>
+    </tr>
+  </table>  
+  <table class="table hover table-bordered gimb_listing" id="gimb-listing">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
         <th>Sr</th>
@@ -25,7 +36,7 @@
     <tbody>
       <% @gimb_loads.each_with_index do |gimb_load, index| %>
         <tr id=<%=gimb_load.id.to_s%>>
-          <td align="center" style="font-size: 15;"></td>
+          <td align="center" style="font-size: 15;"><%= index+1%></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.load_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= gimb_load.rake_count rescue '' %></span></td>
@@ -45,11 +56,15 @@
 </div>  
 <script >
 $(function(){
-  $('table.gimb_listing tr').each(function(index) {
-    $(this).find('td:nth-child(1)').html(index-1+1);
+  $("#download-gimb-loading-daywise").click(function () {
+    var report_date = $("#datepicker").val();
+    var report_type = "day_wise_gimb_loading"
+    var data = report_date + "," + report_type
+    var url = "<%= rake_load_excel_download_path () %>";
+
+    window.open('<%= root_url%>' + url + '?data=' + data, "_self")
+    $(html).submit();
   });
-
-
 
 });
 </script>

@@ -6,15 +6,13 @@
   <td class="text-center"><span class="view-location-<%= index %>"><%= short_route.other_route_distance rescue '' %></span></td>
   <td class="text-center"><span class="view-location-<%= index %>"><%= short_route.other_interchange_point rescue '' %></span></td>
   <td class="text-center"><span class="view-location-<%= index %>"><%= short_route.description rescue '' %></span></td>
-  
-  <td class="text-center" style="white-space: nowrap">
-    <span class="view-location-<%= index %>">
-      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_short_route_path(short_route), :remote => true, class: "label label-default", title: "Edit ShortRoute" %>
-      
-     
-
-      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger short_route-delete', data: {toggle: "modal", method_type: "delete", link: admin_short_route_path(short_route.id), message: "You really want to delete this ShortRoute?", target: "#custom-confirm-box"}, remote: true, title: "Delete ShortRoute" %>
-	  </span>
-  </td>
+  <%if is_viewable%>
+    <td class="text-center" style="white-space: nowrap">
+      <span class="view-location-<%= index %>">
+        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_short_route_path(short_route), :remote => true, class: "label label-default", title: "Edit ShortRoute" %>
+        <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger short_route-delete', data: {toggle: "modal", method_type: "delete", link: admin_short_route_path(short_route.id), message: "You really want to delete this ShortRoute?", target: "#custom-confirm-box"}, remote: true, title: "Delete ShortRoute" %>
+  	  </span>
+    </td>
+  <%end%>
 </tr>
      

@@ -7,15 +7,16 @@
   <td class="text-center"><span class="view-location-<%= index %>"><%= station.railway_zone.code rescue '' %></span></td>
   <td class="text-center"><span class="view-location-<%= index %>"><%= station.state.name rescue '' %></span></td>
   
-  
-  <td class="text-center" style="white-space: nowrap">
-    <span class="view-location-<%= index %>">
-      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_station_path(station), :remote => true, class: "label label-default", title: "Edit Station" %>
-      
-     
+  <%if is_viewable%>
+    <td class="text-center" style="white-space: nowrap">
+      <span class="view-location-<%= index %>">
+        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_station_path(station), :remote => true, class: "label label-default", title: "Edit Station" %>
+        
+       
 
-      <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger station-delete', data: {toggle: "modal", method_type: "delete", link: admin_station_path(station.id), message: "You really want to delete this Station?", target: "#custom-confirm-box"}, remote: true, title: "Delete Station" %>
-    </span>
-  </td>
+        <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger station-delete', data: {toggle: "modal", method_type: "delete", link: admin_station_path(station.id), message: "You really want to delete this Station?", target: "#custom-confirm-box"}, remote: true, title: "Delete Station" %>
+      </span>
+    </td>
+  <%end%>
 </tr>
      

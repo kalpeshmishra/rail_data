@@ -16,7 +16,7 @@
   <tbody>
     <%grand_total=0%>
     <% @gg_rake_loads.each_with_index do |load,index| %>
-      <%date = load.release_date.strftime("%d-%m-%y")%>
+      <%date = load.release_date.strftime("%d/%m/%y")%>
       <tr id=<%=load.id%>>
         <%from_station = LoadUnload.find(load.load_unload_id).station.code rescue ""%>
         <%to_station = Station.find(load.station_id).code rescue ""%>

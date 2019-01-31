@@ -1,11 +1,11 @@
 <div class="tab-container" id="division_stockwise">
-<h3 align="center">Loading Unit StockWise (GIMB Area)</h3>
+<h3 align="center">Loading Unit StockWise (Division)</h3>
 <p id="division_stock_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="division-stockwise">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      <th style="vertical-align: middle;">__Date__</th>  
+      <th style="vertical-align: middle;">Date</th>  
         <%column_hash = {}%>
         <%@division_stockwise_header = @division_stockwise_header + ["Total"]%>
         <%@division_stockwise_header.each do |label| %>
@@ -20,7 +20,7 @@
       <%next unless key%>
       <%date = key%>
       <tr id=<%=date%>>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.gsub('2018', '18') rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></span></td>
         <%if key != "column_total"%>
           <%row_total = 0%>
           <%@division_stockwise_header.each do |label|%>

@@ -1,0 +1,59 @@
+<div id="one_custom_reports">
+<h3 align="center">Loading Data Station-Commodity Wise </h3>
+<p id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></p>
+
+<table class="table hover table-bordered" id="one-custom-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Station</th>
+      <%if @one_custom_report_header.present?%>
+        <%header =  @one_custom_report_header+["STN-Total"]%>
+        <%header.each do |commodity| %>
+          <th style="vertical-align: middle;"><%=commodity%></th>
+        <%end%>
+      <%end%>   
+    </tr>
+  </thead>
+  <tbody>
+    <%column_total = {}%>
+    <%row_total = []%>
+    <%if @one_custom_report_data.present? && @one_custom_report_header.present?%>
+      <% @one_custom_report_data.each do |station,data| %>
+        <tr>
+          <td class="text-center <%=station%>"><%=station%></td>
+          <% header.each do |commodity| %>
+            <%if commodity!= "STN-Total"%>
+              <td class="text-center <%=station%>-<%=commodity%>"><%=data[commodity]%></td>
+              <%row_total << data[commodity]%>
+              <%if column_total[commodity].present?%>
+                <%column_total[commodity] << data[commodity] rescue nil%>
+              <%else%>
+                <%column_total[commodity] = []%>
+                <%column_total[commodity] << data[commodity] rescue nil%>
+              <%end%>  
+            <%else%>
+              <td class="text-center <%=station%>-"style="font-weight: bold;"><%=row_total.reject(&:blank?).sum%></td>
+              <%column_total["STN-Total"] = [] if column_total["STN-Total"].blank?%>
+              <%column_total["STN-Total"] << row_total.reject(&:blank?).sum rescue nil%>
+              <%row_total = []%>
+            <%end%>
+          <%end%>
+        </tr>
+      <%end%>
+        <tr style="font-weight: bold;">
+          <td class="text-center">CMDT-Total</td>
+            <% header.each do |commodity| %>
+              <td class="text-center"><%=column_total[commodity].reject(&:blank?).sum rescue nil%></td>
+            <%end%>
+        </tr>
+    <%end%>
+  </tbody>
+</table>
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_station_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

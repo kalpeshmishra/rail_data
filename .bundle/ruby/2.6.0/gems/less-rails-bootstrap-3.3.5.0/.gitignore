@@ -1,0 +1,11 @@
+*.gem
+.bundle
+*.lock
+pkg/*
+*.log
+test/dummy_app/log/*
+test/dummy_app/tmp/*
+tmp/*
+/twitter/
+gemfiles/*.gemfile
+test/dummy_app/tmp/

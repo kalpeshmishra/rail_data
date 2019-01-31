@@ -1,0 +1,28 @@
+Commodity<p></p>
+<%= select_tag "date-commodity-list", options_for_select(custom_date_commodity_list), {multiple: true, id: "date-commodity-list", class: 'primary-filters-second-page form-control input-sm'} %>
+
+
+<script>
+  $(function () {
+    $('.primary-filters-second-page').multiselect({
+      enableFiltering: true,
+      enableCaseInsensitiveFiltering: true,
+      includeSelectAllOption: true,
+      buttonWidth: '100%',
+      buttonClass: 'btn btn-default',
+      numberDisplayed: 0,
+      
+    });
+
+    $('#date-commodity-list').on("change",function(){
+      var commodity = new Array();
+      $("#date-commodity-list :selected").each(function (i,select) {
+        commodity.push(" "+$(select).text());
+      });
+      var select_commodity = commodity.filter(function(e) { return e !== '  Select all' })
+      document.getElementById("commodity_select").innerHTML="CMDT: "+select_commodity;
+      $("#submit_error_msg").css('display','none');
+    });
+
+  });
+</script>

@@ -8,7 +8,6 @@
     <p style="font-size: 20px;color:red;">Total-Un-Loading :<%=(@total_rake_unloads)+(@total_other_unloads)%>&nbsp;&nbsp;&nbsp;
         Rake-Un-Loading :<%=(@total_rake_unloads)%>&nbsp;&nbsp;&nbsp;
         Other-Un-Loading :<%=(@total_other_unloads)%>
-      <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>
       </p>
   </div>
 <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'rake-unloading-form',remote: true) do |form| %>
@@ -111,11 +110,12 @@
       <%end%>  
     </tbody>
   </table>
+  <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
   <%= hidden_field_tag  "date", "", id: "date" %>
   <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_unload_add">
     <div class="modal-footer" style="text-align: center !important;">
         <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
   <% end %>
 </div>
@@ -363,6 +363,81 @@ $(function(){
     
     });  
   });
+
+  $(".arrival_date").on('focusout', function () {
+    arrival_date = $(this).val();
+    mydate = $("#datepicker").val();
+    parts = mydate.split('/');
+    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+
+    new_arrival_date = new Date(arrival_date);
+    new_form_date = new Date(form_date);
+    form_date_less_five = new Date(new_form_date.getTime() - (60*60*24*5*1000));
+    
+    if ((arrival_date > form_date) && arrival_date !=0) {
+      var error_msg ="----Arrival Date Cannot be Greater than Form Date"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+      $(this).focus(); 
+    }
+    else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
+      var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+      $(this).focus(); 
+    }
+    else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
+      var row_no = $(this).attr('id').split('_')[2]
+      get_date_check(row_no);
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+   
+    
+  }); 
+
+  $(".placement_date").on('focusout', function () {
+    placement_date = $(this).val();
+    mydate = $("#datepicker").val();
+    parts = mydate.split('/');
+    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+      if ((placement_date > form_date) && placement_date !=0) {
+        var error_msg ="----Placement Date Cannot be Greater than Form Date"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if ((placement_date <= form_date) && placement_date !=0) {
+        var row_no = $(this).attr('id').split('_')[2]
+        get_date_check(row_no);
+      }
+      else{
+        $("#station_error_msg").text("");
+        $(".station_error_msg").hide();
+      }
+     
+    
+  });
+
+  function get_date_check(row_no){
+    var arrival_date_id = "#arrival_date_"+row_no
+    var placement_date_id = "#placement_date_"+row_no
+
+    var arrival_date = $(arrival_date_id).val();
+    var placement_date = $(placement_date_id).val();
+    
+    if ((arrival_date > placement_date) && arrival_date !=0 && placement_date !=0) {
+      var error_msg ="----Placement Date Cannot be Less than Arrival Date"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+  }
 
 
   $(".arrival_time,.arrival_date,.placement_time,.placement_date,.release_time,.release_date").on('keyup change', function () {

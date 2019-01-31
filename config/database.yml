@@ -47,8 +47,17 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: rail_data_production
-  username: rail_data
-  password: <%= ENV['RAIL_DATA_DATABASE_PASSWORD'] %>
+# production:
+#   <<: *default
+#   database: rail_data_production
+#   username: rail_data
+#   password: <%= ENV['RAIL_DATA_DATABASE_PASSWORD'] %>
+
+
+# production:
+#   adapter: mysql2
+#   host: ""
+#   reconnect: false
+#   database: rail_data_production
+#   username: root
+#   password: root12345

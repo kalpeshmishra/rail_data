@@ -1,0 +1,41 @@
+Station<p></p>
+<%= select_tag "month-station-list", options_for_select(custom_month_station_list), {multiple: true, id: "month-station-list", class: 'primary-filters-second-page form-control input-sm'} %>
+
+<script>
+  count = 0
+  $(document).ready(function() {
+    $('#month-station-list').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_months = $('#by-month').val();
+          selected_stations = $('#month-station-list').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/custom_load_reports.js?selected_months=" + selected_months +"&selected_stations="+selected_stations+ "&is_month_station_filter=" + true 
+          });
+        }
+    });
+
+    $('#month-station-list').on("change",function(){
+      var station = new Array();
+      $("#month-station-list :selected").each(function (i,select) {
+        station.push(" "+$(select).text());
+      });
+      var select_station = station.filter(function(e) { return e !== '  Select all' })
+      document.getElementById("station_select").innerHTML="STN: "+select_station;
+      document.getElementById("commodity_select").innerHTML="";
+      $("#submit_error_msg").css('display','none');
+    });
+    
+  });
+
+  
+
+   
+
+</script>

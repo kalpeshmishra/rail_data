@@ -124,7 +124,7 @@
   <%= hidden_field_tag  "date", "", id: "date" %>
     <div class="modal-footer" style="text-align: center !important;">
         <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
        
     </div>
   <% end %>
@@ -371,6 +371,7 @@ $(function(){
   $("#rake_commodity_add").click(function() {
    $(".rake-commodity-div:hidden").each(function( i ) {
      if(i == 0){
+      debugger
        $(this).show();
      }
    });

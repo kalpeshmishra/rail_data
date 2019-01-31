@@ -57,8 +57,9 @@
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <%= text_field_tag "gets_unload_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake unload date', id: "datepicker", class: 'form-control input_class'%>
-
-        
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
       </div>
   </caption>
   </table>
@@ -73,7 +74,12 @@
           autoclose: true, 
           format:"dd/mm/yyyy",
           todayHighlight: true,
-    }).on('change', function(){
+    });
+
+    $('#datepicker').datepicker('setDate', 'today');
+
+  });
+  $(".submit").click(function () {
       
       effective_from = $("#datepicker").val();
       if(old_date != effective_from){
@@ -83,13 +89,8 @@
         });
         old_date = effective_from 
       }
-    });
-    
-    $('#datepicker').datepicker('setDate', 'today');
-
-
-    
   });
+    
   
 
   

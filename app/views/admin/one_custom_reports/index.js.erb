@@ -1,0 +1,5 @@
+<%if params[:is_data_filter].blank?%>
+	$("#commodity").empty();
+	$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:custom_commodity_list => @one_custom_commodity_list} %>');
+<%end%>
+$("#one_custom_reports_form").html('<%= j render 'one_custom_reports'%>');

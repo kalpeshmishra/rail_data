@@ -42,10 +42,10 @@
         
         </td>
         <td>
-          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}", class: 'form-control input-md from_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+          <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}", class: 'form-control input-md from_station',maxlength:"4", required: true, style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         <p></p>
           
-          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4",required: true, style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         </td>
         <td>
           <%= text_field_tag "forecast_date_#{index}",'', type: 'date',placeholder: 'Forecast Date', id: "forecast_date_#{index}", class: 'form-control input-md', style: "width: 145px;"%>
@@ -53,9 +53,9 @@
           <%= select_tag "received_as_#{index}", options_for_select([["EMPTY","EMPTY"],["BACK-LOAD","BACK-LOAD"]]), {prompt: "Received As", class: 'form-control input-md', id: "received_as_#{index}", data_live_search: "true"} %>
         </td>
         <td>
-          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',required: true, min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true, min: "1",max: "65",style: "width: 75px; font-size:16px;" %>
+          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md',title: 'Enter Total Units', id: "total_unit_#{index}",required: true, min: "1",max: "65",style: "width: 75px; font-size:16px;" %>
         </td>
 
         <td style="padding-bottom: 1%;padding-top: 1%;">
@@ -85,13 +85,13 @@
         </td>
 
         <td>
-          <%= text_field_tag "placement_time_#{index}", '', type: 'time',placeholder: 'placement Date', id: "placement_time_#{index}", class: 'form-control input-md placement_time', style: "width: 160px; font-size:16px;"%>
+          <%= text_field_tag "placement_time_#{index}", '', type: 'time',placeholder: 'placement time', id: "placement_time_#{index}", class: 'form-control input-md placement_time', style: "width: 160px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "placement_date_#{index}", '', type: 'date',placeholder: 'placement Date', id: "placement_date_#{index}", class: 'form-control input-md placement_date', style: "width: 160px; font-size:16px;"%>
         </td>
 
         <td>
-          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'release Date', id: "release_time_#{index}", class: 'form-control input-md release_time', style: "width: 160px; font-size:16px;"%>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'release time', id: "release_time_#{index}", class: 'form-control input-md release_time', style: "width: 160px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "release_date_#{index}", '', type: 'date',placeholder: 'release Date', id: "release_date_#{index}", class: 'form-control input-md release_date', style: "width: 160px; font-size:16px;"%>
         </td>
@@ -118,12 +118,12 @@
       <%end%>  
     </tbody>
   </table>
-  <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>
+  <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
   <%= hidden_field_tag  "date", "", id: "date" %>
   <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_load_add">
     <div class="modal-footer" style="text-align: center !important;">
         <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Submit</button>
+        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
   <% end %>
 </div>
@@ -385,14 +385,88 @@ function set_rake_commodity_values(rake_dropdown_value){
       
       var row_no = $(this).attr('id').split('_')[2]
       var release_date_id = "#release_date_"+row_no
-      setreleasedate = $("#datepicker").val();
-      $(release_date_id).attr("max", setreleasedate);
-      $(release_date_id).attr("min", setreleasedate);
-    
+      set_release_date = $("#datepicker").val();
+      $(release_date_id).attr("max", set_release_date);
+      $(release_date_id).attr("min", set_release_date);
+      
     });  
   });
 
-  
+  $(".arrival_date").on('focusout', function () {
+    arrival_date = $(this).val();
+    mydate = $("#datepicker").val();
+    parts = mydate.split('/');
+    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+
+    new_arrival_date = new Date(arrival_date);
+    new_form_date = new Date(form_date);
+    form_date_less_five = new Date(new_form_date.getTime() - (60*60*24*5*1000));
+    
+    if ((arrival_date > form_date) && arrival_date !=0) {
+      var error_msg ="----Arrival Date Cannot be Greater than Form Date"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+      $(this).focus(); 
+    }
+    else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
+      var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+      $(this).focus(); 
+    }
+    else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
+      var row_no = $(this).attr('id').split('_')[2]
+      get_date_check(row_no);
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+   
+    
+  }); 
+
+  $(".placement_date").on('focusout', function () {
+    placement_date = $(this).val();
+    mydate = $("#datepicker").val();
+    parts = mydate.split('/');
+    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+      if ((placement_date > form_date) && placement_date !=0) {
+        var error_msg ="----Placement Date Cannot be Greater than Form Date"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if ((placement_date <= form_date) && placement_date !=0) {
+        var row_no = $(this).attr('id').split('_')[2]
+        get_date_check(row_no);
+      }
+      else{
+        $("#station_error_msg").text("");
+        $(".station_error_msg").hide();
+      }
+     
+    
+  });
+
+  function get_date_check(row_no){
+    var arrival_date_id = "#arrival_date_"+row_no
+    var placement_date_id = "#placement_date_"+row_no
+
+    var arrival_date = $(arrival_date_id).val();
+    var placement_date = $(placement_date_id).val();
+    
+    if ((arrival_date > placement_date) && arrival_date !=0 && placement_date !=0) {
+      var error_msg ="----Placement Date Cannot be Less than Arrival Date"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+  }
+
   $(".arrival_time,.arrival_date,.placement_time,.placement_date,.release_time,.release_date").on('keyup change', function () {
     var row_no = $(this).attr('id').split('_')[2]
     get_detention(row_no);

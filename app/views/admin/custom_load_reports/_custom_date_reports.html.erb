@@ -1,0 +1,131 @@
+<style>
+.add-cursor tr{
+   height: 5px;
+ }  
+ .table.table-dark tbody td {
+    padding: 5px;
+}
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+.no-border tr td, .no-border tr th {
+  border-width: 0;
+</style>
+<div id="custom_date_reports" class="custom-date-reports">
+  <div class="date-report-setting" >
+   <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-date-data">-</b> Date Wise Data </span><br>
+  </div>
+  <table class="no-border head">
+    <tr>
+      <td style="width:40%;">
+        <span id="adi_station_heading" class="table-custom-date-reports" style="font-size: 16px;color:#cc3d16;"></span>
+      </td>
+      <td style="width:40%;">
+        <span style="font-size: 16px;color:#cc3d16;" class="table-custom-date-reports">Rake :<%=(@custom_date_total_rake)%>&nbsp;&nbsp;
+        Unit :<%=(@custom_date_total_unit)%>&nbsp;&nbsp; DoubleStack(CONT):<%=(@custom_date_total_double_stack)%></span>
+      </td>
+      <td style="width:10%;">
+      </td>
+      <td style="width:10%;">
+        <span class="table-custom-date-reports">
+          <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-custom-loading-report">
+           <i class="fa fa-download"></i> Excel
+          </a>
+        </span>
+      </td>
+    </tr>
+  </table>
+  <table class="table hover table-bordered table-custom-date-reports" id="table-custom-date-reports">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th style="vertical-align: middle;">Date</th>
+        <th style="vertical-align: middle;">From</th>
+        <th style="vertical-align: middle;">To</th>
+        <th style="vertical-align: middle;">Stock</th>
+        <th style="vertical-align: middle;">Rake</th>
+        <th style="vertical-align: middle;">Unit</th>
+        <th style="vertical-align: middle;">Commodity</th>
+        <th style="vertical-align: middle;">Stack</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if @custom_date_report_data.present?%>
+        <% @custom_date_report_data.each_with_index do |data,index| %>
+          <tr id=<%=data.id.to_s%>>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.release_date.strftime('%d-%m-%y') rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.load_unload.station.code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.station.code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.wagon_type.wagon_type_code rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.rake_count rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.loaded_unit rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.major_commodity.major_commodity rescue '' %></span></td>
+            <td class="text-center"><span class="view-location-<%= index %>"><%= data.stack rescue '' %></span></td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+  
+  <div class="graph-report-setting">
+  <span class="pull-left lead-text add-cursor" style="font-size: 18px !important;"><b id="custom-report-graph-data">+</b> Graph Data </span><br>
+  </div>
+    <div class="table-custom-graph-reports">
+      <div id="emp_head_count" style="background: white;text-align: center;margin-bottom: 3%; width:49%;float: left;margin-right: 0.5%;margin-left: 0.5%;padding: 0% 2% 1%;">
+        <h3>loading Reports</h3>
+        
+        <%data = [["Feb17", 147],["Mar17", 144],
+        ["Apr17", 139],["May17", 137],
+        ["Jun17", 37],["Jul17", 137],
+        ["Aug17", 135],["Sep17", 132],
+        ["Oct17", 125],["Nov17", 125],
+        ["Dec17", 122],["Jan18", 119]]
+        [name: "Employees", data: data]%>
+      <%= column_chart [name: "Employees", data: data],
+        # xtitle: "Date",
+        # ytitle: "Count",
+        library: { scales: { yAxes: [{ gridLines: { display: true }}]}},
+        colors: ['rgb(254, 102, 1)'], height: "180px"%>
+      </div>
+    </div>
+    
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_station_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+  
+  // $(".table-custom-date-reports").hide();
+  $(".table-custom-graph-reports").hide();
+
+  $(".date-report-setting").click(function () {
+      var sign = $(this).find('#custom-report-date-data').text().trim();
+      if (sign == '+') {
+          $(this).find('#custom-report-date-data').text('-')
+      } else {
+          $(this).find('#custom-report-date-data').text('+')
+      }
+      $(".table-custom-date-reports").toggle();
+  });
+  $(".graph-report-setting").click(function () {
+      var sign = $(this).find('#custom-report-graph-data').text().trim();
+      if (sign == '+') {
+          $(this).find('#custom-report-graph-data').text('-')
+      } else {
+          $(this).find('#custom-report-graph-data').text('+')
+      }
+      $(".table-custom-graph-reports").toggle();
+  });
+
+  $("#download-custom-loading-report").click(function () {
+    var effective_from = $("#start_date").val();
+    var effective_to = $("#end_date").val();
+    var selected_stations = $('#date-station-list').val();
+    var selected_commodity = $('#date-commodity-list').val();
+    var report_type = "datewise_custom_loading_report"
+    var url = "<%= custom_load_report_excel_download_path () %>";
+
+    window.open('<%= root_url%>' + url + '?from_date=' + effective_from+"&to_date=" + effective_to+"&selected_stations=" + selected_stations+'&report_type='+report_type +"&selected_commodity="+selected_commodity+"&is_date_data_filter="+true, "_self")
+    $(html).submit();
+  });
+</script>

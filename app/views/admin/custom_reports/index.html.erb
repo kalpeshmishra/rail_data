@@ -1,12 +1,29 @@
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 180px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
 <script>
     $(function () {
-        $('.primary-filters').multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            includeSelectAllOption: true,
-            buttonWidth: '100%',
-            buttonClass: 'btn btn-default',
-            numberDisplayed: 0
+
+      $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue'
+        });
+
+        $('.primary-filters-main-page').multiselect({
+          enableFiltering: true,
+          enableCaseInsensitiveFiltering: true,
+          includeSelectAllOption: true,
+          buttonWidth: '100%',
+          buttonClass: 'btn btn-default',
+          numberDisplayed: 0
         });
     });
 
@@ -21,13 +38,14 @@
   <div>
     <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
     <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
   </div>
   <table class="table hover table-dark" id="custom-reports">
     <caption>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-          <span class="pull-left lead-text">
-            <%="Report"%>
-          </span>
+        <span class="pull-left lead-text">
+          <%="Report"%>
+        </span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
        <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
@@ -35,53 +53,40 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters form-control input-sm' ,data_live_search: "true"} %>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
+        <%= select_tag "station-list", options_for_select(@custom_station_list), {multiple: true, id: "station-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {prompt: "Commodity", class: 'form-control input-md',style: "width: 100px;", data_live_search: "true"} %>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
+        <%= select_tag "commodity-list", options_for_select(@custom_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
-     
+
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="odr_type">
+         <label class="odr-selection-label"><%= check_box_tag("odr_type", 'odr_type', false, class: 'icheck-odr') %> &nbsp;&nbsp;&nbsp;ODR Type</label>
+      </div>
+      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
       </div>
       
     </caption>
-    </table>
-    
-  <div class="tab-container">
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#adi-area-stationwise-info" id="adi-area-stationwise-tab" data-toggle="tab">STN(A)</a>
-      </li>
+  </table>
       
-    </ul>
-
-    <div class="tab-content">
-      <div id="adi-area-stationwise-info" class="tab-pane active cont">
-        
-        <div id="adi_stationwise_form"></div>
-      </div>
-      
+      <div id="custom_reports_form"></div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
     </div>
   </div>
-  
-
 </div>
-
-
-
-
 
 <script>
   $(function () {
-
     $(".start_date_time").datepicker({
       format: 'dd-mm-yyyy',
-      autoclose: true
+      autoclose: true,
+      todayHighlight: true,
+    
     }).on('change.dp', function (e) {
       if($("#end_date").val() != ""){
         date_validation();
@@ -92,7 +97,8 @@
 
     $(".end_date_time").datepicker({
       format: 'dd-mm-yyyy',
-      autoclose: true
+      autoclose: true,
+      todayHighlight: true,
     }).on('change.dp', function (e) {
       if($("#start_date").val() != ""){
         date_validation();
@@ -122,6 +128,7 @@
         $("#date_range_error_msg").css('display','none');
         $("#date_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
+        $("#submit_error_msg").css('display','none');  
         station_commodity_data();
 
       }
@@ -137,6 +144,38 @@
         });
 
     }
+   
+
+    $(".submit").on("click",function(){
+      effective_from = $("#start_date").val();
+      effective_to = $("#end_date").val();
+      selected_stations = $('#station-list').val();
+      selected_commodity = $('#commodity-list').val();
+      // if($('.icheck-odr').is(':checked')){
+      //  odr_type_selected = true
+      // }else{
+      //   odr_type_selected = false
+      // }
+      odr_type_selected = $('.icheck-odr').is(':checked') ? true : false
+      if (odr_type_selected == true){
+        odr_selected = 1
+      } 
+      else{
+        odr_selected = 2
+      } 
+      if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
+        $.ajax({
+            type: "get",
+            url: "/admin/custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+"&odr_selected="+odr_selected+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+        });
+        
+      }
+      else{
+        $("#submit_error_msg").css('display','');
+      }
+      
+    });
+
    
   });
 </script>

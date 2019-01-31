@@ -1,8 +1,7 @@
 <script>
-
-    $(document).ready(function () {
-      $('.sidebar-remain-open').click();
-    });
+  $(document).ready(function () {
+    $('.sidebar-remain-open').click();
+  });
 
 </script>
 <div class="table-responsive main-client-listing">
@@ -16,26 +15,13 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
         <%= text_field_tag "load_report_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
-
-        
       </div>
-     
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search"></i></span>
           <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
         </div>
       </div>
-      
-      
-      <% if false %>
-          <div class="row">
-            <a href="#" class="advance-search col-md-2 pull-right" style="border-bottom: 0px;">
-              <p class="filter-link">Show Advanced Search</p>
-            </a>
-          </div>
-          <%= render 'filters' %>
-      <% end %>
     </caption>
     </table>
     
@@ -50,17 +36,9 @@
       <li>
         <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB</a>
       </li>
-      
       <li>
-        <a href="#division-summary" id="division-summary-tab" data-toggle="tab">Div(Summ)</a>
+        <a href="#summary-loading-info" id="summary-tab" data-toggle="tab">Summary</a>
       </li>
-      <li>
-        <a href="#adi-summary" id="adi-summary-tab" data-toggle="tab">ADI(Summ)</a>
-      </li>
-      <li>
-        <a href="#gimb-summary" id="gimb-summary-tab" data-toggle="tab">GIMB(Summ)</a>
-      </li>
-      
     </ul>
 
     <div class="tab-content">
@@ -76,20 +54,10 @@
         <%=render 'gimb_listing'%>
         <div id="gimb_load_form"></div>
       </div>
-    <%if false%>
-      <div id="division-summary" class="tab-pane active cont">
-        <%=render 'division_summary'%>
-        <div id="division_summary_form"></div>
+      <div id="summary-loading-info" class="tab-pane cont">
+        <%=render 'summary'%>
+        <div id="summary_form"></div>
       </div>
-      <div id="adi-summary" class="tab-pane cont">
-        <%=render 'adi_summary'%>
-        <div id="adi_summary_form"></div>
-      </div>
-      <div id="gimb-summary" class="tab-pane cont">
-        <%=render 'gimb_summary'%>
-        <div id="gimb_summary_form"></div>
-      </div>
-    <% end %>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>

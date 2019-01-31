@@ -1,0 +1,125 @@
+<div id="custom_reports_with_odr">
+<h3 align="center">Loading Data Station-Commodity Wise </h3>
+<p id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></p>
+
+<table class="table hover table-bordered" id="custom-reports-with-odr">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <%if @custom_report_header_with_odr.present?%>
+        <th style="vertical-align: middle;" rowspan="3">Date</th>
+        <%header = @custom_report_header_with_odr.keys%>
+        <%header.each do |station| %>
+          <%@stn_colspan = []%>
+          <%if @custom_report_header_with_odr[station].present?%>
+            <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+              <%colspan = @custom_report_header_with_odr[station][commodity].present? ? @custom_report_header_with_odr[station][commodity].keys.count : 1%>
+              <%@stn_colspan << colspan%>
+            <%end%>
+          <%end%>
+          <th style="vertical-align: middle;" colspan="<%=@stn_colspan.sum%>"><%=station%></th>
+        <%end%>
+      <%end%>
+    </tr>
+    <tr  style="color: #fff; background: #4B4B4D;">
+      <%if @custom_report_header_with_odr.present?%>
+        <%header.each do |station| %>
+          <%if @custom_report_header_with_odr[station].present?%>
+            <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+              <%cmdt_colspan = @custom_report_header_with_odr[station][commodity].present? ? @custom_report_header_with_odr[station][commodity].keys.count : 1%>
+              <th style="vertical-align: middle;" colspan="<%=cmdt_colspan%>"><%=commodity%></th>
+            <%end%>
+          <%else%>
+            <th style="vertical-align: middle;"></th>
+          <%end%>
+        <%end%>
+      <%end%>
+    </tr>
+    <tr  style="color: #fff; background: #4B4B4D;">
+      <%if @custom_report_header_with_odr.present?%>
+        <%header.each do |station| %>
+          <%if @custom_report_header_with_odr[station].present?%>
+            <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+              <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                <th class="text-center <%=station%>-<%=commodity%>-<%=odr%>" style="vertical-align: middle;"><%=odr%></th>
+              <%end%>
+            <%end%>
+          <%else%>
+            <th style="vertical-align: middle;"></th>
+          <%end%>
+        <%end%>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <%if @custom_report_data.present? && @custom_report_header_with_odr.present?%>
+      <%@total_loaded_unit =[]%>
+      <%total_hash = {}%>
+      <%@custom_report_data.merge!("total_hash" => total_hash)%>
+      <% @custom_report_data.each do |date,value| %>
+        <tr id=<%=date%>>
+          <td class="text-center -<%= date %>"><%= (date == "total_hash") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></td>
+          <%station = @custom_report_header_with_odr.keys%>
+          <%station.each do |station|%>
+            <%if date != "total_hash"%>
+              <%if @custom_report_data[date][station].present?%>
+                <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+                  <%if @custom_report_data[date][station][commodity].present?%> 
+                    <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                      <%if @custom_report_data[date][station][commodity][odr].present?%>
+                        <%loaded_unit = @custom_report_data[date][station][commodity][odr].map{|v| v.loaded_unit || 0}.sum%>
+                        <%@total_loaded_unit << loaded_unit%>
+                        <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--1"><%= @total_loaded_unit.sum rescue '' %></td>
+                        <%if total_hash[station].present?%>
+                          <%if total_hash[station][commodity].present?%>
+                            <%if total_hash[station][commodity].keys.include?(odr)%>
+                              <%total_hash[station][commodity][odr] << @total_loaded_unit%>
+                            <%else%>
+                              <%total_hash[station][commodity] = {}%>
+                              <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
+                            <%end%>
+                          <%else%>
+                            <%total_hash[station][commodity] = {}%>
+                            <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
+                          <%end%>      
+                        <%else%>
+                          <%total_hash[station] = {}%>
+                          <%total_hash[station].merge!("#{commodity}" => {})%>
+                        <%end%>
+                        <%@total_loaded_unit = []%>
+                      <%else%>
+                        <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--2"><%= "" %></td> 
+                      <%end%>
+                    <%end%>
+                  <%else%>
+                    <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                      <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--3"><%= "" %></td>  
+                    <%end%>  
+                  <%end%>
+                <%end%>
+              <%else%>
+                <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
+                  <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
+                    <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--4"><%= "" %></td>  
+                  <%end%>
+                <%end%>   
+              <%end%>
+            <%else%>
+              <%total_hash[station].keys.each do |commodity|%>
+                <%total_hash[station][commodity].keys.each do |odr|%>
+                <td class="text-center <%=station%>-<%=commodity%>" style="font-weight: bold;"><%= total_hash[station][commodity][odr].flatten.sum%></td>
+                <%end%>
+              <%end%>
+            <%end%>  
+          <%end%>    
+      <%end%>  
+    <%end%>
+  </tbody>
+</table>
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_station_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

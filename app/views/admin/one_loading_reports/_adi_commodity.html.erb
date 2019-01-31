@@ -20,18 +20,16 @@
       <%next unless key%>
       <%date = key%>
       <tr id=<%=date%>>
-        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d-%m-%y") rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (date == "column_total") ? "TOTAL" : date.to_date.strftime("%d/%m/%y") rescue '' %></span></td>
         <%if key != "column_total"%>
           <%row_total = 0%>
           <%@adi_commodity_header.each do |label|%>
             <%next if label == "Total"%>
             <%if @adi_rake_load_commodity[date][label].present?%>
               <%total_loaded_unit = @adi_rake_load_commodity[date][label].map{|v|v.loaded_unit || 0}.sum%>
-
               <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_loaded_unit] : total_loaded_unit rescue '' %></span></td>
               <%row_total = row_total + total_loaded_unit%>
               <%column_hash[label] << total_loaded_unit%>
-              
             <%else%>
               <td class="text-center"><span class="view-location-<%= key %>"><%= "" %></span></td>
             <%end%>
