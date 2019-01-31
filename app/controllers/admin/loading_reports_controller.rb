@@ -36,13 +36,58 @@ class Admin::LoadingReportsController < ApplicationController
     end
     @adi_loads = adi_area_loads
     @gimb_loads = gimb_area_loads
-    
     @total_adi_loads = adi_unit
     @total_adi_rake = adi_rake
     @total_gimb_loads = gimb_unit
     @total_gimb_rake = gimb_rake
     @total_division_loads = adi_unit+ gimb_unit
     @total_division_rake = adi_rake + gimb_rake
+
+    @adi_loading_summary = get_summary_data(adi_area_loads)
+    @gimb_loading_summary = get_summary_data(gimb_area_loads)
+    @division_loading_summary = get_summary_data(@rake_loads)
+  end
+
+  def get_summary_data(summary_data)
+    commodity_day_wise = {}
+    stock_day_wise = {}
+    summary_data.each do |data|
+      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      stock_code = WagonType.find(data.wagon_type_id).wagon_type_code
+      stock_type = WagonType.find(data.wagon_type_id).wagon_details_covered_open
+      rake_count = data.rake_count
+      loaded_unit = data.loaded_unit
+      if commodity_day_wise[commodity_code].blank?
+        commodity_day_wise[commodity_code] = {}
+        commodity_day_wise[commodity_code].merge!("rake_count" => [rake_count])
+        commodity_day_wise[commodity_code].merge!("loaded_unit" => [loaded_unit])
+      else
+        commodity_day_wise[commodity_code]["rake_count"] = [commodity_day_wise[commodity_code]["rake_count"][0]+rake_count]
+        commodity_day_wise[commodity_code]["loaded_unit"] = [commodity_day_wise[commodity_code]["loaded_unit"][0]+loaded_unit]
+      end  
+      
+      if stock_day_wise[stock_type].blank?
+        stock_day_wise[stock_type] = {}
+        if stock_day_wise[stock_type][stock_code].blank?
+          stock_day_wise[stock_type][stock_code] = {}
+          stock_day_wise[stock_type][stock_code].merge!("rake_count" => [rake_count])
+          stock_day_wise[stock_type][stock_code].merge!("loaded_unit" => [loaded_unit])
+        else
+          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count]
+          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit]
+        end  
+      else
+        if stock_day_wise[stock_type][stock_code].blank?
+          stock_day_wise[stock_type][stock_code] = {}
+          stock_day_wise[stock_type][stock_code].merge!("rake_count" => [rake_count])
+          stock_day_wise[stock_type][stock_code].merge!("loaded_unit" => [loaded_unit])
+        else
+          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count]
+          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit]
+        end  
+      end  
+    end
+    return commodity_day_wise,stock_day_wise
   end
 
   def rake_load_excel_download

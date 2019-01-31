@@ -1,0 +1,49 @@
+<style>
+  .no-border tr td, .no-border tr th {
+  border-width: 0;
+</style>
+<div class="tab-container" id="summary">
+  <table class="no-border head">
+    <tr>
+      <td style="width:90%;">
+       
+      </td>
+      <td style="width:10%; text-align: right;">
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-adi-loading-daywise">
+           <i class="fa fa-download"></i> Excel
+        </a>
+      </td>
+    </tr>
+  </table>  
+   
+  <table class="table hover table-bordered adi_lisiting" id="summary">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th>SR</th>
+        <th>FROM</th>
+        <th>TO</th>
+        <th>Rake</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      <p><%= @adi_loading_summary%></p>
+    </tbody>
+  </table>
+</div>  
+
+<script >
+$(function(){
+
+  $("#download-adi-loading-daywise").click(function () {
+    var report_date = $("#datepicker").val();
+    var report_type = "day_wise_adi_loading"
+    var data = report_date + "," + report_type
+    var url = "<%= rake_load_excel_download_path () %>";
+
+    window.open('<%= root_url%>' + url + '?data=' + data, "_self")
+    $(html).submit();
+  });
+
+});
+</script>

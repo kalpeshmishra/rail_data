@@ -37,7 +37,7 @@
         <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB</a>
       </li>
       <li>
-        <a href="#summary" id="summary-tab" data-toggle="tab">Summary)</a>
+        <a href="#summary-loading-info" id="summary-tab" data-toggle="tab">Summary</a>
       </li>
     </ul>
 
@@ -54,12 +54,10 @@
         <%=render 'gimb_listing'%>
         <div id="gimb_load_form"></div>
       </div>
-    <%if false%>
-      <div id="summary" class="tab-pane active cont">
+      <div id="summary-loading-info" class="tab-pane cont">
         <%=render 'summary'%>
         <div id="summary_form"></div>
       </div>
-    <% end %>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
       </div>
