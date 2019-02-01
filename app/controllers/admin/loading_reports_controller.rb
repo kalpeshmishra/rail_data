@@ -43,9 +43,16 @@ class Admin::LoadingReportsController < ApplicationController
     @total_division_loads = adi_unit+ gimb_unit
     @total_division_rake = adi_rake + gimb_rake
 
-    @adi_loading_summary = get_summary_data(adi_area_loads)
-    @gimb_loading_summary = get_summary_data(gimb_area_loads)
-    @division_loading_summary = get_summary_data(@rake_loads)
+    adi_loading_summary = get_summary_data(adi_area_loads)
+    gimb_loading_summary = get_summary_data(gimb_area_loads)
+    division_loading_summary = get_summary_data(@rake_loads)
+
+    @adi_commodity_loading_daywise = adi_loading_summary[0]
+    @adi_stock_loading_daywise = adi_loading_summary[1].sort.to_h
+    @gimb_commodity_loading_daywise = gimb_loading_summary[0]
+    @gimb_stock_loading_daywise = gimb_loading_summary[1].sort.to_h
+    @division_commodity_loading_daywise = division_loading_summary[0]
+    @division_stock_loading_daywise = division_loading_summary[1].sort.to_h
   end
 
   def get_summary_data(summary_data)
