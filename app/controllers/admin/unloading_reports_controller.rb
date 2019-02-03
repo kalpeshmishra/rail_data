@@ -33,11 +33,12 @@ class Admin::UnloadingReportsController < ApplicationController
 		@total_gimb_unloads = gimb_unit
     @total_rake_unloads = adi_unit + gimb_unit 
 
-    get_abc_summary_data(data)
-    
+    abc_summary_data  = get_abc_summary_data(data)
+    @adi_abc_summary_data  = abc_summary_data[0]
+    @gimb_abc_summary_data  = abc_summary_data[1]
   end
+  
   def get_abc_summary_data(data)
-    # previous_date = data-1
     previous_stock = RakeUnload.where(RakeUnload.arel_table[:placement_date].lt(data).and(RakeUnload.arel_table[:release_date].gteq(data)))
     previous_stock += RakeUnload.where(RakeUnload.arel_table[:placement_date].lt(data).and(RakeUnload.arel_table[:release_date].eq(nil)))
     previous_stock += RakeUnload.where(RakeUnload.arel_table[:placement_date].lt(data).and(RakeUnload.arel_table[:release_date].eq("")))
@@ -55,28 +56,89 @@ class Admin::UnloadingReportsController < ApplicationController
     all_stock.each do |rake_unload|
       rake_area =  rake_unload.load_unload.station.area.area_code 
       if rake_area == "ADI"
-        adi_stations << rake_unload.load_unload.station.code
+        adi_stations << [rake_unload.load_unload_id,rake_unload.load_unload.station.code]
       elsif rake_area == "GIMB"
-        gimb_stations << rake_unload.load_unload.station.code
+        gimb_stations << [rake_unload.load_unload_id,rake_unload.load_unload.station.code]
       end
     end
+    
     adi_stations = adi_stations.uniq  
     gimb_stations = gimb_stations.uniq
 
-    adi_data_hash = {}
-    if adi_stations.present?
-      adi_stations.each do|station|
-        adi_data_hash[station] ={}
-        previous_stock.each do |rake_unload|
-          adi_data_hash[station].merge!("previous_stock" => {})
+    adi_abc_hash_data = get_area_hash_data(adi_stations,previous_stock,received_stock,release_stock,onhand_stock)
+    gimb_abc_hash_data = get_area_hash_data(gimb_stations,previous_stock,received_stock,release_stock,onhand_stock)
+    return adi_abc_hash_data,gimb_abc_hash_data
+    
+  end
+
+  def get_area_hash_data(area_stations,previous_stock,received_stock,release_stock,onhand_stock)
+    area_data_hash = {}
+    if area_stations.present?
+      area_stations.each do|unload_id,station|
+        area_data_hash[station] ={}
+        area_data_hash[station].merge!("previous_stock" => {})
+        area_data_hash[station].merge!("received_stock" => {})
+        area_data_hash[station].merge!("release_stock" => {})
+        area_data_hash[station].merge!("onhand_stock" => {})
+      end
+      
+      previous_stock.each do |rake_unload|
+        if area_stations.transpose[0].include?(rake_unload.load_unload_id)
+          station = rake_unload.load_unload.station.code
           stock_type = WagonType.find(rake_unload.wagon_type_id).wagon_details_covered_open
           loaded_unit = rake_unload.loaded_unit
-          adi_data_hash[station]["previous_stock"].merge!(stock_type => loaded_unit)
+          if area_data_hash[station]["previous_stock"][stock_type].blank?
+            area_data_hash[station]["previous_stock"].merge!(stock_type => loaded_unit)
+          else
+            final = area_data_hash[station]["previous_stock"][stock_type] + loaded_unit
+            area_data_hash[station]["previous_stock"][stock_type]  = final
+          end
         end
       end
-        binding.pry
+      received_stock.each do |rake_unload|
+        if area_stations.transpose[0].include?(rake_unload.load_unload_id)
+          station = rake_unload.load_unload.station.code
+          stock_type = WagonType.find(rake_unload.wagon_type_id).wagon_details_covered_open
+          loaded_unit = rake_unload.loaded_unit
+          if area_data_hash[station]["received_stock"][stock_type].blank?
+            area_data_hash[station]["received_stock"].merge!(stock_type => loaded_unit)
+          else
+            final = area_data_hash[station]["received_stock"][stock_type] + loaded_unit
+            area_data_hash[station]["received_stock"][stock_type]  = final
+          end
+        end
+      end
+      release_stock.each do |rake_unload|
+        if area_stations.transpose[0].include?(rake_unload.load_unload_id)
+          station = rake_unload.load_unload.station.code
+          stock_type = WagonType.find(rake_unload.wagon_type_id).wagon_details_covered_open
+          loaded_unit = rake_unload.loaded_unit
+          if area_data_hash[station]["release_stock"][stock_type].blank?
+            area_data_hash[station]["release_stock"].merge!(stock_type => loaded_unit)
+          else
+            final = area_data_hash[station]["release_stock"][stock_type] + loaded_unit
+            area_data_hash[station]["release_stock"][stock_type]  = final
+          end
+        end
+      end
+      onhand_stock.each do |rake_unload|
+        if area_stations.transpose[0].include?(rake_unload.load_unload_id)
+          station = rake_unload.load_unload.station.code
+          stock_type = WagonType.find(rake_unload.wagon_type_id).wagon_details_covered_open
+          loaded_unit = rake_unload.loaded_unit
+          if area_data_hash[station]["onhand_stock"][stock_type].blank?
+            area_data_hash[station]["onhand_stock"].merge!(stock_type => loaded_unit)
+          else
+            final = area_data_hash[station]["onhand_stock"][stock_type] + loaded_unit
+            area_data_hash[station]["onhand_stock"][stock_type]  = final
+          end
+        end
+      end
+      return area_data_hash
+        
     end
-  end
+    
+  end  
 
   def show
     
