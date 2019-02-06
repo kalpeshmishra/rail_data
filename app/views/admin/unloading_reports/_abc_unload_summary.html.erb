@@ -1,0 +1,174 @@
+<div class="tab-container" id="abc_unload_summary">
+  
+<table>
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #7a7a7a; font-weight: bold;" class="text-center">
+      <th>ADI</th>
+      <th>GIMB</th>
+    </tr>
+  </thead>
+  <tr class="text-center">
+    <td style="vertical-align: top;">
+      <table class="table hover table-bordered" id="adi-abc-unload-summary">
+        <thead class="thead-dark">
+          <tr style="color: #fff; background: #4B4B4D;" >
+            <th rowspan="2" style="vertical-align: middle;">Station</th>
+            <th colspan="2">Previous Balance</th>
+            <th colspan="2">Fresh Received</th>
+            <th colspan="2">Today Release</th>
+            <th colspan="2">Onhand</th>
+          </tr>
+          <tr style="color: #fff; background: #4B4B4D;" class="text-center">
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%division_column_total_hash = {}%>
+          <%if @adi_abc_summary_data.present?%>
+            <%adi_column_total_hash = {}%>
+            <%@adi_abc_summary_data.each do |station,data|%>
+              <tr class="text-center">
+                <td><%=station%></td>
+                <%data.keys.each do |key|%>
+                  <td><%=data[key]["OPEN"]%></td>
+                  <td><%=data[key]["COVERED"]%></td>
+                  <%if adi_column_total_hash[key].blank?%>
+                    <%adi_column_total_hash[key] ={}%>
+                    <%adi_column_total_hash[key].merge!("OPEN"=> [data[key]["OPEN"]])%>
+                    <%adi_column_total_hash[key].merge!("COVERED"=> [data[key]["COVERED"]])%>
+                  <%else%>
+                    <%adi_column_total_hash[key]["OPEN"] << data[key]["OPEN"]%>
+                    <%adi_column_total_hash[key]["COVERED"] << data[key]["COVERED"]%>
+                  <%end%>
+                  <%if division_column_total_hash[key].blank?%>
+                    <%division_column_total_hash[key] ={}%>
+                    <%division_column_total_hash[key].merge!("OPEN"=> [data[key]["OPEN"]])%>
+                    <%division_column_total_hash[key].merge!("COVERED"=> [data[key]["COVERED"]])%>
+                  <%else%>
+                    <%division_column_total_hash[key]["OPEN"] << data[key]["OPEN"]%>
+                    <%division_column_total_hash[key]["COVERED"] << data[key]["COVERED"]%>
+                  <%end%>
+                <%end%>
+              </tr>
+            <%end%>
+              <tr class="text-center" style="font-weight: bold;">
+                <td>Total</td>
+                <%adi_column_total_hash.values.each do |total|%>
+                  <td><%=total["OPEN"].reject(&:blank?).sum%></td>
+                  <td><%=total["COVERED"].reject(&:blank?).sum%></td>
+                <%end%>
+              </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </td>
+    <td style="vertical-align: top;">
+      <table class="table hover table-bordered" id="gimb-abc-unload-summary">
+        <thead class="thead-dark">
+          <tr style="color: #fff; background: #4B4B4D;" >
+            <th rowspan="2" style="vertical-align: middle;">Station</th>
+            <th colspan="2">Previous Balance</th>
+            <th colspan="2">Fresh Received</th>
+            <th colspan="2">Today Release</th>
+            <th colspan="2">Onhand</th>
+          </tr>
+          <tr style="color: #fff; background: #4B4B4D;" class="text-center">
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if @gimb_abc_summary_data.present?%>
+            <%gimb_column_total_hash = {}%>
+            <%@gimb_abc_summary_data.each do |station,data|%>
+              <tr class="text-center">
+                <td><%=station%></td>
+                <%data.keys.each do |key|%>
+                  <td><%=data[key]["OPEN"]%></td>
+                  <td><%=data[key]["COVERED"]%></td>
+                  <%if gimb_column_total_hash[key].blank?%>
+                    <%gimb_column_total_hash[key] ={}%>
+                    <%gimb_column_total_hash[key].merge!("OPEN"=> [data[key]["OPEN"]])%>
+                    <%gimb_column_total_hash[key].merge!("COVERED"=> [data[key]["COVERED"]])%>
+                  <%else%>
+                    <%gimb_column_total_hash[key]["OPEN"] << data[key]["OPEN"]%>
+                    <%gimb_column_total_hash[key]["COVERED"] << data[key]["COVERED"]%>
+                  <%end%>
+                  <%if division_column_total_hash[key].blank?%>
+                    <%division_column_total_hash[key] ={}%>
+                    <%division_column_total_hash[key].merge!("OPEN"=> [data[key]["OPEN"]])%>
+                    <%division_column_total_hash[key].merge!("COVERED"=> [data[key]["COVERED"]])%>
+                  <%else%>
+                    <%division_column_total_hash[key]["OPEN"] << data[key]["OPEN"]%>
+                    <%division_column_total_hash[key]["COVERED"] << data[key]["COVERED"]%>
+                  <%end%>
+                <%end%>
+              </tr>
+            <%end%>
+            <tr class="text-center" style="font-weight: bold;">
+              <td>Total</td>
+              <%gimb_column_total_hash.values.each do |total|%>
+                <td><%=total["OPEN"].reject(&:blank?).sum%></td>
+                <td><%=total["COVERED"].reject(&:blank?).sum%></td>
+              <%end%>
+            </tr>
+            <tr>
+              <td colspan="9"></td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr style="color: #fff; background: #7a7a7a; font-weight: bold;" class="text-center">
+    <td>Division</td>
+  </tr>
+  <tr>
+    <td>
+      <table>
+        <thead class="thead-dark">
+          <tr style="color: #fff; background: #4B4B4D;" >
+            <th rowspan="2" style="vertical-align: middle;">Station</th>
+            <th colspan="2">Previous Balance</th>
+            <th colspan="2">Fresh Received</th>
+            <th colspan="2">Today Release</th>
+            <th colspan="2">Onhand</th>
+          </tr>
+          <tr style="color: #fff; background: #4B4B4D;" class="text-center">
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+            <th>OPEN</th>
+            <th>COVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center" style="font-weight: bold;">
+            <td>Divn Total</td>
+            <%division_column_total_hash.values.each do |total|%>
+              <td><%=total["OPEN"].reject(&:blank?).sum%></td>
+              <td><%=total["COVERED"].reject(&:blank?).sum%></td>
+            <%end%>
+          </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
+</div>  

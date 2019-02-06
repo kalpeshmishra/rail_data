@@ -52,15 +52,12 @@
       </li>
       
       <li>
-        <a href="#division-summary" id="division-summary-tab" data-toggle="tab">Div(Summary)</a>
+        <a href="#unload-summary" id="unload-summary-tab" data-toggle="tab">Div(Summary)</a>
       </li>
       <li>
-        <a href="#adi-summary" id="adi-summary-tab" data-toggle="tab">ADI(Summary)</a>
+        <a href="#abc-unload-summary" id="abc-unload-summary-tab" data-toggle="tab">ABC-Unload</a>
       </li>
-      <li>
-        <a href="#gimb-summary" id="gimb-summary-tab" data-toggle="tab">GIMB(Summary)</a>
-      </li>
-      
+     
     </ul>
 
     <div class="tab-content">
@@ -77,19 +74,16 @@
         <div id="gimb_unload_form"></div>
       </div>
     <%if false%>
-      <div id="division-summary" class="tab-pane active cont">
-        <%=render 'division_summary'%>
-        <div id="division_summary_form"></div>
-      </div>
-      <div id="adi-summary" class="tab-pane cont">
-        <%=render 'adi_summary'%>
-        <div id="adi_summary_form"></div>
-      </div>
-      <div id="gimb-summary" class="tab-pane cont">
-        <%=render 'gimb_summary'%>
-        <div id="gimb_summary_form"></div>
+      <div id="unload-summary" class="tab-pane cont">
+        <%=render 'unload_summary'%>
+        <div id="unload_summary_form"></div>
       </div>
     <% end %>
+      <div id="abc-unload-summary" class="tab-pane cont">
+        
+        <div id="abc_unload_summary_form"></div>
+      </div>
+      
       <div id="unloading-indicator">
         <%#= image_tag("728.GIF", :id => "unloading-indicator") %>
       </div>
