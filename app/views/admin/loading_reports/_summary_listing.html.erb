@@ -2,19 +2,21 @@
   .no-border tr td, .no-border tr th {
   border-width: 0;
 </style>
-<div class="tab-container" id="summary">
+<div class="tab-container" id="summary_listing">
   <table class="no-border head">
     <tr>
       <td style="width:90%;">
        <p>Date</p>
       </td>
       <td style="width:10%; text-align: right;">
+      <%if false%>
         <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-adi-loading-daywise">
            <i class="fa fa-download"></i> Excel
         </a>
+      <%end%>
       </td>
     </tr>
-  </table>  
+  </table> 
   <table class="table table-sm" >
     <tr style="text-align: center;font-weight: bold;">
       <td colspan="2">CommodityWise</td>
@@ -63,13 +65,13 @@
             <td>Unit</td>
           </tr>
           <%@gimb_commodity_loading_daywise.each do |key,value|%>
-          <tr>
-            <td><%=key%></td>
-            <td><%=value.values[0][0]%></td>
-            <td><%=value.values[1][0]%></td>
-            <%gimb_rake<<value.values[0][0]%>
-            <%gimb_unit<<value.values[1][0] %>
-          </tr>  
+            <tr>
+              <td><%=key%></td>
+              <td><%=value.values[0][0]%></td>
+              <td><%=value.values[1][0]%></td>
+              <%gimb_rake<<value.values[0][0]%>
+              <%gimb_unit<<value.values[1][0] %>
+            </tr>  
           <%end%>
            <tr style="font-weight: bold;">
             <td>Total</td>
@@ -216,15 +218,14 @@
         </table>
       </td>
     </tr>
-  </table>
+  </table> 
+ 
 </div>  
-
 <script >
 $(function(){
-
-  $("#download-adi-loading-daywise").click(function () {
+  $("#download-gimb-loading-daywise").click(function () {
     var report_date = $("#datepicker").val();
-    var report_type = "day_wise_adi_loading"
+    var report_type = "day_wise_gimb_loading"
     var data = report_date + "," + report_type
     var url = "<%= rake_load_excel_download_path () %>";
 

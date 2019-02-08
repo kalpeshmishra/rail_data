@@ -1,7 +1,6 @@
 class CreateRakeLoads < ActiveRecord::Migration[5.0]
   def change
     create_table :rake_loads do |t|
-
        t.integer    :load_unload_id  # from station
        t.integer    :station_id      # to station
        t.date       :forecast_date

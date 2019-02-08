@@ -5,6 +5,7 @@ class Station < ApplicationRecord
   belongs_to :area
   has_one :load_unload
   has_many :rake_loads
+  has_many :month_rake_loads
   has_many :rake_unloads
 
 

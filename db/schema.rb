@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190128063853) do
+ActiveRecord::Schema.define(version: 20190207094040) do
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"
@@ -114,6 +114,46 @@ ActiveRecord::Schema.define(version: 20190128063853) do
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_models_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_models_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "month_phasewise_rake_loads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "load_month"
+    t.integer  "load_unload_id"
+    t.string   "commodity_type"
+    t.float    "rake_count",                       limit: 24
+    t.integer  "loaded_unit"
+    t.string   "detention_arrival_placement"
+    t.string   "detention_placement_release"
+    t.string   "detention_release_departure"
+    t.string   "detention_release_removal"
+    t.string   "detention_removal_departure"
+    t.string   "detention_release_powerarrival"
+    t.string   "detention_powerarrival_departure"
+    t.string   "extra"
+    t.string   "extra_one"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "month_rake_loads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "load_month"
+    t.integer  "load_unload_id"
+    t.integer  "station_id"
+    t.integer  "loaded_unit"
+    t.integer  "total_unit"
+    t.integer  "wagon_type_id"
+    t.integer  "major_commodity_id"
+    t.integer  "double_stack"
+    t.float    "gross_tons",         limit: 24
+    t.float    "net_tons",           limit: 24
+    t.float    "rake_count",         limit: 24
+    t.integer  "tue_first_row"
+    t.integer  "tue_second_row"
+    t.string   "extra"
+    t.string   "extra_one"
+    t.string   "extra_two"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "railway_zones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

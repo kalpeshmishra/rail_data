@@ -1,0 +1,2 @@
+class MonthPhasewiseRakeLoad < ApplicationRecord
+end
