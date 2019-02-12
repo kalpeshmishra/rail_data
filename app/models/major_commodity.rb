@@ -1,6 +1,7 @@
 class MajorCommodity < ApplicationRecord
   has_many :rake_commodities
   has_many :rake_loads
+  has_many :month_rake_loads
   has_many :rake_unloads
 
     def self.set_major_commodity_upload(params)

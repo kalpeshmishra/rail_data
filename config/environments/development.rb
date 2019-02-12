@@ -11,6 +11,8 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  config.action_controller.perform_caching = true
+  config.serve_static_assets = true
 
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
@@ -41,6 +43,8 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+  config.assets.digest = true
+  config.assets.js_compressor = :uglifier
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true

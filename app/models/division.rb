@@ -41,7 +41,7 @@ class Division < ApplicationRecord
       zone_id = zone_hash[zone][:id] rescue nil
 
       Division.create(railway_zone_id: zone_id,name: name,code: code)
-  end 
+    end 
   end
 end 
 
