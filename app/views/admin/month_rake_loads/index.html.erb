@@ -10,8 +10,14 @@
 <%= form_tag(@url, method: @method, class: 'form-horizontal group-border-dashed', remote: true) do |form| %>
 
   <div class="form-group">
-    <h4 class="no-margin">Name<span style="color:red;"> *</span></h4>
-    <%= file_field_tag "month_rake_load", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "month_rake_load",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
+    <h4 class="no-margin">Month Rake Load<span style="color:red;"> *</span></h4>
+    <%= file_field_tag "month_rake_load", placeholder: "Attachment", class: 'form-control input-md attachment-blank', id: "month_rake_load",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
+  </div>
+  <p>Upload only .xls, .xlsx or .csv type</p>
+  <p>OR</p>
+  <div class="form-group">
+    <h4 class="no-margin">Month Rake Load Phasewise<span style="color:red;"> *</span></h4>
+    <%= file_field_tag "month_phasewise_rake_load", placeholder: "Attachment", class: 'form-control input-md attachment-blank', id: "month_phasewise_rake_load",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
   </div>
   <p>Upload only .xls, .xlsx or .csv type</p>
   <div class="modal-footer" style="text-align: center !important;">
