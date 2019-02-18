@@ -41,6 +41,8 @@ GEM
     ansi (1.5.0)
     arel (7.1.4)
     ast (2.4.0)
+    audited (4.8.0)
+      activerecord (>= 4.0, < 5.3)
     awesome_print (1.8.0)
     axlsx (2.1.0.pre)
       htmlentities (~> 4.3.1)
@@ -321,6 +323,7 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  audited (~> 4.7)
   awesome_print
   axlsx (= 2.1.0.pre)
   axlsx_rails
