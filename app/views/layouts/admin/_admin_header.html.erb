@@ -1,7 +1,7 @@
 <ul class="cl-vnavigation custom-sidebar">
   <%if is_subadmin%>
     <li class="parent">
-      <a href="#"><i class="fa fa-exclamation-triangle"></i><span class="sidebar-remain-close">Admin</span></a>
+      <a href="javascript:void(0);"><i class="fa fa-exclamation-triangle"></i><span class="sidebar-remain-close">Admin</span></a>
       <ul class="sub-menu">
         <li class="">
           <a <%= "href=#{admin_users_path}"%> title="User"><span>User</span></a>
@@ -54,7 +54,7 @@
 
   <%if is_subadmin%>
     <li class="parent">
-      <a href="#"><i class="fa fa-user"></i><span class="sidebar-remain-close">User</span></a>
+      <a href="javascript:void(0);"><i class="fa fa-user"></i><span class="sidebar-remain-close">User</span></a>
       <ul class="sub-menu">
         <li class="">
           <a <%= "href=#{new_admin_rake_load_path}"%> title="Loading-One"><span>RakeLoading</span></a>
@@ -89,7 +89,7 @@
   <%end%>
   
   <li class="parent">
-    <a href="#"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
+    <a href="javascript:void(0);"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
     <ul class="sub-menu">
       <li class="">
         <a <%= "href=#{admin_custom_load_reports_path }"%> title="Custom Load Report"><span>Custom Load Report</span></a>

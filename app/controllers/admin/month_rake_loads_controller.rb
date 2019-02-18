@@ -7,7 +7,7 @@ class Admin::MonthRakeLoadsController < ApplicationController
 
 	def create
 		
-		if params[:month_rake_load].present?
+		if params[:month_rake_load].present? || params[:month_phasewise_rake_load].present?
       MonthRakeLoad.set_month_rake_load_upload(params) 
       
       respond_to do |format|
