@@ -9,6 +9,7 @@ after_save :remove_rake_commodity_breakup
 after_destroy :remove_rake_commodity_breakup_data
 
 
+
   def remove_rake_commodity_breakup
     
     old_major_commoidty_id = self.id
