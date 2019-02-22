@@ -1,7 +1,7 @@
 <script>
 
     $(document).ready(function () {
-      $('.sidebar-remain-open').click();
+      $('.timesheet-remain-open').click();
     });
 
 </script>
@@ -16,8 +16,6 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
         <%= text_field_tag "rake_load_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'rake load date', id: "datepicker", class: 'form-control input_class'%>
-
-        
       </div>
      
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -36,11 +34,7 @@
 </div>
 
 
-
-
-
 <script>
-  
 
   var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
   $(function () {
@@ -61,8 +55,6 @@
     });
     
     $('#datepicker').datepicker('setDate', 'today');
-
-
     
   });
   

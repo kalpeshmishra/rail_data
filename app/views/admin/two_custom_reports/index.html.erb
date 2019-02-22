@@ -1,0 +1,413 @@
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 280px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+
+  .no-border tr td, .no-border tr th {
+  vertical-align: top;
+  border-width: 0;
+</style>
+<script>
+    $(function () {
+
+      $('.icheck').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+      });
+
+      $('.primary-filters-main-page').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-month').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_months = $('#by-month').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/two_custom_reports.js?selected_months=" + selected_months + "&is_month_filter=" + true 
+          });
+        }
+      });
+      $('#by-month').on("change",function(){
+        var month = new Array();
+        $("#by-month :selected").each(function (i,select) {
+          month.push(" "+$(select).text());
+        });
+        var select_month = month.filter(function(e) { return e !== '  Select all' })
+        document.getElementById("from_date_select").innerHTML="Month: "+select_month;
+        document.getElementById("to_date_select").innerHTML ="";
+        document.getElementById("station_select").innerHTML ="";
+        document.getElementById("commodity_select").innerHTML ="";
+      });
+      $('.primary-filters-year').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onDropdownHide: function(event) {
+          selected_year = $('#by-year').val();
+          $.ajax({
+            type: "get",
+            url: "/admin/two_custom_reports.js?selected_year=" + selected_year + "&is_year_filter=" + true 
+          });
+        }
+      });
+      $('#by-year').on("change",function(){
+        var year = new Array();
+        $("#by-year :selected").each(function (i,select) {
+          year.push(" "+$(select).text());
+        });
+        var select_year = year.filter(function(e) { return e !== '  Select all' })
+        document.getElementById("from_date_select").innerHTML="Year: "+select_year;
+        document.getElementById("to_date_select").innerHTML ="";
+        document.getElementById("station_select").innerHTML ="";
+        document.getElementById("commodity_select").innerHTML ="";
+      });
+
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+ 
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <div>
+    <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
+    <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="two-custom-reports">
+    <caption>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Report<p></p>
+        <span>
+        <%= (select_tag "report-period", options_for_select([['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
+        </span>
+      </div> 
+      <div id ="by-date-feilds">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Start Date<p></p>
+          <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+        </div>   
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >End Date<p></p>  
+           <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-station" >Station<p></p>
+          <%= select_tag "date-station-list", options_for_select(([['ByDate', 'ByDate'], ['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']])), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm date-station-list'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-commodity">Commodity<p></p>
+          <%= select_tag "date-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "date-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+      </div>
+      <div id ="by-month-feilds">
+        <% months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+          month_years_list = []
+          (2018..2019).each do |year|
+          months.each do |month|
+            month_years_list << ["#{month}-#{year}"]
+          end
+        end %>  
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Months<p></p>
+          <%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-station">Station<p></p>
+          <%= select_tag "month-station-list", options_for_select(["NoValue"]), {multiple: true, id: "month-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="month-commodity">Commodity<p></p>
+          <%= select_tag "month-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "month-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
+        <%= (select_tag "report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock'], ['Divisionwise', 'Divisionwise'], ['Statewise', 'Statewise']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
+        </div> 
+      </div>
+      <div id ="by-year-feilds">
+        <%
+          year_list =[]
+            (2017..2020).each do |year|
+              year_list << year 
+            end 
+        %>  
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Year<p></p>
+          <%= select_tag "by-year", options_for_select(year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="year-station">Station<p></p>
+          <%= select_tag "year-station-list", options_for_select(["NoValue"]), {multiple: true, id: "year-station-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="year-commodity">Commodity<p></p>
+          <%= select_tag "year-commodity-list", options_for_select(["NoValue"]), {multiple: true, id: "year-commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Type<p></p>
+        <%= (select_tag "year-report-type", options_for_select([['Commodity', 'Commodity'], ['Destination', 'Destination'], ['Stock', 'Stock'], ['Divisionwise', 'Divisionwise'], ['Statewise', 'Statewise']]), {prompt: 'Select', class: "form-control  input-sm year_report_type"}).html_safe %>
+        </div> 
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
+      </div>
+    </caption>
+  </table>
+  <table class="no-border">
+    <tr>
+      <td style="width:20%;">
+        <p id="from_date_select"></p>
+        <p id="to_date_select"></p>
+      </td>
+      <td style="width:50%;">
+        <p id="station_select"></p>
+      </td>
+      <td style="width:30%;">
+        <p id="commodity_select"></p>
+      </td>
+    </tr>
+  </table>
+    <div id="two_custom_reports_form">
+    </div>
+    <div><br><br><br><br><br><br></div>
+    <div id="loading-indicator">
+      <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+    </div>
+</div>
+
+<script>
+  $(function () {
+
+    $(document).ready(function() {
+      $("#by-date-feilds").hide();
+      $("#by-month-feilds").hide();
+      $("#by-year-feilds").hide();
+    });
+
+    $(".report_period").on("change",function(){
+      $("#submit_error_msg").css('display','none');
+      $("#two_custom_reports_form").empty();
+      
+      document.getElementById("from_date_select").innerHTML ="";
+      document.getElementById("to_date_select").innerHTML ="";
+      document.getElementById("station_select").innerHTML ="";
+      document.getElementById("commodity_select").innerHTML ="";
+      
+      period_selected = $(this).val();
+      if (period_selected == "ByDate") {
+        $("#by-date-feilds").show();
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+        clear_month_fields();
+        clear_year_fields();
+      }
+      else if (period_selected == "ByMonth"){
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").show();
+        $("#by-year-feilds").hide();
+        clear_date_fields();
+        clear_year_fields();
+      } 
+      else if (period_selected == "ByYear"){
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").show();
+        clear_date_fields();
+        clear_month_fields();
+      }
+      else{
+        $("#by-date-feilds").hide(); 
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+        clear_date_fields();
+        clear_month_fields();
+        clear_year_fields();
+      }
+
+    });
+
+    function clear_date_fields(){
+      $(".start_date_time").val('');
+      $(".end_date_time").val('');
+      $('option', $('#date-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#date-station-list").multiselect('refresh');
+      $('option', $('#date-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#date-commodity-list").multiselect('refresh');
+    }
+    function clear_month_fields(){
+      $('option', $('#by-month')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-month").multiselect('refresh');
+      $('option', $('#month-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#month-station-list").multiselect('refresh');
+      $('option', $('#month-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#month-commodity-list").multiselect('refresh');
+      $("#report-type").val('');
+    }
+
+    function clear_year_fields(){
+      $('option', $('#by-year')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-year").multiselect('refresh');
+      $('option', $('#year-station-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#year-station-list").multiselect('refresh');
+      $('option', $('#year-commodity-list')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#year-commodity-list").multiselect('refresh');
+      $("#year-report-type").val('');
+    }
+
+    $("#by-month").on('change', function(){
+      if ($(this).val().length > 3) {
+        $(this).removeAttr("selected");
+        alert('You can select upto 3 options only');
+      }
+    });
+
+    $(".start_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    
+    }).on('change.dp', function (e) {
+      if($("#end_date").val() != ""){
+        date_validation();
+      }else{
+        $("#submit_data").prop('disabled', false);
+      }
+
+      effective_from = $("#start_date").val();
+      document.getElementById("from_date_select").innerHTML="From: "+effective_from;
+    });
+
+    $(".end_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('change.dp', function (e) {
+      if($("#start_date").val() != ""){
+        date_validation();
+      }else{
+        $("#date_range_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+      }
+
+      effective_to = $("#end_date").val();
+      document.getElementById("to_date_select").innerHTML="To: "+effective_to;
+      
+    });
+
+    function date_validation(){
+      s_date = $("#start_date").val().split("-");
+      start_date = new Date(s_date[2], s_date[1] - 1, s_date[0]);
+      e_date = $("#end_date").val().split("-");
+      end_date = new Date(e_date[2], e_date[1] - 1, e_date[0]);
+      no_of_days = Math.abs(Math.round((end_date-start_date)/(1000*60*60*24)) + 1)
+      if (end_date < start_date){
+        $("#submit_data").prop('disabled', true);
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','');
+      }
+      else if (no_of_days > 31){
+        $("#submit_data").prop('disabled', true);
+        $("#date_error_msg").css('display','none');
+        $("#date_range_error_msg").css('display','');
+      }
+      else{
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+        $("#submit_error_msg").css('display','none');  
+        station_commodity_data();
+      }
+    }
+
+    function two_custom_reports(){
+      effective_from = $("#start_date").val();
+      effective_to = $("#end_date").val();
+      $.ajax({
+          type: "get",
+          url: "/admin/two_custom_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
+      }); 
+
+    }
+
+    $(".submit").on("click",function(){
+      period_selected = $(".report_period").val(); 
+      if (period_selected == "ByDate") {
+        effective_from = $("#start_date").val();
+        effective_to = $("#end_date").val();
+        selected_stations = $('#date-station-list').val();
+        selected_commodity = $('#date-commodity-list').val();
+        
+        if (effective_from != "" && effective_to!="" && selected_stations!= null && selected_commodity != null) {
+          $.ajax({
+              type: "get",
+              url: "/admin/two_custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_date_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+          });
+          
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
+      }
+      else if (period_selected == "ByMonth"){
+        selected_months = $('#by-month').val();
+        selected_stations = $('#month-station-list').val();
+        selected_commodity = $('#month-commodity-list').val();
+        selected_report_type = $('#report-type').val();
+        if (selected_months != null && selected_stations!= null && selected_commodity != null && selected_report_type != "") {
+          $.ajax({
+              type: "get",
+              url: "/admin/two_custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_month_data_filter=" + true + "&selected_months=" + selected_months+ "&selected_report_type=" +selected_report_type
+          });
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
+      }
+      else if (period_selected == "ByYear"){
+        selected_year = $('#by-year').val();
+        selected_stations = $('#year-station-list').val();
+        selected_commodity = $('#year-commodity-list').val();
+        selected_report_type = $('#year-report-type').val();
+        if (selected_year != null && selected_stations!= null && selected_commodity != null && selected_report_type != "") {
+          $.ajax({
+              type: "get",
+              url: "/admin/two_custom_reports.js?selected_stations=" + selected_stations +"&selected_commodity="+selected_commodity+ "&is_year_data_filter=" + true + "&selected_year=" + selected_year+ "&selected_report_type=" +selected_report_type
+          });
+        }
+        else{
+          $("#submit_error_msg").css('display','');
+        }
+      }
+
+
+    });
+  
+  });
+  
+</script>

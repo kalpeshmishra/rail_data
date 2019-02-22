@@ -1,0 +1,137 @@
+<style>
+.no-border tr td, .no-border tr th {
+  border-width: 0;
+</style>
+<div id="custom_month_reports">
+<span style="font-size: 16px;color:#cc3d16;">Month Wise Loading&nbsp;&nbsp;</span>
+<table class="no-border head">
+  <tr>
+    <td style="width:90%;">
+      
+    </td>
+    <td style="width:10%;">
+      <span class="table-custom-month-reports">
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-month-custom-loading-report">
+         <i class="fa fa-download"></i> Excel
+        </a>
+      </span>
+    </td>
+  </tr>
+</table>
+<table class="table hover table-bordered" id="custom-month-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;" rowspan="2">Station</th>
+      <th style="vertical-align: middle;" rowspan="2"><%=params[:selected_report_type]%></th>
+      <%if @two_custom_month_report_header.present?%>
+        <% @two_custom_month_report_header << "Total"%>
+        <% @two_custom_month_report_header.each_with_index do |month| %>
+          <th style="vertical-align: middle;" colspan="3"><%= (month == "Total") ? "Total" : month rescue ''%></th>
+        <%end%>
+      <%end%>
+    </tr>
+    <tr style="color: #fff; background: #4B4B4D;">
+      <%if @two_custom_month_report_header.present?%>
+        <% i = @two_custom_month_report_header.count%>
+        <% (1..i).each do |i| %>
+          <th style="vertical-align: middle;">Rake</th>
+          <th style="vertical-align: middle;">Unit</th>
+          <th style="vertical-align: middle;">Double-Stack</th>
+        <%end%>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <%column_total_hash = {}%>
+    <%if @two_custom_month_report_data.present?%>
+      <% @two_custom_month_report_data.each do |station,commodity_data| %>
+        <tr class="<%=station%>" >
+          <th  class="text-center" rowspan="<%=commodity_data.keys.count+1%>"> <%=station%> </th>
+        </tr>
+        <% commodity_data.each do |commodity,month_data|%>
+          <%row_total_rakes = []%>
+          <%row_total_units = []%>
+          <%row_total_double_stack =[]%>
+          <%rakes = 0.0%>
+          <%units = 0%>
+          <%double_stack = 0%>
+          <tr>
+            <td class="text-center"> <%=commodity%> </td>
+            <%if @two_custom_month_report_header.present?%>
+              <% @two_custom_month_report_header.each do |month|%>
+                <%if month != "Total"%>
+                  <%if month_data[month].present?%>
+                    <%rakes = month_data[month].map{|x|x.rake_count}.sum%>
+                    <%units = month_data[month].map{|x|x.loaded_unit}.sum%>
+                    <%double_stack = month_data[month].map{|x|x.stack}.reject(&:blank?).count("DOUBLE") rescue nil%>
+                    <%row_total_rakes << rakes%>
+                    <%row_total_units << units%>
+                    <%row_total_double_stack << double_stack%>
+                    <%if column_total_hash[month].present?%>
+                      <%column_total_hash[month][0] << rakes rescue nil%>
+                      <%column_total_hash[month][1] << units rescue nil%>
+                      <%column_total_hash[month][2] << double_stack rescue nil%>
+                    <%else%>
+                      <%column_total_hash.merge!("#{month}" => [[rakes],[units],[double_stack]])%>
+                    <%end%>
+                    <td class="text-center <%=station%>-<%=commodity%>-rakes"> <%= rakes%></td>
+                    <td class="text-center <%=station%>-<%=commodity%>-units"> <%= units%></td>
+                    <td class="text-center <%=station%>-<%=commodity%>-units"> <%= double_stack%></td>   
+                  <%else%>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  <%end%>
+                <%else%>
+                  <td class="text-center"> <%= row_total_rakes.sum%></td>
+                  <td class="text-center"> <%= row_total_units.sum%></td>
+                  <td class="text-center"> <%= row_total_double_stack.sum%></td> 
+                  <%if column_total_hash["Total"].present?%>
+                    <%column_total_hash["Total"][0] << row_total_rakes.compact.sum%>
+                    <%column_total_hash["Total"][1] << row_total_units.compact.sum%>
+                    <%column_total_hash["Total"][2] << row_total_double_stack.compact.sum%>
+                  <%else%>
+                    <%column_total_hash.merge!("Total" => [[row_total_rakes.compact.sum],[row_total_units.compact.sum],[row_total_double_stack.compact.sum]])%>  
+                  <%end%>   
+                <%end%>
+              <%end%>
+            <%end%>
+          </tr> 
+        <%end%>
+      <%end%>
+    <%end%>
+    <tr>
+      <td class="text-center" colspan="2">Total1</td>
+      <% @two_custom_month_report_header.each do |month|%>
+        <%if column_total_hash[month].present?%>
+          <td class="text-center"><%=column_total_hash[month][0].sum%></td>
+          <td class="text-center"><%=column_total_hash[month][1].sum%></td>
+          <td class="text-center"><%=column_total_hash[month][2].sum%></td>
+        <%else%>
+          <td></td>
+          <td></td>
+          <td></td>
+        <%end%>  
+      <%end%>  
+    </tr>
+  </tbody>
+</table>
+</div>
+<script>
+$(function () {
+    
+  $("#download-month-custom-loading-report").click(function () {
+    var selected_months = $("#by-month").val();
+    var selected_stations = $('#month-station-list').val();
+    var selected_commodity = $('#month-commodity-list').val();
+    var report_type =  $('#report-type').val();
+    var report_name = "monthwise_custom_loading_report"
+    var url = "<%= month_custom_load_report_excel_download_path () %>";
+
+    window.open('<%= root_url%>' + url + '?selected_months=' + selected_months+"&selected_stations="+ selected_stations +'&report_name='+report_name +'&report_type='+report_type+"&selected_commodity="+selected_commodity+"&is_month_data_filter="+true, "_self")
+    $(html).submit();
+  });
+
+
+});
+</script>

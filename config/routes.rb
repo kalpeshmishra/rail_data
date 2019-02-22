@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   match '/month_custom_load_report_excel_download', controller: 'admin/custom_load_reports', action: 'month_custom_load_report_excel_download', via: [:get], as: 'month_custom_load_report_excel_download'
   #--------------Excel Reports Download Ends-----------------
   namespace :admin do
-  	resources :railway_zones,:states,:divisions, :areas,:stations,:rake_commodities,:major_commodities, :wagon_types, :load_unloads, :rake_loads, :rake_unloads, :other_loads, :one_rake_loads, :two_rake_loads, :one_rake_unloads, :other_unloads, :gets_unloads, :aecs_unloads, :short_routes, :ic_divisions, :users, :user_roles, :loading_reports,:unloading_reports, :phasewise_reports, :one_loading_reports, :one_unloading_reports, :custom_reports, :one_custom_reports, :custom_load_reports, :month_rake_loads
+  	resources :railway_zones,:states,:divisions, :areas,:stations,:rake_commodities,:major_commodities, :wagon_types, :load_unloads, :rake_loads, :rake_unloads, :other_loads, :one_rake_loads, :two_rake_loads, :one_rake_unloads, :other_unloads, :gets_unloads, :aecs_unloads, :short_routes, :ic_divisions, :users, :user_roles, :loading_reports,:unloading_reports, :phasewise_reports, :one_loading_reports, :one_unloading_reports, :custom_reports, :one_custom_reports, :custom_load_reports, :month_rake_loads, :two_custom_reports
   end
 
   

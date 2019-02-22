@@ -1,0 +1,22 @@
+<%if params[:is_month_filter].present? %>
+	$("#month-station").empty();
+	$("#month-station").html('<%= j render partial: 'month_station_list_filter', :locals => {:two_custom_month_station_list => @two_custom_report_station} %>');
+<%end%>
+<%if params[:is_month_station_filter].present?%>	
+		$("#month-commodity").empty();
+		$("#month-commodity").html('<%= j render partial: 'month_commodity_list_filter', :locals => {:two_custom_report_commodity_list => @two_custom_report_station_commodity} %>');
+<%end%>	
+<%if params[:is_month_data_filter].present?%>
+	$("#two_custom_reports_form").html('<%= j render 'custom_month_reports'%>');
+<%end%>
+<%if params[:is_year_filter].present? %>
+		$("#year-station").empty();
+		$("#year-station").html('<%= j render partial: 'year_station_list_filter', :locals => {:two_custom_year_station_list => @two_custom_report_year_station} %>');
+<%end%>
+<%if params[:is_year_station_filter].present?%>	
+		$("#year-commodity").empty();
+		$("#year-commodity").html('<%= j render partial: 'year_commodity_list_filter', :locals => {:two_custom_year_commodity_list => @two_custom_year_station_commodity} %>');
+<%end%>	
+<%if params[:is_year_data_filter].present?%>
+	$("#two_custom_reports_form").html('<%= j render 'custom_year_reports'%>');
+<%end%>

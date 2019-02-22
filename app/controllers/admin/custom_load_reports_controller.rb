@@ -262,7 +262,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 	def month_custom_load_report_excel_download #For DateWise Excel
 		require 'roo'
 		get_report_data(params)
-		
+		# Excel download pending 
 		statement_xls = Spreadsheet::Workbook.new
 			header_bold_cells = Spreadsheet::Format.new(:weight => :bold, :align => :center)
       body_align_cells = Spreadsheet::Format.new(:align => :center)
