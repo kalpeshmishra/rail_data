@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # devise :database_authenticatable, :registerable,:confirmable, :lockable, :timeoutable,:recoverable, :rememberable, :trackable, :validatable, :authentication_keys => [:login]
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable
   # belongs_to :division
   # belongs_to :area
   has_one :user_role
