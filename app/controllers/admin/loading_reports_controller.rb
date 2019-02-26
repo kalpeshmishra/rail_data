@@ -65,9 +65,9 @@ class Admin::LoadingReportsController < ApplicationController
     commodity_day_wise = {}
     stock_day_wise = {}
     summary_data.each do |data|
-      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
-      stock_code = WagonType.find(data.wagon_type_id).wagon_type_code
-      stock_type = WagonType.find(data.wagon_type_id).wagon_details_covered_open
+      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity rescue nil
+      stock_code = WagonType.find(data.wagon_type_id).wagon_type_code rescue nil
+      stock_type = WagonType.find(data.wagon_type_id).wagon_details_covered_open rescue nil
       rake_count = data.rake_count
       loaded_unit = data.loaded_unit
       if commodity_day_wise[commodity_code].blank?
