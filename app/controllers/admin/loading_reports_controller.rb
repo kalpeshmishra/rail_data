@@ -17,21 +17,22 @@ class Admin::LoadingReportsController < ApplicationController
     end
     adi_area_loads =[]
     gimb_area_loads =[]
-
     adi_unit = 0
     gimb_unit = 0
     adi_rake = 0
     gimb_rake = 0
-    @rake_loads.each do |rake_load|
-      rake_area =  rake_load.load_unload.station.area.area_code rescue nil
-      if rake_area == "ADI"
-        adi_area_loads << rake_load
-        adi_unit = adi_unit + rake_load.loaded_unit
-        adi_rake = adi_rake + rake_load.rake_count
-      elsif rake_area == "GIMB"
-        gimb_area_loads << rake_load
-        gimb_unit = gimb_unit + rake_load.loaded_unit
-        gimb_rake = gimb_rake + rake_load.rake_count
+    if @rake_loads.present? 
+      @rake_loads.each do |rake_load|
+        rake_area =  rake_load.load_unload.station.area.area_code rescue nil
+        if rake_area == "ADI"
+          adi_area_loads << rake_load
+          adi_unit = adi_unit + rake_load.loaded_unit
+          adi_rake = adi_rake + rake_load.rake_count
+        elsif rake_area == "GIMB"
+          gimb_area_loads << rake_load
+          gimb_unit = gimb_unit + rake_load.loaded_unit
+          gimb_rake = gimb_rake + rake_load.rake_count
+        end
       end
     end
     @adi_loads = adi_area_loads
@@ -43,16 +44,21 @@ class Admin::LoadingReportsController < ApplicationController
     @total_division_loads = adi_unit+ gimb_unit
     @total_division_rake = adi_rake + gimb_rake
 
-    adi_loading_summary = get_summary_data(adi_area_loads)
-    gimb_loading_summary = get_summary_data(gimb_area_loads)
-    division_loading_summary = get_summary_data(@rake_loads)
+    adi_loading_summary = []
+    gimb_loading_summary = []
+    division_loading_summary = []
+    
+    adi_loading_summary = get_summary_data(adi_area_loads) if adi_area_loads.present?
+    gimb_loading_summary = get_summary_data(gimb_area_loads) if gimb_area_loads.present?
+    division_loading_summary = get_summary_data(@rake_loads) if @rake_loads.present?
 
-    @adi_commodity_loading_daywise = adi_loading_summary[0]
-    @adi_stock_loading_daywise = adi_loading_summary[1].sort.to_h
-    @gimb_commodity_loading_daywise = gimb_loading_summary[0]
-    @gimb_stock_loading_daywise = gimb_loading_summary[1].sort.to_h
-    @division_commodity_loading_daywise = division_loading_summary[0]
-    @division_stock_loading_daywise = division_loading_summary[1].sort.to_h
+    
+    @adi_commodity_loading_daywise = adi_loading_summary[0] rescue nil
+    @adi_stock_loading_daywise = adi_loading_summary[1].sort.to_h rescue nil
+    @gimb_commodity_loading_daywise = gimb_loading_summary[0] rescue nil
+    @gimb_stock_loading_daywise = gimb_loading_summary[1].sort.to_h rescue nil
+    @division_commodity_loading_daywise = division_loading_summary[0] rescue nil
+    @division_stock_loading_daywise = division_loading_summary[1].sort.to_h rescue nil
   end
 
   def get_summary_data(summary_data)
