@@ -173,34 +173,7 @@
             <tr style="color: #fff; background: #4B4B4D;">
               <th colspan="3">Division</th>
             </tr>
-            <%if @division_stock_loading_daywise.present?%>
-              <%@division_stock_loading_daywise.each do |stock_type,data|%>
-                <tr style="font-weight: bold;background: #DADADA;text-align:center;">
-                  <td colspan="3"><%=stock_type%></td>
-                </tr>
-                <tr style="font-weight: bold;">
-                  <td>Stock</td>
-                  <td>Rake</td>
-                  <td>Unit</td>
-                </tr>
-                <%@division_stock_loading_daywise[stock_type].each do |stock_code,value|%>
-                  <tr>
-                    <td><%=stock_code%></td>
-                    <td><%=value.values[0][0]%></td>
-                    <td><%=value.values[1][0]%></td>
-                  </tr>
-                  <%division_stock_rake<<value.values[0][0]%>
-                  <%division_stock_unit<<value.values[1][0] %>
-                <%end%> 
-                <tr style="font-weight: bold;">
-                  <td>Total</td>
-                  <td><%=division_stock_rake.compact.sum%></td>
-                  <td><%=division_stock_unit.compact.sum%></td>
-                  <%division_stock_rake=[] %>
-                  <%division_stock_unit=[] %>
-                </tr>  
-              <%end%>
-            <%end%> 
+           
           </thead>
         </table>
       </td>
