@@ -51,7 +51,6 @@ class Admin::LoadingReportsController < ApplicationController
     adi_loading_summary = get_summary_data(adi_area_loads) if adi_area_loads.present?
     gimb_loading_summary = get_summary_data(gimb_area_loads) if gimb_area_loads.present?
     division_loading_summary = get_summary_data(@rake_loads) if @rake_loads.present?
-
     
     adi_loading_summary[0].present? ? @adi_commodity_loading_daywise = adi_loading_summary[0] : @adi_commodity_loading_daywise = {} 
     adi_loading_summary[1].present? ? @adi_stock_loading_daywise = adi_loading_summary[1] : @adi_stock_loading_daywise = {}

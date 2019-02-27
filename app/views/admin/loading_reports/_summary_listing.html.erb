@@ -98,10 +98,8 @@
             <%@division_commodity_loading_daywise.each do |key,value|%>
               <tr>
                 <td><%=key%></td>
-                <td><%=value.values[0][0]%></td>
-                <td><%=value.values[1][0]%></td>
-                <%division_rake<<value.values[0][0]%>
-                <%division_unit<<value.values[1][0] %>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
               </tr>  
             <%end%>
           <%end%>
@@ -211,11 +209,10 @@
                 <%@division_stock_loading_daywise[stock_type].each do |stock_code,value|%>
                   <tr>
                     <td><%=stock_code%></td>
-                    <td><%=value.values[0][0]%></td>
-                    <td><%=value.values[1][0]%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                   </tr>
-                  <%division_stock_rake<<value.values[0][0]%>
-                  <%division_stock_unit<<value.values[1][0] %>
+                  
                 <%end%> 
                 <tr style="font-weight: bold;">
                   <td>Total</td>
