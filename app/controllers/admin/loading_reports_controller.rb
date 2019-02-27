@@ -59,6 +59,7 @@ class Admin::LoadingReportsController < ApplicationController
     gimb_loading_summary[1].present? ? @gimb_stock_loading_daywise = gimb_loading_summary[1] : @gimb_stock_loading_daywise = {} 
     division_loading_summary[0].present? ? @division_commodity_loading_daywise = division_loading_summary[0] : @division_commodity_loading_daywise = {} 
     division_loading_summary[1].present? ? @division_stock_loading_daywise = division_loading_summary[1] : @division_stock_loading_daywise = {}
+    
   end
 
   def get_summary_data(summary_data)
