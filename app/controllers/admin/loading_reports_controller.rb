@@ -54,11 +54,11 @@ class Admin::LoadingReportsController < ApplicationController
 
     
     adi_loading_summary[0].present? ? @adi_commodity_loading_daywise = adi_loading_summary[0] : @adi_commodity_loading_daywise = {} 
-    adi_loading_summary[1].present? ? @adi_stock_loading_daywise = adi_loading_summary[1].sort.to_h : @adi_stock_loading_daywise = {}
+    adi_loading_summary[1].present? ? @adi_stock_loading_daywise = adi_loading_summary[1] : @adi_stock_loading_daywise = {}
     gimb_loading_summary[0].present? ? @gimb_commodity_loading_daywise = gimb_loading_summary[0] :  @gimb_commodity_loading_daywise = {}
-    gimb_loading_summary[1].present? ? @gimb_stock_loading_daywise = gimb_loading_summary[1].sort.to_h : @gimb_stock_loading_daywise = {} 
+    gimb_loading_summary[1].present? ? @gimb_stock_loading_daywise = gimb_loading_summary[1] : @gimb_stock_loading_daywise = {} 
     division_loading_summary[0].present? ? @division_commodity_loading_daywise = division_loading_summary[0] : @division_commodity_loading_daywise = {} 
-    division_loading_summary[1].present? ? @division_stock_loading_daywise = division_loading_summary[1].sort.to_h  : @division_stock_loading_daywise = {}
+    division_loading_summary[1].present? ? @division_stock_loading_daywise = division_loading_summary[1] : @division_stock_loading_daywise = {}
   end
 
   def get_summary_data(summary_data)
