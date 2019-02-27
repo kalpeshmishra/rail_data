@@ -41,8 +41,8 @@ class Admin::LoadingReportsController < ApplicationController
     @total_adi_rake = adi_rake
     @total_gimb_loads = gimb_unit
     @total_gimb_rake = gimb_rake
-    @total_division_loads = adi_unit+ gimb_unit
-    @total_division_rake = adi_rake + gimb_rake
+    @total_division_loads = adi_unit+ gimb_unit rescue nil
+    @total_division_rake = adi_rake + gimb_rake rescue nil
 
     adi_loading_summary = []
     gimb_loading_summary = []
@@ -75,8 +75,8 @@ class Admin::LoadingReportsController < ApplicationController
         commodity_day_wise[commodity_code].merge!("rake_count" => [rake_count])
         commodity_day_wise[commodity_code].merge!("loaded_unit" => [loaded_unit])
       else
-        commodity_day_wise[commodity_code]["rake_count"] = [commodity_day_wise[commodity_code]["rake_count"][0]+rake_count]
-        commodity_day_wise[commodity_code]["loaded_unit"] = [commodity_day_wise[commodity_code]["loaded_unit"][0]+loaded_unit]
+        commodity_day_wise[commodity_code]["rake_count"] = [commodity_day_wise[commodity_code]["rake_count"][0]+rake_count] rescue nil
+        commodity_day_wise[commodity_code]["loaded_unit"] = [commodity_day_wise[commodity_code]["loaded_unit"][0]+loaded_unit] rescue nil
       end  
       
       if stock_day_wise[stock_type].blank?
@@ -86,8 +86,8 @@ class Admin::LoadingReportsController < ApplicationController
           stock_day_wise[stock_type][stock_code].merge!("rake_count" => [rake_count])
           stock_day_wise[stock_type][stock_code].merge!("loaded_unit" => [loaded_unit])
         else
-          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count]
-          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit]
+          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count] rescue nil
+          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit] rescue nil
         end  
       else
         if stock_day_wise[stock_type][stock_code].blank?
@@ -95,8 +95,8 @@ class Admin::LoadingReportsController < ApplicationController
           stock_day_wise[stock_type][stock_code].merge!("rake_count" => [rake_count])
           stock_day_wise[stock_type][stock_code].merge!("loaded_unit" => [loaded_unit])
         else
-          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count]
-          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit]
+          stock_day_wise[stock_type][stock_code]["rake_count"] = [stock_day_wise[stock_type][stock_code]["rake_count"][0]+rake_count] rescue nil
+          stock_day_wise[stock_type][stock_code]["loaded_unit"] = [stock_day_wise[stock_type][stock_code]["loaded_unit"][0]+loaded_unit] rescue nil
         end  
       end  
     end
