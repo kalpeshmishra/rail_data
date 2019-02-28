@@ -44,8 +44,8 @@
             <%@adi_commodity_loading_daywise.each do |key,value|%>
               <tr>
                 <td><%=key%></td>
-                <td><%=value.values[0][0]%></td>
-                <td><%=value.values[1][0]%></td>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                 <%adi_rake<<value.values[0][0]%>
                 <%adi_unit<<value.values[1][0] %>
               </tr>
@@ -70,8 +70,8 @@
             <%@gimb_commodity_loading_daywise.each do |key,value|%>
               <tr>
                 <td><%=key%></td>
-                <td><%=value.values[0][0]%></td>
-                <td><%=value.values[1][0]%></td>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                 <%gimb_rake<<value.values[0][0]%>
                 <%gimb_unit<<value.values[1][0] %>
               </tr>  
@@ -100,6 +100,10 @@
                 <td><%=key%></td>
                 <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
                 <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                <%rake = value.values[0][0] rescue 0%>
+                <%unit = value.values[1][0] rescue 0%>
+                <%division_rake<< rake%>
+                <%division_unit<< unit%>
               </tr>  
             <%end%>
           <%end%>
@@ -131,8 +135,8 @@
                 <%@adi_stock_loading_daywise[stock_type].each do |stock_code,value|%>
                   <tr>
                     <td><%=stock_code%></td>
-                    <td><%=value.values[0][0]%></td>
-                    <td><%=value.values[1][0]%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                   </tr>
                   <%adi_stock_rake<<value.values[0][0]%>
                   <%adi_stock_unit<<value.values[1][0]%>
@@ -170,8 +174,8 @@
                 <%@gimb_stock_loading_daywise[stock_type].each do |stock_code,value|%>
                   <tr>
                     <td><%=stock_code%></td>
-                    <td><%=value.values[0][0]%></td>
-                    <td><%=value.values[1][0]%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                   </tr>
                   <%gimb_stock_rake<<value.values[0][0]%>
                   <%gimb_stock_unit<<value.values[1][0]%>
@@ -212,7 +216,10 @@
                     <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
                     <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
                   </tr>
-                  
+                  <%rake = value.values[0][0] rescue 0%>
+                  <%unit = value.values[1][0] rescue 0%>
+                  <%division_stock_rake<< rake%>
+                  <%division_stock_unit<< unit%>  
                 <%end%> 
                 <tr style="font-weight: bold;">
                   <td>Total</td>
