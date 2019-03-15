@@ -74,7 +74,6 @@
                             <%if total_hash[station][commodity].keys.include?(odr)%>
                               <%total_hash[station][commodity][odr] << @total_loaded_unit%>
                             <%else%>
-                              <%total_hash[station][commodity] = {}%>
                               <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
                             <%end%>
                           <%else%>
@@ -84,6 +83,7 @@
                         <%else%>
                           <%total_hash[station] = {}%>
                           <%total_hash[station].merge!("#{commodity}" => {})%>
+                          <%total_hash[station][commodity].merge!("#{odr}" => [@total_loaded_unit])%>
                         <%end%>
                         <%@total_loaded_unit = []%>
                       <%else%>
@@ -99,7 +99,7 @@
               <%else%>
                 <%@custom_report_header_with_odr[station].keys.each do |commodity|%>
                   <%@custom_report_header_with_odr[station][commodity].keys.each do |odr|%>
-                    <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--4"><%= "" %></td>  
+                    <td class="text-center <%=station%>-<%=commodity%>-<%=odr%>--4"><%= "" %></td>
                   <%end%>
                 <%end%>   
               <%end%>

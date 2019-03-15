@@ -47,7 +47,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 		#Rake loading phasewsie code Ends
 
 		#Rake un-loading phasewsie code starts
-		rake_unload_data = RakeUnload.where(release_date: from_date..to_date,form_status: "RAKE")
+		rake_unload_data = RakeUnload.where(release_date: from_date..to_date,form_status: ["RAKE","GETS","AECS"])
 		
 		rake_unload_adi = adi_load_unload.map{|load| load.rake_unloads.map{|rake| rake if rake_unload_data.include?(rake)}}.flatten.compact
  		rake_unload_gimb = gimb_load_unload.map{|load| load.rake_unloads.map{|rake| rake if rake_unload_data.include?(rake)}}.flatten.compact
