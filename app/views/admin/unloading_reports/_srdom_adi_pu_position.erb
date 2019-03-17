@@ -1,9 +1,9 @@
-<div class="tab-container" id="adi_listing">
+<div class="tab-container" id="srdom_adi_pu_position">
   <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
     <p style="font-size: 18px;color:red;">Total :<%=(@total_adi_unloads)%>&nbsp;&nbsp;&nbsp;</p>
   </div>
 
-<table class="table hover table-bordered" id="adi-listing">
+<table class="table hover table-bordered" id="srdom-adi-pu-position">
     <thead class="thead-dark">
       <tr style="color: #fff; background: #4B4B4D;">
         <th>FROM</th>
@@ -21,6 +21,13 @@
     <tbody>
       <%old_station = ""%>
       <% @adi_unloads.each_with_index do |adi_unload, index| %>
+        <%if old_station != adi_unload.load_unload.station.code %>
+          <tr>
+            <td colspan="10"><%= adi_unload.load_unload.station.code%></td>
+          </tr>
+          <%old_station = adi_unload.load_unload.station.code%>
+       
+        <%end%>
         <tr id=<%=adi_unload.id.to_s%>>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.station.code rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= adi_unload.load_unload.station.code rescue '' %></span></td>
