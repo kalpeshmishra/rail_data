@@ -13,8 +13,6 @@ class Admin::OtherLoadsController < ApplicationController
   def new
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
-    # data = data.strftime("%Y-%m-%d")
-    # binding.pry
     @other_loads = RakeLoad.where(release_date: data,rakeform_otherform: "O")
 
     current_user_other_load = []
@@ -23,7 +21,6 @@ class Admin::OtherLoadsController < ApplicationController
         current_user_area = current_user.area rescue nil
         
         if rake_area == current_user_area
-          # load_unit = load_unit+other_load.loaded_unit
           current_user_other_load << other_load
         end
       end
@@ -57,12 +54,6 @@ class Admin::OtherLoadsController < ApplicationController
   end
 
   def get_data_for_form
-    # @from_stations = []
-    # LoadUnload.all.each do |load|
-    #   station = Station.find(load.station_id) rescue nil
-    #   @from_stations << ["#{station.code}-#{station.name}", station.id] if station.present?
-    # end  
-    # @to_stations = Station.all.map{|station| ["#{station.code}-#{station.name}",station.id]}
     @major_commodity = MajorCommodity.all.map{|major|[major.major_commodity,major.id]}
     @wagon_type = WagonType.all.map{|wagon| [wagon.wagon_type_code,wagon.id]}
     @rake_commodity = {}
@@ -77,12 +68,41 @@ class Admin::OtherLoadsController < ApplicationController
     RakeLoad.create_or_update_other_load(params)
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
-    # binding.pry
-    # data = data.strftime("%Y-%m-%d")
     @other_loads = RakeLoad.where(release_date: data,rakeform_otherform: "O")
-    @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R").pluck(:loaded_unit)).sum
-    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O").pluck(:loaded_unit)).sum
+    current_user_other_load = []
+      @other_loads.each do |other_load|
+        rake_area =  other_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          current_user_other_load << other_load
+        end
+      end
+    @other_loads = current_user_other_load
 
+    @total_rake_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "R"))
+      load_unit = 0
+      @total_rake_loads.each do |total_rake_load|
+        rake_area =  total_rake_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_rake_load.loaded_unit
+        end
+      end
+    @total_rake_loads = load_unit
+    
+    @total_other_loads = (RakeLoad.where(release_date: data,rakeform_otherform: "O"))
+      load_unit = 0
+      @total_other_loads.each do |total_other_load|
+        rake_area =  total_other_load.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_other_load.loaded_unit
+        end
+      end
+    @total_other_loads = load_unit
     get_data_for_form
 
   end
@@ -101,10 +121,6 @@ class Admin::OtherLoadsController < ApplicationController
 
   def find_from_station_other_loads
     
-    # from_station_code = params[:from_station_code]
-    # @from_station = params[:from_station_id]
-    # from_station_code_id = Station.where(code: from_station_code).pluck(:id)
-    # @stn = LoadUnload.find_by(station_id: from_station_code_id)? true : false
     get_user_area
 
     from_station_code = params[:from_station_code]

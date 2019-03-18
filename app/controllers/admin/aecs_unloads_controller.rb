@@ -16,9 +16,9 @@ class Admin::AecsUnloadsController < ApplicationController
     @aecs_unloads = RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("AECS"))))
     @aecs_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("AECS"))))
     @aecs_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("AECS"))))
-    # @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    # @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
-    
+    rake_and_unit_array = RakeUnload.where(release_date: data,form_status: "AECS").pluck(:loaded_unit, :rake_count)
+    @total_unit_aecs_unloads = rake_and_unit_array.collect(&:first).sum
+    @total_rake_aecs_unloads = rake_and_unit_array.collect(&:second).sum
 
     get_data_for_form
   end
@@ -32,9 +32,10 @@ class Admin::AecsUnloadsController < ApplicationController
     @aecs_unloads = RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("AECS"))))
     @aecs_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("AECS"))))
     @aecs_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("AECS"))))
-    # # @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    # @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
-    
+    rake_and_unit_array = RakeUnload.where(release_date: data,form_status: "AECS").pluck(:loaded_unit, :rake_count)
+    @total_unit_aecs_unloads = rake_and_unit_array.collect(&:first).sum if rake_and_unit_array.present?
+    @total_rake_aecs_unloads = rake_and_unit_array.collect(&:second).sum if rake_and_unit_array.present?
+
     get_data_for_form
   end
 

@@ -50,9 +50,9 @@
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 110px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
         </td>
         <td>
-          <%= number_field_tag "gross_tons_#{index}", '',placeholder: 'Gross', id: "gross_tons_#{index}", class: 'form-control input-md',required: true, style: "width: 80px; font-size:16px;"%>
+          <%= number_field_tag "gross_tons_#{index}", '',placeholder: 'Gross', id: "gross_tons_#{index}", class: 'form-control input-md', style: "width: 80px; font-size:16px;"%>
         <p></p>
-          <%= number_field_tag "net_tons_#{index}", '',placeholder: 'Net', id: "net_tons_#{index}", class: 'form-control input-md',required: true, style: "width: 80px; font-size:16px;"%>
+          <%= number_field_tag "net_tons_#{index}", '',placeholder: 'Net', id: "net_tons_#{index}", class: 'form-control input-md', style: "width: 80px; font-size:16px;"%>
         </td>
         
         <td>

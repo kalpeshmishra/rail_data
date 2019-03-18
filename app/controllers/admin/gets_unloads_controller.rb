@@ -2,7 +2,7 @@ class Admin::GetsUnloadsController < ApplicationController
   layout "admin/application"
 
   def index
-    # @gets_unloads = RakeUnload.all.where(:form_status => "GETS")
+    
   end
   
 
@@ -16,9 +16,10 @@ class Admin::GetsUnloadsController < ApplicationController
     @gets_unloads = RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("GETS"))))
     @gets_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("GETS"))))
     @gets_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("GETS"))))
-    # @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    # @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
     
+    rake_and_unit_array = RakeUnload.where(release_date: data,form_status: "GETS").pluck(:loaded_unit, :rake_count)
+    @total_unit_gets_unloads = rake_and_unit_array.collect(&:first).sum if rake_and_unit_array.present?
+    @total_rake_gets_unloads = rake_and_unit_array.collect(&:second).sum if rake_and_unit_array.present?
 
     get_data_for_form
   end
@@ -32,19 +33,15 @@ class Admin::GetsUnloadsController < ApplicationController
     @gets_unloads = RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data).and(RakeUnload.arel_table[:form_status].eq("GETS"))))
     @gets_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil).and(RakeUnload.arel_table[:form_status].eq("GETS"))))
     @gets_unloads += RakeUnload.where(RakeUnload.arel_table[:takenover_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("").and(RakeUnload.arel_table[:form_status].eq("GETS"))))
-    # # @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    # @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
+    
+    rake_and_unit_array = RakeUnload.where(release_date: data,form_status: "GETS").pluck(:loaded_unit, :rake_count)
+    @total_unit_gets_unloads = rake_and_unit_array.collect(&:first).sum
+    @total_rake_gets_unloads = rake_and_unit_array.collect(&:second).sum
     
     get_data_for_form
   end
 
   def get_data_for_form
-    # @from_stations = Station.all.map{|station| ["#{station.code}-#{station.name}",station.id]}
-    # @to_stations = []
-    # LoadUnload.all.each do |load|
-    #   station = Station.find(load.station_id) rescue nil
-    #   @to_stations << ["#{station.code}-#{station.name}", station.id] if station.present?
-    # end 
     @major_commodity = MajorCommodity.all.map{|major|[major.major_commodity,major.id]}
     @wagon_type = WagonType.all.order(wagon_type_code: :asc).map{|wagon| ["#{wagon.wagon_type_code}--#{wagon.wagon_type_desc}",wagon.id]}
     @rake_commodity = {}
@@ -60,7 +57,6 @@ class Admin::GetsUnloadsController < ApplicationController
     @to_station = params[:to_station_id]
     to_station_code_id = Station.where(code: station_code).pluck(:id)
     @stn = LoadUnload.find_by(station_id: to_station_code_id)? true : false
-    # @stn = Station.find_by(code: station_code)? true : false
         
       respond_to do |format|
         format.js

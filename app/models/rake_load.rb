@@ -109,7 +109,7 @@ after_destroy :remove_rake_commodity_breakup_data
       other_load_data[no].merge!("#{new_key}" => value)
     end
 
-      other_load_data.each do |key,value|
+    other_load_data.each do |key,value|
       data_count = value.values.reject { |c| c.empty? }.count
       next if data_count == 0
       record_id = value["record_id"].to_i if value["record_id"].present?
@@ -122,7 +122,6 @@ after_destroy :remove_rake_commodity_breakup_data
       to_station = Station.where(code: value["to_station"]).pluck(:id)
       other_load.station_id = to_station[0].to_i rescue nil
 
-      
       other_load.loaded_unit = value["loaded_unit"] rescue nil
       other_load.rake_count = value["rake_count"] rescue nil
       other_load.major_commodity_id = value["major_commodity"].to_i rescue nil
@@ -134,7 +133,7 @@ after_destroy :remove_rake_commodity_breakup_data
       release_time = get_time(value["release_time"])
       other_load.release_time = release_time rescue nil
       other_load.release_date = value["release_date"] rescue nil
-      other_load.remark = value["remark"] rescue nil
+      other_load.remark = value["remarks"] rescue nil
       other_load.rakeform_otherform = "O"
       other_load.save
 

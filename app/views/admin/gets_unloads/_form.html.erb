@@ -5,7 +5,7 @@
 <% @url = admin_gets_unloads_path %>
 <div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
   <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >
-    <p style="font-size: 20px;color:red;">GETS-PU: &nbsp;
+    <p style="font-size: 20px;color:red;">GETS-PU: Rake:<%=(@total_rake_gets_unloads)%>&nbsp;&nbsp;&nbsp;Unit:<%=(@total_unit_gets_unloads)%>
       <div class= "form-group station_error_msg" id="station_error_msg" style="display: none"></div>
     </p>
   </div>
@@ -70,7 +70,7 @@
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 95px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
           <p></p>
-           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",style: "width: 95px;border: 1px solid #888;" %>
+           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",required: true, style: "width: 95px;border: 1px solid #888;" %>
 
         </td>
         <td>
@@ -235,7 +235,7 @@ $(function(){
         incoming_power = "#incoming_power_"+<%=index%>
         stock_description = "#stock_description_"+<%=index%>
         major_commodity = "#major_commodity_"+<%=index%>
-        commodity_type = "commodity_type_"+<%=index%>
+        commodity_type = "#commodity_type_"+<%=index%>
         bpc_station = "#bpc_station_"+<%=index%>
         bpc_date = "#bpc_date_"+<%=index%>
         bpc_type = "#bpc_type_"+<%=index%>
@@ -246,7 +246,7 @@ $(function(){
         release_date = "#release_date_"+<%=index%>
         train_on_run_hours = "#train_on_run_hours_"+<%=index%>
         detention_placement_release = "#detention_placement_release_"+<%=index%>
-        power_no = "power_no_"+<%=index%>
+        power_no = "#power_no_"+<%=index%>
         powerarrival_time = "#powerarrival_time_"+<%=index%>
         powerarrival_date = "#powerarrival_date_"+<%=index%>
         departure_time = "#departure_time_"+<%=index%>
