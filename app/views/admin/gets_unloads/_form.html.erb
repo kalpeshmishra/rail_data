@@ -489,10 +489,7 @@ $(function(){
           detnpower_hours = detnpower_hours
         }
 
-       
         var detnpower_time = detnpower_hours+":"+detnpower_minutes2;
-        // alert(final_time);
-        
         $(detention_for_power).val(detnpower_time);
        
   
@@ -530,13 +527,9 @@ $(function(){
           powerdep_hours = powerdep_hours
         }
 
-       
         var powerdep_time = powerdep_hours+":"+powerdep_minutes2;
-       
-        
         $(powerarrival_train_departure).val(powerdep_time);
-       
-  
+      
       }
       else{
         $(powerarrival_train_departure).val("NA");
@@ -597,10 +590,7 @@ $(function(){
           tor_hours = tor_hours
         }
 
-       
         var tor_time = tor_hours+":"+tor_minutes2;
-        // alert(final_time);
-        
         $(train_on_run_hours).val(tor_time);
        
   
@@ -629,9 +619,7 @@ $(function(){
           detn_hours = detn_hours
         }
 
-       
         var detn_time = detn_hours+":"+detn_minutes2;
-        // alert(final_time);
         
         $(detention_placement_release).val(detn_time);
         if(detn_hours > 23) {
@@ -691,7 +679,6 @@ $(function(){
     var from_station_id = "from_station_"+row_no
 
     var from_station_code = $(this).val();
-    // debugger
       if (from_station_code != "") {
           $.ajax({
           type: "get",
@@ -707,7 +694,6 @@ $(function(){
     var to_station_id = "to_station_"+row_no
 
     var station_code = $(this).val();
-    // debugger
       if (station_code != "") {
           $.ajax({
           type: "get",

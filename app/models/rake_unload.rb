@@ -108,7 +108,7 @@ belongs_to :wagon_type
       one_rake_unloads.departure_time =value["departure_time"] rescue nil
       one_rake_unloads.departure_date = value["departure_date"] rescue nil
       one_rake_unloads.detention_release_removal =value["detention_release_removal"] rescue nil
-      one_rake_unloads.detention_release_removal = value["detention_release_removal"] rescue nil
+      # one_rake_unloads.detention_release_removal = value["detention_release_removal"] rescue nil
       one_rake_unloads.remarks = value["remarks"] rescue nil
       one_rake_unloads.empty_rake_release_id = value["empty_rake_release_id"] rescue nil
       one_rake_unloads.save
@@ -231,6 +231,15 @@ belongs_to :wagon_type
       gets_unload.empty_destination = value["empty_destination"] rescue nil
       gets_unload.detention_for_power = value["detention_for_power"] rescue nil
       gets_unload.powerarrival_train_departure = value["powerarrival_train_departure"] rescue nil
+      power_detention = value["detention_for_power"]
+      power_arr_train_dep_detention = value["powerarrival_train_departure"]
+      if power_detention == "NA"
+        power_detention = ""
+      elsif power_arr_train_dep_detention == "NA"
+        power_arr_train_dep_detention = ""
+      end
+      release_to_removal_detn = [power_detention,power_arr_train_dep_detention].reject(&:blank?).sum_strings(':')
+      gets_unload.detention_release_removal = release_to_removal_detn rescue nil
       gets_unload.detention_ger_to_ger_tor = value["detention_ger_to_ger_tor"] rescue nil
       gets_unload.detention_in_out = value["detention_in_out"] rescue nil
       gets_unload.remarks = value["remarks"] rescue nil
@@ -313,6 +322,15 @@ belongs_to :wagon_type
       aecs_unload.empty_destination = value["empty_destination"] rescue nil
       aecs_unload.detention_for_power = value["detention_for_power"] rescue nil
       aecs_unload.powerarrival_train_departure = value["powerarrival_train_departure"] rescue nil
+      power_detention = value["detention_for_power"]
+      power_arr_train_dep_detention = value["powerarrival_train_departure"]
+      if power_detention == "NA"
+        power_detention = ""
+      elsif power_arr_train_dep_detention == "NA"
+        power_arr_train_dep_detention = ""
+      end
+      release_to_removal_detn = [power_detention,power_arr_train_dep_detention].reject(&:blank?).sum_strings(':')
+      aecs_unload.detention_release_removal = release_to_removal_detn rescue nil
       aecs_unload.detention_ger_to_ger_tor = value["detention_ger_to_ger_tor"] rescue nil
       aecs_unload.detention_in_out = value["detention_in_out"] rescue nil
       aecs_unload.remarks = value["remarks"] rescue nil
