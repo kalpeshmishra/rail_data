@@ -62,6 +62,7 @@ class Admin::RakeLoadsController < ApplicationController
 
   def create
     RakeLoad.create_or_update_rake_load(params)
+    binding.pry
     data = params["date"].to_date if params["date"].present?
     data = Date.today if data.blank?
     @rake_loads = RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))

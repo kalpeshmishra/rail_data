@@ -66,9 +66,10 @@ class Admin::OtherLoadsController < ApplicationController
   
   def create
     RakeLoad.create_or_update_other_load(params)
-    data = params[:data].to_date if params[:data].present?
+    data = params[:date].to_date if params[:date].present?
     data = Date.today if data.blank?
     @other_loads = RakeLoad.where(release_date: data,rakeform_otherform: "O")
+    
     current_user_other_load = []
       @other_loads.each do |other_load|
         rake_area =  other_load.load_unload.station.area.area_code rescue nil

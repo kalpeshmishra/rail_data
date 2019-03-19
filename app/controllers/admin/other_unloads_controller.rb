@@ -25,12 +25,6 @@ class Admin::OtherUnloadsController < ApplicationController
   end
 
   def get_data_for_form
-    # @from_stations = []
-    # LoadUnload.all.each do |load|
-    #   station = Station.find(load.station_id) rescue nil
-    #   @from_stations << ["#{station.code}-#{station.name}", station.id] if station.present?
-    # end  
-    # @to_stations = Station.all.map{|station| ["#{station.code}-#{station.name}",station.id]}
     @major_commodity = MajorCommodity.all.map{|major|[major.major_commodity,major.id]}
     @wagon_type = WagonType.all.map{|wagon| [wagon.wagon_type_code,wagon.id]}
     @rake_commodity = {}
@@ -43,7 +37,7 @@ class Admin::OtherUnloadsController < ApplicationController
   
   def create
     RakeUnload.create_or_update_other_unload(params)
-    data = params[:data].to_date if params[:data].present?
+    data = params[:date].to_date if params[:date].present?
     data = Date.today if data.blank?
     # data = data.strftime("%Y-%m-%d")
     @other_unloads = RakeUnload.where(release_date: data,form_status: "OTHER")
