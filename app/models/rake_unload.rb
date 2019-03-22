@@ -355,7 +355,131 @@ belongs_to :wagon_type
        proper_time = nil 
     end
     proper_time
-  end  
+  end 
+
+  def self.get_powerhouse_phasewise_data(data)
+    domestic_rakes = []
+    domestic_units = []
+    domestic_tor = []
+    domestic_pm_rl = []
+    domestic_pd_pa = []
+    domestic_pa_dp = []
+    domestic_rl_dp = []
+    domestic_in_out = []
+    domestic_ger_to_ger_trns = []
+    domestic_ger_to_ger_tor = []
+    domestic_cc = []
+    domestic_pre = []
+    domestic_ee = []
+
+    imported_rakes = []
+    imported_units = []
+    imported_tor = []
+    imported_pm_rl = []
+    imported_pd_pa = []
+    imported_pa_dp = []
+    imported_rl_dp = []
+    imported_in_out = []
+    imported_ger_to_ger_trns = []
+    imported_ger_to_ger_tor = []
+    imported_cc = []
+    imported_pre = []
+    imported_ee = []
+
+    powerhouse_data = {}
+    data.each do |data|
+      if data.commodity_type == "DOMESTIC"
+        domestic_rakes << data.rake_count
+        domestic_units << data.loaded_unit
+        domestic_tor << data.train_on_run_hours
+        domestic_pm_rl << data.detention_placement_release
+        domestic_pd_pa << data.detention_for_power
+        domestic_pa_dp << data.powerarrival_train_departure
+        domestic_rl_dp << data.detention_release_removal
+        domestic_in_out << data.detention_in_out
+        if data.bpc_type == "CC30" || data.bpc_type == "CC35" 
+          domestic_cc << data.bpc_type
+        elsif  data.bpc_type == "PRE"   
+          domestic_pre << data.bpc_type
+        else
+          domestic_ee << data.bpc_type
+        end
+        if data.takenover_point == "GER" && data.handedover_point == "GER" 
+          domestic_ger_to_ger_trns << data.rake_count
+          domestic_ger_to_ger_tor << data.detention_ger_to_ger_tor
+        end
+      else
+        imported_rakes << data.rake_count
+        imported_units << data.loaded_unit
+        imported_tor << data.train_on_run_hours
+        imported_pm_rl << data.detention_placement_release
+        imported_pd_pa << data.detention_for_power
+        imported_pa_dp << data.powerarrival_train_departure
+        imported_rl_dp << data.detention_release_removal
+        imported_in_out << data.detention_in_out
+        if data.bpc_type == "CC30" || data.bpc_type == "CC35" 
+          imported_cc << data.bpc_type
+        elsif  data.bpc_type == "PRE"   
+          imported_pre << data.bpc_type
+        else
+          imported_ee << data.bpc_type
+        end
+        if data.takenover_point == "GER" && data.handedover_point == "GER" 
+          imported_ger_to_ger_trns << data.rake_count
+          imported_ger_to_ger_tor << data.detention_ger_to_ger_tor
+        end
+      end  
+    end
+
+    total_domestic_rakes = domestic_rakes.sum
+    total_domestic_units = domestic_units.sum
+    detn_domestic_tor = domestic_tor.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_domestic_pm_rl = domestic_pm_rl.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_domestic_pd_pa = domestic_pd_pa.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_domestic_pa_dp = domestic_pa_dp.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_domestic_rl_dp = domestic_rl_dp.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_domestic_in_out = domestic_in_out.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    total_domestic_ger_to_ger_trns = domestic_ger_to_ger_trns.sum
+    detn_domestic_ger_to_ger_tor = domestic_ger_to_ger_tor.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    total_domestic_cc = domestic_cc.count
+    total_domestic_pre = domestic_pre.count
+    total_domestic_ee = domestic_ee.count
+
+    powerhouse_data["Domestic"] = {rakes: total_domestic_rakes, units: total_domestic_units, detn_tor: detn_domestic_tor, detn_pm_rl: detn_domestic_pm_rl, detn_pd_pa: detn_domestic_pd_pa, detn_pa_dp: detn_domestic_pa_dp, detn_rl_dp: detn_domestic_rl_dp, detn_in_out: detn_domestic_in_out, total_ger_to_ger_trns: total_domestic_ger_to_ger_trns, detn_ger_to_ger_tor: detn_domestic_ger_to_ger_tor, total_cc: total_domestic_cc, total_pre: total_domestic_pre, total_ee: total_domestic_ee}
+
+    total_imported_rakes = imported_rakes.sum
+    total_imported_units = imported_units.sum
+    detn_imported_tor = imported_tor.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_imported_pm_rl = imported_pm_rl.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_imported_pd_pa = imported_pd_pa.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_imported_pa_dp = imported_pa_dp.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_imported_rl_dp = imported_rl_dp.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    detn_imported_in_out = imported_in_out.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    total_imported_ger_to_ger_trns = imported_ger_to_ger_trns.sum
+    detn_imported_ger_to_ger_tor = imported_ger_to_ger_tor.delete_if{|x| x=="NA"}.reject(&:blank?).sum_strings(":")
+    total_imported_cc = imported_cc.count
+    total_imported_pre = imported_pre.count
+    total_imported_ee = imported_ee.count
+
+    powerhouse_data["Imported"] = {rakes: total_imported_rakes, units: total_imported_units, detn_tor: detn_imported_tor, detn_pm_rl: detn_imported_pm_rl, detn_pd_pa: detn_imported_pd_pa, detn_pa_dp: detn_imported_pa_dp, detn_rl_dp: detn_imported_rl_dp, detn_in_out: detn_imported_in_out, total_ger_to_ger_trns: total_imported_ger_to_ger_trns, detn_ger_to_ger_tor: detn_imported_ger_to_ger_tor, total_cc: total_imported_cc, total_pre: total_imported_pre, total_ee: total_imported_ee}
+    
+    total_rakes = total_domestic_rakes + total_imported_rakes
+    total_units = total_domestic_units + total_imported_units
+    detn_tor = [detn_domestic_tor,detn_imported_tor].reject(&:blank?).sum_strings(":")
+    detn_pm_rl = [detn_domestic_pm_rl,detn_imported_pm_rl].reject(&:blank?).sum_strings(":")
+    detn_pd_pa = [detn_domestic_pd_pa,detn_imported_pd_pa].reject(&:blank?).sum_strings(":")
+    detn_pa_dp = [detn_domestic_pa_dp,detn_imported_pa_dp].reject(&:blank?).sum_strings(":")
+    detn_rl_dp = [detn_domestic_rl_dp,detn_imported_rl_dp].reject(&:blank?).sum_strings(":")
+    detn_in_out = [detn_domestic_in_out,detn_imported_in_out].reject(&:blank?).sum_strings(":")
+    total_ger_to_ger_trns = total_domestic_ger_to_ger_trns + total_imported_ger_to_ger_trns
+    detn_ger_to_ger_tor = [detn_domestic_ger_to_ger_tor,detn_imported_ger_to_ger_tor].reject(&:blank?).sum_strings(":")
+    total_cc = total_domestic_cc + total_imported_cc
+    total_pre = total_domestic_pre + total_imported_pre
+    total_ee = total_domestic_ee + total_imported_ee
+    
+    powerhouse_data["Total"] = {rakes: total_rakes, units: total_units, detn_tor: detn_tor, detn_pm_rl: detn_pm_rl, detn_pd_pa: detn_pd_pa, detn_pa_dp: detn_pa_dp, detn_rl_dp: detn_rl_dp, detn_in_out: detn_in_out, total_ger_to_ger_trns: total_ger_to_ger_trns, detn_ger_to_ger_tor: detn_ger_to_ger_tor, total_cc: total_cc, total_pre: total_pre, total_ee: total_ee}
+    return(powerhouse_data)  
+  end 
 
   
 

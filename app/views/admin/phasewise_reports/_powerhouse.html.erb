@@ -1,0 +1,74 @@
+<div class="tab-container" id="powerhouse">
+<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+  <p style="font-size: 16px;color:red;">
+    PowerHouse Phasewise Detention
+  </p>
+</div>
+
+<table class="table hover table-bordered" id="powerhouse">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;">Station</th>
+      <th style="vertical-align: middle;">Type</th>
+      <th style="vertical-align: middle;">Rake</th>
+      <th style="vertical-align: middle;">Units</th>
+      <th>DETN<br>TOR</th>
+      <th>DETN<br>PM-RL</th>
+      <th>DETN<br>PD-PA</th>
+      <th>DETN<br>PA-DP</th>
+      <th>DETN<br>RL-DP</th>
+      <th>DETN<br>IN-OUT</th>
+      <th>GER-TO-<br>GER-TRNS</th>
+      <th>GER-TO-<br>GER-TOR</th>
+      <th>CC</th>
+      <th>PRE</th>
+      <th>EE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%if @powerhouse_gets_data.present?%>
+      <% @powerhouse_gets_data.each do |key,value| %>
+        <tr id=<%=key%>>
+          <td class="text-center"><span class="<%= key %>">GETS</span></td>
+          <td class="text-center"><span class="<%= key %>"><%=key%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:rakes]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:units]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pm_rl]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pd_pa]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pa_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_rl_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_in_out]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_ger_to_ger_trns]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_ger_to_ger_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_cc]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_pre]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_ee]%></span></td>
+        </tr>
+      <%end%>
+    <%end%>
+      <tr><td colspan="15"></td></tr>
+    <%if @powerhouse_aecs_data.present?%>
+      <% @powerhouse_aecs_data.each do |key,value| %>
+        <tr id=<%=key%>>
+          <td class="text-center"><span class="<%= key %>">AECS</span></td>
+          <td class="text-center"><span class="<%= key %>"><%=key%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:rakes]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:units]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pm_rl]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pd_pa]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_pa_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_rl_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_in_out]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_ger_to_ger_trns]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:detn_ger_to_ger_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_cc]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_pre]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:total_ee]%></span></td>
+        </tr>
+      <%end%>
+    <%end%>
+  </tbody>
+</table>
+</div>

@@ -35,31 +35,34 @@
   <div class="tab-container">
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#division-loading-info" id="division-loading-tab" data-toggle="tab">DIVN(LD)</a>
+        <a href="#division-loading-info" id="division-loading-tab" data-toggle="tab">DIV(LD)</a>
       </li>
       <li>
         <a href="#adi-area-loading-info" id="adi-area-loading-tab" data-toggle="tab">ADI(LD)</a>
       </li>
       <li>
-        <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIMB(LD)</a>
+        <a href="#gimb-area-loading-info" id="gimb-area-loading-tab" data-toggle="tab">GIM(LD)</a>
       </li>
       <li>
-        <a href="#division-unloading-info" id="division-unloading-tab" data-toggle="tab">DIVN(PU)</a>
+        <a href="#division-unloading-info" id="division-unloading-tab" data-toggle="tab">DIV(PU)</a>
       </li>
       <li>
         <a href="#adi-area-unloading-info" id="adi-area-unloading-tab" data-toggle="tab">ADI(PU)</a>
       </li>
       <li>
-        <a href="#gimb-area-unloading-info" id="gimb-area-unloading-tab" data-toggle="tab">GIMB(PU)</a>
+        <a href="#gimb-area-unloading-info" id="gimb-area-unloading-tab" data-toggle="tab">GIM(PU)</a>
       </li>
       <li>
-        <a href="#total-division-info" id="total-division-tab" data-toggle="tab">Division</a>
+        <a href="#total-division-info" id="total-division-tab" data-toggle="tab">DIV</a>
       </li>
       <li>
         <a href="#total-adi-info" id="total-adi-tab" data-toggle="tab">ADI</a>
       </li>
       <li>
-        <a href="#total-gimb-info" id="total-gimb-tab" data-toggle="tab">GIMB</a>
+        <a href="#total-gimb-info" id="total-gimb-tab" data-toggle="tab">GIM</a>
+      </li>
+      <li>
+        <a href="#powerhouse-info" id="powerhouse-tab" data-toggle="tab">PH</a>
       </li>
     </ul>
 
@@ -99,6 +102,10 @@
       <div id="total-gimb-info" class="tab-pane cont">
         <%=render 'total_gimb'%>
         <div id="total_gimb_load_form"></div>
+      </div>
+      <div id="powerhouse-info" class="tab-pane cont">
+        <%=render 'powerhouse'%>
+        <div id="powerhouse_form"></div>
       </div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
