@@ -1,3 +1,9 @@
+<style>
+  html {
+    overflow-x: scroll;
+  }
+</style>
+
 <div class="tab-container" id="powerhouse">
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
   <p style="font-size: 16px;color:red;">
@@ -20,6 +26,13 @@
       <th>DETN<br>IN-OUT</th>
       <th>GER-TO-<br>GER-TRNS</th>
       <th>GER-TO-<br>GER-TOR</th>
+      <th>AVG<br>TOR</th>
+      <th>AVG<br>PM-RL</th>
+      <th>AVG<br>PD-PA</th>
+      <th>AVG<br>PA-DP</th>
+      <th>AVG<br>RL-DP</th>
+      <th>AVG<br>IN-OUT</th>
+      <th>AVG-GER-<br>GER-TOR</th>
       <th>CC</th>
       <th>PRE</th>
       <th>EE</th>
@@ -41,13 +54,20 @@
           <td class="text-center"><span class="<%= key %>"><%=value[:detn_in_out]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_ger_to_ger_trns]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:detn_ger_to_ger_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pm_rl]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pd_pa]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pa_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_rl_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_in_out]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_ger_to_ger_tor]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_cc]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_pre]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_ee]%></span></td>
         </tr>
       <%end%>
     <%end%>
-      <tr><td colspan="15"></td></tr>
+      <tr><td colspan="22"></td></tr>
     <%if @powerhouse_aecs_data.present?%>
       <% @powerhouse_aecs_data.each do |key,value| %>
         <tr id=<%=key%>>
@@ -63,6 +83,13 @@
           <td class="text-center"><span class="<%= key %>"><%=value[:detn_in_out]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_ger_to_ger_trns]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:detn_ger_to_ger_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_tor]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pm_rl]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pd_pa]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_pa_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_rl_dp]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_in_out]%></span></td>
+          <td class="text-center"><span class="<%= key %>"><%=value[:avg_ger_to_ger_tor]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_cc]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_pre]%></span></td>
           <td class="text-center"><span class="<%= key %>"><%=value[:total_ee]%></span></td>

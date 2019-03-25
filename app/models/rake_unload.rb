@@ -357,6 +357,20 @@ belongs_to :wagon_type
     proper_time
   end 
 
+  def self.get_average_detention(detention, rake_count)
+     
+    detn = detention.split(":")
+    hour = detn[0].to_i
+    minute = detn[1].to_i
+    avg_hour = (hour/rake_count).to_i
+    if (hour-(avg_hour*rake_count)+ minute) != 0
+      avg_minute = ((((hour-(avg_hour*rake_count))*60)+minute)/rake_count).to_i
+    else
+      avg_minute = 0
+    end
+    average_detention = avg_hour.to_s+ ":"+ avg_minute.to_s
+  end 
+
   def self.get_powerhouse_phasewise_data(data)
     domestic_rakes = []
     domestic_units = []
@@ -445,7 +459,15 @@ belongs_to :wagon_type
     total_domestic_pre = domestic_pre.count
     total_domestic_ee = domestic_ee.count
 
-    powerhouse_data["Domestic"] = {rakes: total_domestic_rakes, units: total_domestic_units, detn_tor: detn_domestic_tor, detn_pm_rl: detn_domestic_pm_rl, detn_pd_pa: detn_domestic_pd_pa, detn_pa_dp: detn_domestic_pa_dp, detn_rl_dp: detn_domestic_rl_dp, detn_in_out: detn_domestic_in_out, total_ger_to_ger_trns: total_domestic_ger_to_ger_trns, detn_ger_to_ger_tor: detn_domestic_ger_to_ger_tor, total_cc: total_domestic_cc, total_pre: total_domestic_pre, total_ee: total_domestic_ee}
+    avg_domestic_tor = detn_domestic_tor.present? ? RakeUnload.get_average_detention(detn_domestic_tor, total_domestic_rakes) : ""
+    avg_domestic_pm_rl = detn_domestic_pm_rl.present? ? RakeUnload.get_average_detention(detn_domestic_pm_rl, total_domestic_rakes) : ""
+    avg_domestic_pd_pa = detn_domestic_pd_pa.present? ? RakeUnload.get_average_detention(detn_domestic_pd_pa, total_domestic_rakes) : ""
+    avg_domestic_pa_dp = detn_domestic_pa_dp.present? ? RakeUnload.get_average_detention(detn_domestic_pa_dp, total_domestic_rakes) : ""
+    avg_domestic_rl_dp = detn_domestic_rl_dp.present? ? RakeUnload.get_average_detention(detn_domestic_rl_dp, total_domestic_rakes) : ""
+    avg_domestic_in_out = detn_domestic_in_out.present? ? RakeUnload.get_average_detention(detn_domestic_in_out, total_domestic_rakes) : ""
+    avg_domestic_ger_to_ger_tor = detn_domestic_ger_to_ger_tor.present? ? RakeUnload.get_average_detention(detn_domestic_ger_to_ger_tor, total_domestic_ger_to_ger_trns) : ""
+
+    powerhouse_data["Domestic"] = {rakes: total_domestic_rakes, units: total_domestic_units, detn_tor: detn_domestic_tor, detn_pm_rl: detn_domestic_pm_rl, detn_pd_pa: detn_domestic_pd_pa, detn_pa_dp: detn_domestic_pa_dp, detn_rl_dp: detn_domestic_rl_dp, detn_in_out: detn_domestic_in_out, total_ger_to_ger_trns: total_domestic_ger_to_ger_trns, detn_ger_to_ger_tor: detn_domestic_ger_to_ger_tor, total_cc: total_domestic_cc, total_pre: total_domestic_pre, total_ee: total_domestic_ee, avg_tor: avg_domestic_tor, avg_pm_rl: avg_domestic_pm_rl, avg_pd_pa: avg_domestic_pd_pa, avg_pa_dp: avg_domestic_pa_dp, avg_rl_dp: avg_domestic_rl_dp, avg_in_out: avg_domestic_in_out, avg_ger_to_ger_tor: avg_domestic_ger_to_ger_tor}
 
     total_imported_rakes = imported_rakes.sum
     total_imported_units = imported_units.sum
@@ -461,7 +483,15 @@ belongs_to :wagon_type
     total_imported_pre = imported_pre.count
     total_imported_ee = imported_ee.count
 
-    powerhouse_data["Imported"] = {rakes: total_imported_rakes, units: total_imported_units, detn_tor: detn_imported_tor, detn_pm_rl: detn_imported_pm_rl, detn_pd_pa: detn_imported_pd_pa, detn_pa_dp: detn_imported_pa_dp, detn_rl_dp: detn_imported_rl_dp, detn_in_out: detn_imported_in_out, total_ger_to_ger_trns: total_imported_ger_to_ger_trns, detn_ger_to_ger_tor: detn_imported_ger_to_ger_tor, total_cc: total_imported_cc, total_pre: total_imported_pre, total_ee: total_imported_ee}
+    avg_imported_tor = detn_imported_tor.present? ? RakeUnload.get_average_detention(detn_imported_tor, total_imported_rakes) : ""
+    avg_imported_pm_rl = detn_imported_pm_rl.present? ? RakeUnload.get_average_detention(detn_imported_pm_rl, total_imported_rakes) : ""
+    avg_imported_pd_pa = detn_imported_pd_pa.present? ? RakeUnload.get_average_detention(detn_imported_pd_pa, total_imported_rakes) : ""
+    avg_imported_pa_dp = detn_imported_pa_dp.present? ? RakeUnload.get_average_detention(detn_imported_pa_dp, total_imported_rakes) : ""
+    avg_imported_rl_dp = detn_imported_rl_dp.present? ? RakeUnload.get_average_detention(detn_imported_rl_dp, total_imported_rakes) : ""
+    avg_imported_in_out = detn_imported_in_out.present? ? RakeUnload.get_average_detention(detn_imported_in_out, total_imported_rakes) : ""
+    avg_imported_ger_to_ger_tor = detn_imported_ger_to_ger_tor.present? ? RakeUnload.get_average_detention(detn_imported_ger_to_ger_tor, total_imported_ger_to_ger_trns) : ""
+
+    powerhouse_data["Imported"] = {rakes: total_imported_rakes, units: total_imported_units, detn_tor: detn_imported_tor, detn_pm_rl: detn_imported_pm_rl, detn_pd_pa: detn_imported_pd_pa, detn_pa_dp: detn_imported_pa_dp, detn_rl_dp: detn_imported_rl_dp, detn_in_out: detn_imported_in_out, total_ger_to_ger_trns: total_imported_ger_to_ger_trns, detn_ger_to_ger_tor: detn_imported_ger_to_ger_tor, total_cc: total_imported_cc, total_pre: total_imported_pre, total_ee: total_imported_ee, avg_tor: avg_imported_tor, avg_pm_rl: avg_imported_pm_rl, avg_pd_pa: avg_imported_pd_pa, avg_pa_dp: avg_imported_pa_dp, avg_rl_dp: avg_imported_rl_dp, avg_in_out: avg_imported_in_out, avg_ger_to_ger_tor: avg_imported_ger_to_ger_tor}
     
     total_rakes = total_domestic_rakes + total_imported_rakes
     total_units = total_domestic_units + total_imported_units
@@ -477,7 +507,15 @@ belongs_to :wagon_type
     total_pre = total_domestic_pre + total_imported_pre
     total_ee = total_domestic_ee + total_imported_ee
     
-    powerhouse_data["Total"] = {rakes: total_rakes, units: total_units, detn_tor: detn_tor, detn_pm_rl: detn_pm_rl, detn_pd_pa: detn_pd_pa, detn_pa_dp: detn_pa_dp, detn_rl_dp: detn_rl_dp, detn_in_out: detn_in_out, total_ger_to_ger_trns: total_ger_to_ger_trns, detn_ger_to_ger_tor: detn_ger_to_ger_tor, total_cc: total_cc, total_pre: total_pre, total_ee: total_ee}
+    avg_tor = detn_tor.present? ? RakeUnload.get_average_detention(detn_tor, total_rakes) : ""
+    avg_pm_rl = detn_pm_rl.present? ? RakeUnload.get_average_detention(detn_pm_rl, total_rakes) : ""
+    avg_pd_pa = detn_pd_pa.present? ? RakeUnload.get_average_detention(detn_pd_pa, total_rakes) : ""
+    avg_pa_dp = detn_pa_dp.present? ? RakeUnload.get_average_detention(detn_pa_dp, total_rakes) : ""
+    avg_rl_dp = detn_rl_dp.present? ? RakeUnload.get_average_detention(detn_rl_dp, total_rakes) : ""
+    avg_in_out = detn_in_out.present? ? RakeUnload.get_average_detention(detn_in_out, total_rakes) : ""
+    avg_ger_to_ger_tor = detn_ger_to_ger_tor.present? ? RakeUnload.get_average_detention(detn_ger_to_ger_tor, total_ger_to_ger_trns) : ""
+
+    powerhouse_data["Total"] = {rakes: total_rakes, units: total_units, detn_tor: detn_tor, detn_pm_rl: detn_pm_rl, detn_pd_pa: detn_pd_pa, detn_pa_dp: detn_pa_dp, detn_rl_dp: detn_rl_dp, detn_in_out: detn_in_out, total_ger_to_ger_trns: total_ger_to_ger_trns, detn_ger_to_ger_tor: detn_ger_to_ger_tor, total_cc: total_cc, total_pre: total_pre, total_ee: total_ee, avg_tor: avg_tor, avg_pm_rl: avg_pm_rl, avg_pd_pa: avg_pd_pa, avg_pa_dp: avg_pa_dp, avg_rl_dp: avg_rl_dp, avg_in_out: avg_in_out, avg_ger_to_ger_tor: avg_ger_to_ger_tor}
     return(powerhouse_data)  
   end 
 
