@@ -1,0 +1,245 @@
+<%= stylesheet_link_tag wicked_pdf_asset_base64("application.css"), :media => "all"  %>
+<style>
+  .no-border tr td, .no-border tr th {
+    border-width: 0;
+  }
+
+  .page {
+      page-break-before: always;
+    }
+</style>
+<div class="tab-container" id="summary_listing">
+  <table class="no-border head">
+    <tr>
+      <td style="width:90%;">
+       <p>Date: <%=@loading_report_date.strftime("%d-%m-%Y")%></p>
+      </td>
+      <td style="width:10%; text-align: right;">PDF
+      <%if false%>
+        <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-adi-loading-daywise">
+           <i class="fa fa-download"></i> Excel
+        </a>
+      <%end%>
+      </td>
+    </tr>
+  </table> 
+  <table class="table table-sm" >
+    <tr style="text-align: center;font-weight: bold;">
+      <td colspan="2">CommodityWise</td>
+      <td colspan="3">StockWise</td>
+    </tr>
+    <tr valign="top">
+      <td valign="top">
+        <table class="adi_commodity_summary" >
+          <tr style="color: #fff; background: #4B4B4D;">
+            <th colspan="3">ADI</th>
+          </tr>
+          <tr style="font-weight: bold;">
+            <td>Commodity</td>
+            <td>Rake</td>
+            <td>Unit</td>
+          </tr>
+       
+          <%adi_rake=[] %>
+          <%adi_unit=[] %>
+          <%gimb_rake=[] %>
+          <%gimb_unit=[] %>
+          <%division_rake=[] %>
+          <%division_unit=[] %>
+          <%if @adi_commodity_loading_daywise.present?%>
+            <%@adi_commodity_loading_daywise.each do |key,value|%>
+              <tr>
+                <td><%=key%></td>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                <%adi_rake<<value.values[0][0]%>
+                <%adi_unit<<value.values[1][0] %>
+              </tr>
+            <%end%>
+          <%end%>  
+          <tr style="font-weight: bold;">
+            <td>Total</td>
+            <td><%=adi_rake.compact.sum%></td>
+            <td><%=adi_unit.compact.sum%></td>
+          </tr>  
+        </table>
+        <table class="gimb_commodity_summary" >
+          <tr style="color: #fff; background: #4B4B4D;">
+            <th colspan="3">GIMB</th>
+          </tr>
+          <tr style="font-weight: bold;">
+            <td>Commodity</td>
+            <td>Rake</td>
+            <td>Unit</td>
+          </tr>
+          <%if @gimb_commodity_loading_daywise.present?%>
+            <%@gimb_commodity_loading_daywise.each do |key,value|%>
+              <tr>
+                <td><%=key%></td>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                <%gimb_rake<<value.values[0][0]%>
+                <%gimb_unit<<value.values[1][0] %>
+              </tr>  
+            <%end%>
+          <%end%>  
+          <tr style="font-weight: bold;">
+            <td>Total</td>
+            <td><%=gimb_rake.compact.sum%></td>
+            <td><%=gimb_unit.compact.sum%></td>
+          </tr> 
+        </table>
+      </td>
+      <td>  
+        <table class="division_commodity_summary" >
+          <tr style="color: #fff; background: #4B4B4D;">
+            <th colspan="3">Division</th>
+          </tr>
+          <tr style="font-weight: bold;">
+            <td>Commodity</td>
+            <td>Rake</td>
+            <td>Unit</td>
+          </tr>
+          <%if @division_commodity_loading_daywise.present?%>
+            <%@division_commodity_loading_daywise.each do |key,value|%>
+              <tr>
+                <td><%=key%></td>
+                <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                <%rake = value.values[0][0] rescue 0%>
+                <%unit = value.values[1][0] rescue 0%>
+                <%division_rake<< rake%>
+                <%division_unit<< unit%>
+              </tr>  
+            <%end%>
+          <%end%>
+          <tr style="font-weight: bold;">
+            <td>Total</td>
+            <td><%=division_rake.compact.sum%></td>
+            <td><%=division_unit.compact.sum%></td>
+          </tr> 
+        </table>
+      </td>
+      <td valign="top">
+        <table class="adi_stock_summary" >
+        <%adi_stock_rake=[] %>
+        <%adi_stock_unit=[] %>  
+          <thead class="thead-dark">
+            <tr style="color: #fff; background: #4B4B4D;">
+              <th colspan="3">ADI</th>
+            </tr>
+            <%if @adi_stock_loading_daywise.present?%>
+              <%@adi_stock_loading_daywise.each do |stock_type,data|%>
+                <tr style="font-weight: bold;background: #DADADA;text-align:center;">
+                  <td colspan="3"><%=stock_type%></td>
+                </tr>
+                <tr style="font-weight: bold;">
+                  <td>Stock</td>
+                  <td>Rake</td>
+                  <td>Unit</td>
+                </tr>
+                <%@adi_stock_loading_daywise[stock_type].each do |stock_code,value|%>
+                  <tr>
+                    <td><%=stock_code%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                  </tr>
+                  <%adi_stock_rake<<value.values[0][0]%>
+                  <%adi_stock_unit<<value.values[1][0]%>
+                <%end%> 
+                <tr style="font-weight: bold;">
+                  <td>Total</td>
+                  <td><%=adi_stock_rake.compact.sum%></td>
+                  <td><%=adi_stock_unit.compact.sum%></td>
+                  <%adi_stock_rake=[] %>
+                  <%adi_stock_unit=[] %>
+                </tr>  
+              <%end%>
+            <%end%>   
+          </thead>
+        </table>
+      </td>
+      <td>
+        <table class="gimb_stock_summary" >
+        <%gimb_stock_rake=[] %>
+        <%gimb_stock_unit=[] %>  
+          <thead class="thead-dark">
+            <tr style="color: #fff; background: #4B4B4D;">
+              <th colspan="3">GIMB</th>
+            </tr>
+            <%if @gimb_stock_loading_daywise.present?%>
+              <%@gimb_stock_loading_daywise.each do |stock_type,data|%>
+                <tr style="font-weight: bold;background: #DADADA;text-align:center;">
+                  <td colspan="3"><%=stock_type%></td>
+                </tr>
+                <tr style="font-weight: bold;">
+                  <td>Stock</td>
+                  <td>Rake</td>
+                  <td>Unit</td>
+                </tr>
+                <%@gimb_stock_loading_daywise[stock_type].each do |stock_code,value|%>
+                  <tr>
+                    <td><%=stock_code%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                  </tr>
+                  <%gimb_stock_rake<<value.values[0][0]%>
+                  <%gimb_stock_unit<<value.values[1][0]%>
+                <%end%>
+                <tr style="font-weight: bold;">
+                  <td>Total</td>
+                  <td><%=gimb_stock_rake.compact.sum%></td>
+                  <td><%=gimb_stock_unit.compact.sum%></td>
+                  <%gimb_stock_rake=[] %>
+                  <%gimb_stock_unit=[] %>
+                </tr>  
+              <%end%> 
+            <%end%> 
+          </thead>
+        </table>
+      </td>
+      <td valign="top">
+        <table class="division_stock_summary" >
+        <%division_stock_rake=[] %>
+        <%division_stock_unit=[] %>
+          <thead class="thead-dark">
+            <tr style="color: #fff; background: #4B4B4D;">
+              <th colspan="3">Division</th>
+            </tr>
+            <%if @division_stock_loading_daywise.present?%>
+              <%@division_stock_loading_daywise.each do |stock_type,data|%>
+                <tr style="font-weight: bold;background: #DADADA;text-align:center;">
+                  <td colspan="3"><%=stock_type%></td>
+                </tr>
+                <tr style="font-weight: bold;">
+                  <td>Stock</td>
+                  <td>Rake</td>
+                  <td>Unit</td>
+                </tr>
+                <%@division_stock_loading_daywise[stock_type].each do |stock_code,value|%>
+                  <tr>
+                    <td><%=stock_code%></td>
+                    <td><%=(value.values.present? and value.values[0].present? and value.values[0][0].present?) ? value.values[0][0] : "" %></td>
+                    <td><%=(value.values.present? and value.values[1].present? and value.values[1][0].present?) ? value.values[1][0] : "" %></td>
+                  </tr>
+                  <%rake = value.values[0][0] rescue 0%>
+                  <%unit = value.values[1][0] rescue 0%>
+                  <%division_stock_rake<< rake%>
+                  <%division_stock_unit<< unit%>  
+                <%end%> 
+                <tr style="font-weight: bold;">
+                  <td>Total</td>
+                  <td><%=division_stock_rake.compact.sum%></td>
+                  <td><%=division_stock_unit.compact.sum%></td>
+                  <%division_stock_rake=[] %>
+                  <%division_stock_unit=[] %>
+                </tr>  
+              <%end%>
+            <%end%> 
+          </thead>
+        </table>
+      </td>
+    </tr>
+  </table> 
+ 
+</div>  

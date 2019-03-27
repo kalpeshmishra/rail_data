@@ -33,6 +33,7 @@ class Admin::UnloadingReportsController < ApplicationController
 		@total_gimb_unloads = gimb_unit
     @total_rake_unloads = adi_unit + gimb_unit 
 
+    @abc_summary_date = data if data.present?
     abc_summary_data  = get_abc_summary_data(data)
     @adi_abc_summary_data  = abc_summary_data[0]
     @gimb_abc_summary_data  = abc_summary_data[1]
@@ -139,6 +140,23 @@ class Admin::UnloadingReportsController < ApplicationController
     end
     
   end  
+
+   def abc_unload_summary_pdf
+    
+    data = params[:date].split(",")[0].to_date if params[:date].present?
+    data = Date.today if data.blank?
+    @abc_summary_date = data if data.present?
+    abc_summary_data  = get_abc_summary_data(data)
+    @adi_abc_summary_data  = abc_summary_data[0]
+    @gimb_abc_summary_data  = abc_summary_data[1]
+    
+    render :pdf => "#{data}-ABC-PU-Summary",
+           :template => "admin/unloading_reports/abc_unload_summary_pdf.pdf.erb",
+           :disposition => 'attachment',
+           :show_as_html => params.key?('debug'),
+           :layout => nil
+  end
+
 
   def show
     

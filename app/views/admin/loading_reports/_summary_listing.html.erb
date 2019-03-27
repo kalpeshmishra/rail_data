@@ -1,14 +1,15 @@
 <style>
   .no-border tr td, .no-border tr th {
-  border-width: 0;
+  border-width: 0;}
 </style>
 <div class="tab-container" id="summary_listing">
   <table class="no-border head">
     <tr>
       <td style="width:90%;">
-       <p>Date</p>
+       <p>Date: <%=@loading_report_date.strftime("%d-%m-%Y")%></p>
       </td>
       <td style="width:10%; text-align: right;">
+        <%= link_to "<i class='fa fa-print'></i>&nbsp;".html_safe, download_summary_pdf_path(:date => @loading_report_date), class: 'label label-default', title: 'Print/PDF', target: :_blank%>
       <%if false%>
         <a href="javascript:void(0);" class="btn btn-primary " style="padding: 4px 9px !important;" id="download-adi-loading-daywise">
            <i class="fa fa-download"></i> Excel

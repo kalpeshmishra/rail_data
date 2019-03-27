@@ -54,6 +54,7 @@ gem 'momentjs-rails'
 gem 'bootstrap-daterangepicker-rails'
 gem 'currency-in-words' # For amount in words
 gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary', '~> 0.12.3' # HTML to PDF
 # gem 'will_paginate' # For Pagination
 gem 'will_paginate-bootstrap'
 gem 'roo' # For Spreadsheets

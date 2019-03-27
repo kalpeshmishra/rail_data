@@ -2,6 +2,14 @@
   
 <table>
   <thead class="thead-dark">
+    <tr class="no-border">
+      <td style="width:90%;">
+       <p>Date: <%=@abc_summary_date.strftime("%d-%m-%Y")%></p>
+      </td>
+      <td style="width:10%; text-align: right;">
+        <%= link_to "<i class='fa fa-print'></i>&nbsp;".html_safe,abc_unload_summary_pdf_path(:date => @abc_summary_date), class: 'label label-default', title: 'Print/PDF', target: :_blank%>
+      </td>
+    </tr>  
     <tr style="color: #fff; background: #7a7a7a; font-weight: bold;" class="text-center">
       <th>ADI</th>
       <th>GIMB</th>

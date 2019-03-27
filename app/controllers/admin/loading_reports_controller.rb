@@ -58,7 +58,7 @@ class Admin::LoadingReportsController < ApplicationController
     gimb_loading_summary[1].present? ? @gimb_stock_loading_daywise = gimb_loading_summary[1] : @gimb_stock_loading_daywise = {} 
     division_loading_summary[0].present? ? @division_commodity_loading_daywise = division_loading_summary[0] : @division_commodity_loading_daywise = {} 
     division_loading_summary[1].present? ? @division_stock_loading_daywise = division_loading_summary[1] : @division_stock_loading_daywise = {}
-    
+    @loading_report_date = data if data.present?
   end
 
   def get_summary_data(summary_data)
@@ -148,6 +148,18 @@ class Admin::LoadingReportsController < ApplicationController
     send_file "public/report_content.xls", :type => "application/vnd.ms-excel", :filename => report_name, disposition: 'attachment'
   end
   
+  def download_summary_pdf
+    
+    data = params[:date].split(",")[0].to_date if params[:date].present?
+    data = Date.today if data.blank?
+    get_data(data)
+    
+    render :pdf => "#{data}-LoadingSummary",
+           :template => "admin/loading_reports/download_summary_pdf.pdf.erb",
+           :disposition => 'attachment',
+           :show_as_html => params.key?('debug'),
+           :layout => nil
+  end
 
   def show
     
