@@ -71,8 +71,7 @@ class Admin::RakeLoadsController < ApplicationController
     
     get_user_area_wise_data(data)
     get_data_for_form
-    
-
+  
   end
 
   def get_user_area_wise_data(data)

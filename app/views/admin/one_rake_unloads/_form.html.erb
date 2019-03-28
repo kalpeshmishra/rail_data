@@ -44,11 +44,10 @@
           <%= text_field_tag "from_station_#{index}", '',placeholder: 'FromSTN', id: "from_station_#{index}",disabled:true, class: 'form-control input-md from_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         <p></p>
           
-          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}", class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
+          <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}",disabled:true, class: 'form-control input-md to_station',maxlength:"4", style: "width: 100px; font-size:16px; text-transform:uppercase;"%>
         </td>
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 65px; font-size:16px;" %>
-        
         </td>
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true,disabled:true, style: "width: 90px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
@@ -85,9 +84,9 @@
 
         <td align="center">
      
-          <%= text_field_tag "consignor_#{index}", '',placeholder: 'CNSR', id: "consignor_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;"%>
+          <%= text_field_tag "consignor_#{index}", '',placeholder: 'CNSR', id: "consignor_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;text-transform:uppercase;"%>
         <p></p>
-          <%= text_field_tag "consignee_#{index}", '',placeholder: 'CNEE', id: "consignee_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;"%>
+          <%= text_field_tag "consignee_#{index}", '',placeholder: 'CNEE', id: "consignee_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:16px;text-transform:uppercase;"%>
         </td>
 
         <td>
@@ -130,7 +129,6 @@
   </table>
   <%= hidden_field_tag  "date", "", id: "date" %>
     <div class="modal-footer" style="text-align: center !important;">
-        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
         <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
   <% end %>

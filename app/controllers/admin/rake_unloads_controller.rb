@@ -77,11 +77,13 @@ class Admin::RakeUnloadsController < ApplicationController
 
   def find_station_unloads # finds to station
     
+    get_user_area
+    
     station_code = params[:station_code]
     @to_station = params[:to_station_id]
     to_station_code_id = Station.where(code: station_code).pluck(:id)
-    @stn = LoadUnload.find_by(station_id: to_station_code_id)? true : false
-    # @stn = Station.find_by(code: station_code)? true : false
+    @stn = LoadUnload.find_by(station_id: to_station_code_id, area_id: @user_area_id)? true : false
+    
         
       respond_to do |format|
         format.js
@@ -123,6 +125,14 @@ class Admin::RakeUnloadsController < ApplicationController
       @rake_commodity[major.id] = {data: rake_commodity_array}
     end
   end  
+
+  def get_user_area
+    user_area = current_user.area
+    if user_area.present? 
+      @user_area_id = Area.where(area_code: user_area).pluck(:id)
+    end 
+    
+  end
 
   def edit
     

@@ -13,20 +13,59 @@ class Admin::OneRakeUnloadsController < ApplicationController
   def new
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
-    # data = data.strftime("%Y-%m-%d")
+    
     @one_rake_unloads = RakeUnload.where(release_date: data,form_status: "RAKE")
-    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
-
+    get_user_area_wise_data(data)
     get_data_for_form
   end
+  
+  def create
+    RakeUnload.create_or_update_one_rake_unload(params)
+    data = params["date"].to_date if params["date"].present?
+    data = Date.today if data.blank?
+    @one_rake_unloads = RakeUnload.where(release_date: data,form_status: "RAKE")
+    get_user_area_wise_data(data)
+    get_data_for_form
 
-  # def addcommodity
-  #    respond_to do |format|
-  #     format.js 
-  #   end
+  end
+
+  def get_user_area_wise_data(data)
+    current_user_rake_unload = []
+      @one_rake_unloads.each do |rake_unload|
+        rake_area =  rake_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          current_user_rake_unload << rake_unload
+        end
+      end
+    @one_rake_unloads = current_user_rake_unload
+    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE"))
+      load_unit = 0
+      @total_rake_unloads.each do |total_rake_unload|
+        rake_area =  total_rake_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit + total_rake_unload.loaded_unit
+        end
+      end
+    @total_rake_unloads = load_unit  
+
+    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER"))
+      load_unit = 0
+      @total_other_unloads.each do |total_other_unload|
+        rake_area =  total_other_unload.load_unload.station.area.area_code rescue nil
+        current_user_area = current_user.area rescue nil
+        
+        if rake_area == current_user_area
+          load_unit = load_unit+total_other_unload.loaded_unit
+        end
+      end
+    @total_other_unloads = load_unit
     
-  # end
+  end
+
   def get_data_for_form
     @from_stations = []
     LoadUnload.all.each do |load|
@@ -42,20 +81,6 @@ class Admin::OneRakeUnloadsController < ApplicationController
       @rake_commodity[major.id] = {data: rake_commodity_array}
     end
   end  
-
-  def create
-    RakeUnload.create_or_update_one_rake_unload(params)
-    data = params["date"].to_date if params["date"].present?
-    data = Date.today if data.blank?
-    # data = data.strftime("%Y-%m-%d")
-    @one_rake_unloads = RakeUnload.where(release_date: data,form_status: "RAKE")
-    @total_rake_unloads = (RakeUnload.where(release_date: data,form_status: "RAKE").pluck(:loaded_unit)).sum
-    @total_other_unloads = (RakeUnload.where(release_date: data,form_status: "OTHER").pluck(:loaded_unit)).sum
-    
-    get_data_for_form
-    
-
-  end
 
   def edit
     get_data_for_form

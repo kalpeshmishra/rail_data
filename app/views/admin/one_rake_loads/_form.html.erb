@@ -45,9 +45,9 @@
           <%= text_field_tag "to_station_#{index}", '',placeholder: 'To STN', id: "to_station_#{index}",disabled:true, class: 'form-control input-md to_station',maxlength:"4", style: "width: 65px; font-size:16px; text-transform:uppercase;"%>
         </td>
         <td>
-          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 65px; font-size:16px;" %>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 60px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}", disabled:true, step: "0.01",style: "width: 100px;border: 1px solid #888;" %>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}", disabled:true, step: "0.01",style: "width: 60px;border: 1px solid #888;" %>
         </td>
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true,disabled:true, style: "width: 90px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
@@ -55,7 +55,7 @@
           <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,disabled:true,style: "width: 90px;", data_live_search: "true"} %>
         </td>
         <td>
-          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md',disabled:true, style: "width: 95px; font-size:16px;"%>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md',disabled:true, style: "width: 141px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "release_date_#{index}", '',type:'date',placeholder: 'release Date', id: "release_date_#{index}",disabled:true, class: 'form-control input-md', style: "width: 141px; font-size:14px;"%>
         </td>
@@ -97,7 +97,7 @@
           <%= select_tag "bpc_type_#{index}", options_for_select([["CC35","CC35"],["CC30","CC30"],["PRE","PRE"],["EE","EE"],["RTRP","RTRP"],["Safe","Safe"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 90px;", id: "bpc_type_#{index}", data_live_search: "true"}%>
         </td>
         <td>
-          <%= text_field_tag "bpc_station_#{index}", '',placeholder: 'BPC Station', id: "bpc_station_#{index}", class: 'form-control input-md', style: "width: 140px; font-size:15px;"%>
+          <%= text_field_tag "bpc_station_#{index}", '',placeholder: 'BPC Station', id: "bpc_station_#{index}", class: 'form-control input-md', style: "width: 140px; font-size:15px;text-transform:uppercase;"%>
         <p></p>
           <%= text_field_tag "bpc_date_#{index}", '', type: 'date',placeholder: 'BPC Date', id: "bpc_date_#{index}", class: 'form-control input-md', style: "width: 140px; font-size:13px;"%>
         </td>
@@ -123,7 +123,9 @@
   </table>
   <%= hidden_field_tag  "date", "", id: "date" %>
     <div class="modal-footer" style="text-align: center !important;">
+        <%if false%>
         <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
+        <%end%>
         <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
        
     </div>
