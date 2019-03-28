@@ -156,7 +156,7 @@ class Admin::LoadingReportsController < ApplicationController
     
     render :pdf => "#{data}-LoadingSummary",
            :template => "admin/loading_reports/download_summary_pdf.pdf.erb",
-           :disposition => 'attachment',
+           :disposition => 'inline',
            :show_as_html => params.key?('debug'),
            :layout => nil
   end

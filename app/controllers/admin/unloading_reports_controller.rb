@@ -152,7 +152,7 @@ class Admin::UnloadingReportsController < ApplicationController
     
     render :pdf => "#{data}-ABC-PU-Summary",
            :template => "admin/unloading_reports/abc_unload_summary_pdf.pdf.erb",
-           :disposition => 'attachment',
+           :disposition => 'inline',
            :show_as_html => params.key?('debug'),
            :layout => nil
   end
