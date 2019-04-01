@@ -451,8 +451,8 @@ after_destroy :remove_rake_commodity_breakup_data
   def self.get_commodity_loading(rake_load)
     data_hash = {}
     rake_load.each do |data|
-    release_date = data.release_date.strftime("%d-%m-%Y")
-    commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      release_date = data.release_date.strftime("%d-%m-%Y")
+      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
 
       if data.release_date.present?
         if data_hash[release_date].present?
@@ -492,6 +492,17 @@ after_destroy :remove_rake_commodity_breakup_data
       end
     end
     return(data_hash)
+  end
+
+  def self.get_more_than_24_hours(rake_data)
+    more_than_data = []
+    rake_data.each do |data|
+      hours = data.detention_placement_release.split(":")[0].to_i
+      if hours > 23
+        more_than_data << data
+      end
+    end
+    return(more_than_data)
   end
 
   # def self.kalpesh

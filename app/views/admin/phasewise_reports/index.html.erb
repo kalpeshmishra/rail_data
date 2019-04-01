@@ -64,6 +64,9 @@
       <li>
         <a href="#powerhouse-info" id="powerhouse-tab" data-toggle="tab">PH</a>
       </li>
+      <li>
+        <a href="#adi-morethan-info" id="adi-morethan-tab" data-toggle="tab">M>24h(A)</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -106,6 +109,10 @@
       <div id="powerhouse-info" class="tab-pane cont">
         <%=render 'powerhouse'%>
         <div id="powerhouse_form"></div>
+      </div>
+      <div id="adi-morethan-info" class="tab-pane cont">
+        <%=render 'adi_morethan'%>
+        <div id="adi_morethan_form"></div>
       </div>
       <div id="loading-indicator">
         <%#= image_tag("728.GIF", :id => "loading-indicator") %>

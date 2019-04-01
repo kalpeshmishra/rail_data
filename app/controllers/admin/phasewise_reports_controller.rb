@@ -105,9 +105,12 @@ class Admin::PhasewiseReportsController < ApplicationController
 		@total_gimb_rake = @total_gimb_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
 		@total_gimb_unit = @total_gimb_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum
 
-		
 		#Total Division phase-wise ends
-		
+
+		# Loading--Placement to Release detention More than 24 Hours Starts
+		@adi_loading_more_than_24_hours_data = RakeLoad.get_more_than_24_hours(rake_load_adi) if rake_load_adi.present?
+		@adi_unloading_more_than_24_hours_data = RakeLoad.get_more_than_24_hours(rake_unload_adi) if rake_unload_adi.present?
+		# Loading--Placement to Release detention More than 24 Hours Ends
 	end
 
 	def show
