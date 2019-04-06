@@ -1,11 +1,14 @@
 <div class="tab-container" id="adi_unloading">
+<h3 align="center">PU-Unloading Phasewise(ADI Area)</h3>
+<p id="adi_unloading_phasewise_heading" style="font-size: 16px;color:#cc3d16;"></p>
+<%if false%>
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
   <p style="font-size: 18px;color:red;">
     Rake :<%=(@adi_unloading_rake)%>&nbsp;
     Unit :<%=(@adi_unloaded_unit)%>&nbsp;
   </p>
 </div>
-
+<%end%>
 <table class="table hover table-bordered" id="adi-unloading">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
@@ -15,9 +18,11 @@
       <th>Total<br>AR-PM</th>
       <th>Total<br>PM-RL</th>
       <th>Total<br>RL-DP</th>
+      <th>Total<br>AR-DP</th>
       <th>AVG.<br>AR-PM</th>
       <th>AVG.<br>PM-RL</th>
       <th>AVG.<br>RL-DP</th>
+      <th>AVG.<br>AR-DP</th>
     </tr>
   </thead>
   <tbody>
@@ -34,11 +39,20 @@
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_placement] : value[:detention_arrival_placement] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_placement_release] : value[:detention_placement_release] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_release_removal] : value[:detention_release_removal] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_departure] : value[:detention_arrival_departure] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_placement] : value[:detention_arrival_placement_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_placement_release] : value[:detention_placement_release_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_release_removal] : value[:detention_release_removal_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_departure] : value[:detention_arrival_departure_average] rescue '' %></span></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 </div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_unloading_phasewise_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

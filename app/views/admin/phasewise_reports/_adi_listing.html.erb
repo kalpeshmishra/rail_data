@@ -1,10 +1,14 @@
 <div class="tab-container" id="adi_listing">
+<h3 align="center">Loading Phasewise(ADI Area)</h3>
+<p id="adi_loading_phasewise_heading" style="font-size: 16px;color:#cc3d16;"></p>
+<%if false%>
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
   <p style="font-size: 18px;color:red;">
     Rake :<%=(@adi_rake)%>&nbsp;
     Unit :<%=(@adi_loaded_unit)%>&nbsp;
   </p>
 </div>
+<%end%>
 
 <table class="table hover table-bordered" id="adi-listing">
   <thead class="thead-dark">
@@ -31,16 +35,17 @@
         <%next unless load%>
       <% end %>
       <tr id=<%=key%>>
-
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? "TOTAL" : load.station.code rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_rake_count] : value[:rake_count] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:phasewise_loaded_unit] : value[:loaded_unit] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_placement] : value[:detention_arrival_placement] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_placement_release] : value[:detention_placement_release] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_release_powerarrival] : value[:detention_release_powerarrival] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_removal_departure] : value[:detention_removal_departure] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_detn_arrival_departure] : value[:detention_arrival_departure] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_placement] : value[:detention_arrival_placement_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_placement_release] : value[:detention_placement_release_average] rescue '' %></span></td>
+        <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_release_powerarrival] : value[:detention_release_powerarrival_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_removal_departure] : value[:detention_removal_departure_average] rescue '' %></span></td>
         <td class="text-center"><span class="view-location-<%= key %>"><%= (key == "Total") ? value[:total_average_arrival_departure] : value[:detention_arrival_departure_average] rescue '' %></span></td>
       </tr>
@@ -48,3 +53,10 @@
   </tbody>
 </table>
 </div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_loading_phasewise_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

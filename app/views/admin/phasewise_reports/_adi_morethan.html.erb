@@ -1,9 +1,6 @@
 <div class="tab-container" id="adi_morethan">
-<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-  <p style="font-size: 18px;color:red;">
-   
-  </p>
-</div>
+<h3 align="center"> More than 24 hours Placement to Release(ADI Area)</h3>
+<p id="adi_morethan_24hours_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="adi-morethan">
   <thead class="thead-dark">
@@ -20,7 +17,7 @@
     </tr>
   </thead>
   <tr>
-    <td colspan="8">Loading</td>
+    <td colspan="9">Loading</td>
   </tr>
   <tbody>
     <% if @adi_loading_more_than_24_hours_data.present? %>
@@ -40,7 +37,7 @@
       <% end %>
     <% end %>
     <tr>
-      <td colspan="8">Un-Loading(PU)</td>
+      <td colspan="9">Un-Loading(PU)</td>
     </tr>
     <% if @adi_unloading_more_than_24_hours_data.present? %>
       <% @adi_unloading_more_than_24_hours_data.each do |data| %>
@@ -61,3 +58,10 @@
   </tbody>
 </table>
 </div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_morethan_24hours_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

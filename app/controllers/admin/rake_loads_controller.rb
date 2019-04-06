@@ -122,12 +122,6 @@ class Admin::RakeLoadsController < ApplicationController
   end
 
   def get_data_for_form
-    # @from_stations = []
-    # LoadUnload.all.each do |load|
-    #   station = Station.find(load.station_id) rescue nil
-    #   @from_stations << ["#{station.code}-#{station.name}", station.id] if station.present?
-    # end  
-    # @to_stations =  get_all_station #Station.all.map{|station| [station.code,station.id]}
     @major_commodity = MajorCommodity.all.map{|major|["#{major.major_commodity}--#{major.name}",major.id]}
     @wagon_type = WagonType.all.order(wagon_type_code: :asc).map{|wagon| ["#{wagon.wagon_type_code}--#{wagon.wagon_type_desc}",wagon.id]}
     @rake_commodity = {}

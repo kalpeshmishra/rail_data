@@ -72,9 +72,9 @@ class Admin::PhasewiseReportsController < ApplicationController
 		@rake_and_unload_unit_data_for_adi = {}
 		@rake_and_unload_unit_data_for_gimb = {}
 		
-		@rake_and_unload_unit_data = RakeLoad.get_phasewise_data(temp_unloading) if temp_unloading.present?
-		@rake_and_unload_unit_data_for_adi = RakeLoad.get_phasewise_data(adi_temp_unloading) if adi_temp_unloading.present?
-		@rake_and_unload_unit_data_for_gimb = RakeLoad.get_phasewise_data(gimb_temp_unloading) if gimb_temp_unloading.present?
+		@rake_and_unload_unit_data = RakeUnload.get_phasewise_data(temp_unloading) if temp_unloading.present?
+		@rake_and_unload_unit_data_for_adi = RakeUnload.get_phasewise_data(adi_temp_unloading) if adi_temp_unloading.present?
+		@rake_and_unload_unit_data_for_gimb = RakeUnload.get_phasewise_data(gimb_temp_unloading) if gimb_temp_unloading.present?
 		
 		#Rake un-loading phasewsie code Ends
 		
@@ -83,7 +83,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 		total_temp = {}
 		total_temp.merge!(temp) if temp.present?
 		total_temp.merge!(temp_unloading){|key,oldval,newval| [*oldval].to_a + [*newval].to_a } if temp_unloading.present?
-		@total_division_phasewise_data = RakeLoad.get_phasewise_data(total_temp) if total_temp.present?
+		@total_division_phasewise_data = RakeUnload.get_phasewise_data(total_temp) if total_temp.present?
 		@total_division_phasewise_data = {} if total_temp.empty?
 		
 		@total_division_rake = @total_division_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
@@ -92,7 +92,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 		total_adi ={}
 		total_adi.merge!(adi_temp) if adi_temp.present?
 		total_adi.merge!(adi_temp_unloading){|key,oldval,newval| [*oldval].to_a + [*newval].to_a } if adi_temp_unloading.present?
-		@total_adi_phasewise_data = RakeLoad.get_phasewise_data(total_adi) if total_adi.present?
+		@total_adi_phasewise_data = RakeUnload.get_phasewise_data(total_adi) if total_adi.present?
 		@total_adi_phasewise_data = {} if total_adi.empty?		
 		@total_adi_rake = @total_adi_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
 		@total_adi_unit = @total_adi_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum
@@ -100,7 +100,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 		total_gimb ={}
 		total_gimb.merge!(gimb_temp) if gimb_temp.present?
 		total_gimb.merge!(gimb_temp_unloading){|key,oldval,newval| [*oldval].to_a + [*newval].to_a } if gimb_temp_unloading.present?
-		@total_gimb_phasewise_data = RakeLoad.get_phasewise_data(total_gimb) if total_gimb.present?
+		@total_gimb_phasewise_data = RakeUnload.get_phasewise_data(total_gimb) if total_gimb.present?
 		@total_gimb_phasewise_data = {} if total_gimb.empty?
 		@total_gimb_rake = @total_gimb_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
 		@total_gimb_unit = @total_gimb_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum

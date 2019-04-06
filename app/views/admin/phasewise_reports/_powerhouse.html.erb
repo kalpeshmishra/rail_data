@@ -5,11 +5,8 @@
 </style>
 
 <div class="tab-container" id="powerhouse">
-<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-  <p style="font-size: 16px;color:red;">
-    PowerHouse Phasewise Detention
-  </p>
-</div>
+<h3 align="center"> PowerHouse Phasewise(ADI Area)</h3>
+<p id="adi_powerhouse_phasewise_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="powerhouse">
   <thead class="thead-dark">
@@ -99,3 +96,10 @@
   </tbody>
 </table>
 </div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("adi_powerhouse_phasewise_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>
