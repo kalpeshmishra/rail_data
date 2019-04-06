@@ -32,8 +32,8 @@
           <td class="text-center"><%= MajorCommodity.where(id: data.major_commodity_id).pluck(:major_commodity)[0]%></td>
           <td class="text-center"><%= data.detention_arrival_placement%></td>
           <td class="text-center"><%= data.detention_placement_release%></td>
-          <td class="text-center"><%= [data.detention_removal_departure,data.detention_release_powerarrival].reject(&:blank?).sum_strings(':')%></td>
-          <td class="text-center"><%= [data.detention_arrival_placement,data.detention_placement_release,data.detention_removal_departure,data.detention_release_powerarrival].reject(&:blank?).sum_strings(':')%></td>
+          <td class="text-center"><%= [data.detention_removal_departure,data.detention_release_powerarrival].delete_if {|x| x == "NA" }.reject(&:blank?).sum_strings(':')%></td>
+          <td class="text-center"><%= [data.detention_arrival_placement,data.detention_placement_release,data.detention_removal_departure,data.detention_release_powerarrival].delete_if {|x| x == "NA" }.reject(&:blank?).sum_strings(':')%></td>
           <td class="text-center"><%= data.remark%></td>
           
         </tr>
@@ -51,8 +51,8 @@
           <td class="text-center"><%= MajorCommodity.where(id: data.major_commodity_id).pluck(:major_commodity)[0]%></td>
           <td class="text-center"><%= data.detention_arrival_placement%></td>
           <td class="text-center"><%= data.detention_placement_release%></td>
-          <td class="text-center"><%= [data.detention_release_removal,data.detention_removal_departure].reject(&:blank?).sum_strings(':')%></td>
-          <td class="text-center"><%= [data.detention_arrival_placement,data.detention_placement_release,data.detention_release_removal,data.detention_removal_departure].reject(&:blank?).sum_strings(':')%></td>
+          <td class="text-center"><%= [data.detention_release_removal,data.detention_removal_departure].delete_if {|x| x == "NA" }.reject(&:blank?).sum_strings(':')%></td>
+          <td class="text-center"><%= [data.detention_arrival_placement,data.detention_placement_release,data.detention_release_removal,data.detention_removal_departure].delete_if {|x| x == "NA" }.reject(&:blank?).sum_strings(':')%></td>
           <td class="text-center"><%= data.remarks%></td>
           
         </tr>
