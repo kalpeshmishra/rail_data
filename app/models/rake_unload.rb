@@ -108,7 +108,7 @@ belongs_to :wagon_type
       one_rake_unloads.departure_time =value["departure_time"] rescue nil
       one_rake_unloads.departure_date = value["departure_date"] rescue nil
       one_rake_unloads.detention_release_removal =value["detention_release_removal"] rescue nil
-      # one_rake_unloads.detention_release_removal = value["detention_release_removal"] rescue nil
+      one_rake_unloads.detention_removal_departure = value["detention_removal_departure"] rescue nil
       one_rake_unloads.remarks = value["remarks"] rescue nil
       one_rake_unloads.empty_rake_release_id = value["empty_rake_release_id"] rescue nil
       one_rake_unloads.save
