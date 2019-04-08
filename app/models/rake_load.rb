@@ -87,7 +87,7 @@ after_destroy :remove_rake_commodity_breakup_data
       rake_load.detention_placement_release = value["detention_placement_release"] rescue nil
       rake_load.short_interchange = value["short_interchange"] rescue nil
       rake_load.short_km = value["short_km"] rescue nil
-      rake_load.remark = value["remark"] rescue nil
+      rake_load.remark = value["remarks"] rescue nil
       rake_load.rakeform_otherform = "R"
       rake_load.save
 
