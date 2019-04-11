@@ -146,9 +146,7 @@ $(function(){
           remarks = "#remarks_"+<%=index%>
           rake_id = "#record_id_"+<%=index%>
 
-           // $(from_station).val('<%=data.load_unload_id%>');
           $(from_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
-          // $(to_station).val('<%=data.station_id%>');
           $(to_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
           $(loaded_unit).val('<%=data.loaded_unit%>');
           $(rake_count).val('<%=data.rake_count%>');

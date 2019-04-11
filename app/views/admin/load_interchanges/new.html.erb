@@ -1,0 +1,99 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<style>
+  .modal-dialog {
+      margin: 30px auto;
+      width: 80%;
+  }
+  .add-cursor tr{
+   height: 5px;
+  }  
+  .table.table-dark tbody td {
+    padding: 5px;
+
+  }
+
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+/*.tax-and-statutory-settings-hide-show span:after {content: '»';position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}
+.tax-and-statutory-settings-hide-show span {padding-right: 25px;}
+.tax-and-statutory-settings-hide-show:hover span:after {opacity: 1;right: 0;}*/
+.input-group .form-control {
+    float: right;
+    width: 35%;
+  }
+  html {
+    overflow-x: scroll;
+  }
+
+  select.set-dropdown {
+    display: block !important;
+    opacity: 0;
+    height: 0px;
+  }
+  table th, table td { overflow: hidden; }
+  
+  
+</style>
+
+
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+<% @url = params[:id].present? ? admin_load_interchange_path(params[:id]) : admin_load_interchanges_path %>
+
+<div class="table-responsive main-client-ldng" >
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="other_load-ldng">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
+          <span class="pull-left lead-text">
+            Interchange
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Date:<p></p>
+        <%= text_field_tag "other_load_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'Select Date', id: "datepicker", class: 'form-control input_class'%>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Select Interchange:<p></p>
+        <%= (select_tag "interchange-point", options_for_select([['Ex-GER', 'Ex-GER'], ['To-GER', 'To-GER'], ['Ex-VGDC', 'Ex-VGDC'], ['To-VGDC', 'To-VGDC'], ['Ex-DHG', 'Ex-DHG'], ['To-DHG', 'To-DHG'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
+        </div> 
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+  </caption>
+  </table>
+  </div>
+
+  <%=render 'load_interchange_new'%>
+
+<div id="load_interchange_new_form"></div>
+<script>
+  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+
+    $('#datepicker').datepicker('setDate', '');
+    
+  });
+  $(".submit_data").click(function () {
+      
+      effective_from = $("#datepicker").val();
+      interchange_point = $("#interchange-point").val();
+      
+        $.ajax({
+          type: "get",
+          url: "/admin/load_interchanges/new.js?date=" + effective_from + "&interchange_point=" + interchange_point
+
+        });
+      
+  });
+  
+
+</script>

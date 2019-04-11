@@ -2,6 +2,7 @@ class WagonType < ApplicationRecord
   has_many :rake_loads
   has_many :month_rake_loads
   has_many :rake_unloads
+  has_many :load_interchanges
 
   def self.set_wagon_type_upload(params)
     

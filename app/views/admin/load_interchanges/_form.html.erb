@@ -1,0 +1,221 @@
+<% @method = "POST" %>
+<% @url = admin_load_interchanges_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'load-interchange-form',remote: true) do |form| %>
+<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+  <tr>
+    <th>SR NO</th>
+    <th>Stock Type</th>
+    <th>Loaded/Empty</th>
+    <th>Rakes</th>
+    <th>Units</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+      <%= hidden_field_tag  "record_date", id: "record_date" %>
+      <%= hidden_field_tag  "interchange_point", id: "interchange_point" %>
+      <%(0..25).each_with_index do |no, index| %>
+        <tr class="load-interchange-tr interchange-row-data load_interchange_row_<%= index %>", id= "load_interchange_row_id_<%= index %>">
+
+        <td align="center" style="font-size: 25;"><%= index+1 %>
+        </td>
+        <td>
+          <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md wagon_type',required: true, style: "width: 150px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
+        </td>
+        <td>
+          <%= (select_tag "empty_loaded_#{index}", options_for_select([['Empty', 'Empty'], ['Loaded', 'Loaded']]), {prompt: 'Select', class: "form-control  input-sm empty_loaded", style: "width: 135px;font-size:16px;"}).html_safe %>
+        </td>
+        <td>
+          <%= number_field_tag "rakes_#{index}", '', placeholder: "No of Rakes", class: 'form-control input-md ic_rakes',title: 'Enter loaded Units', id: "rakes_#{index}",required: true, style: "width: 140px; font-size:16px;" %>
+        </td>
+        <td>
+          <%= number_field_tag "units_#{index}", '', placeholder: "Units", class: 'form-control input-md ic_units',title: 'Enter Total Units', id: "units_#{index}",required: true, style: "width: 140px; font-size:16px;" %>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+        </td>
+        <td align="center">
+          <a href="#" class="remove-ip label label-danger" id="<%= index %>-load_interchange_delete" style="padding: 20%"><i class="fa fa-trash-o"></i></a>          
+        </td>
+        
+      </tr>    
+    <%end%>  
+  </tbody>
+</table>
+ 
+    <%= hidden_field_tag  "date", "", id: "date" %>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="load_interchange_add">
+
+      <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+      <table id="interchange-summary">
+        <thead>
+          <tr>
+            <th colspan="2">Covered</th>
+            <th colspan="2">Open</th>
+            <th colspan="2">Loaded</th>
+            <th colspan="2">Empty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Rake</td>
+            <td>Unit</td>
+            <td>Rake</td>
+            <td>Unit</td>
+            <td>Rake</td>
+            <td>Unit</td>
+            <td>Rake</td>
+            <td>Unit</td> 
+          </tr>
+          <tr>
+          <% if @load_interchange_summary.present?%>  
+            <% @load_interchange_summary.each do |key,value| %>     
+              <td id="<%key%>"><%=value%></td>
+            <%end%>
+          <%end%>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <%end%>
+</div>
+
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+        
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_other_load_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+<script >
+$(function(){
+
+  
+  <% (0..25).each_with_index do |no,index| %>
+    <%if index >= (@load_interchange.count)%>
+      var tr = '<%=".load_interchange_row_#{index}"%>';
+      $(tr).hide();
+    <%end%> 
+  <% end %>
+
+  <%if @load_interchange.present?%>
+      <%@load_interchange.each_with_index do |data,index|%>
+          
+          empty_loaded = "#empty_loaded_"+<%=index%>
+          rakes = "#rakes_"+<%=index%>
+          units = "#units_"+<%=index%>
+          wagon_type = "#wagon_type_"+<%=index%>
+          load_id = "#record_id_"+<%=index%>
+
+          $(empty_loaded).val('<%=data.stock_details%>');
+          $(rakes).val('<%=data.rakes%>');
+          $(units).val('<%=data.units%>');
+          $(wagon_type).val('<%=data.wagon_type_id%>');
+          $(load_id).val('<%=data.id%>');
+          
+      <%end%>
+    <%end%>
+ 
+
+  $("#load_interchange_add").click(function(){
+    $(".interchange-row-data:hidden").each(function(i){
+      if (i==0) {
+        $(this).show();
+      }
+    });
+  });
+
+  $(".submit").click(function () {
+    $("#date").val($("#datepicker").val());
+    $(".interchange-row-data:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+  
+  $('#load-interchange-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_load_interchange_id = $("#record_id_"+delete_index).val();
+    var visible_row_count = 0
+    
+    $('.load-interchange-tr:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    $("#delete-modal").modal('show');
+  });
+
+  $("#confirm_load_interchange_delete").click(function () {
+    $("#delete-modal").modal('hide');
+
+    if (delete_load_interchange_id != "") {
+          $.ajax({
+          type: "get",
+          url: "/delete_load_interchange.js?delete_load_interchange_id=" + delete_load_interchange_id
+        });
+      }
+
+     $('.load-interchange-tr:visible').each(function() {
+      if($(this).attr("id").split("_")[4] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+  $("#datepicker, #interchange-point").on("change",function(){
+    $("#load_interchange_form").empty();
+
+  });
+
+  // $(".ic_rakes").on('keyup',function(){
+  //   var rakes_total = 0;
+  //   var units_total = 0;
+  //   $(".ic_rakes:visible").each(function(index){
+  //     if(isNaN(parseInt($(this).val()))){
+  //       rakes_total += 0;
+  //     }else{
+  //     rakes_total += parseInt($(this).val());
+  //     }
+  //   });
+  //   $(".ic_units:visible").each(function(index){
+  //     if(isNaN(parseInt($(this).val()))){
+  //       units_total += 0;
+  //     }else{
+  //     units_total += parseInt($(this).val());
+  //     }
+  //   });
+  //   debugger
+  // });
+
+});
+
+  $(document).ready(function(){
+    select_date = $("#datepicker").val();
+    select_interchange_point = $("#interchange-point").val();
+
+    $("#record_date").val(select_date);
+    $("#interchange_point").val(select_interchange_point);
+
+  });
+
+
+</script>

@@ -108,7 +108,6 @@ after_destroy :remove_rake_commodity_breakup_data
       new_key = new_key.join("_")
       other_load_data[no].merge!("#{new_key}" => value)
     end
-
     other_load_data.each do |key,value|
       data_count = value.values.reject { |c| c.empty? }.count
       next if data_count == 0
