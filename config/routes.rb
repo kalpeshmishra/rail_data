@@ -36,6 +36,8 @@ Rails.application.routes.draw do
   match '/find_from_station_aecs_unloads', controller: 'admin/aecs_unloads', action: 'find_from_station_aecs_unloads', via: [:get], as: 'find_from_station_aecs_unloads'
   match '/delete_aecs_unload', controller: 'admin/aecs_unloads', action: 'delete_aecs_unload', via: [:get], as: 'delete_aecs_unload'
 
+  match '/delete_load_interchange', controller: 'admin/load_interchanges', action: 'delete_load_interchange', via: [:get], as: 'delete_load_interchange'
+
   #--------------Excel Reports Download Starts-----------------
   match '/rake_load_excel_download', controller: 'admin/loading_reports', action: 'rake_load_excel_download', via: [:get], as: 'rake_load_excel_download'
   match '/custom_load_report_excel_download', controller: 'admin/custom_load_reports', action: 'custom_load_report_excel_download', via: [:get], as: 'custom_load_report_excel_download'

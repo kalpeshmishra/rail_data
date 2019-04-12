@@ -24,7 +24,16 @@ class LoadInterchange < ApplicationRecord
 
     	load_interchange.interchange_date = params["record_date"] rescue nil
       load_interchange.interchange_type = params["interchange_point"].split("-").first rescue nil
-      load_interchange.interchange_point = params["interchange_point"].split("-").last rescue nil
+      ic_point = params["interchange_point"].split("-").last
+      load_interchange.interchange_point = ic_point rescue nil
+      if ic_point == "GER" || "VGDC" || "DHG" || "MALB" 
+        ic_point_type = "DIVISIONAL"
+      elsif ic_point == "PNU" || "BLDI"
+        ic_point_type = "ZONAL"
+      elsif ic_point == "SIOB" 
+        ic_point_type = "INTER-DIVISION"
+      end
+      load_interchange.interchange_point_type = ic_point_type rescue nil
       load_interchange.wagon_type_id = value["wagon_type"].to_i rescue nil
       load_interchange.stock_details = value["empty_loaded"] rescue nil
       load_interchange.rakes = value["rakes"] rescue nil

@@ -1,1 +1,165 @@
-<h1>Interchange</h1>
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 280px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+
+  .no-border tr td, .no-border tr th {
+  vertical-align: top;
+  border-width: 0;
+</style>
+<script>
+	$(function () {
+
+    $('.icheck').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+      });
+
+    $('.primary-filters-main-page').multiselect({
+      enableFiltering: true,
+      enableCaseInsensitiveFiltering: true,
+      includeSelectAllOption: true,
+      buttonWidth: '100%',
+      buttonClass: 'btn btn-default',
+      numberDisplayed: 0
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+      
+    });
+
+
+  });
+
+</script>
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <div>
+    <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
+    <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
+  </div>
+  <table class="table hover table-dark" id="load-interchange-reports">
+    <caption>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <span class="pull-left lead-text">
+            <%="Inter-change Report"%>
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="stock-type">Stock Type<p></p>
+          <%= select_tag "stock-type-list", options_for_select(["GER","VGDC","DHG","MALB","PNU","BLDI","SIOB"]), {multiple: true, id: "stock-type-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="interchange-point">Interchange Point<p></p>
+          <%= select_tag "interchange-point-list", options_for_select(["GER","VGDC","DHG","MALB","PNU","BLDI","SIOB"]), {multiple: true, id: "interchange-point-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Report</button>
+      </div>
+      
+    </caption>
+    </table>
+    
+
+  <div>
+  	<p>Interchange</p>
+  </div>
+</div>
+
+
+
+
+<script>
+  
+
+  var old_from_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  var old_to_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(".start_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('change.dp', function (e) {
+      if($("#end_date").val() != ""){
+        date_validation();
+      }else{
+        $("#submit_data").prop('disabled', false);
+      }
+    });
+    // $('#start_date').datepicker('setDate', 'today');
+
+    $(".end_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('change.dp', function (e) {
+      if($("#start_date").val() != ""){
+        date_validation();
+      }else{
+        $("#date_range_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+      }
+    });
+
+    function date_validation(){
+      s_date = $("#start_date").val().split("-");
+      start_date = new Date(s_date[2], s_date[1] - 1, s_date[0]);
+      e_date = $("#end_date").val().split("-");
+      end_date = new Date(e_date[2], e_date[1] - 1, e_date[0]);
+      no_of_days = Math.abs(Math.round((end_date-start_date)/(1000*60*60*24)) + 1)
+      if (end_date < start_date){
+        $("#submit_data").prop('disabled', true);
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','');
+      }
+      else if (no_of_days > 31){
+        $("#submit_data").prop('disabled', true);
+        $("#date_error_msg").css('display','none');
+        $("#date_range_error_msg").css('display','');
+      }
+      else{
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+        $("#submit_error_msg").css('display','none');  
+        
+        stock_type_data();
+      }
+
+    }
+
+    function stock_type_data(){
+      effective_from = $("#start_date").val();
+      effective_to = $("#end_date").val();
+      $.ajax({
+          type: "get",
+          url: "/admin/load_interchanges.js?from_date=" + effective_from + "&to_date=" + effective_to
+      }); 
+
+    }
+
+  $(".submit").click(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+      $.ajax({
+        type: "get",
+        url: "/admin/load_interchange.js?from_date=" + effective_from + "&to_date=" + effective_to
+      });
+      old_from_date = effective_from 
+      old_to_date = effective_to
+      
+  });
+
+  
+ 
+</script>

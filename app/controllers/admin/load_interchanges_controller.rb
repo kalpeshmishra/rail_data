@@ -38,8 +38,13 @@ class Admin::LoadInterchangesController < ApplicationController
     loaded_unit = []
     empty_rake = []
     empty_unit = []
+    total_rake = []
+    total_unit = []
 
     @load_interchange.each do |data|
+      total_rake << data.rakes
+      total_unit << data.units
+
       if data.stock_details == "Empty"
         empty_rake << data.rakes
         empty_unit << data.units
@@ -66,7 +71,22 @@ class Admin::LoadInterchangesController < ApplicationController
       temp["loaded_unit"] = loaded_unit.reject(&:blank?).sum
       temp["empty_rake"] = empty_rake.reject(&:blank?).sum
       temp["empty_unit"] = empty_unit.reject(&:blank?).sum
+      temp["total_rake"] = total_rake.reject(&:blank?).sum
+      temp["total_unit"] = total_unit.reject(&:blank?).sum
       
     @load_interchange_summary = temp 
   end
+
+  def delete_load_interchange
+    delete_load_interchange_id = params[:delete_load_interchange_id]
+    id = delete_load_interchange_id.to_i
+    LoadInterchange.destroy(id)
+    get_data_for_form
+   
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
 end

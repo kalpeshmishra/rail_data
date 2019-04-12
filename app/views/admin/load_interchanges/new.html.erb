@@ -58,7 +58,7 @@
         <%= text_field_tag "other_load_date", Date.today.strftime('%Y-%m-%d'),placeholder: 'Select Date', id: "datepicker", class: 'form-control input_class'%>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Select Interchange:<p></p>
-        <%= (select_tag "interchange-point", options_for_select([['Ex-GER', 'Ex-GER'], ['To-GER', 'To-GER'], ['Ex-VGDC', 'Ex-VGDC'], ['To-VGDC', 'To-VGDC'], ['Ex-DHG', 'Ex-DHG'], ['To-DHG', 'To-DHG'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
+        <%= (select_tag "interchange-point", options_for_select([['Ex-GER', 'Ex-GER'], ['To-GER', 'To-GER'], ['Ex-VGDC', 'Ex-VGDC'], ['To-VGDC', 'To-VGDC'], ['Ex-DHG', 'Ex-DHG'], ['To-DHG', 'To-DHG'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI'], ['Ex-SIOB', 'Ex-SIOB'], ['To-SIOB', 'To-SIOB']]), {prompt: 'Select', class: "form-control  input-sm report_type"}).html_safe %>
         </div> 
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>

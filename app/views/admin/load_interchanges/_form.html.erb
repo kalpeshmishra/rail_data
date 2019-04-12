@@ -51,13 +51,14 @@
       <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-      <table id="interchange-summary">
-        <thead>
+      <table id="interchange-summary" class="table-dark">
+        <thead class="thead-dark">
           <tr>
             <th colspan="2">Covered</th>
             <th colspan="2">Open</th>
             <th colspan="2">Loaded</th>
             <th colspan="2">Empty</th>
+            <th colspan="2">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -70,6 +71,8 @@
             <td>Unit</td>
             <td>Rake</td>
             <td>Unit</td> 
+            <td>Rake</td>
+            <td>Unit</td>
           </tr>
           <tr>
           <% if @load_interchange_summary.present?%>  
@@ -92,8 +95,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" align="center">
-        
-          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_other_load_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_load_interchange_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
      
      </div>
@@ -166,7 +168,7 @@ $(function(){
 
   $("#confirm_load_interchange_delete").click(function () {
     $("#delete-modal").modal('hide');
-
+    
     if (delete_load_interchange_id != "") {
           $.ajax({
           type: "get",
