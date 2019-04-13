@@ -2,7 +2,9 @@ class Admin::LoadInterchangesController < ApplicationController
 	layout "admin/application"
 
 	def index
-		
+		if params["is_date_select"].present?
+      # binding.pry
+    end
 	end
 
 	def show

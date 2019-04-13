@@ -1,0 +1,5 @@
+<%if params[:is_date_select].present?%>
+	$("#stock").empty();
+		$("#stock").html('<%= j render partial: 'stock_list_filter', :locals => {:custom_stock_list => @custom_stock_list} %>');
+<%end%>
+$("#load_interchange_reports_form").html('<%= j render 'load_interchange_reports'%>');

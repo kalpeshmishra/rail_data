@@ -58,8 +58,8 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="stock-type">Stock Type<p></p>
-          <%= select_tag "stock-type-list", options_for_select(["GER","VGDC","DHG","MALB","PNU","BLDI","SIOB"]), {multiple: true, id: "stock-type-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="stock">Stock Type<p></p>
+          <%= select_tag "stock-list", options_for_select(["Blank"]), {multiple: true, id: "stock-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="interchange-point">Interchange Point<p></p>
           <%= select_tag "interchange-point-list", options_for_select(["GER","VGDC","DHG","MALB","PNU","BLDI","SIOB"]), {multiple: true, id: "interchange-point-list", class: 'primary-filters-main-page form-control input-sm'} %>
@@ -72,9 +72,10 @@
     </table>
     
 
-  <div>
-  	<p>Interchange</p>
-  </div>
+  	<div id="load_interchange_reports_form"></div>
+    <div id="loading-indicator">
+      <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+    </div>
 </div>
 
 
@@ -143,7 +144,7 @@
       effective_to = $("#end_date").val();
       $.ajax({
           type: "get",
-          url: "/admin/load_interchanges.js?from_date=" + effective_from + "&to_date=" + effective_to
+          url: "/admin/load_interchanges.js?from_date=" + effective_from + "&to_date=" + effective_to + "&is_date_select=" + true
       }); 
 
     }
