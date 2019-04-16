@@ -3,7 +3,46 @@
 <p id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
 <table class="table hover table-bordered" id="load-interchange-reports">
-  
+  <thead class="thead-dark">
+    <%if @rakewise_load_interchange_data.present?%>
+    	<tr style="color: #fff; background: #4B4B4D;">
+    		<th style="vertical-align: middle;"></th>
+    		<%@rakewise_load_interchange_data.each do |header,one_data|%>
+    			<%@ic_point_count = @rakewise_load_interchange_data["received"].count%>
+	    		<th style="vertical-align: middle;" colspan="<%=@ic_point_count*2%>"><%=header.capitalize%></th>
+	    	<%end%>
+  	 	</tr>
+  	 	<tr style="color: #fff; background: #4B4B4D;">
+	    	<th style="vertical-align: middle;"></th>
+	    	<%@rakewise_load_interchange_data["received"].each do |ic_type,data|%>
+	    		<th style="vertical-align: middle;"colspan="2"><%=ic_type%></th>
+	    	<%end%>
+    		<%@rakewise_load_interchange_data["despatch"].each do |ic_type,data|%>
+	    		<th style="vertical-align: middle;"colspan="2"><%=ic_type%></th>
+	    	<%end%>
+    	</tr>
+	    <tr style="color: #fff; background: #4B4B4D;">
+	    	<th style="vertical-align: middle;"></th>	
+	    	<%(1..@ic_point_count*2).each_with_index do |no,index|%>
+		    	<th style="vertical-align: middle;">L</th>
+		    	<th style="vertical-align: middle;">E</th>
+	  		<%end%>	
+	  	</tr>
+	  <%else%>
+	  	<h3>No Data found</h3>	
+  	<%end%>
+  </thead>
+  <tbody>
+  	<%if @rakewise_load_interchange_data.present?%>
+			<%@rakewise_load_interchange_data.each do |header,ic_data|%>
+  			<%ic_data.values[0].each do |stock,stock_data|%>
+		  		<tr>
+		  			<td><%=stock%></td>
+		  		</tr>		
+				<%end%>	
+	    <%end%>	
+  	<%end%>
+  </tbody>  
 </table>
 </div>
 <script>

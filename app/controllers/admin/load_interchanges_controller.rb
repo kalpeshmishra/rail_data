@@ -2,9 +2,37 @@ class Admin::LoadInterchangesController < ApplicationController
 	layout "admin/application"
 
 	def index
-		if params["is_date_select"].present?
-      # binding.pry
+      from_date = params[:from_date].to_date if params[:from_date].present?
+      to_date = params[:to_date].to_date if params[:to_date].present?
+      
+      from_date = Date.today if from_date.blank?
+      to_date = Date.today if to_date.blank?
+      interchange_load_data = LoadInterchange.where(interchange_date: from_date..to_date)
+    
+    if params["is_date_select"].present?
+      stock_list = []
+      interchange_load_data.each do |ic_load|
+        stock_list << [ic_load.wagon_type.wagon_type_code,ic_load.wagon_type_id ]
+      end
+      @load_interchange_stock_list = stock_list.compact.uniq.sort
     end
+
+    if params["is_data_filter"].present? 
+      select_wagon_ids = params[:selected_stock].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+      select_interchange_point = params[:selected_interchange].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
+
+      select_interchange_load_data = interchange_load_data.where(wagon_type_id: select_wagon_ids,interchange_point: select_interchange_point)
+
+      data_type = "rake"
+      rakewise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
+      data_type = "unit"
+      unitwise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
+
+      @rakewise_load_interchange_data = rakewise_load_interchange_data_hash
+      @unitwise_load_interchange_data = unitwise_load_interchange_data_hash
+
+    end
+      
 	end
 
 	def show
@@ -16,7 +44,6 @@ class Admin::LoadInterchangesController < ApplicationController
   end
 
   def create
-  	
   	LoadInterchange.create_or_update_load_interchange(params)
   	get_data_for_form
 

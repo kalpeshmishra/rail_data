@@ -42,5 +42,155 @@ class LoadInterchange < ApplicationRecord
 
       
     end
-  end  
+  end
+
+  def self.get_load_interchange_data(interchange_load,select_interchange_point,data_type)
+    ic_load_data = interchange_load 
+    data_hash = {}
+    select_wagon_code = ic_load_data.map{|w| [w.wagon_type.wagon_type_code,w.wagon_type.wagon_details_covered_open]}
+    select_interchange_point.each do |ic_point|
+      data_hash["received"] = {} if data_hash["received"].blank?
+      data_hash["received"]["COVERED"] = {} if data_hash["received"]["COVERED"].blank?
+      data_hash["received"]["OPEN"] = {} if data_hash["received"]["OPEN"].blank?
+      data_hash["received"]["COVERED"].merge!("#{ic_point}" => {}) if data_hash["received"]["COVERED"][ic_point].blank?
+      data_hash["received"]["OPEN"].merge!("#{ic_point}" => {}) if data_hash["received"]["OPEN"][ic_point].blank?
+      data_hash["despatch"] = {} if data_hash["despatch"].blank?
+      data_hash["despatch"]["COVERED"] = {} if data_hash["despatch"]["COVERED"].blank?
+      data_hash["despatch"]["OPEN"] = {} if data_hash["despatch"]["OPEN"].blank?
+      data_hash["despatch"]["COVERED"].merge!("#{ic_point}" => {}) if data_hash["despatch"]["COVERED"][ic_point].blank?
+      data_hash["despatch"]["OPEN"].merge!("#{ic_point}" => {}) if data_hash["despatch"]["OPEN"][ic_point].blank?
+      
+      select_wagon_code.each do |wagon,wagon_type|
+        if wagon_type == "COVERED"
+          data_hash["received"]["COVERED"][ic_point].merge!("#{wagon}" => {})
+          data_hash["received"]["COVERED"][ic_point][wagon].merge!("Loaded" => {})
+          data_hash["received"]["COVERED"][ic_point][wagon].merge!("Empty" => {})
+
+          data_hash["despatch"]["COVERED"][ic_point].merge!("#{wagon}" => {})
+          data_hash["despatch"]["COVERED"][ic_point][wagon].merge!("Loaded" => {})
+          data_hash["despatch"]["COVERED"][ic_point][wagon].merge!("Empty" => {})
+        elsif wagon_type == "OPEN" 
+          data_hash["received"]["OPEN"][ic_point].merge!("#{wagon}" => {})
+          data_hash["received"]["OPEN"][ic_point][wagon].merge!("Loaded" => {})
+          data_hash["received"]["OPEN"][ic_point][wagon].merge!("Empty" => {})
+
+          data_hash["despatch"]["OPEN"][ic_point].merge!("#{wagon}" => {})
+          data_hash["despatch"]["OPEN"][ic_point][wagon].merge!("Loaded" => {})
+          data_hash["despatch"]["OPEN"][ic_point][wagon].merge!("Empty" => {}) 
+        end
+      end    
+    
+    end
+
+    if data_type == "rake"
+      final_data = LoadInterchange.get_data_rake_wise(ic_load_data,data_hash)
+    elsif data_type == "unit"
+      
+      final_data = LoadInterchange.get_data_unit_wise(ic_load_data,data_hash)
+    end
+    return(final_data)
+  
+  end
+
+  def self.get_data_rake_wise(ic_load_data,data_hash)
+    ic_load_data.each do |data|
+      wagon_type = data.wagon_type.wagon_type_code
+      cover_open = data.wagon_type.wagon_details_covered_open
+      
+      if data.interchange_type == "Ex"
+        if cover_open == "COVERED"
+          
+          if data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
+          else
+            total = data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.rakes
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        elsif cover_open == "OPEN"
+          if data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
+          else
+            total = data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.rakes
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        end
+
+      else 
+        if cover_open == "COVERED"
+         
+          if data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
+          else
+            total = data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.rakes
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        elsif cover_open == "OPEN"
+          if data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
+          else
+            total = data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.rakes
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        end
+      end
+    end
+      return(data_hash)
+  end
+
+  def self.get_data_unit_wise(ic_load_data,data_hash)
+    ic_load_data.each do |data|
+      wagon_type = data.wagon_type.wagon_type_code
+      cover_open = data.wagon_type.wagon_details_covered_open
+      if data.interchange_type == "Ex"
+        if cover_open == "COVERED"
+          if data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
+          else
+            total = data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        elsif cover_open == "OPEN"
+          if data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
+          else
+            total = data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        end
+
+      else 
+        if cover_open == "COVERED"
+          if data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
+          else
+            total = data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        elsif cover_open == "OPEN"
+          if data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
+          else
+            total = data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+          end
+        end
+      end
+    end
+      return(data_hash)
+  end
+
+    
+  
+
+
+
+
 end

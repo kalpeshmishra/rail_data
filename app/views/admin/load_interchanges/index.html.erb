@@ -1,17 +1,13 @@
 <style>
   ul.dropdown-menu {
     width: 200px;
-    max-height: 280px;
+    max-height: 180px;
     overflow: auto;
 
   }
   html {
     overflow-x: scroll;
   }
-
-  .no-border tr td, .no-border tr th {
-  vertical-align: top;
-  border-width: 0;
 </style>
 <script>
 	$(function () {
@@ -52,10 +48,10 @@
             <%="Inter-change Report"%>
           </span>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Start Date: <p></p>
         <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >End Date: <p></p>
         <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="stock">Stock Type<p></p>
@@ -65,7 +61,7 @@
           <%= select_tag "interchange-point-list", options_for_select(["GER","VGDC","DHG","MALB","PNU","BLDI","SIOB"]), {multiple: true, id: "interchange-point-list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Report</button>
+        <button class="btn btn-primary btn-flat submit-data" id="submit_data" type="submit">Report</button>
       </div>
       
     </caption>
@@ -149,12 +145,15 @@
 
     }
 
-  $(".submit").click(function () {
+  $(".submit-data").click(function () {
     effective_from = $("#start_date").val();
     effective_to = $("#end_date").val();
+    selected_stock = $('#stock-list').val();
+    selected_interchange = $('#interchange-point-list').val();
+
       $.ajax({
         type: "get",
-        url: "/admin/load_interchange.js?from_date=" + effective_from + "&to_date=" + effective_to
+        url: "/admin/load_interchanges.js?from_date=" + effective_from + "&to_date=" + effective_to+"&selected_stock="+selected_stock+"&selected_interchange="+selected_interchange + "&is_data_filter=" + true
       });
       old_from_date = effective_from 
       old_to_date = effective_to
