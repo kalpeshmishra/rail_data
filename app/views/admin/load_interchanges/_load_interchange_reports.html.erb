@@ -4,20 +4,20 @@
 
 <table class="table hover table-bordered" id="load-interchange-reports">
   <thead class="thead-dark">
-    <%if @rakewise_load_interchange_data.present?%>
+    <%if @unitwise_load_interchange_data.present?%>
     	<tr style="color: #fff; background: #4B4B4D;">
     		<th style="vertical-align: middle;"></th>
-    		<%@rakewise_load_interchange_data.each do |header,one_data|%>
-    			<%@ic_point_count = @rakewise_load_interchange_data["received"].count%>
+    		<%@unitwise_load_interchange_data.each do |header,one_data|%>
+    			<%@ic_point_count = @unitwise_load_interchange_data["received"].values[0].count%>
 	    		<th style="vertical-align: middle;" colspan="<%=@ic_point_count*2%>"><%=header.capitalize%></th>
 	    	<%end%>
   	 	</tr>
   	 	<tr style="color: #fff; background: #4B4B4D;">
 	    	<th style="vertical-align: middle;"></th>
-	    	<%@rakewise_load_interchange_data["received"].each do |ic_type,data|%>
+	    	<%@unitwise_load_interchange_data["received"].values[0].each do |ic_type,data|%>
 	    		<th style="vertical-align: middle;"colspan="2"><%=ic_type%></th>
 	    	<%end%>
-    		<%@rakewise_load_interchange_data["despatch"].each do |ic_type,data|%>
+    		<%@unitwise_load_interchange_data["despatch"].values[0].each do |ic_type,data|%>
 	    		<th style="vertical-align: middle;"colspan="2"><%=ic_type%></th>
 	    	<%end%>
     	</tr>
@@ -33,14 +33,22 @@
   	<%end%>
   </thead>
   <tbody>
-  	<%if @rakewise_load_interchange_data.present?%>
-			<%@rakewise_load_interchange_data.each do |header,ic_data|%>
-  			<%ic_data.values[0].each do |stock,stock_data|%>
-		  		<tr>
-		  			<td><%=stock%></td>
-		  		</tr>		
-				<%end%>	
-	    <%end%>	
+  	<%if @unitwise_load_interchange_data.present?%>
+      <%@unitwise_load_interchange_data.values[0].each do |key,one_val|%>
+        <%one_val.values[0].each do |c_stock,data_unit|%>
+          <tr>
+            <td><%=c_stock%></td>
+            <%data_unit.each do |k,v|%>
+              <% if v == {}%>
+                <td></td>
+               <%else%>
+                <td><%=v%></td>
+              <%end%>
+            <%end%>
+          </tr>
+        <%end%>
+      
+      <%end%>
   	<%end%>
   </tbody>  
 </table>
