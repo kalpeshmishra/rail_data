@@ -126,6 +126,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 			end
 			@custom_month_report_header = months
 			@custom_month_report_data = data_hash
+			
 		end
 
 		if params[:is_year_filter].present? and params[:selected_year].present?
