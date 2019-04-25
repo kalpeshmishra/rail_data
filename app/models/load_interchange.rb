@@ -49,8 +49,8 @@ class LoadInterchange < ApplicationRecord
     ic_load_data = interchange_load 
     data_hash = {}
     select_wagon_code = ic_load_data.map{|w| [w.wagon_type.wagon_type_code,w.wagon_type.wagon_details_covered_open]}
-    select_wagon_code << ["Total", "COVERED"]
-    select_wagon_code << ["Total", "OPEN"]
+    select_wagon_code << ["C-Total", "COVERED"]
+    select_wagon_code << ["O-Total", "OPEN"]
     select_interchange_point.each do |ic_point|
       data_hash["received"] = {} if data_hash["received"].blank?
       data_hash["received"]["COVERED"] = {} if data_hash["received"]["COVERED"].blank?
@@ -58,7 +58,7 @@ class LoadInterchange < ApplicationRecord
       data_hash["received"]["COVERED"].merge!("#{ic_point}" => {}) if data_hash["received"]["COVERED"][ic_point].blank?
       data_hash["received"]["OPEN"].merge!("#{ic_point}" => {}) if data_hash["received"]["OPEN"][ic_point].blank?
       
-      data_hash["received"]["Total"] = {} if data_hash["received"]["Total"].blank?
+      data_hash["received"]["R-Total"] = {} if data_hash["received"]["R-Total"].blank?
 
       data_hash["despatch"] = {} if data_hash["despatch"].blank?
       data_hash["despatch"]["COVERED"] = {} if data_hash["despatch"]["COVERED"].blank?
@@ -66,15 +66,15 @@ class LoadInterchange < ApplicationRecord
       data_hash["despatch"]["COVERED"].merge!("#{ic_point}" => {}) if data_hash["despatch"]["COVERED"][ic_point].blank?
       data_hash["despatch"]["OPEN"].merge!("#{ic_point}" => {}) if data_hash["despatch"]["OPEN"][ic_point].blank?
       
-      data_hash["despatch"]["Total"] = {} if data_hash["despatch"]["Total"].blank?
+      data_hash["despatch"]["D-Total"] = {} if data_hash["despatch"]["D-Total"].blank?
 
       select_wagon_code.each do |wagon,wagon_type|
-        data_hash["received"]["Total"].merge!("#{wagon}" => {})
-        data_hash["received"]["Total"][wagon].merge!("Loaded" => {})
-        data_hash["received"]["Total"][wagon].merge!("Empty" => {})
-        data_hash["despatch"]["Total"].merge!("#{wagon}" => {})
-        data_hash["despatch"]["Total"][wagon].merge!("Loaded" => {})
-        data_hash["despatch"]["Total"][wagon].merge!("Empty" => {})
+        data_hash["received"]["R-Total"].merge!("#{wagon}" => {})
+        data_hash["received"]["R-Total"][wagon].merge!("Loaded" => {})
+        data_hash["received"]["R-Total"][wagon].merge!("Empty" => {})
+        data_hash["despatch"]["D-Total"].merge!("#{wagon}" => {})
+        data_hash["despatch"]["D-Total"][wagon].merge!("Loaded" => {})
+        data_hash["despatch"]["D-Total"][wagon].merge!("Empty" => {})
         if wagon_type == "COVERED"
           data_hash["received"]["COVERED"][ic_point].merge!("#{wagon}" => {})
           data_hash["received"]["COVERED"][ic_point][wagon].merge!("Loaded" => {})
@@ -96,42 +96,64 @@ class LoadInterchange < ApplicationRecord
     
     end
 
-    if data_type == "rake"
+    # if data_type == "rake"
       final_data = LoadInterchange.get_data_rake_wise(ic_load_data,data_hash)
-    elsif data_type == "unit"
+    # elsif data_type == "unit"
       
-      final_data = LoadInterchange.get_data_unit_wise(ic_load_data,data_hash)
-    end
+    #   final_data = LoadInterchange.get_data_unit_wise(ic_load_data,data_hash)
+    # end
     return(final_data)
   
   end
 
   def self.get_data_rake_wise(ic_load_data,data_hash)
-   
+    
     ic_load_data.each do |data|
       wagon_type = data.wagon_type.wagon_type_code
       cover_open = data.wagon_type.wagon_details_covered_open
-      
+       
       if data.interchange_type == "Ex"
-        if data_hash["received"]["Total"][wagon_type][data.stock_details].blank?
-          data_hash["received"]["Total"][wagon_type][data.stock_details] = data.rakes
-          if data_hash["received"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["received"]["Total"]["Total"][data.stock_details] = data.rakes
+
+        if data_hash["received"]["R-Total"][wagon_type][data.stock_details].blank?
+          data_hash["received"]["R-Total"][wagon_type][data.stock_details] = data.rakes
+          if cover_open == "COVERED"
+            if data_hash["received"]["R-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["received"]["R-Total"]["C-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = total
+            end
           else
-            total = data_hash["received"]["Total"]["Total"][data.stock_details]
-            total = total + data.rakes
-            data_hash["received"]["Total"]["Total"][data.stock_details] = total
+            if data_hash["received"]["R-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["received"]["R-Total"]["O-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = total
+            end
           end
+
         else
-          total = data_hash["received"]["Total"][wagon_type][data.stock_details]
+          total = data_hash["received"]["R-Total"][wagon_type][data.stock_details]
           total = total + data.rakes
-          data_hash["received"]["Total"][wagon_type][data.stock_details] = total
-          if data_hash["received"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["received"]["Total"]["Total"][data.stock_details] = data.rakes
+          data_hash["received"]["R-Total"][wagon_type][data.stock_details] = total
+          if cover_open == "COVERED"
+            if data_hash["received"]["R-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["received"]["R-Total"]["C-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = total
+            end
           else
-            total = data_hash["received"]["Total"]["Total"][data.stock_details]
-            total = total + data.rakes
-            data_hash["received"]["Total"]["Total"][data.stock_details] = total
+            if data_hash["received"]["R-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["received"]["R-Total"]["O-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = total
+            end
           end
         end
 
@@ -139,23 +161,23 @@ class LoadInterchange < ApplicationRecord
         if cover_open == "COVERED"
           if data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
             data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
-            if data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
             end
           else
             total = data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
             total = total + data.rakes
             data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
             end
           end
           
@@ -163,92 +185,113 @@ class LoadInterchange < ApplicationRecord
         elsif cover_open == "OPEN"
           if data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
             data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
-            if data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
             end
           else
             total = data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
             total = total + data.rakes
             data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
             end
           end
         end
 
       else 
-        if data_hash["despatch"]["Total"][wagon_type][data.stock_details].blank?
-          data_hash["despatch"]["Total"][wagon_type][data.stock_details] = data.rakes
-          if data_hash["despatch"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = data.rakes
+
+        if data_hash["despatch"]["D-Total"][wagon_type][data.stock_details].blank?
+          data_hash["despatch"]["D-Total"][wagon_type][data.stock_details] = data.rakes
+          if cover_open == "COVERED"
+            if data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = total
+            end
           else
-            total = data_hash["despatch"]["Total"]["Total"][data.stock_details]
-            total = total + data.rakes
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = total
+            if data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = total
+            end
           end
         else
-          total = data_hash["despatch"]["Total"][wagon_type][data.stock_details]
+          total = data_hash["despatch"]["D-Total"][wagon_type][data.stock_details]
           total = total + data.rakes
-          data_hash["despatch"]["Total"][wagon_type][data.stock_details] = total
-          if data_hash["despatch"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = data.rakes
+          data_hash["despatch"]["D-Total"][wagon_type][data.stock_details] = total
+          if cover_open == "COVERED"
+            if data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = total
+            end
           else
-            total = data_hash["despatch"]["Total"]["Total"][data.stock_details]
-            total = total + data.rakes
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = total
+            if data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = data.rakes
+            else
+              total = data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details]
+              total = total + data.rakes
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = total
+            end
           end
         end
 
         if cover_open == "COVERED"
           if data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
             data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
-            if data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
             end
           else
             total = data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
             total = total + data.rakes
             data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
             end
           end
         elsif cover_open == "OPEN"
           if data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
             data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.rakes
-            if data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
             end
           else
             total = data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
             total = total + data.rakes
             data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.rakes
+            if data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.rakes
             else
-              total = data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
+              total = data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
               total = total + data.rakes
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
             end
           end
         end
@@ -259,154 +302,7 @@ class LoadInterchange < ApplicationRecord
   end
 
   def self.get_data_unit_wise(ic_load_data,data_hash)
-    ic_load_data.each do |data|
-      wagon_type = data.wagon_type.wagon_type_code
-      cover_open = data.wagon_type.wagon_details_covered_open
-      
-      if data.interchange_type == "Ex"
-        if data_hash["received"]["Total"][wagon_type][data.stock_details].blank?
-          data_hash["received"]["Total"][wagon_type][data.stock_details] = data.units
-          if data_hash["received"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["received"]["Total"]["Total"][data.stock_details] = data.units
-          else
-            total = data_hash["received"]["Total"]["Total"][data.stock_details]
-            total = total + data.units
-            data_hash["received"]["Total"]["Total"][data.stock_details] = total
-          end
-        else
-          total = data_hash["received"]["Total"][wagon_type][data.stock_details]
-          total = total + data.units
-          data_hash["received"]["Total"][wagon_type][data.stock_details] = total
-          if data_hash["received"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["received"]["Total"]["Total"][data.stock_details] = data.units
-          else
-            total = data_hash["received"]["Total"]["Total"][data.stock_details]
-            total = total + data.units
-            data_hash["received"]["Total"]["Total"][data.stock_details] = total
-          end
-        end
-
-
-        if cover_open == "COVERED"
-          if data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
-            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
-            if data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          else
-            total = data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
-            total = total + data.units
-            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["received"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          end
-          
-          
-        elsif cover_open == "OPEN"
-          if data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
-            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
-            if data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          else
-            total = data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
-            total = total + data.units
-            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["received"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          end
-        end
-
-      else 
-        if data_hash["despatch"]["Total"][wagon_type][data.stock_details].blank?
-          data_hash["despatch"]["Total"][wagon_type][data.stock_details] = data.units
-          if data_hash["despatch"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = data.units
-          else
-            total = data_hash["despatch"]["Total"]["Total"][data.stock_details]
-            total = total + data.units
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = total
-          end
-        else
-          total = data_hash["despatch"]["Total"][wagon_type][data.stock_details]
-          total = total + data.units
-          data_hash["despatch"]["Total"][wagon_type][data.stock_details] = total
-          if data_hash["despatch"]["Total"]["Total"][data.stock_details].blank?
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = data.units
-          else
-            total = data_hash["despatch"]["Total"]["Total"][data.stock_details]
-            total = total + data.units
-            data_hash["despatch"]["Total"]["Total"][data.stock_details] = total
-          end
-        end
-
-        if cover_open == "COVERED"
-          if data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
-            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
-            if data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          else
-            total = data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
-            total = total + data.units
-            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["despatch"]["COVERED"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          end
-        elsif cover_open == "OPEN"
-          if data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
-            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
-            if data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          else
-            total = data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
-            total = total + data.units
-            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
-            if data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details].blank?
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = data.units
-            else
-              total = data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details]
-              total = total + data.units
-              data_hash["despatch"]["OPEN"][data.interchange_point]["Total"][data.stock_details] = total
-            end
-          end
-        end
-      end
-    end
-      
-      return(data_hash)
+    
   end
 
     

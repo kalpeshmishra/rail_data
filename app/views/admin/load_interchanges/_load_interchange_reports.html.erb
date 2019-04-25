@@ -4,26 +4,25 @@
 
 <table class="table hover table-bordered" id="load-interchange-reports">
   <thead class="thead-dark">
-  	
-    <%if @unitwise_load_interchange_data.present?%>
+  	<%if @rakewise_load_interchange_data.present?%>
     	<tr style="color: #fff; background: #4B4B4D;">
     		<th style="vertical-align: middle;"></th>
-    		<%@unitwise_load_interchange_data.each do |header,one_data|%>
-    			<%@ic_point_count = @unitwise_load_interchange_data["received"].values[0].count%>
+    		<%@rakewise_load_interchange_data.each do |header,one_data|%>
+    			<%@ic_point_count = @rakewise_load_interchange_data["received"].values[0].count%>
 	    		<th style="vertical-align: middle;" colspan="<%=@ic_point_count*2%>"><%=header.capitalize%></th>
 	    		<th style="vertical-align: middle;" colspan="2"></th>
 	    	<%end%>
   	 	</tr>
   	 	<tr style="color: #fff; background: #4B4B4D;">
 	    	<th style="vertical-align: middle;"></th>
-	    	<%@unitwise_load_interchange_data["received"].values[0].each do |ic_type,data|%>
+	    	<%@rakewise_load_interchange_data["received"].values[0].each do |ic_type,data|%>
 	    		<th style="vertical-align: middle;" colspan="2"><%=ic_type%></th>
 	    	<%end%>
-	    		<th style="vertical-align: middle;" colspan="2">Total</th>
-    		<%@unitwise_load_interchange_data["despatch"].values[0].each do |ic_type,data|%>
+	    		<th style="vertical-align: middle;" colspan="2">R-Total</th>
+    		<%@rakewise_load_interchange_data["despatch"].values[0].each do |ic_type,data|%>
 	    		<th style="vertical-align: middle;" colspan="2"><%=ic_type%></th>
 	    	<%end%>
-	    		<th style="vertical-align: middle;" colspan="2">Total</th>
+	    		<th style="vertical-align: middle;" colspan="2">D-Total</th>
     	</tr>
 	    <tr style="color: #fff; background: #4B4B4D;">
 	    	<th style="vertical-align: middle;"></th>	
@@ -37,27 +36,44 @@
   	<%end%>
   </thead>
   <tbody>
-  	<%if @unitwise_load_interchange_data.present?%>
-  		<%temp_data = @unitwise_load_interchange_data%>
+  	<%if @rakewise_load_interchange_data.present?%>
+  		<%temp_data = @rakewise_load_interchange_data%>
       <%stock=[]%>
-      <%final_data={}%>
       <%temp_data.each do |header_one,value_one|%>
        	<%temp_data[header_one].each do |header_two,value_two|%>
-       		
-       		<%if header_two != "Total"%>
-       			<%temp_data[header_one][header_two].each do |header_three,value_three|%>
-		       		<%temp_data[header_one][header_two][header_three].each do |header_four,value_four|%>
-			       		<%stock<<header_four%>
-
-		       		<%end%>
-	      		<%end%>
-	       	<%end%>
-
-      	<%end%>
+       		<%if header_two == "R-Total" or header_two == "D-Total"%>
+       		<%else%>
+            <%temp_data[header_one][header_two].each do |header_three,value_three|%>
+              <%temp_data[header_one][header_two][header_three].each do |header_four,value_four|%>
+                <%stock<<header_four%>
+              <%end%>
+            <%end%>
+          <%end%>
+        <%end%>
       <%end%>
-     		
-      		
-  	<%end%>
+      <%stock.uniq!%>
+      <%stock.each do |stk|%>
+        <tr>
+          <td><%=stk%></td>
+          <%temp_data.each do |header_one,value_one|%>
+            <%value_one.each do |header_two,value_two|%>
+              <%if header_two == "COVERED" or header_two == "OPEN"%>
+                <%value_two.each do |k,v|%>
+                  <%if v[stk] != nil%>
+                    <td><%=v[stk].values[0] == {} ? "": v[stk].values[0] rescue nil%></td>
+                    <td><%=v[stk].values[1] == {} ? "": v[stk].values[1] rescue nil%></td>
+                  <%end%>
+                <%end%>  
+              <%elsif header_two == "R-Total" or header_two == "D-Total"%>
+                <%value_two[stk].each do |k,v|%>
+                  <td><%=v == {} ? "": v rescue nil%></td>
+                <%end%>  
+              <%end%>  
+            <%end%>
+          <%end%>  
+        </tr>
+      <%end%>
+    <%end%>
   </tbody>  
 </table>
 </div>
