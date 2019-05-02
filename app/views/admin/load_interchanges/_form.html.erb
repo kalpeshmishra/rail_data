@@ -26,10 +26,10 @@
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md wagon_type',required: true, style: "width: 150px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
         </td>
         <td>
-          <%= (select_tag "empty_loaded_#{index}", options_for_select([['Empty', 'Empty'], ['Loaded', 'Loaded']]), {prompt: 'Select', class: "form-control  input-sm empty_loaded", style: "width: 135px;font-size:16px;"}).html_safe %>
+          <%= (select_tag "empty_loaded_#{index}", options_for_select([['Empty', 'Empty'], ['Loaded', 'Loaded']]), {prompt: 'Select', class: "form-control  input-sm empty_loaded",required: true, style: "width: 135px;font-size:16px;"}).html_safe %>
         </td>
         <td>
-          <%= number_field_tag "rakes_#{index}", '', placeholder: "No of Rakes", class: 'form-control input-md ic_rakes',title: 'Enter loaded Units', id: "rakes_#{index}",required: true, style: "width: 140px; font-size:16px;" %>
+          <%= number_field_tag "rakes_#{index}", '', placeholder: "No of Rakes", class: 'form-control input-md ic_rakes',title: 'Enter loaded Units', id: "rakes_#{index}",required: true,step: 0.5, style: "width: 140px; font-size:16px;" %>
         </td>
         <td>
           <%= number_field_tag "units_#{index}", '', placeholder: "Units", class: 'form-control input-md ic_units',title: 'Enter Total Units', id: "units_#{index}",required: true, style: "width: 140px; font-size:16px;" %>

@@ -26,11 +26,11 @@ class Admin::LoadInterchangesController < ApplicationController
       data_type = "rake"
       rakewise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
       data_type = "unit"
-      # unitwise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
+      unitwise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
 
       @rakewise_load_interchange_data = rakewise_load_interchange_data_hash
-      # @unitwise_load_interchange_data = unitwise_load_interchange_data_hash
-
+      @unitwise_load_interchange_data = unitwise_load_interchange_data_hash
+      
     end
       
 	end

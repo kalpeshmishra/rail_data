@@ -363,45 +363,43 @@ $(function(){
     });  
   });
 
-  $(".arrival_date").on('focusout', function () {
-    arrival_date = $(this).val();
+  
+
+  $(".arrival_time,.arrival_date,.placement_time,.placement_date,.release_time,.release_date").on('focusout', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    var arrival_date_id = "#arrival_date_"+row_no
+    var arrival_date = $(arrival_date_id).val();
+    var placement_date_id = "#placement_date_"+row_no
+    var placement_date = $(placement_date_id).val();
+    
     mydate = $("#datepicker").val();
     parts = mydate.split('/');
     form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
-
     new_arrival_date = new Date(arrival_date);
     new_form_date = new Date(form_date);
     form_date_less_five = new Date(new_form_date.getTime() - (60*60*24*5*1000));
-    
-    if ((arrival_date > form_date) && arrival_date !=0) {
-      var error_msg ="----Arrival Date Cannot be Greater than Form Date"
-      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
-      $(".station_error_msg").show();
-      $(this).focus(); 
-    }
-    else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
-      var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
-      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
-      $(".station_error_msg").show();
-      $(this).focus(); 
-    }
-    else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
-      var row_no = $(this).attr('id').split('_')[2]
-      get_date_check(row_no);
-    }
-    else{
-      $("#station_error_msg").text("");
-      $(".station_error_msg").hide();
-    }
-   
-    
-  }); 
 
-  $(".placement_date").on('focusout', function () {
-    placement_date = $(this).val();
-    mydate = $("#datepicker").val();
-    parts = mydate.split('/');
-    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+      if ((arrival_date > form_date) && arrival_date !=0) {
+        var error_msg ="----Arrival Date Cannot be Greater than Form Date"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
+        var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
+        var row_no = $(this).attr('id').split('_')[2]
+        get_date_check(row_no);
+      }
+      else{
+        $("#station_error_msg").text("");
+        $(".station_error_msg").hide();
+      }
+    
       if ((placement_date > form_date) && placement_date !=0) {
         var error_msg ="----Placement Date Cannot be Greater than Form Date"
         $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
@@ -423,12 +421,23 @@ $(function(){
   function get_date_check(row_no){
     var arrival_date_id = "#arrival_date_"+row_no
     var placement_date_id = "#placement_date_"+row_no
+    var release_date_id = "#release_date_"+row_no
 
-    var arrival_date = $(arrival_date_id).val();
-    var placement_date = $(placement_date_id).val();
-    
-    if ((arrival_date > placement_date) && arrival_date !=0 && placement_date !=0) {
-      var error_msg ="----Placement Date Cannot be Less than Arrival Date"
+    var arrival_time_id = "#arrival_time_"+row_no
+    var placement_time_id = "#placement_time_"+row_no
+    var release_time_id = "#release_time_"+row_no
+
+    var arrival = new Date($(arrival_date_id).val() + " " + $(arrival_time_id).val());
+    var placement = new Date($(placement_date_id).val() + " " + $(placement_time_id).val());
+    var release = new Date($(release_date_id).val() + " " + $(release_time_id).val());
+
+    if ((arrival > placement) && arrival !=0 && placement !=0) {
+      var error_msg ="----Placement  Cannot be Less than Arrival----"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+    }
+    else if((placement > release) && placement !=0 && release !=0){
+      var error_msg ="----Release Cannot be Less than Placement----"
       $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
       $(".station_error_msg").show();
     }
@@ -491,7 +500,6 @@ $(function(){
 
        
         var detnarr_final_time = detnarr_hours+":"+detnarr_minutes2;
-        // alert(final_time);
         
         $(detention_arrival_placement).val(detnarr_final_time);
         if(detnarr_hours > 23) {

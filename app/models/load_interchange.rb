@@ -96,12 +96,12 @@ class LoadInterchange < ApplicationRecord
     
     end
 
-    # if data_type == "rake"
+    if data_type == "rake"
       final_data = LoadInterchange.get_data_rake_wise(ic_load_data,data_hash)
-    # elsif data_type == "unit"
+    elsif data_type == "unit"
       
-    #   final_data = LoadInterchange.get_data_unit_wise(ic_load_data,data_hash)
-    # end
+      final_data = LoadInterchange.get_data_unit_wise(ic_load_data,data_hash)
+    end
     return(final_data)
   
   end
@@ -297,12 +297,201 @@ class LoadInterchange < ApplicationRecord
         end
       end
     end
-      
       return(data_hash)
   end
 
   def self.get_data_unit_wise(ic_load_data,data_hash)
-    
+    ic_load_data.each do |data|
+      wagon_type = data.wagon_type.wagon_type_code
+      cover_open = data.wagon_type.wagon_details_covered_open
+       
+      if data.interchange_type == "Ex"
+
+        if data_hash["received"]["R-Total"][wagon_type][data.stock_details].blank?
+          data_hash["received"]["R-Total"][wagon_type][data.stock_details] = data.units
+          if cover_open == "COVERED"
+            if data_hash["received"]["R-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["R-Total"]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = total
+            end
+          else
+            if data_hash["received"]["R-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["R-Total"]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = total
+            end
+          end
+
+        else
+          total = data_hash["received"]["R-Total"][wagon_type][data.stock_details]
+          total = total + data.units
+          data_hash["received"]["R-Total"][wagon_type][data.stock_details] = total
+          if cover_open == "COVERED"
+            if data_hash["received"]["R-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["R-Total"]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["R-Total"]["C-Total"][data.stock_details] = total
+            end
+          else
+            if data_hash["received"]["R-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["R-Total"]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["R-Total"]["O-Total"][data.stock_details] = total
+            end
+          end
+        end
+
+
+        if cover_open == "COVERED"
+          if data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
+            if data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
+            end
+          else
+            total = data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["received"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+            if data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
+            end
+          end
+          
+          
+        elsif cover_open == "OPEN"
+          if data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
+            if data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
+            end
+          else
+            total = data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["received"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+            if data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["received"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
+            end
+          end
+        end
+
+      else 
+
+        if data_hash["despatch"]["D-Total"][wagon_type][data.stock_details].blank?
+          data_hash["despatch"]["D-Total"][wagon_type][data.stock_details] = data.units
+          if cover_open == "COVERED"
+            if data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = total
+            end
+          else
+            if data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = total
+            end
+          end
+        else
+          total = data_hash["despatch"]["D-Total"][wagon_type][data.stock_details]
+          total = total + data.units
+          data_hash["despatch"]["D-Total"][wagon_type][data.stock_details] = total
+          if cover_open == "COVERED"
+            if data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["D-Total"]["C-Total"][data.stock_details] = total
+            end
+          else
+            if data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["D-Total"]["O-Total"][data.stock_details] = total
+            end
+          end
+        end
+
+        if cover_open == "COVERED"
+          if data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = data.units
+            if data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
+            end
+          else
+            total = data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["despatch"]["COVERED"][data.interchange_point][wagon_type][data.stock_details] = total
+            if data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details].blank?
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["COVERED"][data.interchange_point]["C-Total"][data.stock_details] = total
+            end
+          end
+        elsif cover_open == "OPEN"
+          if data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details].blank?
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = data.units
+            if data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
+            end
+          else
+            total = data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details]
+            total = total + data.units
+            data_hash["despatch"]["OPEN"][data.interchange_point][wagon_type][data.stock_details] = total
+            if data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details].blank?
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = data.units
+            else
+              total = data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details]
+              total = total + data.units
+              data_hash["despatch"]["OPEN"][data.interchange_point]["O-Total"][data.stock_details] = total
+            end
+          end
+        end
+      end
+    end
+      
+      return(data_hash)
   end
 
     

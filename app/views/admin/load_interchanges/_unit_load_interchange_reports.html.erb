@@ -1,24 +1,24 @@
-<div id="load_interchange_reports">
-<h3 align="center">Load Interchange Data (Rake Wise)</h3>
-<p id="rake_load_interchange_heading" style="font-size: 16px;color:#cc3d16;"></p>
+<div id="unit_load_interchange_reports">
+<h3 align="center">Load Interchange Data(Unit Wise)</h3>
+<p id="unit_load_interchange_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
-<table class="table hover table-bordered" id="load-interchange-reports">
+<table class="table hover table-bordered" id="unit-load-interchange-reports">
   <thead class="thead-dark">
-    <%if @rakewise_load_interchange_data.present?%>
+    <%if @unitwise_load_interchange_data.present?%>
       <tr style="color: #fff; background: #4B4B4D;">
         <th style="vertical-align: middle;"></th>
-        <%@rakewise_load_interchange_data.each do |header,one_data|%>
-          <%@ic_point_count = @rakewise_load_interchange_data["received"].values[0].count%>
+        <%@unitwise_load_interchange_data.each do |header,one_data|%>
+          <%@ic_point_count = @unitwise_load_interchange_data["received"].values[0].count%>
           <th style="vertical-align: middle;" colspan="<%=@ic_point_count*2+2%>"><%=header.capitalize%></th>
         <%end%>
       </tr>
       <tr style="color: #fff; background: #4B4B4D;">
         <th style="vertical-align: middle;"></th>
-        <%@rakewise_load_interchange_data["received"].values[0].each do |ic_type,data|%>
+        <%@unitwise_load_interchange_data["received"].values[0].each do |ic_type,data|%>
           <th style="vertical-align: middle;" colspan="2"><%=ic_type%></th>
         <%end%>
           <th style="vertical-align: middle;" colspan="2">R-Total</th>
-        <%@rakewise_load_interchange_data["despatch"].values[0].each do |ic_type,data|%>
+        <%@unitwise_load_interchange_data["despatch"].values[0].each do |ic_type,data|%>
           <th style="vertical-align: middle;" colspan="2"><%=ic_type%></th>
         <%end%>
           <th style="vertical-align: middle;" colspan="2">D-Total</th>
@@ -35,8 +35,8 @@
     <%end%>
   </thead>
   <tbody>
-    <%if @rakewise_load_interchange_data.present?%>
-      <%temp_data = @rakewise_load_interchange_data%>
+    <%if @unitwise_load_interchange_data.present?%>
+      <%temp_data = @unitwise_load_interchange_data%>
       <%stock = []%>
       <%g_total = {}%>
       <%temp_data.each do |header_one,value_one|%>
@@ -103,7 +103,7 @@
         </tr>
       <%end%>
       <tr>
-        <td style="font-weight: bold;">G-Total</td>
+        <td>G-Total</td>
         <%g_total.each do |g_key,g_value|%>
           <%g_value.each do |key,value|%>
             <td style="font-weight: bold;"><%=value[0]%></td>
@@ -119,6 +119,6 @@
   $(function () {
     effective_from = $("#start_date").val();
     effective_to = $("#end_date").val();
-    document.getElementById("rake_load_interchange_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+    document.getElementById("unit_load_interchange_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
   });
 </script>
