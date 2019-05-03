@@ -72,7 +72,6 @@
                       <%g_total[header_one][k] = final rescue nil%>
                     <%end%>
                   <%end%>
-                  
                   <%if v[stk] != nil%>
                     <td><%=v[stk].values[0] == {} ? "": v[stk].values[0] rescue nil%></td>
                     <td><%=v[stk].values[1] == {} ? "": v[stk].values[1] rescue nil%></td>
@@ -80,22 +79,19 @@
                 <%end%>  
               <%elsif header_two == "R-Total" or header_two == "D-Total"%>
                 <%value_two[stk].each do |k,v|%>
-                  <%if stk == "C-Total" or stk == "O-Total"%>
-                    <%g_total.merge!("#{header_one}" => {}) if g_total[header_one].blank?%>
-                    <%if g_total[header_one][header_two].blank?%>
-                      
-                      <%g_total[header_one].merge!("#{header_two}" => value_two[stk].values )rescue nil%>
-                    <%elsif value_two[stk].present?%>
-                      
-                      <%a = value_two[stk].values rescue nil%>
+                  <td style="font-weight: bold;"><%=v == {} ? "": v rescue nil%></td>
+                <%end%>
+                <%if  stk == "C-Total" or stk == "O-Total"%>
+                  <%if g_total[header_one].key?(header_two) == false%>
+                    <%g_total[header_one].merge!("#{header_two}" => value_two[stk].values )rescue nil%>
+                  <%elsif value_two[stk].present?%>
+                     <%a = value_two[stk].values rescue nil%>
                       <%b = g_total[header_one][header_two] rescue nil%>
                       <%a.map! { |x| x == {} ? 0 : x } rescue nil%>
                       <%b.map! { |x| x == {} ? 0 : x } rescue nil%>
                       <%final = a.zip(b).map(&:sum) rescue nil%>
                       <%g_total[header_one][header_two] = final rescue nil%>
-                    <%end%>
                   <%end%>
-                  <td style="font-weight: bold;"><%=v == {} ? "": v rescue nil%></td>
                 <%end%>  
               <%end%>  
             <%end%>
@@ -103,7 +99,7 @@
         </tr>
       <%end%>
       <tr>
-        <td>G-Total</td>
+        <td style="font-weight: bold;">G-Total</td>
         <%g_total.each do |g_key,g_value|%>
           <%g_value.each do |key,value|%>
             <td style="font-weight: bold;"><%=value[0]%></td>
