@@ -162,7 +162,7 @@
                 </div>
                 
                 <div class="col-md-2">
-                  <a href="#" class="remove-ip rake-commodity-delete" id="<%= index %>_variable_allowance_delete"><i class="fa fa-trash-o btn btn-lg btn-danger"></i></a>
+                  <a href="#" class="remove-ip rake-commodity-delete" id="<%= index %>_rake_commodity_delete"><i class="fa fa-trash-o btn btn-lg btn-danger"></i></a>
                 </div>
               </div>
             </div>
@@ -358,27 +358,25 @@ $(function(){
   <%else%>  
   <%end%>
   
-  // $(".add-rake-commodityxyz").on('click',function(){
-  //   current_index = $(this).attr('id').split("_")[3]
-  //   rake_dropdown = "#major_commodity_"+current_index
-  //   rake_dropdown_value = $(rake_dropdown).val();
-  //   if (rake_dropdown_value != ""){
-  //     $("#add-commodity-modal").modal('show');
-  //     set_rake_commodity_values(rake_dropdown_value);
-  //   }else{
-  //     alert("First select Major Commodity")
-  //   }
-  // });
-
+  
   $("#rake_commodity_add").click(function() {
    $(".rake-commodity-div:hidden").each(function( i ) {
      if(i == 0){
         $(this).show();
      }
-   });
- });
+    });
+  });
 
-
+  $(".rake-commodity-delete").click(function() {
+    delete_index = $(this).attr('id').split("_")[0];
+    temp_value = "#rake_unit_" + delete_index
+    rake_unit_value = $(temp_value).val();
+    
+    if (rake_unit_value == ""){
+      rake_commodity_div = "#rake-commodity-div-" + delete_index
+      $(rake_commodity_div).remove();
+    }
+  });
 
 
 

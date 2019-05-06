@@ -5,7 +5,7 @@ value_count = parseInt('<%=@load_commodity_breakup_values.count%>');
     rake_code = "#rake_code_"+"<%=index%>"
     rake_unit = "#rake_unit_"+"<%=index%>"
     commodity_rake_count = "#commodity_rake_count_"+"<%=index%>"
-    // rake_dropdown_parent = ".major-commodity-dropdown-class-"+'<%=index%>'+":visible"
+    
     rake_dropdown_parent = ".major-commodity-dropdown-class-"+'<%=index%>'
     $(rake_dropdown_parent).each(function(i){
       if($(this).attr('id').split("_")[5] == "<%=@major_commodity_id%>"){
