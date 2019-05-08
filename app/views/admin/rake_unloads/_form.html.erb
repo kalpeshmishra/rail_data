@@ -112,10 +112,9 @@
   </table>
   <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
   <%= hidden_field_tag  "date", "", id: "date" %>
-  <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_unload_add">
-    <div class="modal-footer" style="text-align: center !important;">
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
-    </div>
+    <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_unload_add">
+    <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+    
   <% end %>
 </div>
 
@@ -127,9 +126,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" align="center">
-        
-          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_rake_unload_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+        <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_rake_unload_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
      
      </div>
     </div>

@@ -1,4 +1,5 @@
 <%all_data_records = @rake_commodity[@major_commodity_id][:data]%>
+
 <%if @load_commodity_breakup_values.present?%>
 value_count = parseInt('<%=@load_commodity_breakup_values.count%>');
   <%@load_commodity_breakup_values.to_a.each_with_index do |data,index|%>

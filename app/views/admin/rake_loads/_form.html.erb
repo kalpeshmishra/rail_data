@@ -119,11 +119,9 @@
     </tbody>
   </table>
   <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
-  <%= hidden_field_tag  "date", "", id: "date" %>
-  <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_load_add">
-    <div class="modal-footer" style="text-align: center !important;">
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
-    </div>
+    <%= hidden_field_tag  "date", "", id: "date" %>
+    <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="rake_load_add">
+    <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
   <% end %>
 </div>
 
@@ -388,47 +386,43 @@ function set_rake_commodity_values(rake_dropdown_value){
     });  
   });
 
-  $(".arrival_date").on('focusout', function () {
-    arrival_date = $(this).val();
+  $(".arrival_time,.arrival_date,.placement_time,.placement_date,.release_time,.release_date").on('focusout', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    var arrival_date_id = "#arrival_date_"+row_no
+    var arrival_date = $(arrival_date_id).val();
+    var placement_date_id = "#placement_date_"+row_no
+    var placement_date = $(placement_date_id).val();
+    
     mydate = $("#datepicker").val();
     parts = mydate.split('/');
     form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
-
     new_arrival_date = new Date(arrival_date);
     new_form_date = new Date(form_date);
     form_date_less_five = new Date(new_form_date.getTime() - (60*60*24*5*1000));
-    
-    if ((arrival_date > form_date) && arrival_date !=0) {
-      var error_msg ="----Arrival Date Cannot be Greater than Form Date"
-      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
-      $(".station_error_msg").show();
-      $(this).focus(); 
-    }
-    else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
-      var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
-      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
-      $(".station_error_msg").show();
-      $(this).focus(); 
-    }
-    else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
-      var row_no = $(this).attr('id').split('_')[2]
-      get_date_check(row_no);
-    }
-    else{
-      $("#station_error_msg").text("");
-      $(".station_error_msg").hide();
-    }
-   
-    
-  }); 
 
-  $(".placement_date").on('focusout', function () {
-    placement_date = $(this).val();
-    mydate = $("#datepicker").val();
-    parts = mydate.split('/');
-    form_date = parts[2] + '-' + parts[1] + '-' + parts[0];
+      if ((arrival_date > form_date) && arrival_date !=0) {
+        var error_msg ="----Arrival Date Cannot be Greater than Form Date"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if((new_arrival_date < form_date_less_five)&& arrival_date !=0){
+        var error_msg ="----Arrival Date Cannot be Less than Five Days from FormDate"
+        $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+        $(".station_error_msg").show();
+        $(this).focus(); 
+      }
+      else if ((arrival_date <= form_date) && (new_arrival_date >= form_date_less_five) &&arrival_date !=0) {
+        var row_no = $(this).attr('id').split('_')[2]
+        get_date_check(row_no);
+      }
+      else{
+        $("#station_error_msg").text("");
+        $(".station_error_msg").hide();
+      }
+    
       if ((placement_date > form_date) && placement_date !=0) {
-        var error_msg ="----Placement Date Cannot be Greater than Form Date"
+        var error_msg ="---Placement Date Cannot be Greater than Form Date---"
         $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
         $(".station_error_msg").show();
         $(this).focus(); 
@@ -448,12 +442,23 @@ function set_rake_commodity_values(rake_dropdown_value){
   function get_date_check(row_no){
     var arrival_date_id = "#arrival_date_"+row_no
     var placement_date_id = "#placement_date_"+row_no
+    var release_date_id = "#release_date_"+row_no
 
-    var arrival_date = $(arrival_date_id).val();
-    var placement_date = $(placement_date_id).val();
-    
-    if ((arrival_date > placement_date) && arrival_date !=0 && placement_date !=0) {
-      var error_msg ="----Placement Date Cannot be Less than Arrival Date"
+    var arrival_time_id = "#arrival_time_"+row_no
+    var placement_time_id = "#placement_time_"+row_no
+    var release_time_id = "#release_time_"+row_no
+
+    var arrival = new Date($(arrival_date_id).val() + " " + $(arrival_time_id).val());
+    var placement = new Date($(placement_date_id).val() + " " + $(placement_time_id).val());
+    var release = new Date($(release_date_id).val() + " " + $(release_time_id).val());
+
+    if ((arrival > placement) && arrival !=0 && placement !=0) {
+      var error_msg ="----Placement  Cannot be Less than Arrival----"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      $(".station_error_msg").show();
+    }
+    else if((placement > release) && placement !=0 && release !=0){
+      var error_msg ="----Release Cannot be Less than Placement----"
       $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
       $(".station_error_msg").show();
     }
@@ -580,7 +585,7 @@ function set_rake_commodity_values(rake_dropdown_value){
     var from_station_id = "from_station_"+row_no
 
     var from_station_code = $(this).val();
-    // debugger
+    
       if (from_station_code != "") {
           $.ajax({
           type: "get",
@@ -596,7 +601,7 @@ function set_rake_commodity_values(rake_dropdown_value){
     var to_station_id = "to_station_"+row_no
 
     var station_code = $(this).val();
-    // debugger
+    
       if (station_code != "") {
           $.ajax({
           type: "get",
@@ -609,27 +614,7 @@ function set_rake_commodity_values(rake_dropdown_value){
     
      
  
-  // function remove_requrired(){
-
-  //   $(".rake-row-data:hidden").each(function( i ) {
-      
-  //     row_no = $(this).attr('id').split("_")[4]
-  //     from_station = "#from_station_"+row_no
-  //     to_station = "#to_station_"+row_no
-     
-  //     major_commodity = "#major_commodity_"+row_no
-  //     wagon_type = "#wagon_type_"+row_no
-  //     total_unit = "#total_unit_"+row_no
-      
-
-  //     $(from_station).prop('required', false)
-  //     $(to_station).prop('required', false)
-  //     $(major_commodity).prop('required', false)
-  //     $(wagon_type).prop('required', false)
-  //     $(total_unit).prop('required', false)
-     
-  //   });
-  // }
+  
 
 
 </script>

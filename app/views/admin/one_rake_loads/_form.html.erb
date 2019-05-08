@@ -121,19 +121,17 @@
     <%end%>  
   </tbody>
   </table>
+  <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
   <%= hidden_field_tag  "date", "", id: "date" %>
-    <div class="modal-footer" style="text-align: center !important;">
-        <%if false%>
-        <button class="btn btn-default cancel-btn" id="cancel-btn"><i class="fa fa-remove"></i>Cancel</button>
-        <%end%>
+   
         <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
        
-    </div>
+   
   <% end %>
 </div>
 
 <%if true%>
-<div class="modal fade colored-header" id="add-commodity-modal" tabindex="-1" role="dialog">
+<div class="modal fade colored-header commodity_modal" id="add-commodity-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width: 550px;">
     <div class="modal-content">
       <div class="modal-header">
@@ -214,7 +212,6 @@ $(function(){
     });
     if(current_count != current_loaded_unit_count){
       $(".rake-commodity-save").hide();
-      // alert("Rake unit can't be more than Lodad unit");
       $("#commodity_more_error").text("Breakup cannot be less or more than loaded").css({'color': 'red', 'background-color': 'yellow', 'width':'310px'});
       $(".commodity_more_error").show();
     }else{
@@ -237,7 +234,7 @@ $(function(){
       rake_dropdown_parent = ".major-commodity-dropdown-class-"+<%=i%>+":visible"
       $(rake_dropdown_parent).each(function(index){
         select_rake_commodity = $("#rake_code_"+'<%=i%>').val();
-        select_rake_commodity = $(this).children().val();
+        // select_rake_commodity = $(this).children().val();
         select_rake_unit = $("#rake_unit_"+'<%=i%>').val();
         commodity_rake_count = $("#commodity_rake_count_"+'<%=i%>').val();
         if (select_rake_commodity != "" && select_rake_unit != ""){
@@ -255,6 +252,18 @@ $(function(){
     $("#add-commodity-modal").find('.close').click();
   });
 
+  $('.commodity_modal').on('hidden.bs.modal', function(e){ 
+      
+     $(".rake-commodity-div:hidden").each(function( i ) {
+      var rake_unit = "#rake_unit_" + i;
+      var commodity_rake_count = "#commodity_rake_count_" + i;
+      $(this).children().val('');
+
+      $(rake_unit).val('');
+      $(commodity_rake_count).val('');
+      $(this).hide();
+    });   
+  });
   
   $('table tr').each(function(index) {
     $(this).find('td:nth-child(1)').html(index-1+1);
@@ -385,7 +394,7 @@ function set_rake_commodity_values(rake_dropdown_value){
     hide_rake_commodity_values();
     <% (0..15).each_with_index do |no,index| %>
       add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+rake_dropdown_value
-      
+     
       $(add_rake_commodity).css('display', '');
 
       <%if index != 0%>
@@ -394,7 +403,7 @@ function set_rake_commodity_values(rake_dropdown_value){
         
       <%end%> 
     <% end %>
-  <%else%>
+  
 
   <%end%>
 
@@ -404,11 +413,38 @@ function set_rake_commodity_values(rake_dropdown_value){
     <%(0..15).each do |no| %>
       <%@rake_commodity.each do |key,value|%>
         add_rake_commodity = "#major_commodity_dropdown_id_"+<%=no%>+"_"+<%=key%>
+
         $(add_rake_commodity).css('display', 'none');
       <%end%>
     <%end%>
   }
 
+  $(".release_time,.release_date,.departure_time, .departure_date").on('focusout', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    
+    var release_date_id = "#release_date_"+row_no
+    var departure_date_id = "#departure_date_"+row_no
+
+    var release_time_id = "#release_time_"+row_no
+    var departure_time_id = "#departure_time_"+row_no
+
+    var release = new Date($(release_date_id).val() + " " + $(release_time_id).val());
+    var departure = new Date($(departure_date_id).val() + " " + $(departure_time_id).val());
+    
+    
+    if ((release > departure) && release !=0 && departure !=0) {
+      var error_msg ="----departure Cannot be Less than Release----"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+      
+      $(".station_error_msg").show();
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+     
+    
+  });
 
   $(".powerarrival_time,.powerarrival_date,.departure_time,.departure_date").on('keyup change', function () {
     var row_no = $(this).attr('id').split('_')[2]

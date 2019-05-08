@@ -127,10 +127,10 @@
     <%end%>  
   </tbody>
   </table>
+  <div class= "form-group text-center station_error_msg" id="station_error_msg" style="display: none"></div>
   <%= hidden_field_tag  "date", "", id: "date" %>
-    <div class="modal-footer" style="text-align: center !important;">
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
-    </div>
+    <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+    
   <% end %>
 </div>
 
@@ -318,6 +318,33 @@ function set_rake_commodity_values(rake_dropdown_value){
     <%end%>
   }
 
+  $(".release_time,.release_date,.removal_time, .removal_date").on('focusout', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    
+    var release_date_id = "#release_date_"+row_no
+    var removal_date_id = "#removal_date_"+row_no
+
+    var release_time_id = "#release_time_"+row_no
+    var removal_time_id = "#removal_time_"+row_no
+
+    var release = new Date($(release_date_id).val() + " " + $(release_time_id).val());
+    var removal = new Date($(removal_date_id).val() + " " + $(removal_time_id).val());
+    
+    
+    if ((release > removal) && release !=0 && removal !=0) {
+      var error_msg ="----Removal Cannot be Less than Release----"
+      $("#station_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'100%'});
+
+      $(".station_error_msg").show();
+    }
+    else{
+      $("#station_error_msg").text("");
+      $(".station_error_msg").hide();
+    }
+     
+    
+  });
+
   $(".release_time,.release_date, .removal_time, .removal_date, .powerarrival_time, .powerarrival_date,.stable_time, .stable_date,.departure_time, .departure_date").on('keyup change', function () {
     var row_no = $(this).attr('id').split('_')[2]
     get_detention(row_no);
@@ -359,7 +386,7 @@ function set_rake_commodity_values(rake_dropdown_value){
     else{
       var stable =""; 
     }
-    debugger
+    
     var powerarrival = new Date(powerarrival_time +" "+ powerarrival_date);
     var departure = new Date(departure_time +" "+ departure_date);
 
