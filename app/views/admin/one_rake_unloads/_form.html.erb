@@ -67,11 +67,9 @@
         </td>
         
         <td>
-         <%if false%>
-            
-            <h5 class="add-rake-commodity", id="add_rake_commodity_<%= index %>">ADD Commodity</h5>
-          <%end%>
-          <p>Comm</p>
+          <a href="#" style="color: #326b2c" class="add-rake-unload-commodity", id="add_rake_unload_commodity_<%= index %>">
+          <i class="fa fa-plus"></i>ClickAdd/View
+          </a>
           <p></p> 
          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 110px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
        </td>

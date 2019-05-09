@@ -234,7 +234,7 @@ $(function(){
       rake_dropdown_parent = ".major-commodity-dropdown-class-"+<%=i%>+":visible"
       $(rake_dropdown_parent).each(function(index){
         select_rake_commodity = $("#rake_code_"+'<%=i%>').val();
-        // select_rake_commodity = $(this).children().val();
+        select_rake_commodity = $(this).children().val();
         select_rake_unit = $("#rake_unit_"+'<%=i%>').val();
         commodity_rake_count = $("#commodity_rake_count_"+'<%=i%>').val();
         if (select_rake_commodity != "" && select_rake_unit != ""){
