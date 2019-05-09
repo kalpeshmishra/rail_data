@@ -252,18 +252,17 @@ $(function(){
     $("#add-commodity-modal").find('.close').click();
   });
 
-  $('.commodity_modal').on('hidden.bs.modal', function(e){ 
+  // $('.commodity_modal').on('hidden.bs.modal', function(e){ 
       
-     $(".rake-commodity-div:hidden").each(function( i ) {
-      var rake_unit = "#rake_unit_" + i;
-      var commodity_rake_count = "#commodity_rake_count_" + i;
-      $(this).children().val('');
-
-      $(rake_unit).val('');
-      $(commodity_rake_count).val('');
-      $(this).hide();
-    });   
-  });
+  //   $(".rake-commodity-div:hidden").each(function( i ) {
+  //     var rake_unit = "#rake_unit_" + i;
+  //     var commodity_rake_count = "#commodity_rake_count_" + i;
+      
+  //     $(rake_unit).val('');
+  //     $(commodity_rake_count).val('');
+  //     $(this).hide();
+  //   });   
+  // });
   
   $('table tr').each(function(index) {
     $(this).find('td:nth-child(1)').html(index-1+1);
