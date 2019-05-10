@@ -1,0 +1,48 @@
+
+<%all_data_records = @rake_commodity[@major_commodity_id][:data]%>
+$(".rake-commodity-div").each(function( i ) {
+  var rake_unit = "#rake_unit_" + i;
+  var commodity_rake_count = "#commodity_rake_count_" + i;
+  $(rake_unit).val('');
+  $(commodity_rake_count).val('');
+  $(this).hide();
+});
+
+<%if @unload_commodity_breakup_values.present?%>
+value_count = parseInt('<%=@unload_commodity_breakup_values.count%>');
+  <%@unload_commodity_breakup_values.to_a.each_with_index do |data,index|%>
+    
+    old_commodity = "#old_commodity_id_"+"<%=index%>"            
+    rake_code = "#rake_code_"+"<%=index%>"
+    rake_unit = "#rake_unit_"+"<%=index%>"
+    commodity_rake_count = "#commodity_rake_count_"+"<%=index%>"
+    
+    rake_dropdown_parent = ".major-commodity-dropdown-class-"+'<%=index%>'
+    $(rake_dropdown_parent).each(function(i){
+      if($(this).attr('id').split("_")[5] == "<%=@major_commodity_id%>"){
+        rake_dropdown_parent_id = "#major_commodity_dropdown_id_"+'<%=index%>'+"_"+'<%=@major_commodity_id%>'
+        $(this).find('select').val('<%=data.rake_commodity_id%>');
+      }
+    });
+    $(old_commodity).val('<%=data.id%>');
+    $(rake_unit).val('<%=data.rake_unit%>');
+    $(commodity_rake_count).val('<%=data.commodity_rake_count%>');
+
+  <%end%>
+  
+  $(".rake-commodity-div:hidden").each(function( i ) {
+      
+     if(i < value_count){
+      
+       $(this).show();
+      }
+    });
+<%else%>
+    $(".rake-commodity-div:hidden").each(function( i ) {
+      var rake_unit = "#rake_unit_" + i;
+      var commodity_rake_count = "#commodity_rake_count_" + i;
+      $(rake_unit).val('');
+      $(commodity_rake_count).val('');
+      $(this).hide();
+    });
+<%end%>

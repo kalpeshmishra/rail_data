@@ -67,11 +67,11 @@
         </td>
         
         <td>
-          <a href="#" style="color: #326b2c" class="add-rake-unload-commodity", id="add_rake_unload_commodity_<%= index %>">
-          <i class="fa fa-plus"></i>ClickAdd/View
+          <a href="#" style="color: #326b2c" class="add-rake-commodity", id="add_rake_commodity_<%= index %>">
+          <i class="fa fa-plus"></i>ClickToAdd/View
           </a>
           <p></p> 
-         <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 110px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+         <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 130px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
        </td>
 
         <td>
@@ -132,9 +132,9 @@
   <% end %>
 </div>
 
-<%if false%>
+<%if true%>
 <div class="modal fade colored-header" id="add-commodity-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" style="width: 500px;">
+  <div class="modal-dialog" style="width: 550px;">
     <div class="modal-content">
       <div class="modal-header">
         <h3>ADD Rake Commodity</h3>
@@ -142,28 +142,34 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-      <%(0..15).each_with_index do |index| %>
-        <div class="rake-commodity-div" id="rake-commodity-div-<%= index %>">
-          <div id="add-old">
-            <div class="row">
-              <%@rake_commodity.each do |key,value|%>
-                <div class="col-md-5" id="major_commodity_dropdown_id_<%=index%>_<%=key%>" style="display: none">
-                  <%= select_tag "rake_code_#{index}", options_for_select(value[:data]), {prompt: 'Select rake comm',class: 'input-lg form-control', id: "rake_code_#{index}"} %>
+        <%= hidden_field_tag :major_commodity_id_in_add_commodity,""%>
+          
+        <%(0..15).each_with_index do |index| %>
+          <div class="rake-commodity-div" id="rake-commodity-div-<%= index %>">
+            <div id="add-old">
+              <div class="row">
+                <%@rake_commodity.each do |key,value|%>
+                  <div class="col-md-4" id="major_commodity_dropdown_id_<%=index%>_<%=key%>" style="display: none">
+                    <%= select_tag "rake_code_#{index}", options_for_select(value[:data]), {prompt: 'Select rake comm',class: 'input-lg form-control', id: "rake_code_#{index}"} %>
+                  </div>
+                <%end%>  
+                <div class="col-md-3">
+                  <%= hidden_field_tag "old_commodity_id_#{index}",""%> 
+                  <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency input-lg',id: "rake_unit_#{index}" %>
                 </div>
-              <%end%>  
-              <div class="col-md-3">
-               <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency ctc_variable_allowance input-lg',id: "rake_unit_#{index}" %>
+                <div class="col-md-3">
+                  <%= text_field_tag "commodity_rake_count_#{index}",params[:commodity_rake_count], placeholder: 'RakeCount',readonly: true, class: 'form-control currency input-lg commodity-rake-count',id: "commodity_rake_count_#{index}" %>
+                </div>
+                <div class="col-md-2">
+                  <a href="#" class="remove-ip rake-commodity-delete" id="<%= index %>_variable_allowance_delete"><i class="fa fa-trash-o btn btn-lg btn-danger"></i></a>
+                </div>
               </div>
-              
-              <div class="col-md-2">
-                <a href="#" class="remove-ip rake-commodity-delete" id="<%= index %>_variable_allowance_delete"><i class="fa fa-trash-o btn btn-lg btn-danger"></i></a>
               </div>
-            </div>
-            </div>
+          </div>
+        <%end%> 
+        <input type="button" class="btn btn-primary btn-lg" value="Add Rows" id="rake_commodity_add">
+        <button class="btn btn-primary btn-flat rake-commodity-save"><i class="fa fa-check save"></i>Save</button>
         </div>
-      <%end%>  
-      <input type="button" class="btn btn-primary btn-lg" value="Add Rake Commodity" id="rake_commodity_add">
-    </div>
       </div>
     </div>
   </div>
@@ -171,6 +177,7 @@
 <%end%>
 <script >
 $(function(){
+  
   $('table tr').each(function(index) {
     $(this).find('td:nth-child(1)').html(index-1+1);
   });
@@ -266,26 +273,78 @@ $(function(){
     <%end%>
   <%else%>  
   <%end%>
+
+  current_loaded_unit_count = 0;
+  current_rake_count = 0;
   
-  $(".add-rake-commodity").on('click',function(){
-    current_index = $(this).attr('id').split("_")[3]
-    rake_dropdown = "#major_commodity_"+current_index
-    rake_dropdown_value = $(rake_dropdown).val();
-    if (rake_dropdown_value != ""){
-      $("#add-ommodity-modal").modal('show');
-      set_rake_commodity_values(rake_dropdown_value);
-    }else{
-      alert("First select Major Commodity")
-    }
+  
+  // $(".add-rake-commodity").on('click',function(){
+  //   current_index = $(this).attr('id').split("_")[3]
+  //   rake_dropdown = "#major_commodity_"+current_index
+  //   rake_dropdown_value = $(rake_dropdown).val();
+    
+  //     $("#add-commodity-modal").modal('show');
+  //     set_rake_commodity_values(rake_dropdown_value);
+    
+  // });
+
+  $('.add-rake-commodity').on('click',function(){
+
+    current_loaded_unit_count = 0;
+    current_rake_count = 0;
+    $("#major_commodity_id_in_add_commodity").val("");
+    row_no = $(this).attr("id").split("_")[3]
+    rake_unload_id = $("#record_id_"+row_no).val();
+    major_commodity_id = $("#major_commodity_"+row_no).val();
+    $("#major_commodity_id_in_add_commodity").val(rake_unload_id);
+    var loaded_unit_count = parseInt($("#loaded_unit_"+row_no).val());
+    var rake_count = parseInt($("#rake_count_"+row_no).val());
+    current_loaded_unit_count = loaded_unit_count
+    current_rake_count = rake_count
+      if (rake_unload_id != "") {
+          $.ajax({
+          type: "get",
+          url: "/unload_commodity_breakup.js?rake_unload_id=" + rake_unload_id
+        });
+      }
+    $("#add-commodity-modal").modal('show');
+    set_rake_commodity_values(major_commodity_id);
   });
 
+
   $("#rake_commodity_add").click(function() {
-   $(".rake-commodity-div:hidden").each(function( i ) {
-     if(i == 0){
-       $(this).show();
-     }
-   });
- });
+    $(".rake-commodity-div:hidden").each(function( i ) {
+      if(i == 0){
+      $(this).show();
+      }
+    });
+  });
+
+  $(".rake-commodity-save").on('click',function(){
+    rake_commodity_count = parseInt('<%=@rake_commodity.count%>');
+    rake_commodity_string = ""
+    <%(0..15).each do |i|%>
+      rake_dropdown_parent = ".major-commodity-dropdown-class-"+<%=i%>+":visible"
+      $(rake_dropdown_parent).each(function(index){
+        select_rake_commodity = $("#rake_code_"+'<%=i%>').val();
+        select_rake_commodity = $(this).children().val();
+        select_rake_unit = $("#rake_unit_"+'<%=i%>').val();
+        commodity_rake_count = $("#commodity_rake_count_"+'<%=i%>').val();
+        if (select_rake_commodity != "" && select_rake_unit != ""){
+          rake_commodity_string += "&select_rake_commodity_"+'<%=i%>'+"=" + select_rake_commodity + "&select_rake_unit_"+'<%=i%>'+"=" + select_rake_unit+"&commodity_rake_count_"+'<%=i%>'+"=" + commodity_rake_count
+        }
+      });
+    <%end%>
+    
+    var rake_load_id = $("#major_commodity_id_in_add_commodity").val();
+    //pending from here
+    $.ajax({
+        type: "post",
+        url: "/admin/one_rake_unloads.js?rake_load_id=" + rake_load_id + "&is_rake_commodity=" + "true" + rake_commodity_string
+      });
+    
+    $("#add-commodity-modal").find('.close').click();
+  });
 
 
   

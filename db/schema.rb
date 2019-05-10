@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190409064220) do
+ActiveRecord::Schema.define(version: 20190510093943) do
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"
@@ -336,6 +336,17 @@ ActiveRecord::Schema.define(version: 20190409064220) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.integer  "incoming_power"
+  end
+
+  create_table "rake_unloads_rake_commodities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "rake_unload_id"
+    t.integer  "rake_commodity_id"
+    t.integer  "rake_unit"
+    t.float    "commodity_rake_count", limit: 24
+    t.float    "net_tons",             limit: 24
+    t.float    "freight",              limit: 24
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "short_routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

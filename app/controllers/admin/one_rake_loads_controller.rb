@@ -86,6 +86,7 @@ class Admin::OneRakeLoadsController < ApplicationController
     @rake_load_id = params[:rake_load_id]
     @rake_load = RakeLoad.find(@rake_load_id)
     @major_commodity_id = @rake_load.major_commodity_id
+    
     @load_commodity_breakup_values =  CreateRakeLoadsRakeCommodity.where(rake_load_id: @rake_load_id)
     @rake_loads_rake_commodity_ids  = @load_commodity_breakup_values.pluck(:rake_commodity_id)
     get_data_for_form

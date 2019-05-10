@@ -86,6 +86,19 @@ class Admin::OneRakeUnloadsController < ApplicationController
     get_data_for_form
   end
 
+  def unload_commodity_breakup
+    
+    @rake_unload_id = params[:rake_unload_id]
+    @rake_unload = RakeUnload.find(@rake_unload_id)
+    @major_commodity_id = @rake_unload.major_commodity_id
+    @unload_commodity_breakup_values =  RakeUnloadsRakeCommodity.where(rake_unload_id: @rake_load_id)
+    @rake_unloads_rake_commodity_ids  = @unload_commodity_breakup_values.pluck(:rake_commodity_id)
+    get_data_for_form
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def update
     
   end

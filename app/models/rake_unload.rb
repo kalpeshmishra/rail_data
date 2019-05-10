@@ -3,6 +3,8 @@ belongs_to :load_unload
 belongs_to :station
 belongs_to :major_commodity
 belongs_to :wagon_type
+has_many :rake_unloads_rake_commodities
+
 
 
   def self.create_or_update_rake_unload(params)
