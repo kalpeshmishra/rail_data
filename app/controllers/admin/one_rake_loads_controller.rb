@@ -98,6 +98,17 @@ class Admin::OneRakeLoadsController < ApplicationController
     get_data_for_form
   end
 
+  def delete_rake_commodity_breakup
+    delete_rake_commodity_breakup_id = params[:delete_rake_commodity_breakup_id]
+    id = delete_rake_commodity_breakup_id.to_i
+    
+    CreateRakeLoadsRakeCommodity.destroy(id)
+   
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def update
     
   end

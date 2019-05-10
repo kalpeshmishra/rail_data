@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   match '/delete_other_load', controller: 'admin/other_loads', action: 'delete_other_load', via: [:get], as: 'delete_other_load'
   
   match '/load_commodity_breakup', controller: 'admin/one_rake_loads', action: 'load_commodity_breakup', via: [:get], as: 'load_commodity_breakup'
-    
+  match '/delete_rake_commodity_breakup', controller: 'admin/one_rake_loads', action: 'delete_rake_commodity_breakup', via: [:get], as: 'delete_rake_commodity_breakup'  
 
   match '/find_station_unloads', controller: 'admin/rake_unloads', action: 'find_station_unloads', via: [:get], as: 'find_station_unloads'
   match '/find_from_station_unloads', controller: 'admin/rake_unloads', action: 'find_from_station_unloads', via: [:get], as: 'find_from_station_unloads'

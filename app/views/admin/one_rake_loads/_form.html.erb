@@ -144,6 +144,7 @@
         
 
         <%(0..15).each_with_index do |index| %>
+
           <div class="rake-commodity-div" id="rake-commodity-div-<%= index %>">
             <div id="add-old">
               <div class="row">
@@ -153,6 +154,7 @@
                   </div>
                 <%end%> 
                 <div class="col-md-3">
+                 <%= hidden_field_tag "old_commodity_id_#{index}",""%> 
                  <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency input-lg commodity-rake-unit',id: "rake_unit_#{index}" %>
                 </div>
                 <div class="col-md-3">
@@ -252,17 +254,6 @@ $(function(){
     $("#add-commodity-modal").find('.close').click();
   });
 
-  // $('.commodity_modal').on('hidden.bs.modal', function(e){ 
-      
-  //   $(".rake-commodity-div:hidden").each(function( i ) {
-  //     var rake_unit = "#rake_unit_" + i;
-  //     var commodity_rake_count = "#commodity_rake_count_" + i;
-      
-  //     $(rake_unit).val('');
-  //     $(commodity_rake_count).val('');
-  //     $(this).hide();
-  //   });   
-  // });
   
   $('table tr').each(function(index) {
     $(this).find('td:nth-child(1)').html(index-1+1);
@@ -379,11 +370,37 @@ $(function(){
     delete_index = $(this).attr('id').split("_")[0];
     temp_value = "#rake_unit_" + delete_index
     rake_unit_value = $(temp_value).val();
-    
-    if (rake_unit_value == ""){
-      rake_commodity_div = "#rake-commodity-div-" + delete_index
-      $(rake_commodity_div).remove();
+
+    temp_id = "#old_commodity_id_"+ delete_index
+    old_id = $(temp_id).val();
+
+    if (old_id != ""){
+      $.ajax({
+        type: "get",
+        url: "/delete_rake_commodity_breakup.js?delete_rake_commodity_breakup_id=" + old_id
+      });
     }
+    rake_commodity_div = "#rake-commodity-div-" + delete_index
+    $(rake_commodity_div).remove();
+
+
+    var current_count = 0;
+    $(".commodity-rake-unit:visible").each(function(index){
+      if(isNaN(parseInt($(this).val()))){
+        current_count += 0;
+      }else{
+      current_count += parseInt($(this).val());
+      }
+    });
+    if(current_count != current_loaded_unit_count){
+      $(".rake-commodity-save").hide();
+      $("#commodity_more_error").text("Breakup cannot be less or more than loaded").css({'color': 'red', 'background-color': 'yellow', 'width':'310px'});
+      $(".commodity_more_error").show();
+    }else{
+      $(".rake-commodity-save").show();
+      $(".commodity_more_error").hide();
+    }
+
   });
 
 
