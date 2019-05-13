@@ -20,13 +20,16 @@ class Admin::OneRakeUnloadsController < ApplicationController
   end
   
   def create
-    RakeUnload.create_or_update_one_rake_unload(params)
-    data = params["date"].to_date if params["date"].present?
-    data = Date.today if data.blank?
-    @one_rake_unloads = RakeUnload.where(release_date: data,form_status: "RAKE")
-    get_user_area_wise_data(data)
-    get_data_for_form
-
+    if params[:is_rake_commodity].present? and params[:is_rake_commodity] == "true"
+      RakeUnloadsRakeCommodity.create_rake_unloads_rake_commodity(params)
+    else
+      RakeUnload.create_or_update_one_rake_unload(params)
+      data = params["date"].to_date if params["date"].present?
+      data = Date.today if data.blank?
+      @one_rake_unloads = RakeUnload.where(release_date: data,form_status: "RAKE")
+      get_user_area_wise_data(data)
+      get_data_for_form
+    end
   end
 
   def get_user_area_wise_data(data)
@@ -91,9 +94,20 @@ class Admin::OneRakeUnloadsController < ApplicationController
     @rake_unload_id = params[:rake_unload_id]
     @rake_unload = RakeUnload.find(@rake_unload_id)
     @major_commodity_id = @rake_unload.major_commodity_id
-    @unload_commodity_breakup_values =  RakeUnloadsRakeCommodity.where(rake_unload_id: @rake_load_id)
+    @unload_commodity_breakup_values =  RakeUnloadsRakeCommodity.where(rake_unload_id: @rake_unload_id)
     @rake_unloads_rake_commodity_ids  = @unload_commodity_breakup_values.pluck(:rake_commodity_id)
     get_data_for_form
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def delete_unload_rake_commodity_breakup
+    delete_unload_rake_commodity_breakup_id = params[:delete_unload_rake_commodity_breakup_id]
+    id = delete_unload_rake_commodity_breakup_id.to_i
+    
+    RakeUnloadsRakeCommodity.destroy(id)
+   
     respond_to do |format|
       format.js
     end

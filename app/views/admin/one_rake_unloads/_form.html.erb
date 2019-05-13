@@ -16,7 +16,7 @@
 
     <th>SR NO</th>
     <th>From<br>To</th>
-    <th>Loaded Units</th>
+    <th>L_Units<br>RakeCount</th>
     <th>Stock<br>Commodity</th>
     <th>Release <br>Time_Date</th>
     <th>Removal Time_Date</th>
@@ -36,6 +36,7 @@
   <tbody>
 
     <%(0...@one_rake_unloads.count).each_with_index do |no, index| %>
+
       <tr class="one-rake-unload-tr one-rake-row-data one_rake_unload_row_<%= index %>", id= "one_rake_unload_row_id_<%= index %>">
         <td align="center" style="font-size: 25;">
           
@@ -48,6 +49,8 @@
         </td>
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",disabled:true,style: "width: 65px; font-size:16px;" %>
+          <p></p>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}", disabled:true, step: "0.01",style: "width: 60px;border: 1px solid #888;" %>
         </td>
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true,disabled:true, style: "width: 90px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
@@ -149,13 +152,13 @@
             <div id="add-old">
               <div class="row">
                 <%@rake_commodity.each do |key,value|%>
-                  <div class="col-md-4" id="major_commodity_dropdown_id_<%=index%>_<%=key%>" style="display: none">
+                  <div class="col-md-4 major-commodity-dropdown-class-<%=index%>" id="major_commodity_dropdown_id_<%=index%>_<%=key%>" style="display: none">
                     <%= select_tag "rake_code_#{index}", options_for_select(value[:data]), {prompt: 'Select rake comm',class: 'input-lg form-control', id: "rake_code_#{index}"} %>
                   </div>
                 <%end%>  
                 <div class="col-md-3">
                   <%= hidden_field_tag "old_commodity_id_#{index}",""%> 
-                  <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency input-lg',id: "rake_unit_#{index}" %>
+                  <%= text_field_tag "rake_unit_#{index}",params[:rake_unit], placeholder: 'Units', class: 'form-control currency input-lg commodity-rake-unit',id: "rake_unit_#{index}" %>
                 </div>
                 <div class="col-md-3">
                   <%= text_field_tag "commodity_rake_count_#{index}",params[:commodity_rake_count], placeholder: 'RakeCount',readonly: true, class: 'form-control currency input-lg commodity-rake-count',id: "commodity_rake_count_#{index}" %>
@@ -169,6 +172,7 @@
         <%end%> 
         <input type="button" class="btn btn-primary btn-lg" value="Add Rows" id="rake_commodity_add">
         <button class="btn btn-primary btn-flat rake-commodity-save"><i class="fa fa-check save"></i>Save</button>
+        <p class= "form-group commodity_more_error" id="commodity_more_error" style="display: none"></p>
         </div>
       </div>
     </div>
@@ -200,6 +204,7 @@ $(function(){
         from_station = "#from_station_"+<%=index%>
         to_station = "#to_station_"+<%=index%>
         loaded_unit = "#loaded_unit_"+<%=index%>
+        rake_count = "#rake_count_"+<%=index%>
         wagon_type = "#wagon_type_"+<%=index%>
         major_commodity = "#major_commodity_"+<%=index%>
         release_time = "#release_time_"+<%=index%>
@@ -232,6 +237,7 @@ $(function(){
         $(to_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
         // $(to_station).val('<%=data.station_id%>');
         $(loaded_unit).val('<%=data.loaded_unit%>');
+        $(rake_count).val('<%=data.rake_count%>');
         $(wagon_type).val('<%=data.wagon_type_id%>');
         $(major_commodity).val('<%=data.major_commodity_id%>');
         $(release_time).val('<%=data.release_time%>');
@@ -274,8 +280,6 @@ $(function(){
   <%else%>  
   <%end%>
 
-  current_loaded_unit_count = 0;
-  current_rake_count = 0;
   
   
   // $(".add-rake-commodity").on('click',function(){
@@ -288,6 +292,8 @@ $(function(){
     
   // });
 
+  current_loaded_unit_count = 0;
+  current_rake_count = 0;
   $('.add-rake-commodity').on('click',function(){
 
     current_loaded_unit_count = 0;
@@ -311,6 +317,33 @@ $(function(){
     set_rake_commodity_values(major_commodity_id);
   });
 
+  $(".commodity-rake-unit").on('keyup',function(){
+    var current_count = 0;
+    $(".commodity-rake-unit:visible").each(function(index){
+      if(isNaN(parseInt($(this).val()))){
+        current_count += 0;
+      }else{
+      current_count += parseInt($(this).val());
+      }
+    });
+    if(current_count != current_loaded_unit_count){
+      $(".rake-commodity-save").hide();
+      $("#commodity_more_error").text("Breakup cannot be less or more than loaded").css({'color': 'red', 'background-color': 'yellow', 'width':'310px'});
+      $(".commodity_more_error").show();
+    }else{
+      $(".rake-commodity-save").show();
+      $(".commodity_more_error").hide();
+    }
+    
+    row_no = $(this).attr("id").split("_")[2]
+    var commodity_rake_count = "#commodity_rake_count_"+row_no
+    loaded_unit = $(this).val();
+    rake_count = (loaded_unit*current_rake_count)/current_loaded_unit_count
+    rake_count = rake_count.toFixed(2);
+    $(commodity_rake_count).val(rake_count);
+
+  });
+
 
   $("#rake_commodity_add").click(function() {
     $(".rake-commodity-div:hidden").each(function( i ) {
@@ -330,22 +363,59 @@ $(function(){
         select_rake_commodity = $(this).children().val();
         select_rake_unit = $("#rake_unit_"+'<%=i%>').val();
         commodity_rake_count = $("#commodity_rake_count_"+'<%=i%>').val();
+
         if (select_rake_commodity != "" && select_rake_unit != ""){
           rake_commodity_string += "&select_rake_commodity_"+'<%=i%>'+"=" + select_rake_commodity + "&select_rake_unit_"+'<%=i%>'+"=" + select_rake_unit+"&commodity_rake_count_"+'<%=i%>'+"=" + commodity_rake_count
         }
       });
     <%end%>
     
-    var rake_load_id = $("#major_commodity_id_in_add_commodity").val();
-    //pending from here
+    var rake_unload_id = $("#major_commodity_id_in_add_commodity").val();
+    
     $.ajax({
         type: "post",
-        url: "/admin/one_rake_unloads.js?rake_load_id=" + rake_load_id + "&is_rake_commodity=" + "true" + rake_commodity_string
+        url: "/admin/one_rake_unloads.js?rake_unload_id=" + rake_unload_id + "&is_rake_commodity=" + "true" + rake_commodity_string
       });
     
     $("#add-commodity-modal").find('.close').click();
   });
 
+  $(".rake-commodity-delete").click(function() {
+    delete_index = $(this).attr('id').split("_")[0];
+    temp_value = "#rake_unit_" + delete_index
+    rake_unit_value = $(temp_value).val();
+
+    temp_id = "#old_commodity_id_"+ delete_index
+    old_id = $(temp_id).val();
+
+    if (old_id != ""){
+      $.ajax({
+        type: "get",
+        url: "/delete_unload_rake_commodity_breakup.js?delete_unload_rake_commodity_breakup_id=" + old_id
+      });
+    }
+    rake_commodity_div = "#rake-commodity-div-" + delete_index
+    $(rake_commodity_div).remove();
+
+
+    var current_count = 0;
+    $(".commodity-rake-unit:visible").each(function(index){
+      if(isNaN(parseInt($(this).val()))){
+        current_count += 0;
+      }else{
+      current_count += parseInt($(this).val());
+      }
+    });
+    if(current_count != current_loaded_unit_count){
+      $(".rake-commodity-save").hide();
+      $("#commodity_more_error").text("Breakup cannot be less or more than loaded").css({'color': 'red', 'background-color': 'yellow', 'width':'310px'});
+      $(".commodity_more_error").show();
+    }else{
+      $(".rake-commodity-save").show();
+      $(".commodity_more_error").hide();
+    }
+
+  });
 
   
 
