@@ -44,8 +44,10 @@ class Admin::LoadInterchangesController < ApplicationController
   end
 
   def create
-  	LoadInterchange.create_or_update_load_interchange(params)
-  	get_data_for_form
+    if params.keys.count > 6
+  	 LoadInterchange.create_or_update_load_interchange(params)
+  	end
+    get_data_for_form
 
   end
 
