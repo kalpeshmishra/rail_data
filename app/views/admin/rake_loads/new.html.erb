@@ -66,7 +66,7 @@
   </table>
   </div>
 
-<%=render 'rake_load_new'%>
+
 <div id="rake_load_new_form"></div>
 <script>
   var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
@@ -75,6 +75,10 @@
           autoclose: true, 
           format:"dd/mm/yyyy",
           todayHighlight: true,
+    });
+    
+    $("#datepicker").on("change",function(){
+      $("#rake_load_new_form").empty();
     });
 
     $('#datepicker').datepicker('setDate', 'today');

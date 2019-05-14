@@ -65,7 +65,7 @@
   </table>
   </div>
 
-<%=render 'gets_unload_new'%>
+
 <div id="gets_unload_new_form"></div>
 <script>
   var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
@@ -76,19 +76,23 @@
           todayHighlight: true,
     });
 
+    $("#datepicker").on("change",function(){
+      $("#gets_unload_new_form").empty();
+    });
+    
     $('#datepicker').datepicker('setDate', 'today');
 
   });
   $(".submit").click(function () {
       
       effective_from = $("#datepicker").val();
-      if(old_date != effective_from){
+      // if(old_date != effective_from){
         $.ajax({
           type: "get",
           url: "/admin/gets_unloads/new.js?data=" + effective_from
         });
-        old_date = effective_from 
-      }
+      //   old_date = effective_from 
+      // }
   });
     
   

@@ -89,7 +89,6 @@ class Admin::OneCustomReportsController < ApplicationController
 								final = data_hash[station][other_commodity].to_i + loaded_unit
 								data_hash[station][other_commodity] = final
 							else
-								# data_hash[station] = {} if data_hash[station].blank?
 								data_hash[station].merge!("#{other_commodity}" => loaded_unit) if other_commodity.present?
 							end
 						else
@@ -137,9 +136,21 @@ class Admin::OneCustomReportsController < ApplicationController
 			end
 				@one_custom_report_data = final_data
 		end
-
-
-
+		adi_area_data ={}
+		gimb_area_data ={}
+		if final_data.present?
+			final_data.each do |stn,value|
+				area_code = Area.find(Station.where(code: stn).pluck(:area_id)[0]).area_code
+				if area_code == "ADI"
+					adi_area_data.merge!("#{stn}" => value)
+				elsif area_code == "GIMB"
+					gimb_area_data.merge!("#{stn}" => value)
+				end	
+			end	
+			@adi_one_custom_report_data = adi_area_data 
+			@gimb_one_custom_report_data	=	gimb_area_data
+		end
+		
 	end
 
 	def show

@@ -52,6 +52,7 @@
       <li>
         <a href="#gimb-area-unloading-info" id="gimb-area-unloading-tab" data-toggle="tab">GIM(PU)</a>
       </li>
+      <%if false%>
       <li>
         <a href="#total-division-info" id="total-division-tab" data-toggle="tab">DIV</a>
       </li>
@@ -61,6 +62,7 @@
       <li>
         <a href="#total-gimb-info" id="total-gimb-tab" data-toggle="tab">GIM</a>
       </li>
+      <%end%>
       <li>
         <a href="#powerhouse-info" id="powerhouse-tab" data-toggle="tab">PH</a>
       </li>
@@ -94,6 +96,7 @@
         <%=render 'gimb_unloading'%>
         <div id="gimb_unload_form"></div>
       </div>
+      <%if false%>
       <div id="total-division-info" class="tab-pane cont">
         <%=render 'total_division'%>
         <div id="total_division_load_form"></div>
@@ -106,6 +109,7 @@
         <%=render 'total_gimb'%>
         <div id="total_gimb_load_form"></div>
       </div>
+      <%end%>
       <div id="powerhouse-info" class="tab-pane cont">
         <%=render 'powerhouse'%>
         <div id="powerhouse_form"></div>
