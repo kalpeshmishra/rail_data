@@ -20,7 +20,7 @@
     <th>Stock<br>Commodity</th>
     <th>Release <br>Time_Date</th>
     <th>GrossTons <br> NetTons</th>
-    <th>Cmdt_Import<br>/Domestic</th> <!-- Commodity Imported or Domestic -->
+    <th>Freight<br>CommodityType</th> <!-- Commodity Imported or Domestic -->
     <th>Indent Date_Time</th>
     <th>Consignor<br>Consignee</th>
     <th>Remarks</th>
@@ -49,7 +49,7 @@
           <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,disabled:true,style: "width: 90px;", data_live_search: "true"} %>
         </td>
         <td>
-          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md',disabled:true, style: "width: 95px; font-size:16px;"%>
+          <%= text_field_tag "release_time_#{index}", '', type: 'time',placeholder: 'Release time', id: "release_time_#{index}", class: 'form-control input-md',disabled:true, style: "width: 141px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "release_date_#{index}", '',type:'date',placeholder: 'release Date', id: "release_date_#{index}",disabled:true, class: 'form-control input-md', style: "width: 141px; font-size:14px;"%>
         </td>
@@ -59,7 +59,9 @@
           <%= number_field_tag "net_tons_#{index}", '',placeholder: 'NetTons', id: "net_tons_#{index}", class: 'form-control input-md', style: "width: 100px; font-size:16px;"%>
         </td>
         <td style="vertical-align:top">
-          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md',style: "width: 105px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+          <%= number_field_tag "freight_#{index}", '',placeholder: 'Freight', id: "freight_#{index}", class: 'form-control input-md', style: "width: 120px; font-size:15px;"%>
+        <p></p>  
+          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md',style: "width: 120px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
       
         </td>
         <td>
@@ -120,6 +122,7 @@ $(function(){
         release_date = "#release_date_"+<%=index%>
         gross_tons = "#gross_tons_"+<%=index%>
         net_tons = "#net_tons_"+<%=index%>
+        freight = "#freight_"+<%=index%>
         commodity_type = "#commodity_type_"+<%=index%>
         odr_time = "#odr_time_"+<%=index%>
         odr_date = "#odr_date_"+<%=index%>
@@ -141,6 +144,7 @@ $(function(){
         $(release_date).val('<%=data.release_date%>');
         $(gross_tons).val('<%=data.gross_tons%>');
         $(net_tons).val('<%=data.net_tons%>');
+        $(freight).val('<%=data.freight%>');freight
         $(commodity_type).val('<%=data.commodity_type%>');
         $(odr_time).val('<%=data.odr_time%>');
         $(odr_date).val('<%=data.odr_date%>');

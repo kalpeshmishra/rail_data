@@ -206,6 +206,7 @@ after_destroy :remove_rake_commodity_breakup_data
       two_rake_load = self.new if two_rake_load.blank?
       two_rake_load.gross_tons = value["gross_tons"] rescue nil
       two_rake_load.net_tons = value["net_tons"] rescue nil
+      two_rake_load.freight = value["freight"] rescue nil
       two_rake_load.commodity_type = value["commodity_type"] rescue nil
       two_rake_load.odr_time = value["odr_time"] rescue nil
       two_rake_load.odr_date = value["odr_date"] rescue nil
