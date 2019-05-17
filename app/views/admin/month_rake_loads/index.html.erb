@@ -10,23 +10,55 @@
 <%= form_tag(@url, method: @method, class: 'form-horizontal group-border-dashed', remote: true) do |form| %>
 
   <div class="form-group">
-    <h4 class="no-margin">Month Rake Load<span style="color:red;"> *</span></h4>
-    <%= file_field_tag "month_rake_load", placeholder: "Attachment", class: 'form-control input-md attachment-blank', id: "month_rake_load",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
-  </div>
-  <p>Upload only .xls, .xlsx or .csv type</p>
-  <p>OR</p>
-  <div class="form-group">
-    <h4 class="no-margin">Month Rake Load Phasewise<span style="color:red;"> *</span></h4>
-    <%= file_field_tag "month_phasewise_rake_load", placeholder: "Attachment", class: 'form-control input-md attachment-blank', id: "month_phasewise_rake_load",accept: ".xls,.xlsx,.csv",style: "width: 300px;border: 1px solid #888;" %>
-  </div>
-  <p>Upload only .xls, .xlsx or .csv type</p>
-  <div class="modal-footer" style="text-align: center !important;">
-      <a class="btn btn-default btn-flat cancel-btn <%= btn_class %>" data-dismiss="modal" id="cancel-btn"><i class="fa fa-remove"></i>
-        Cancel</a>
-      <button class="btn btn-primary btn-flat upload" type="submit"><i class="fa fa-upload upload"></i>Upload</button>
+    <h4 class="no-margin">Month Rake Load</h4>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <% months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+          month_years_list = []
+          (2019..2020).each do |year|
+            months.each do |month|
+            month_years_list << ["#{month}-#{year}"]
+          end
+        end %>  
+      <%= select_tag "month_list", options_for_select(month_years_list), {prompt: "Select Month", class: 'form-control input-md month_list',required: true, style: "width: 180px;", id: "month_list"} %>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Update</button>
+    </div>
      
   </div>
 <%end%> 
+<div id="one_custom_reports">
+  <h3>Monthly updated Data Report </h3>
+  <p id="adi_station_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
+  <table class="table hover table-condensed" style="width:50%;" id="adi-one-custom-reports">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th style="vertical-align: middle;">Month</th>
+        <th style="vertical-align: middle;">DataUpdated</th>
+      </tr>  
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>  
+  </table>
+</div>  
 
+<script >
+$(function(){
 
+  $(".submit").click(function () {
+    selected_month = $("#month_list").val();
+    $.ajax({
+      type: "get",
+      url: "/admin/month_rake_loads.js?selected_month=" + selected_month 
+    });
+    
+  });
+
+});
+
+</script>

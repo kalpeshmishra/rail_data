@@ -64,7 +64,7 @@
   </table>
   </div>
 
-<%=render 'one_rake_unload_new'%>
+
 <div id="one_rake_unload_new_form"></div>
 <script>
   var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
@@ -75,13 +75,17 @@
           todayHighlight: true,
     });
 
+    $("#datepicker").on("change",function(){
+      $("#one_rake_unload_new_form").empty();
+    });
+
     $('#datepicker').datepicker('setDate', 'today');
     
   });
   $(".submit").click(function () {
 
       effective_from = $("#datepicker").val();
-      if(old_date != effective_from){
+      // if(old_date != effective_from){
         $.ajax({
           type: "get",
           url: "/admin/one_rake_unloads/new.js?data=" + effective_from
@@ -89,7 +93,7 @@
         });
         old_date = effective_from 
 
-      }
+      // }
   });
   
 
