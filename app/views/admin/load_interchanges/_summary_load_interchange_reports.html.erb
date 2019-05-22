@@ -1,0 +1,85 @@
+<div id="summary_load_interchange_reports">
+<h3 align="center">Load Interchange Summary</h3>
+<p id="summary_load_interchange_heading" style="font-size: 16px;color:#cc3d16;"></p>
+
+<table class="table hover table-bordered" id="summary-load-interchange-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;vertical-align: middle;">
+      <th rowspan="2">I/C<br>Point</th>
+      <th colspan="2">Received</th>
+      <th colspan="2">Despatch</th>
+      <th colspan="2">Total</th>
+    </tr>
+    <tr style="color: #fff; background: #4B4B4D;vertical-align: middle;">
+      <th>Rake</th>
+      <th>Unit</th>
+      <th>Rake</th>
+      <th>Unit</th>
+      <th>Rake</th>
+      <th>Unit</th>
+    </tr>  
+  </thead>
+  <tbody>
+    <%count = @days_summary_interchange%>
+    <%ic_type = ["Ex","To"]%>
+    <%column_total = {"Ex"=>{"rakes"=>[], "units"=>[]}, "To"=>{"rakes"=>[], "units"=>[]}}%>
+    <%if @summary_load_interchange_data.present? && @select_ic_point.present?%>
+      <%@select_ic_point.each do |stn|%>
+        <tr style="text-align: center;">
+          <td><%=stn%></td>
+          <%if @summary_load_interchange_data[stn].present?%>
+            <%total_rakes = []%>
+            <%total_units = []%>
+            <%ic_type.each do |i_type|%>
+              <%if @summary_load_interchange_data[stn][i_type] != nil%>  
+                <%rakes = @summary_load_interchange_data[stn][i_type].values[0][0]%>
+                <%units = @summary_load_interchange_data[stn][i_type].values[1][0]%>
+                <%total_rakes << rakes%>
+                <%total_units << units%>
+                <%column_total[i_type]["rakes"] << rakes%>
+                <%column_total[i_type]["units"] << units%>
+                <td><%=(rakes/count).round(2)%></td>
+                <td><%=(units.to_f/count).round(2)%></td>
+              <%else%>
+                <td></td>
+                <td></td>
+              <%end%> 
+            <%end%>    
+            <td style="font-weight: bold;"><%=((total_rakes.flatten.reject(&:blank?).sum)/count).round(2)%></td>
+            <td style="font-weight: bold;"><%=((total_units.flatten.reject(&:blank?).sum.to_f)/count).round(2)%></td> 
+          <%else%>
+            <%(0..5).each do |i|%>
+              <td></td>  
+            <%end%>
+          <%end%>  
+        </tr>
+      <%end%>
+      <tr style="font-weight: bold;text-align: center;">
+        <td>Total</td>  
+        <%gtotal_rakes = []%>
+        <%gtotal_units = []%>
+        <%ic_type.each do |i_type|%>
+          <%column_total[i_type].each do |k,v|%>
+            <%if k=="rakes"%>
+              <td><%=((v.flatten.reject(&:blank?).sum)/count).round(2)%></td>
+              <%gtotal_rakes << v%>
+            <%elsif k=="units"%>
+              <td><%=((v.flatten.reject(&:blank?).sum).to_f/count).round(2)%></td>
+              <%gtotal_units << v%>
+            <%end%>
+          <%end%>
+        <%end%>
+        <td><%=((gtotal_rakes.flatten.reject(&:blank?).sum)/count).round(2)%></td>
+        <td><%=((gtotal_units.flatten.reject(&:blank?).sum).to_f/count).round(2)%></td>
+      </tr>  
+    <%end%>
+  </tbody>  
+</table>
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("summary_load_interchange_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

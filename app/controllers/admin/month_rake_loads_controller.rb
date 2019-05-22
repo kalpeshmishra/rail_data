@@ -21,7 +21,7 @@ class Admin::MonthRakeLoadsController < ApplicationController
     loading_data = RakeLoad.where(release_date: from_date..to_date)
     data_hash = {}
     i = 100
-    if loading_data.present?
+    if loading_data.present? && i ==111
 	    loading_data.each do |data|
 	    	data_hash[data.load_unload_id] = {} if data_hash.blank?
 	    	# binding.pry if i<200

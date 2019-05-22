@@ -494,7 +494,38 @@ class LoadInterchange < ApplicationRecord
       return(data_hash)
   end
 
-    
+
+  def self.get_summary_load_interchange(select_interchange_load_data)
+    temp_data = select_interchange_load_data
+    data_hash = {}
+    temp_data.each do |data|
+      data_hash[data.interchange_point] = {} if data_hash[data.interchange_point].blank?
+      # data_hash[data.interchange_point].merge!("Ex" => {"rakes" => [0], "units" => [0]}) if data_hash[data.interchange_point][data.interchange_type].blank?
+      # data_hash[data.interchange_point].merge!("To" => {"rakes" => [0], "units" => [0]}) if data_hash[data.interchange_point][data.interchange_type].blank?
+
+      # temp_rakes = data_hash[data.interchange_point][data.interchange_type]["rakes"][0]
+      # temp_rakes = temp_rakes + data.rakes
+      # data_hash[data.interchange_point][data.interchange_type]["rakes"] = [temp_rakes]
+      # temp_units = data_hash[data.interchange_point][data.interchange_type]["units"][0]
+      # temp_units = temp_units + data.units
+      # data_hash[data.interchange_point][data.interchange_type]["units"] = [temp_units]
+      
+
+
+      if data_hash[data.interchange_point][data.interchange_type].blank? 
+        data_hash[data.interchange_point].merge!(data.interchange_type => {"rakes" => [data.rakes], "units" => [data.units]})
+      else
+        temp_rakes = data_hash[data.interchange_point][data.interchange_type]["rakes"][0]
+        temp_rakes = temp_rakes + data.rakes
+        data_hash[data.interchange_point][data.interchange_type]["rakes"] = [temp_rakes]
+        temp_units = data_hash[data.interchange_point][data.interchange_type]["units"][0]
+        temp_units = temp_units + data.units
+        data_hash[data.interchange_point][data.interchange_type]["units"] = [temp_units]
+      end
+
+    end
+    return(data_hash)  
+  end  
   
 
 

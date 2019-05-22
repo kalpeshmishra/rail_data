@@ -7,6 +7,7 @@ class Admin::LoadInterchangesController < ApplicationController
       
       from_date = Date.today if from_date.blank?
       to_date = Date.today if to_date.blank?
+      
       interchange_load_data = LoadInterchange.where(interchange_date: from_date..to_date)
     
     if params["is_date_select"].present?
@@ -23,6 +24,8 @@ class Admin::LoadInterchangesController < ApplicationController
 
       select_interchange_load_data = interchange_load_data.where(wagon_type_id: select_wagon_ids,interchange_point: select_interchange_point)
 
+      
+      summary_load_interchange_hash = LoadInterchange.get_summary_load_interchange(select_interchange_load_data)
       data_type = "rake"
       rakewise_load_interchange_data_hash = LoadInterchange.get_load_interchange_data(select_interchange_load_data,select_interchange_point,data_type) if select_interchange_load_data.present?
       data_type = "unit"
@@ -30,6 +33,9 @@ class Admin::LoadInterchangesController < ApplicationController
 
       @rakewise_load_interchange_data = rakewise_load_interchange_data_hash
       @unitwise_load_interchange_data = unitwise_load_interchange_data_hash
+      @summary_load_interchange_data = summary_load_interchange_hash
+      @days_summary_interchange = (to_date - from_date).to_i + 1
+      @select_ic_point = select_interchange_point
       
     end
       
