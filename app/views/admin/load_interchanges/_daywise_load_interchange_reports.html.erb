@@ -1,0 +1,57 @@
+<div id="daywise_load_interchange_reports">
+<h3 align="center">Load Interchange Daywise</h3>
+<p id="daywise_load_interchange_heading" style="font-size: 16px;color:#cc3d16;"></p>
+
+<table class="table hover table-bordered" id="daywise-load-interchange-reports">
+  <%if @select_ic_point.present?%>  
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <%colspan = @select_ic_point.count*2%>
+        <th rowspan="3" style="vertical-align: middle;">Date</th>
+        <th colspan=<%=colspan%>>Received</th>
+        <th colspan=<%=colspan%>>Despatch</th>
+      </tr>
+      <tr style="color: #fff; background: #4B4B4D;vertical-align: middle;">
+        <%2.times do%>  
+          <%@select_ic_point.each do |i_point|%>
+            <th colspan="2"><%=i_point%></th>
+          <%end%>
+        <%end%>  
+      </tr>  
+       <tr style="color: #fff; background: #4B4B4D;vertical-align: middle;">
+        <%(@select_ic_point.count*2).times do%>
+          <th>Rake</th>
+          <th>Unit</th>
+        <%end%>
+      </tr>
+    </thead>
+  <%end%>  
+  <tbody>
+  <%if @daywise_load_interchange_data.present? && @select_ic_point.present?%>
+    <%@daywise_load_interchange_data.each do |ic_date,data|%>
+      <tr style="text-align: center;">
+        <td><%=ic_date%></td>
+        <%data.keys.each do |ic_type|%>
+          <%@select_ic_point.each do |ic_point|%>
+            <%if @daywise_load_interchange_data[ic_date][ic_type][ic_point] !=nil%>
+              <td><%=@daywise_load_interchange_data[ic_date][ic_type][ic_point]["rakes"]%></td>
+              <td><%=@daywise_load_interchange_data[ic_date][ic_type][ic_point]["units"]%></td>
+            <%else%>
+              <td></td>
+              <td></td>
+            <%end%>
+          <%end%>
+        <%end%>
+      </tr>
+    <%end%>
+  <%end%>
+  </tbody>  
+</table>
+</div>
+<script>
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("daywise_load_interchange_heading").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+  });
+</script>

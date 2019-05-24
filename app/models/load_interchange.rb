@@ -500,18 +500,6 @@ class LoadInterchange < ApplicationRecord
     data_hash = {}
     temp_data.each do |data|
       data_hash[data.interchange_point] = {} if data_hash[data.interchange_point].blank?
-      # data_hash[data.interchange_point].merge!("Ex" => {"rakes" => [0], "units" => [0]}) if data_hash[data.interchange_point][data.interchange_type].blank?
-      # data_hash[data.interchange_point].merge!("To" => {"rakes" => [0], "units" => [0]}) if data_hash[data.interchange_point][data.interchange_type].blank?
-
-      # temp_rakes = data_hash[data.interchange_point][data.interchange_type]["rakes"][0]
-      # temp_rakes = temp_rakes + data.rakes
-      # data_hash[data.interchange_point][data.interchange_type]["rakes"] = [temp_rakes]
-      # temp_units = data_hash[data.interchange_point][data.interchange_type]["units"][0]
-      # temp_units = temp_units + data.units
-      # data_hash[data.interchange_point][data.interchange_type]["units"] = [temp_units]
-      
-
-
       if data_hash[data.interchange_point][data.interchange_type].blank? 
         data_hash[data.interchange_point].merge!(data.interchange_type => {"rakes" => [data.rakes], "units" => [data.units]})
       else
@@ -525,8 +513,33 @@ class LoadInterchange < ApplicationRecord
 
     end
     return(data_hash)  
-  end  
-  
+  end
+
+  def self.get_daywise_load_interchange(temp_data)
+    data_hash = {}
+    temp_data.each do |data|
+      ic_date = data.interchange_date.strftime("%d/%m/%Y")
+      data_hash[ic_date] = {} if data_hash[ic_date].blank?
+      data_hash[ic_date].merge!("Received" => {}, "Despatch" => {}) if data_hash[ic_date].blank?
+      if data.interchange_type == "Ex"  # Ex means Received and To means Despatch
+        if data_hash[ic_date]["Received"][data.interchange_point].blank?
+          data_hash[ic_date]["Received"].merge!(data.interchange_point => {"rakes" => data.rakes, "units" => data.units})
+        else  
+          data_hash[ic_date]["Received"][data.interchange_point]["rakes"] += data.rakes
+          data_hash[ic_date]["Received"][data.interchange_point]["units"] += data.units 
+        end
+      elsif data.interchange_type == "To" # Ex means Received and To means Despatch
+        if data_hash[ic_date]["Despatch"][data.interchange_point].blank?
+          data_hash[ic_date]["Despatch"].merge!(data.interchange_point => {"rakes" => data.rakes, "units" => data.units})
+        else  
+          data_hash[ic_date]["Despatch"][data.interchange_point]["rakes"] += data.rakes
+          data_hash[ic_date]["Despatch"][data.interchange_point]["units"] += data.units 
+        end                        
+      end
+    end
+    return(data_hash)
+      
+  end
 
 
 
