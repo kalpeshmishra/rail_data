@@ -247,6 +247,7 @@ class Admin::CustomLoadReportsController < ApplicationController
       row = row + 1
     end
     row_count = 0
+    
     @custom_date_report_data.each.with_index(1) do |load_data, index|
       row_count = index + 1
       rake_load_row_values = [index,load_data.release_date.strftime('%d-%m-%y'),load_data.load_unload.station.code, load_data.station.code, load_data.wagon_type.wagon_type_code, load_data.rake_count, load_data.loaded_unit, load_data.major_commodity.major_commodity, load_data.stack]

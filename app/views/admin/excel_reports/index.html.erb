@@ -1,0 +1,138 @@
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 180px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<script>
+    
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+ 
+<div class="table-responsive main-excel-reports">
+  <div id="client-message"></div>
+  <div>
+    <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
+    <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="excel-reports">
+    <caption>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <span class="pull-left lead-text">
+          <%="Report"%>
+        </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+       <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+         <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="report">
+         <%= (select_tag "report-type", options_for_select([['LoadingData', 'LoadingData'], ['UnloadingData', 'UnloadingData'],['GG-LoadingData', 'GG-LoadingData'], ['GETS-Data', 'AECS-Data']]), {prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
+      </div>
+     
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit"><i class="fa fa-download submit"></i>Download</button>
+      </div>
+      
+    </caption>
+  </table>
+      
+      <div id="custom_reports_form"></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    $(".start_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    
+    }).on('change.dp', function (e) {
+      if($("#end_date").val() != ""){
+        date_validation();
+      }else{
+        $("#submit_data").prop('disabled', false);
+      }
+    });
+
+    $(".end_date_time").datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('change.dp', function (e) {
+      if($("#start_date").val() != ""){
+        date_validation();
+      }else{
+        $("#date_range_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+      }
+    });
+
+    function date_validation(){
+      s_date = $("#start_date").val().split("-");
+      start_date = new Date(s_date[2], s_date[1] - 1, s_date[0]);
+      e_date = $("#end_date").val().split("-");
+      end_date = new Date(e_date[2], e_date[1] - 1, e_date[0]);
+      no_of_days = Math.abs(Math.round((end_date-start_date)/(1000*60*60*24)) + 1)
+      if (end_date < start_date){
+        $("#submit_data").prop('disabled', true);
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','');
+      }
+      else if (no_of_days > 31){
+        $("#submit_data").prop('disabled', true);
+        $("#date_error_msg").css('display','none');
+        $("#date_range_error_msg").css('display','');
+      }
+      else{
+        $("#date_range_error_msg").css('display','none');
+        $("#date_error_msg").css('display','none');
+        $("#submit_data").prop('disabled', false);
+        $("#submit_error_msg").css('display','none');  
+        
+
+      }
+
+    }
+
+    
+   
+
+    $(".submit").on("click",function(){
+      effective_from = $("#start_date").val();
+      effective_to = $("#end_date").val();
+      report_type = $("#report-type").val();
+      url = "<%= excel_reports_download_path () %>";
+
+      if (effective_from != "" && effective_to!="" && report_type != "") {
+        window.open('<%= root_url%>' + url + '?from_date=' + effective_from+"&to_date=" + effective_to+'&report_type='+report_type, "_self")
+        $(html).submit();
+      }
+      else{
+        $("#submit_error_msg").css('display','');
+      }
+     
+      
+      
+    });
+
+   
+  });
+</script>
