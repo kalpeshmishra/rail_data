@@ -38,7 +38,7 @@
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="report">
-         <%= (select_tag "report-type", options_for_select([['LoadingData', 'LoadingData'], ['UnloadingData', 'UnloadingData'],['GG-LoadingData', 'GG-LoadingData'], ['GETS-Data', 'AECS-Data']]), {prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
+         <%= (select_tag "report-type", options_for_select([['LoadingData', 'LoadingData'], ['UnloadingData', 'UnloadingData'],['GG-LoadingData', 'GG-LoadingData'], ['Powerhouse-Data', 'Powerhouse-Data'], ['Interchange-Data', 'Interchange-Data']]), {style: "width: 140px; height:35px;" ,prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
       </div>
      
       
