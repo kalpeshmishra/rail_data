@@ -93,7 +93,6 @@ class Admin::OneLoadingReportsController < ApplicationController
         	@create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {}
         	rake_unit = create_rake_commoditie.rake_unit rescue 0
         	@create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id].merge!("#{load.id}" => rake_unit)
-          # @create_rake_loads_rake_commoditie_id_hash[create_rake_commoditie.rake_commodity_id] = {rake_load_ids: [load.id]}
         end
       end
     end

@@ -146,12 +146,30 @@ class Admin::ExcelReportsController < ApplicationController
 	    end
 		elsif params[:report_type] == "GG-LoadingData"
 			sheet_name = "GG-LoadingData"
-			gg_loading_data = RakeLoad.where(release_date: start_date..end_date)
-			statement_xls = Spreadsheet::Workbook.new
+			gg_major_commodity = MajorCommodity.find_by(major_commodity: "GG")
+	    gg_rake_loads = gg_major_commodity.rake_loads.where(release_date: start_date..end_date)
+	    gg_load_ids = gg_rake_loads.map{|e| e.id}
+	    header_commodity_ids = gg_rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
+	    header_for_loop = [:month, :from, :to, :release, :loaded_unit] + header_commodity_ids
+	    header_commodity_name = header_commodity_ids.map{|e| RakeCommodity.find(e).rake_commodity_name}
+	    gg_excel_hash = {}
+	    temp = {}
+	    gg_rake_loads.each do |data|
+	    	if data.release_date == ""
+	      	data.release_date = nil
+	      end	
+	    	a = CreateRakeLoadsRakeCommodity.where(rake_load_id: data.id).pluck(:rake_commodity_id,:rake_unit)
+	    	b = Hash[*a.flatten(1)]
+	    	temp[data.id] = {month: data.release_date&.strftime('%b-%y'), from: data.load_unload.station.code, to: data.station.code,release: (data.release_time&.first(5)&.concat(" ")&.concat(data.release_date&.strftime('%d-%m-%y'))), loaded_unit: data.loaded_unit}
+	    	gg_excel_hash[data.id] = temp[data.id].merge(b)
+	    	
+	    end
+	    
+	    statement_xls = Spreadsheet::Workbook.new
 	    sheet = statement_xls.create_worksheet :name => sheet_name
-	    gg_commodity = ["COTN","SALT"]
+	    
 	    fixed_header = ["SrNo", "Month", "From", "To", "Release Time/Date", "Loaded Unit"]
-	    temp_array = fixed_header + gg_commodity 
+	    temp_array = fixed_header + header_commodity_name
 	    
 	    header = [["GG-Loading Data From:"+start_date+"-To:"+end_date],temp_array]
 	    sheet.row(0).default_format = Spreadsheet::Format.new(:weight => :bold)
@@ -166,22 +184,19 @@ class Admin::ExcelReportsController < ApplicationController
 	      row = row + 1
 	    end
 	    row_count = 0
-	    gg_loading_data.each.with_index(1) do |gg_data, index|
-	      row_count = index + 1
 
-	      if gg_data.release_time == ""
-	      	gg_data.release_time = nil
-	      end	
-	      if gg_data.release_date == ""
-	      	gg_data.release_date = nil
-	      end	
-	      
-	      
-	      # gg_load_row_values = [index,gg_data.release_date&.strftime('%b-%y'),gg_data.load_unload.area.area_code,gg_data.load_unload.station.code, gg_data.station.code, gg_data.forecast_date&.strftime('%d-%m-%y'), gg_data.rake_received, gg_data.rake_count, gg_data.loaded_unit, gg_data.total_unit, gg_data.wagon_type.wagon_type_code, gg_data.major_commodity.major_commodity, gg_data.stack, (gg_data.arrival_time&.first(5)&.concat(" ")&.concat(gg_data.arrival_date&.strftime('%d-%m-%y'))),(gg_data.placement_time&.first(5)&.concat(" ")&.concat(gg_data.placement_date&.strftime('%d-%m-%y'))),(gg_data.release_time&.first(5)&.concat(" ")&.concat(gg_data.release_date&.strftime('%d-%m-%y'))),(gg_data.powerarrival_time&.first(5)&.concat(" ")&.concat(gg_data.powerarrival_date&.strftime('%d-%m-%y'))),(gg_data.removal_time&.first(5)&.concat(" ")&.concat(gg_data.removal_date&.strftime('%d-%m-%y'))),(gg_data.departure_time&.first(5)&.concat(" ")&.concat(gg_data.departure_date&.strftime('%d-%m-%y'))),gg_data.power_no, gg_data.bpc_type, gg_data.bpc_station, gg_data.bpc_date, gg_data.tue_first_row, gg_data.tue_second_row, gg_data.commodity_type, gg_data.odr_type, gg_data.odr_date, gg_data.consignor, gg_data.consignee, gg_data.short_interchange, gg_data.short_km, gg_data.actual_interchange,(gg_data.ic_time&.first(5)&.concat(" ")&.concat(gg_data.ic_date&.strftime('%d-%m-%y'))), gg_data.detention_arrival_placement, gg_data.detention_placement_release, gg_data.detention_release_powerarrival, gg_data.detention_powerarrival_departure, gg_data.detention_removal_departure, gg_data.remark]
-	      # gg_load_row_values.each_with_index do |content, index|
-	      #   sheet[row_count, index] = content
-	      # end
-	    end
+	    gg_excel_hash.values.each.with_index(1) do |gg_data, index|
+	    	row_count = index + 1
+	    	temp_values = []
+	    	header_for_loop.each do |header|
+	    		temp_values << gg_data[header] 
+	    	end	
+				gg_load_row_values = [index,temp_values].flatten
+				gg_load_row_values.each_with_index do |content, index|
+  	      sheet[row_count, index] = content
+	      end
+    	end
+	   
 		elsif params[:report_type] == "Powerhouse-Data"
 			sheet_name = "PowerhouseData"
 			powerhouse_data = RakeUnload.where(release_date: start_date..end_date,form_status: ["GETS","AECS"])
@@ -254,8 +269,25 @@ class Admin::ExcelReportsController < ApplicationController
 	    end
 	  elsif params[:report_type] == "Interchange-Data"
 			sheet_name = "Interchange-Data"
+			# powerhouse_data = RakeUnload.where(release_date: start_date..end_date,form_status: ["GETS","AECS"])
+			statement_xls = Spreadsheet::Workbook.new
+	    sheet = statement_xls.create_worksheet :name => sheet_name
+	    
+	    header = [["Interchange Data From:"+start_date+"-To:"+end_date],["SrNo.","Month","Area","From ", "To   ", "TakenOver", "Collary", "Received Time/Date", "RakeCount", "LoadedUnit"]]
+	    sheet.row(0).default_format = Spreadsheet::Format.new(:weight => :bold)
+	    sheet.row(1).default_format = Spreadsheet::Format.new(:weight => :bold)
+	    row = 0
+	    header.each_with_index do |data, i|
+	      data.each_with_index do |label, index|
+	        sheet[row, index] = label
+	        header_width = label.length + 3
+	        sheet.column(index).width = header_width
+	      end
+	      row = row + 1
+	    end
+	    row_count = 0
+	    #pending
 		end
-
 
     report_content = statement_xls
     report_content.write "public/report_content.xls"
