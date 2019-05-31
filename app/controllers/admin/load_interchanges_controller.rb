@@ -21,7 +21,6 @@ class Admin::LoadInterchangesController < ApplicationController
     if params["is_data_filter"].present? 
       select_wagon_ids = params[:selected_stock].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
       select_interchange_point = params[:selected_interchange].split(',').map{|x|x}.delete_if {|x| x =="multiselect-all"}
-
       select_interchange_load_data = interchange_load_data.where(wagon_type_id: select_wagon_ids,interchange_point: select_interchange_point)
 
       
@@ -61,7 +60,7 @@ class Admin::LoadInterchangesController < ApplicationController
 
 
   def get_data_for_form
- 		@wagon_type = WagonType.all.order(wagon_type_code: :asc).map{|wagon| ["#{wagon.wagon_type_code}-#{wagon.wagon_details_covered_open}",wagon.id]}
+ 		@wagon_type = WagonType.where(is_viewable: true).order(wagon_type_code: :asc).map{|wagon| ["#{wagon.wagon_type_code}-#{wagon.wagon_details_covered_open}",wagon.id]}
   	
   	data = params[:date].to_date if params[:date].present?
     data = Date.today if data.blank?

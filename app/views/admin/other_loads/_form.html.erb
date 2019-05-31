@@ -42,7 +42,7 @@
         <td>
           <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',title: 'Enter loaded Units', id: "loaded_unit_#{index}",required: true, style: "width: 75px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Count", class: 'form-control input-md',id: "rake_count_#{index}",required: true, max: "1", style: "width: 75px;border: 1px solid #888;" %>
+          <%= number_field_tag "rake_count_#{index}",'', placeholder: "Count", class: 'form-control input-md',id: "rake_count_#{index}",required: true,min:"0", max: "1", style: "width: 75px;border: 1px solid #888;" %>
         </td>
         <td>
           <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control input-md',required: true, style: "width: 110px;", id: "major_commodity_#{index}",data_live_search: "true"} %>

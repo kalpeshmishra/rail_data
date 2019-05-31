@@ -148,7 +148,7 @@ class Admin::ExcelReportsController < ApplicationController
 			sheet_name = "GG-LoadingData"
 			gg_major_commodity = MajorCommodity.find_by(major_commodity: "GG")
 	    gg_rake_loads = gg_major_commodity.rake_loads.where(release_date: start_date..end_date)
-	    gg_load_ids = gg_rake_loads.map{|e| e.id}
+	    gg_load_ids = gg_rake_loads.map{|e| e.id} #not required
 	    header_commodity_ids = gg_rake_loads.map{|load|load.create_rake_loads_rake_commodities.pluck(:rake_commodity_id)}.flatten.compact.uniq
 	    header_for_loop = [:month, :from, :to, :release, :loaded_unit] + header_commodity_ids
 	    header_commodity_name = header_commodity_ids.map{|e| RakeCommodity.find(e).rake_commodity_name}
@@ -269,24 +269,38 @@ class Admin::ExcelReportsController < ApplicationController
 	    end
 	  elsif params[:report_type] == "Interchange-Data"
 			sheet_name = "Interchange-Data"
-			# powerhouse_data = RakeUnload.where(release_date: start_date..end_date,form_status: ["GETS","AECS"])
+			interchange_points = ["GER", "VGDC", "DHG", "MALB", "PNU", "BLDI", "SIOB", "TOTAL"]
+			data_type = "rake"
+			interchange_load_data = LoadInterchange.where(interchange_date: start_date..end_date)
+			rake_load_interchange_hash = LoadInterchange.get_load_interchange_data(interchange_load_data,interchange_points,data_type) if interchange_load_data.present?
 			statement_xls = Spreadsheet::Workbook.new
 	    sheet = statement_xls.create_worksheet :name => sheet_name
-	    
-	    header = [["Interchange Data From:"+start_date+"-To:"+end_date],["SrNo.","Month","Area","From ", "To   ", "TakenOver", "Collary", "Received Time/Date", "RakeCount", "LoadedUnit"]]
-	    sheet.row(0).default_format = Spreadsheet::Format.new(:weight => :bold)
-	    sheet.row(1).default_format = Spreadsheet::Format.new(:weight => :bold)
+	    h_one = ["STOCK"] + rake_load_interchange_hash.keys.map!(&:upcase)
+	    # binding.pry
+	    header = [["Interchange Data From:"+start_date+"-To:"+end_date],h_one,interchange_points*2,["SrNo."]]
+	    (0..3).each do |i|
+	    	sheet.row(i).default_format = Spreadsheet::Format.new(:weight => :bold)
+	    end
+	    sheet.merge_cells(1,0,2,0)
+	    sheet.merge_cells(1,1,1,8)
+	    sheet.merge_cells(1,9,1,16)
 	    row = 0
 	    header.each_with_index do |data, i|
-	      data.each_with_index do |label, index|
-	        sheet[row, index] = label
+	    	if i == 2
+	    		data.prepend("")
+	    	end
+	    	data.each_with_index do |label, index|
+	    		if label == "DESPATCH"
+	    			index = 9
+	    		end
+	    		sheet[row, index] = label
 	        header_width = label.length + 3
 	        sheet.column(index).width = header_width
 	      end
 	      row = row + 1
 	    end
 	    row_count = 0
-	    #pending
+	    
 		end
 
     report_content = statement_xls

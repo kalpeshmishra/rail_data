@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190516104454) do
+ActiveRecord::Schema.define(version: 20190531105548) do
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"
@@ -460,6 +460,7 @@ ActiveRecord::Schema.define(version: 20190516104454) do
     t.integer  "load_class_train"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.boolean  "is_viewable"
   end
 
 end

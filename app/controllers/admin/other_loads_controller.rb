@@ -55,7 +55,7 @@ class Admin::OtherLoadsController < ApplicationController
 
   def get_data_for_form
     @major_commodity = MajorCommodity.all.map{|major|[major.major_commodity,major.id]}
-    @wagon_type = WagonType.all.map{|wagon| [wagon.wagon_type_code,wagon.id]}
+    @wagon_type = WagonType.where(is_viewable: true).map{|wagon| [wagon.wagon_type_code,wagon.id]}
     @rake_commodity = {}
     MajorCommodity.all.each do |major|
     rake_commodity_array = major.rake_commodities.map{|rake_commodity| ["#{rake_commodity.rake_commodity_code}-#{rake_commodity.rake_commodity_name}",rake_commodity.id]}

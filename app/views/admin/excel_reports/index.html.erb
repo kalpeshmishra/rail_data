@@ -22,7 +22,7 @@
   <div>
     <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
     <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
-    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to download data in Excel</h4>
   </div>
   <table class="table hover table-dark" id="excel-reports">
     <caption>
@@ -37,11 +37,10 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
          <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="report">
-         <%= (select_tag "report-type", options_for_select([['LoadingData', 'LoadingData'], ['UnloadingData', 'UnloadingData'],['GG-LoadingData', 'GG-LoadingData'], ['Powerhouse-Data', 'Powerhouse-Data'], ['Interchange-Data', 'Interchange-Data']]), {style: "width: 140px; height:35px;" ,prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="report">
+         <%= (select_tag "report-type", options_for_select([['LoadingData', 'LoadingData'], ['UnloadingData', 'UnloadingData'],['GG-LoadingData', 'GG-LoadingData'], ['Powerhouse-Data', 'Powerhouse-Data']]), {style: "width: 160px; height:35px;" ,prompt: 'Select', class: "form-control  input-sm report_period"}).html_safe %>
       </div>
      
-      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit"><i class="fa fa-download submit"></i>Download</button>
       </div>
@@ -106,8 +105,6 @@
         $("#date_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
         $("#submit_error_msg").css('display','none');  
-        
-
       }
 
     }
@@ -128,9 +125,7 @@
       else{
         $("#submit_error_msg").css('display','');
       }
-     
-      
-      
+    
     });
 
    

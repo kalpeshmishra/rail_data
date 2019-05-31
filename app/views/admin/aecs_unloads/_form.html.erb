@@ -70,7 +70,7 @@
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 95px;", id: "wagon_type_#{index}", data_live_search: "true"} %>
           <p></p>
-           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",required: true, style: "width: 95px;border: 1px solid #888;" %>
+           <%= number_field_tag "rake_count_#{index}",'', placeholder: "Rake Count", class: 'form-control input-md',id: "rake_count_#{index}",step: "0.01",min:"0",max:"1",required: true, style: "width: 95px;border: 1px solid #888;" %>
         </td>
          <td>
           <%= number_field_tag "incoming_power_#{index}", '', placeholder: "IC_Power", class: 'form-control input-md',title: 'Enter Power No', id: "incoming_power_#{index}",style: "width: 130px; font-size:14px;height:28px;" %>
