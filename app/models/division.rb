@@ -4,6 +4,7 @@ class Division < ApplicationRecord
   has_many :areas
   has_many :ic_divisions
   has_many :load_unloads
+  
 
   # has_many :users
 

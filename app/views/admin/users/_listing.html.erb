@@ -5,7 +5,7 @@
   <td class="text-center"><span class="view-location-<%= index %>"><%= user.last_name rescue '' %></span></td>
   <td class="text-center"><span class="view-location-<%= index %>"><%= user.area rescue '' %></span></td>
   <td class="text-center"><span class="view-location-<%= index %>"><%= user.user_code rescue '' %></span></td>
-  <td class="text-center"><span class="view-location-<%= index %>"><%= user.division.code rescue '' %></span></td>
+  <td class="text-center"><span class="view-location-<%= index %>"><%= Division.find(user.division_id).code rescue '' %></span></td>
 
   <%if is_viewable%>
     <td class="text-center" style="white-space: nowrap">
