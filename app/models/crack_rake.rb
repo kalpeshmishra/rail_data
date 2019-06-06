@@ -1,0 +1,2 @@
+class CrackRake < ApplicationRecord
+end

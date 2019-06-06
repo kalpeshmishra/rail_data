@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190531105548) do
+ActiveRecord::Schema.define(version: 20190606064339) do
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"
@@ -41,6 +41,32 @@ ActiveRecord::Schema.define(version: 20190531105548) do
     t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
     t.index ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
     t.index ["user_id", "user_type"], name: "user_index", using: :btree
+  end
+
+  create_table "crack_rakes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "train_name"
+    t.string   "power_number"
+    t.string   "stock_type"
+    t.string   "order_time"
+    t.date     "order_date"
+    t.string   "on_duty_time"
+    t.date     "on_duty_date"
+    t.string   "pre_departure_detnention"
+    t.string   "departure_station"
+    t.string   "departure_time"
+    t.date     "departure_date"
+    t.string   "dhg_arrival_time"
+    t.date     "dhg_arrival_date"
+    t.string   "tor_departure_dhg_arrival"
+    t.string   "gimb_arrival_time"
+    t.date     "gimb_arrival_date"
+    t.string   "off_duty_time"
+    t.date     "off_duty_date"
+    t.string   "detention_on_to_off_duty"
+    t.string   "tor_departure_gimb_arrival"
+    t.string   "remarks"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "create_rake_loads_rake_commodities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

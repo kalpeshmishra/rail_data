@@ -1,0 +1,2 @@
+module Admin::CrackRakesHelper
+end
