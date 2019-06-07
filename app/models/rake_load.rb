@@ -160,7 +160,6 @@ after_destroy :remove_rake_commodity_breakup_data
       record_id = value["record_id"].to_i if value["record_id"].present?
       one_rake_load = self.find(record_id) rescue nil if record_id.present?
       one_rake_load = self.new if one_rake_load.blank?
-      #commodity break up pending
       one_rake_load.tue_first_row = value["tue_first_row"] rescue nil
       one_rake_load.tue_second_row = value["tue_second_row"] rescue nil
       one_rake_load.powerarrival_time = value["powerarrival_time"] rescue nil

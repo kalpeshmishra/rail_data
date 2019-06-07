@@ -18,7 +18,7 @@
     <th>TOR Dep to<br>DHG Arr</th>
     <th>GIMB(Arr)<br>Time/Date</th>
     <th>OFF Duty</th>
-    <th>Detn on to_off<br>TOR Dep to GIMB Arr</th>
+    <th>TOR_Dep to_GIMB_Arr<br>Detn(On_Off)</th>
     <th>Remarks</th>
     <th>Action</th>
   </tr>
@@ -33,30 +33,30 @@
         <td>
           <%= text_field_tag "train_name_#{index}", '', placeholder: 'Train No', id: "train_name_#{index}", class: 'form-control input-md', style: "width: 125px; text-transform:uppercase;"%>
         <p></p>
-          <%= text_field_tag "power_no_#{index}", '', placeholder: 'Power No', id: "train_name_#{index}", class: 'form-control input-md', style: "width: 125px; text-transform:uppercase;"%>
+          <%= text_field_tag "power_no_#{index}", '', placeholder: 'Power No', id: "power_no_#{index}", class: 'form-control input-md', style: "width: 125px; text-transform:uppercase;"%>
         </td>
         <td>
-          <%= text_field_tag "order_time_#{index}", '', type: 'time',placeholder: 'order time', id: "order_time_#{index}", class: 'form-control input-md', required: true, style: "width: 148px; font-size:14px;"%>
+          <%= text_field_tag "order_time_#{index}", '', type: 'time',placeholder: 'order time', id: "order_time_#{index}", class: 'form-control input-md order_time', required: true, style: "width: 148px; font-size:14px;"%>
         <p></p>
           <%= text_field_tag "order_date_#{index}", '', type: 'date',placeholder: 'order Date', id: "order_date_#{index}", class: 'form-control input-md order_date',required: true, style: "width: 148px; font-size:14px;"%>
         </td>
         <td>
-          <%= text_field_tag "onduty_time_#{index}", '', type: 'time',placeholder: 'onduty Date', id: "onduty_time_#{index}", class: 'form-control input-md', required: true, style: "width: 148px; font-size:14px;"%>
+          <%= text_field_tag "onduty_time_#{index}", '', type: 'time',placeholder: 'onduty Date', id: "onduty_time_#{index}", class: 'form-control input-md onduty_time', required: true, style: "width: 148px; font-size:14px;"%>
         <p></p>
           <%= text_field_tag "onduty_date_#{index}", '', type: 'date',placeholder: 'onduty Date', id: "onduty_date_#{index}", class: 'form-control input-md onduty_date',required: true, style: "width: 148px; font-size:14px;"%>
         </td>
         <td>
-          <%= text_field_tag "departure_time_#{index}", '', type: 'time',placeholder: 'departure Date', id: "departure_time_#{index}", class: 'form-control input-md', required: true, style: "width: 148px; font-size:14px;"%>
+          <%= text_field_tag "departure_time_#{index}", '', type: 'time',placeholder: 'departure Date', id: "departure_time_#{index}", class: 'form-control input-md departure_time', required: true, style: "width: 148px; font-size:14px;"%>
         <p></p>
           <%= text_field_tag "departure_date_#{index}", '', type: 'date',placeholder: 'departure Date', id: "departure_date_#{index}", class: 'form-control input-md departure_date',required: true, style: "width: 148px; font-size:14px;"%>
         </td>
         <td>
-          <%= select_tag "bpc_type_#{index}", options_for_select([["SMYD","SMYD"],["VY","VY"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:14px", id: "bpc_type_#{index}", data_live_search: "true"} %>
+          <%= select_tag "station_#{index}", options_for_select([["SMYD","SMYD"],["VY","VY"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:14px", required: true, id: "station_#{index}", data_live_search: "true"} %>
         <p></p>
           <%= text_field_tag "pre_departure_#{index}",'', placeholder: "PDD", class: 'form-control input-md pre_departure', id: "pre_departure_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
        <td>
-          <%= text_field_tag "dhgarr_time_#{index}", '', type: 'time',placeholder: 'dhgarr Date', id: "dhgarr_time_#{index}", class: 'form-control input-md', required: true, style: "width: 148px; font-size:14px;"%>
+          <%= text_field_tag "dhgarr_time_#{index}", '', type: 'time',placeholder: 'dhgarr Date', id: "dhgarr_time_#{index}", class: 'form-control input-md dhgarr_time', required: true, style: "width: 148px; font-size:14px;"%>
         <p></p>
           <%= text_field_tag "dhgarr_date_#{index}", '', type: 'date',placeholder: 'dhgarr Date', id: "dhgarr_date_#{index}", class: 'form-control input-md dhgarr_date',required: true, style: "width: 148px; font-size:14px;"%>
         </td>
@@ -64,19 +64,19 @@
           <%= text_field_tag "tor_deptoarr_#{index}",'', placeholder: "TOR", class: 'form-control input-md tor_deptoarr', id: "tor_deptoarr_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
         <td>
-          <%= text_field_tag "gimbarr_time_#{index}", '', type: 'time',placeholder: 'gimbarr Date', id: "gimbarr_time_#{index}", class: 'form-control input-md', required: true, style: "width: 160px; font-size:16px;"%>
+          <%= text_field_tag "gimbarr_time_#{index}", '', type: 'time',placeholder: 'gimbarr Date', id: "gimbarr_time_#{index}", class: 'form-control input-md gimbarr_time', required: true, style: "width: 160px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "gimbarr_date_#{index}", '', type: 'date',placeholder: 'gimbarr Date', id: "gimbarr_date_#{index}", class: 'form-control input-md gimbarr_date',required: true, style: "width: 160px; font-size:16px;"%>
         </td>
         <td>
-          <%= text_field_tag "offduty_time_#{index}", '', type: 'time',placeholder: 'offduty Date', id: "offduty_time_#{index}", class: 'form-control input-md', required: true, style: "width: 160px; font-size:16px;"%>
+          <%= text_field_tag "offduty_time_#{index}", '', type: 'time',placeholder: 'offduty Date', id: "offduty_time_#{index}", class: 'form-control input-md offduty_time', required: true, style: "width: 160px; font-size:16px;"%>
         <p></p>
           <%= text_field_tag "offduty_date_#{index}", '', type: 'date',placeholder: 'offduty Date', id: "offduty_date_#{index}", class: 'form-control input-md offduty_date',required: true, style: "width: 160px; font-size:16px;"%>
         </td>
         <td>
-          <%= text_field_tag "detn_ontooff_#{index}",'', placeholder: "DETN", class: 'form-control input-md detn_ontooff', id: "detn_ontooff_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
-        <p></p>
           <%= text_field_tag "tor_deptogimbarr_#{index}",'', placeholder: "TOR", class: 'form-control input-md tor_deptogimbarr', id: "tor_deptogimbarr_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
+        <p></p>
+          <%= text_field_tag "detn_ontooff_#{index}",'', placeholder: "DETN", class: 'form-control input-md detn_ontooff', id: "detn_ontooff_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
         <td>
           <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 155px; height:80px;"%>
@@ -124,41 +124,56 @@ $(function(){
   });
  
   <% (0..25).each_with_index do |no,index| %>
-    <%if index >= (0)%>
+    <%if index >= (@crack_rakes.count || 0)%>
       var tr = '<%=".crack_rake_row_#{index}"%>';
       $(tr).hide();
     <%end%> 
   <% end %>
    <%if @crack_rakes.present?%>
       <%@crack_rakes.each_with_index do |data,index|%>
-          from_station = "#from_station_"+<%=index%>
-          to_station = "#to_station_"+<%=index%>
-          loaded_unit = "#loaded_unit_"+<%=index%>
-          rake_count = "#rake_count_"+<%=index%>
-          major_commodity = "#major_commodity_"+<%=index%>
-          wagon_type = "#wagon_type_"+<%=index%>
-          gross_tons ="#gross_tons_"+<%=index%>
-          net_tons =  "#net_tons_"+<%=index%>
-          odr_type = "#odr_type_"+<%=index%>
-          odr_date = "#odr_date_"+<%=index%>
-          release_time = "#release_time_"+<%=index%>
-          release_date = "#release_date_"+<%=index%>
+
+          train_name = "#train_name_"+<%=index%>
+          power_no = "#power_no_"+<%=index%>
+          order_time = "#order_time_"+<%=index%>
+          order_date = "#order_date_"+<%=index%>
+          onduty_time = "#onduty_time_"+<%=index%>
+          onduty_date = "#onduty_date_"+<%=index%>
+          pre_departure = "#pre_departure_"+<%=index%>
+          station = "#station_"+<%=index%>
+          departure_time = "#departure_time_"+<%=index%>
+          departure_date = "#departure_date_"+<%=index%>
+          dhgarr_time = "#dhgarr_time_"+<%=index%>
+          dhgarr_date = "#dhgarr_date_"+<%=index%>
+          tor_deptoarr = "#tor_deptoarr_"+<%=index%>
+          gimbarr_time = "#gimbarr_time_"+<%=index%>
+          gimbarr_date = "#gimbarr_date_"+<%=index%>
+          offduty_time = "#offduty_time_"+<%=index%>
+          offduty_date = "#offduty_date_"+<%=index%>
+          detn_ontooff = "#detn_ontooff_"+<%=index%>
+          tor_deptogimbarr = "#tor_deptogimbarr_"+<%=index%>
           remarks = "#remarks_"+<%=index%>
           rake_id = "#record_id_"+<%=index%>
 
-          $(from_station).val('<%=Station.where(id: LoadUnload.where(id: data.load_unload_id).pluck(:station_id)[0]).pluck(:code)[0]%>');
-          $(to_station).val('<%=Station.where(id: data.station_id).pluck(:code)[0]%>');
-          $(loaded_unit).val('<%=data.loaded_unit%>');
-          $(rake_count).val('<%=data.rake_count%>');
-          $(major_commodity).val('<%=data.major_commodity_id%>');
-          $(wagon_type).val('<%=data.wagon_type_id%>');
-          $(gross_tons).val('<%=data.gross_tons%>');
-          $(net_tons).val('<%=data.net_tons%>');
-          $(odr_type).val('<%=data.odr_type%>');
-          $(odr_date).val('<%=data.odr_date%>');
-          $(release_time).val('<%=data.release_time%>');
-          $(release_date).val('<%=data.release_date%>');
-          $(remarks).val('<%=data.remark%>');
+          $(train_name).val('<%=data.train_name%>');
+          $(power_no).val('<%=data.power_number%>');
+          $(order_time).val('<%=data.order_time%>');
+          $(order_date).val('<%=data.order_date%>');
+          $(onduty_time).val('<%=data.on_duty_time%>');
+          $(onduty_date).val('<%=data.on_duty_date%>');
+          $(pre_departure).val('<%=data.pre_departure_detnention%>');
+          $(station).val('<%=data.departure_station%>');
+          $(departure_time).val('<%=data.departure_time%>');
+          $(departure_date).val('<%=data.departure_date%>');
+          $(dhgarr_time).val('<%=data.dhg_arrival_time%>');
+          $(dhgarr_date).val('<%=data.dhg_arrival_date%>');
+          $(tor_deptoarr).val('<%=data.tor_departure_dhg_arrival%>');
+          $(gimbarr_time).val('<%=data.gimb_arrival_time%>');
+          $(gimbarr_date).val('<%=data.gimb_arrival_date%>');
+          $(offduty_time).val('<%=data.off_duty_time%>');
+          $(offduty_date).val('<%=data.off_duty_date%>');
+          $(detn_ontooff).val('<%=data.detention_on_to_off_duty%>');
+          $(tor_deptogimbarr).val('<%=data.tor_departure_gimb_arrival%>');
+          $(remarks).val('<%=data.remarks%>');
           $(rake_id).val('<%=data.id%>');
           
       <%end%>
@@ -191,32 +206,231 @@ $(function(){
     delete_crack_rake_id = $("#record_id_"+delete_index).val();
     var visible_row_count = 0
     
-    $('.other-load-tr:visible').each(function() {
+    $('.crack-rake-tr:visible').each(function() {
       visible_row_count = visible_row_count + 1
     });
-    
     $("#delete-modal").modal('show');
-   
-
+ 
   });
 
   $("#confirm_crack_rake_delete").click(function () {
     $("#delete-modal").modal('hide');
-
     if (delete_crack_rake_id != "") {
-          $.ajax({
-          type: "get",
-          url: "/delete_crack_rake.js?delete_crack_rake_id=" + delete_crack_rake_id
-        });
-      }
-
-     $('.other-load-tr:visible').each(function() {
+        $.ajax({
+        type: "get",
+        url: "/delete_crack_rake.js?delete_crack_rake_id=" + delete_crack_rake_id
+      });
+    }
+    $('.crack-rake-tr:visible').each(function() {
       if($(this).attr("id").split("_")[4] == delete_index){
         $(this).remove('');
       }
     });
+
   });
 
+  $(".order_time,.order_date").on('keyup change', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    var order_time_id = "#order_time_"+row_no
+    var order_date_id = "#order_date_"+row_no
+    var onduty_time_id = "#onduty_time_"+row_no
+    var onduty_date_id = "#onduty_date_"+row_no
+
+    var order_time = $(order_time_id).val();
+    var order_date = $(order_date_id).val();
+
+    var order = new Date(order_time +" "+ order_date)
+    order = new Date(order.setMinutes(order.getMinutes() - 15));
+    
+    odt = moment(order).format("hh:mm");
+    odd = moment(order).format("YYYY-MM-DD");
+    
+    $(onduty_time_id).val(odt);
+    $(onduty_date_id).val(odd);
+    
+  }); 
+
+  $(".gimbarr_time,.gimbarr_date").on('keyup change', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    var gimbarr_time_id = "#gimbarr_time_"+row_no
+    var gimbarr_date_id = "#gimbarr_date_"+row_no
+    var offduty_time_id = "#offduty_time_"+row_no
+    var offduty_date_id = "#offduty_date_"+row_no
+
+    var gimbarr_time = $(gimbarr_time_id).val();
+    var gimbarr_date = $(gimbarr_date_id).val();
+
+    var gimbarr = new Date(gimbarr_time +" "+ gimbarr_date)
+    gimbarr = new Date(gimbarr.setMinutes(gimbarr.getMinutes() + 30));
+    
+    g_time = moment(gimbarr).format("hh:mm");
+    g_date = moment(gimbarr).format("YYYY-MM-DD");
+    
+    $(offduty_time_id).val(g_time);
+    $(offduty_date_id).val(g_date);
+    
+  });
+
+  $(".order_time,.order_date,.onduty_time,.onduty_date,.departure_time,.departure_date,.dhgarr_time,.dhgarr_date,.gimbarr_time,.gimbarr_date,.offduty_time,.offduty_date").on('keyup change', function () {
+    var row_no = $(this).attr('id').split('_')[2]
+    get_detention(row_no);
+    debugger
+  });
+
+  function get_detention(row_no){
+    var detn_order_time_id = "#order_time_"+row_no
+    var detn_order_date_id = "#order_date_"+row_no
+    var detn_onduty_time_id = "#onduty_time_"+row_no
+    var detn_onduty_date_id = "#onduty_date_"+row_no
+    var detn_departure_time_id = "#departure_time_"+row_no
+    var detn_departure_date_id = "#departure_date_"+row_no
+    var detn_dhgarr_time_id = "#dhgarr_time_"+row_no
+    var detn_dhgarr_date_id = "#dhgarr_date_"+row_no
+    var detn_gimbarr_time_id = "#gimbarr_time_"+row_no
+    var detn_gimbarr_date_id = "#gimbarr_date_"+row_no
+    var detn_offduty_time_id = "#offduty_time_"+row_no
+    var detn_offduty_date_id = "#offduty_date_"+row_no
+
+    var detention_pre_departure = "#pre_departure_"+row_no
+    var detention_tor_dhg = "#tor_deptoarr_"+row_no
+    var detention_on_off = "#detn_ontooff_"+row_no
+    var detention_tor_gimb = "#tor_deptogimbarr_"+row_no
+
+    var detn_order_time = $(detn_order_time_id).val();
+    var detn_order_date = $(detn_order_date_id).val();
+    var detn_onduty_time = $(detn_onduty_time_id).val();
+    var detn_onduty_date = $(detn_onduty_date_id).val();
+    var detn_departure_time = $(detn_departure_time_id).val();
+    var detn_departure_date = $(detn_departure_date_id).val();
+    var detn_dhgarr_time = $(detn_dhgarr_time_id).val();
+    var detn_dhgarr_date = $(detn_dhgarr_date_id).val();
+    var detn_gimbarr_time = $(detn_gimbarr_time_id).val();
+    var detn_gimbarr_date = $(detn_gimbarr_date_id).val();
+    var detn_offduty_time = $(detn_offduty_time_id).val();
+    var detn_offduty_date = $(detn_offduty_date_id).val();
+
+    var detn_order = new Date(detn_order_time +" "+ detn_order_date)
+    var detn_onduty = new Date(detn_onduty_time +" "+ detn_onduty_date)
+    var detn_departure = new Date(detn_departure_time +" "+ detn_departure_date)
+    var detn_dhgarr = new Date(detn_dhgarr_time +" "+detn_dhgarr_date)
+    var detn_gimbarr = new Date(detn_gimbarr_time +" "+detn_gimbarr_date)
+    var detn_offduty = new Date(detn_offduty_time +" "+detn_offduty_date)
+
+    // Detention pre-departure  --Start
+    var detnpdd = detn_departure - detn_order;
+    if (detnpdd>=0) {
+      var detnpdd_minutes = Math.floor(detnpdd / 60000);
+      var detnpdd_hours = Math.floor(detnpdd_minutes / 60);
+      var detnpdd_minutes2 = Math.floor(detnpdd_minutes % 60);
+      
+      if(detnpdd_minutes2 < 10){
+          detnpdd_minutes2 = "0"+ detnpdd_minutes2
+        }else{
+          detnpdd_minutes2 = detnpdd_minutes2
+        }
+      if(detnpdd_hours < 10){
+          detnpdd_hours = "0"+detnpdd_hours
+        }else{
+          detnpdd_hours = detnpdd_hours
+        }
+       
+        var detnpdd_final_time = detnpdd_hours+":"+detnpdd_minutes2;
+        $(detention_pre_departure).val(detnpdd_final_time);
+        
+      }
+      else{
+        $(detention_pre_departure).val("NA");
+      }
+
+    // Detention pre-departure  --Ends
+
+    // Detention TOR Departure to DHG-Arrival --Start
+    
+    var detntor_dhg = detn_dhgarr - detn_departure;
+    if (detntor_dhg>=0) {
+      var detntor_dhg_minutes = Math.floor(detntor_dhg / 60000);
+      var detntor_dhg_hours = Math.floor(detntor_dhg_minutes / 60);
+      var detntor_dhg_minutes2 = Math.floor(detntor_dhg_minutes % 60);
+      
+      if(detntor_dhg_minutes2 < 10){
+          detntor_dhg_minutes2 = "0"+ detntor_dhg_minutes2
+        }else{
+          detntor_dhg_minutes2 = detntor_dhg_minutes2
+        }
+      if(detntor_dhg_hours < 10){
+          detntor_dhg_hours = "0"+detntor_dhg_hours
+        }else{
+          detntor_dhg_hours = detntor_dhg_hours
+        }
+       
+        var detntor_dhg_final_time = detntor_dhg_hours+":"+detntor_dhg_minutes2;
+        $(detention_tor_dhg).val(detntor_dhg_final_time);
+        
+      }
+      else{
+        $(detention_tor_dhg).val("NA");
+      }
+
+    // Detention TOR Departure to DHG-Arrival --Ends
+
+    // Detention on-duty to off-duty  --Start
+    var detn_on_off = detn_offduty - detn_onduty;
+    if (detn_on_off>=0) {
+      var detn_on_off_minutes = Math.floor(detn_on_off / 60000);
+      var detn_on_off_hours = Math.floor(detn_on_off_minutes / 60);
+      var detn_on_off_minutes2 = Math.floor(detn_on_off_minutes % 60);
+      
+      if(detn_on_off_minutes2 < 10){
+          detn_on_off_minutes2 = "0"+ detn_on_off_minutes2
+        }else{
+          detn_on_off_minutes2 = detn_on_off_minutes2
+        }
+      if(detn_on_off_hours < 10){
+          detn_on_off_hours = "0"+detn_on_off_hours
+        }else{
+          detn_on_off_hours = detn_on_off_hours
+        }
+       
+        var detn_on_off_final_time = detn_on_off_hours+":"+detn_on_off_minutes2;
+        $(detention_on_off).val(detn_on_off_final_time);
+        
+      }
+      else{
+        $(detention_on_off).val("NA");
+      }
+
+    // Detention on-duty to off-duty  --Ends
+
+    // Detention depatrure to GIMB arrival  --Start
+    var detn_tor_gimb = detn_gimbarr - detn_onduty;
+    if (detn_tor_gimb>=0) {
+      var detn_tor_gimb_minutes = Math.floor(detn_tor_gimb / 60000);
+      var detn_tor_gimb_hours = Math.floor(detn_tor_gimb_minutes / 60);
+      var detn_tor_gimb_minutes2 = Math.floor(detn_tor_gimb_minutes % 60);
+      
+      if(detn_tor_gimb_minutes2 < 10){
+          detn_tor_gimb_minutes2 = "0"+ detn_tor_gimb_minutes2
+        }else{
+          detn_tor_gimb_minutes2 = detn_tor_gimb_minutes2
+        }
+      if(detn_tor_gimb_hours < 10){
+          detn_tor_gimb_hours = "0"+detn_tor_gimb_hours
+        }else{
+          detn_tor_gimb_hours = detn_tor_gimb_hours
+        }
+       
+        var detn_tor_gimb_final_time = detn_tor_gimb_hours+":"+detn_tor_gimb_minutes2;
+        $(detention_tor_gimb).val(detn_tor_gimb_final_time);
+        
+      }
+      else{
+        $(detention_tor_gimb).val("NA");
+      }
+
+    // Detention depatrure to GIMB arrival --Ends
+
+
+  }
 
  
 });
