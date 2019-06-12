@@ -1,0 +1,67 @@
+<style>
+  .no-border tr td, .no-border tr th {
+    border-width: 0;
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<div class="tab-container" id="adi_crack_rakes">
+  <table class="no-border head">
+    <tr>
+      <td style="width:90%;">
+        
+      </td>
+      <td style="width:10%; text-align: right;">
+      </td>
+    </tr>
+  </table>  
+  <table class="table hover table-bordered adi_crack_rakes" id="adi-crack-rakes">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th>SR</th>
+        <th>&nbsp;Train_No.&nbsp;&nbsp;</th>
+        <th>Power</th>
+        <th>Ordering&nbsp;&nbsp;</th>
+        <th>OnDuty&nbsp;&nbsp;&nbsp;</th>
+        <th>Departure</th>
+        <th>FromStation</th>
+        <th>Pre-Departure</th>
+        <th>DHG_Arrival</th>
+        <th>TOR(Dep-DHG-Arr)</th>
+        <th>GIMB_Arr</th>
+        <th>OFF_Duty</th>
+        <th>TOR(Dep-GIMB-Arr)</th>
+        <th>Detn(On/Off)</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if @adi_crack_data.present?%>
+        <%@adi_crack_data.each_with_index do |data,index|%>
+          <tr>
+            <td class="text-center"><%=index+1%></td>
+            <td class="text-center"><%=data.train_name%></td>
+            <td class="text-center"><%=data.power_number%></td>
+            <td class="text-center"><%= data.order_time.first(5) rescue '' %><br><%= data.order_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%= data.on_duty_time.first(5) rescue '' %><br><%= data.on_duty_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%= data.departure_time.first(5) rescue '' %><br><%= data.departure_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%=data.departure_station%></td>
+            <td class="text-center"><%=data.pre_departure_detnention%></td>
+            <td class="text-center"><%= data.dhg_arrival_time.first(5) rescue '' %><br><%= data.dhg_arrival_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%=data.tor_departure_dhg_arrival%></td>
+            <td class="text-center"><%= data.gimb_arrival_time.first(5) rescue '' %><br><%= data.gimb_arrival_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%= data.off_duty_time.first(5) rescue '' %><br><%= data.off_duty_date.strftime('%d-%m-%y') rescue '' %></td>
+            <td class="text-center"><%=data.tor_departure_gimb_arrival%></td>
+            <td class="text-center"><%=data.detention_on_to_off_duty%></td>
+            <td class="text-center"><%=data.remarks%></td>
+          </tr>
+        <%end%>
+      <%end%>  
+    </tbody>
+  </table>
+</div>  
+
+<script >
+
+</script>

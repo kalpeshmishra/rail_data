@@ -1,6 +1,5 @@
 <ul class="sub-menu">
   <%if is_subadmin%>
-    
     <li class="parent">
       <a <%= "href=#{admin_users_path}"%> title="User"><span>User</span></a>
     </li>
@@ -114,7 +113,10 @@
         <a <%= "href=#{admin_one_unloading_reports_path }"%> title="(PU)Unloading Reports"><span>(PU)Unloading Reports</span></a>
       </li>
       <li class="parent">
-        <a <%= "href=#{admin_load_interchanges_path }"%> title="Interchange Reports"><span>Interchange Reports</span></a>
+        <a <%= "href=#{admin_load_interchanges_path}"%> title="Interchange Reports"><span>Interchange Reports</span></a>
+      </li>
+      <li class="parent">
+        <a <%= "href=#{admin_crack_rakes_path}"%> title="Interchange Reports"><span>CrackRakeReport</span></a>
       </li>
       <li class="parent">
         <a <%= "href=#{admin_excel_reports_path }"%> title="Excel Download"><span>Excel Download</span></a>

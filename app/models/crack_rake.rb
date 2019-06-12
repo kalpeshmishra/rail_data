@@ -20,8 +20,7 @@ class CrackRake < ApplicationRecord
       record_id = value["record_id"].to_i if value["record_id"].present?
       crack_rake = self.find(record_id) rescue nil if record_id.present?
       crack_rake = self.new if crack_rake.blank?
-      
-      crack_rake.train_name = value["train_name"] rescue nil
+      crack_rake.train_name = value["train_name"].upcase rescue nil
 			crack_rake.power_number = value["power_no"] rescue nil
 			order_time = self.get_time(value["order_time"]) 
 			crack_rake.order_time = order_time rescue nil
