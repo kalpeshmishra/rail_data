@@ -1,7 +1,7 @@
 class CrackRake < ApplicationRecord
-	def self.create_or_update_crack_rake(params)
 
-		crack_rake_data = {}
+	def self.create_or_update_crack_rake(params)
+  	crack_rake_data = {}
     (0..25).map{|no|crack_rake_data[no] = {}}
     params.each do |key,value|
       next if ["utf8","authenticity_token"].include?(key)
@@ -14,8 +14,7 @@ class CrackRake < ApplicationRecord
     end
 
     crack_rake_data.each do |key,value|
-    	
-      data_count = value.values.reject { |c| c.empty? }.count
+    	data_count = value.values.reject { |c| c.empty? }.count
       next if data_count == 0
       record_id = value["record_id"].to_i if value["record_id"].present?
       crack_rake = self.find(record_id) rescue nil if record_id.present?
@@ -52,6 +51,28 @@ class CrackRake < ApplicationRecord
     end
         
 	end
+
+  def self.data_crack_summary(crack_data)
+    data_hash = {}
+    station = crack_data.map{|e| e.departure_station}.uniq << "Total"
+    station.each do |stn|  
+      data_hash[stn] = {"trains" => 0,"pdd" => [],"tor_one" => [],"tor_two" => [],"on_off" => []}
+    end
+    crack_data.each do |data|
+      data_hash[data.departure_station]["trains"] += 1 
+      data_hash[data.departure_station]["pdd"] << data.pre_departure_detnention
+      data_hash[data.departure_station]["tor_one"] << data.tor_departure_dhg_arrival
+      data_hash[data.departure_station]["tor_two"] << data.tor_departure_gimb_arrival
+      data_hash[data.departure_station]["on_off"] << data.detention_on_to_off_duty
+
+      data_hash["Total"]["trains"] += 1 
+      data_hash["Total"]["pdd"] << data.pre_departure_detnention
+      data_hash["Total"]["tor_one"] << data.tor_departure_dhg_arrival
+      data_hash["Total"]["tor_two"] << data.tor_departure_gimb_arrival
+      data_hash["Total"]["on_off"] << data.detention_on_to_off_duty
+    end
+    return(data_hash)  
+  end
 
 	def self.get_time(time)
     if time.present?

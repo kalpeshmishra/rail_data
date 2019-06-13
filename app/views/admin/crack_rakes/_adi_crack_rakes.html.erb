@@ -10,7 +10,7 @@
   <table class="no-border head">
     <tr>
       <td style="width:90%;">
-        
+        <p id="heading_adi_crack" style="font-size: 16px;color:#cc3d16;"></p> 
       </td>
       <td style="width:10%; text-align: right;">
       </td>
@@ -63,5 +63,10 @@
 </div>  
 
 <script >
-
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("heading_adi_crack").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+    
+  });
 </script>

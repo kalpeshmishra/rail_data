@@ -9,6 +9,7 @@ class Admin::CrackRakesController < ApplicationController
 		to_date = Date.today if to_date.blank?
 
 		@adi_crack_data = CrackRake.where(departure_date: from_date..to_date)
+		@adi_crack_summary = CrackRake.data_crack_summary(@adi_crack_data)
 	end
 
 	def new

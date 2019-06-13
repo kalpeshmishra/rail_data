@@ -1,0 +1,52 @@
+<style>
+  .no-border tr td, .no-border tr th {
+    border-width: 0;
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<div class="tab-container" id="adi_crack_summary">
+  <table class="no-border head">
+    <tr>
+      <td style="width:90%;">
+        <p id="heading_crack_summary" style="font-size: 16px;color:#cc3d16;"></p> 
+      </td>
+      <td style="width:10%; text-align: right;">
+      </td>
+    </tr>
+  </table>  
+  <table class="table hover table-bordered adi_crack_summary" id="adi-crack-summary">
+    <thead class="thead-dark">
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th>Station</th>
+        <th>Trains</th>
+        <th>Pre-Departure</th>
+        <th>TOR(Dep-DHG_Arr)</th>
+        <th>TOR(Dep-GIMB_Arr)</th>
+        <th>Detn(On/Off)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%if @adi_crack_summary.present?%>
+        <%@adi_crack_summary.each do |stn,data|%>
+          <tr class="text-center" <%= (stn == "Total") ? "style=font-weight:bold;" : ""%>>
+            <td><%=stn%></td>
+            <%data.each do |key,value|%>
+              <td><%=(value.class == Integer) ? value:value.reject(&:blank?).sum_strings(':') rescue ''%></td>    
+            <%end%>
+          </tr>
+        <%end%>  
+      <%end%>  
+    </tbody>
+  </table>
+</div>  
+
+<script >
+  $(function () {
+    effective_from = $("#start_date").val();
+    effective_to = $("#end_date").val();
+    document.getElementById("heading_crack_summary").innerHTML="Period From: "+effective_from+" To: "+effective_to;
+    
+  });
+</script>
