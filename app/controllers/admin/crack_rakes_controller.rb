@@ -19,7 +19,7 @@ class Admin::CrackRakesController < ApplicationController
 
 	def create
 		CrackRake.create_or_update_crack_rake(params)
-		data = params[:data].to_date if params[:data].present?
+		data = params[:date].to_date if params[:date].present?
     data = Date.today if data.blank?
 		@crack_rakes = CrackRake.where(departure_date: data)
 	end

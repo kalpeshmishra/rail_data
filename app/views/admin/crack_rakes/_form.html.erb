@@ -242,7 +242,7 @@ $(function(){
     var order = new Date(order_time +" "+ order_date)
     order = new Date(order.setMinutes(order.getMinutes() - 15));
     
-    odt = moment(order).format("hh:mm");
+    odt = moment(order).format("HH:mm");
     odd = moment(order).format("YYYY-MM-DD");
     
     $(onduty_time_id).val(odt);
@@ -263,7 +263,7 @@ $(function(){
     var gimbarr = new Date(gimbarr_time +" "+ gimbarr_date)
     gimbarr = new Date(gimbarr.setMinutes(gimbarr.getMinutes() + 30));
     
-    g_time = moment(gimbarr).format("hh:mm");
+    g_time = moment(gimbarr).format("HH:mm");
     g_date = moment(gimbarr).format("YYYY-MM-DD");
     
     $(offduty_time_id).val(g_time);
@@ -274,7 +274,7 @@ $(function(){
   $(".order_time,.order_date,.onduty_time,.onduty_date,.departure_time,.departure_date,.dhgarr_time,.dhgarr_date,.gimbarr_time,.gimbarr_date,.offduty_time,.offduty_date").on('keyup change', function () {
     var row_no = $(this).attr('id').split('_')[2]
     get_detention(row_no);
-    debugger
+
   });
 
   function get_detention(row_no){
