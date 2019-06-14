@@ -402,7 +402,7 @@ $(function(){
     // Detention on-duty to off-duty  --Ends
 
     // Detention depatrure to GIMB arrival  --Start
-    var detn_tor_gimb = detn_gimbarr - detn_onduty;
+    var detn_tor_gimb = detn_gimbarr - detn_departure;
     if (detn_tor_gimb>=0) {
       var detn_tor_gimb_minutes = Math.floor(detn_tor_gimb / 60000);
       var detn_tor_gimb_hours = Math.floor(detn_tor_gimb_minutes / 60);
