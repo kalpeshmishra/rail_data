@@ -20,9 +20,7 @@
 
 .add-cursor {cursor: pointer;}
 .add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
-/*.tax-and-statutory-settings-hide-show span:after {content: '»';position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}
-.tax-and-statutory-settings-hide-show span {padding-right: 25px;}
-.tax-and-statutory-settings-hide-show:hover span:after {opacity: 1;right: 0;}*/
+
 .input-group .form-control {
     float: right;
     width: 35%;
@@ -44,7 +42,7 @@
 
 <% @method = params[:id].present? ? "PATCH" : "POST" %>
 <% @url = params[:id].present? ? admin_crack_rake_path(params[:id]) : admin_crack_rakes_path %>
-<%@header = ["From/Station","To/Station","Forecast Date","Received/As","Loaded/Total Units","Wagon Type","Rake Count","Commodity","Stack (CONT)","ARR Date","ARR Time","PM Time","PM Date","RL Time","RL Date","Action"]%>
+
 
 
 <div class="table-responsive main-crack-rakes" >

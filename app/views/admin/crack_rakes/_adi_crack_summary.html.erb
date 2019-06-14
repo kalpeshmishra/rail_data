@@ -21,10 +21,14 @@
       <tr style="color: #fff; background: #4B4B4D;">
         <th>Station</th>
         <th>Trains</th>
-        <th>Pre-Departure</th>
-        <th>TOR(Dep-DHG_Arr)</th>
-        <th>TOR(Dep-GIMB_Arr)</th>
-        <th>Detn(On/Off)</th>
+        <th>Total Pre-Departure</th>
+        <th>Total TOR(Dep-DHG_Arr)</th>
+        <th>Total TOR(Dep-GIMB_Arr)</th>
+        <th>Total Detn(On/Off)</th>
+        <th>Avg. Pre-Departure</th>
+        <th>Avg. TOR(Dep-DHG_Arr)</th>
+        <th>Avg. TOR(Dep-GIMB_Arr)</th>
+        <th>Avg. Detn(On/Off)</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +38,15 @@
             <td><%=stn%></td>
             <%data.each do |key,value|%>
               <td><%=(value.class == Integer) ? value:value.reject(&:blank?).sum_strings(':') rescue ''%></td>    
+            <%end%>
+            <%data.each do |key,value|%>
+              <%if value.class != "trains"%>
+                <%tmp_ary = data[key].reject(&:blank?).sum_strings(':') rescue ''%>
+                <%if tmp_ary.present?%>
+                  <%avg_value = RakeUnload.get_average_detention(tmp_ary,data["trains"])%>
+                  <td><%=avg_value%></td>    
+                <%end%>
+              <%end%>
             <%end%>
           </tr>
         <%end%>  

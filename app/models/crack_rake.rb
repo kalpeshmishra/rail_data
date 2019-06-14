@@ -64,13 +64,15 @@ class CrackRake < ApplicationRecord
       data_hash[data.departure_station]["tor_one"] << data.tor_departure_dhg_arrival
       data_hash[data.departure_station]["tor_two"] << data.tor_departure_gimb_arrival
       data_hash[data.departure_station]["on_off"] << data.detention_on_to_off_duty
-
+     
       data_hash["Total"]["trains"] += 1 
       data_hash["Total"]["pdd"] << data.pre_departure_detnention
       data_hash["Total"]["tor_one"] << data.tor_departure_dhg_arrival
       data_hash["Total"]["tor_two"] << data.tor_departure_gimb_arrival
       data_hash["Total"]["on_off"] << data.detention_on_to_off_duty
+      
     end
+    
     return(data_hash)  
   end
 

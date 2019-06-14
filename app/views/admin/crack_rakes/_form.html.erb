@@ -51,7 +51,7 @@
           <%= text_field_tag "departure_date_#{index}", '', type: 'date',placeholder: 'departure Date', id: "departure_date_#{index}", class: 'form-control input-md departure_date',required: true, style: "width: 148px; font-size:14px;"%>
         </td>
         <td>
-          <%= select_tag "station_#{index}", options_for_select([["SMYD","SMYD"],["VY","VY"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:14px", required: true, id: "station_#{index}", data_live_search: "true"} %>
+          <%= select_tag "station_#{index}", options_for_select([["VY","VY"],["SMYD","SMYD"],["MSH","MSH"]]), {prompt: "Type", class: 'form-control input-md',style: "width: 80px; font-size:14px", required: true, id: "station_#{index}", data_live_search: "true"} %>
         <p></p>
           <%= text_field_tag "pre_departure_#{index}",'', placeholder: "PDD", class: 'form-control input-md pre_departure', id: "pre_departure_#{index}",readonly: true, style: "width: 80px;border: 1px solid #888; font-size:15px;background-color:#ffe6e6;" %>
         </td>
