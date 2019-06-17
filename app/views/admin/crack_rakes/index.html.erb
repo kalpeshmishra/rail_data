@@ -19,10 +19,10 @@
           </span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+        <%= text_field_tag :start_date, "", placeholder: 'Start Date', autocomplete: 'off', required: true, class: "form-control input-md start_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
-        <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+        <%= text_field_tag :end_date, "", placeholder: 'End Date',autocomplete: 'off', required: true, class: "form-control input-md end_date_time" %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Show Report</button>

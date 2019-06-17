@@ -26,12 +26,12 @@ class Admin::LoadingReportsController < ApplicationController
         rake_area =  rake_load.load_unload.station.area.area_code rescue nil
         if rake_area == "ADI"
           adi_area_loads << rake_load
-          adi_unit = adi_unit + rake_load.loaded_unit
-          adi_rake = adi_rake + rake_load.rake_count
+          adi_unit = adi_unit + rake_load.loaded_unit rescue nil
+          adi_rake = adi_rake + rake_load.rake_count rescue nil
         elsif rake_area == "GIMB"
           gimb_area_loads << rake_load
-          gimb_unit = gimb_unit + rake_load.loaded_unit
-          gimb_rake = gimb_rake + rake_load.rake_count
+          gimb_unit = gimb_unit + rake_load.loaded_unit rescue nil
+          gimb_rake = gimb_rake + rake_load.rake_count rescue nil
         end
       end
     end

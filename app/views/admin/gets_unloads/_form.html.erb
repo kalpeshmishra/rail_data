@@ -63,9 +63,9 @@
           <%= text_field_tag "takenover_date_#{index}", '', type: 'date',placeholder: 'Takenover Date', id: "takenover_date_#{index}", required: true, class: 'form-control input-md takenover_date', style: "width: 160px; font-size:16px;"%>
         </td>
         <td>
-          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 70px; font-size:16px;" %>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",required: true, style: "width: 70px; font-size:16px;" %>
         <p></p>
-          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,style: "width: 70px; font-size:16px;" %>
+          <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true, style: "width: 70px; font-size:16px;" %>
         </td>
         <td>
           <%= select_tag "wagon_type_#{index}", options_for_select(@wagon_type), {prompt: "Stock", class: 'form-control input-md',required: true, style: "width: 95px;", id: "wagon_type_#{index}", data_live_search: "true"} %>

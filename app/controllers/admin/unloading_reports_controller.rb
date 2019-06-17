@@ -4,7 +4,7 @@ class Admin::UnloadingReportsController < ApplicationController
 	def index
 		data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
-    # binding.pry
+    
     @rake_unloads = RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(data)))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq(nil)))
     @rake_unloads += RakeUnload.where(RakeUnload.arel_table[:arrival_date].lteq(data).and(RakeUnload.arel_table[:release_date].eq("")))
@@ -20,10 +20,10 @@ class Admin::UnloadingReportsController < ApplicationController
     	rake_area =  rake_unload.load_unload.station.area.area_code rescue nil
     	if rake_area == "ADI"
     		adi_area_unloads << rake_unload
-    		adi_unit = adi_unit + rake_unload.loaded_unit
+        adi_unit = adi_unit + rake_unload.loaded_unit rescue nil
     	elsif rake_area == "GIMB"
     		gimb_area_unloads << rake_unload
-    		gimb_unit = gimb_unit + rake_unload.loaded_unit
+    		gimb_unit = gimb_unit + rake_unload.loaded_unit rescue nil
     	end
     end
     @adi_unloads = adi_area_unloads.sort_by(&:load_unload_id)
@@ -31,7 +31,7 @@ class Admin::UnloadingReportsController < ApplicationController
     
     @total_adi_unloads = adi_unit
 		@total_gimb_unloads = gimb_unit
-    @total_rake_unloads = adi_unit + gimb_unit 
+    @total_rake_unloads = adi_unit + gimb_unit rescue nil
 
     @abc_summary_date = data if data.present?
     abc_summary_data  = get_abc_summary_data(data)

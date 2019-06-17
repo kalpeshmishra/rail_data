@@ -63,7 +63,7 @@
           <%= text_field_tag "takenover_date_#{index}", '', type: 'date',placeholder: 'Takenover Date', id: "takenover_date_#{index}", required: true, class: 'form-control input-md takenover_date', style: "width: 160px; font-size:16px;"%>
         </td>
         <td>
-          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",style: "width: 75px; font-size:16px;" %>
+          <%= number_field_tag "loaded_unit_#{index}", '', placeholder: "L", class: 'form-control input-md',min:1,max:65,title: 'Enter loaded Units', id: "loaded_unit_#{index}",required: true, style: "width: 75px; font-size:16px;" %>
         <p></p>
           <%= number_field_tag "total_unit_#{index}", '', placeholder: "Ttl", class: 'form-control input-md', id: "total_unit_#{index}",required: true,style: "width: 75px; font-size:16px;" %>
         </td>

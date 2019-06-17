@@ -105,10 +105,10 @@
       </div> 
       <div id ="by-date-feilds">
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Start Date<p></p>
-           <%= text_field_tag :start_date, "", placeholder: 'Start Date', required: true, class: "form-control input-md start_date_time" %>
+           <%= text_field_tag :start_date, "", placeholder: 'Start Date',autocomplete: 'off', required: true, class: "form-control input-md start_date_time" %>
         </div>   
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >End Date<p></p>  
-           <%= text_field_tag :end_date, "", placeholder: 'End Date', required: true, class: "form-control input-md end_date_time" %>
+           <%= text_field_tag :end_date, "", placeholder: 'End Date',autocomplete: 'off', required: true, class: "form-control input-md end_date_time" %>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="date-station" >Station<p></p>
           <%= select_tag "date-station-list", options_for_select(@custom_date_station_list), {multiple: true, id: "date-station-list", class: 'primary-filters-main-page form-control input-sm date-station-list'} %>
