@@ -1,22 +1,28 @@
-$("#division_listing").remove('');
-$("#division_load_form").html('<%= j render 'division_listing'%>');
-$("#adi_listing").remove('');
-$("#adi_load_form").html('<%= j render 'adi_listing'%>');
-$("#gimb_listing").remove('');
-$("#gimb_load_form").html('<%= j render 'gimb_listing'%>');
-$("#adi_unloading").remove('');
-$("#adi_unload_form").html('<%= j render 'adi_unloading'%>');
-$("#gimb_unloading").remove('');
-$("#gimb_unload_form").html('<%= j render 'gimb_unloading'%>');
-$("#division_unloading").remove('');
-$("#division_unload_form").html('<%= j render 'division_unloading'%>');
-$("#total_division").remove('');
-$("#total_division_load_form").html('<%= j render 'total_division'%>');
-$("#total_adi").remove('');
-$("#total_adi_load_form").html('<%= j render 'total_adi'%>');
-$("#total_gimb").remove('');
-$("#total_gimb_load_form").html('<%= j render 'total_gimb'%>');
-$("#powerhouse").remove('');
-$("#powerhouse_form").html('<%= j render 'powerhouse'%>');
-$("#adi_morethan").remove('');
-$("#adi_morethan_form").html('<%= j render 'adi_morethan'%>');
+<%if params[:is_data_filter].blank?%>
+	$("#commodity").empty();
+	$("#commodity").html('<%= j render partial: 'commodity_list_filter', :locals => {:phasewise_commodity_list => @phasewise_commodity_list} %>');
+<%end%>
+<%if params[:is_data_filter].present?%>
+	$("#division_listing").remove('');
+	$("#division_load_form").html('<%= j render 'division_listing'%>');
+	$("#adi_listing").remove('');
+	$("#adi_load_form").html('<%= j render 'adi_listing'%>');
+	$("#gimb_listing").remove('');
+	$("#gimb_load_form").html('<%= j render 'gimb_listing'%>');
+	$("#adi_unloading").remove('');
+	$("#adi_unload_form").html('<%= j render 'adi_unloading'%>');
+	$("#gimb_unloading").remove('');
+	$("#gimb_unload_form").html('<%= j render 'gimb_unloading'%>');
+	$("#division_unloading").remove('');
+	$("#division_unload_form").html('<%= j render 'division_unloading'%>');
+	$("#total_division").remove('');
+	$("#total_division_load_form").html('<%= j render 'total_division'%>');
+	$("#total_adi").remove('');
+	$("#total_adi_load_form").html('<%= j render 'total_adi'%>');
+	$("#total_gimb").remove('');
+	$("#total_gimb_load_form").html('<%= j render 'total_gimb'%>');
+	$("#powerhouse").remove('');
+	$("#powerhouse_form").html('<%= j render 'powerhouse'%>');
+	$("#adi_morethan").remove('');
+	$("#adi_morethan_form").html('<%= j render 'adi_morethan'%>');
+<%end%>

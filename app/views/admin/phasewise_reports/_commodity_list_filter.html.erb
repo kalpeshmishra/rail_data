@@ -1,0 +1,20 @@
+<%= select_tag "commodity-list", options_for_select(phasewise_commodity_list), {multiple: true, id: "commodity-list", class: 'primary-filters-second-page form-control input-sm'} %>
+
+
+<script>
+  $(function () {
+    $('.primary-filters-second-page').multiselect({
+      enableFiltering: true,
+      enableCaseInsensitiveFiltering: true,
+      includeSelectAllOption: true,
+      buttonWidth: '100%',
+      buttonClass: 'btn btn-default',
+      numberDisplayed: 0,
+      
+    });
+    $('#commodity-list').on("change",function(){
+      $("#submit_error_msg").css('display','none');
+    });
+
+  });
+</script>

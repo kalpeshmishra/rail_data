@@ -1,8 +1,18 @@
 <script>
+  $(function () {
+      $('.primary-filters-main-page').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+  });  
 
-    $(document).ready(function () {
-      $('.sidebar-remain-open').click();
-    });
+  $(document).ready(function () {
+    $('.sidebar-remain-open').click();
+  });
 
 </script>
 <div class="table-responsive main-client-listing">
@@ -10,6 +20,7 @@
   <div>
     <h4 class="no-margin" id="date_error_msg" style="color:#FF0000;display:none">End date should not be less than the start date</h4>
     <h4 class="no-margin" id="date_range_error_msg" style="color:#FF0000;display:none">Please select a maximum of 31 days within your date range</h4>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
   </div>
   <table class="table hover table-dark" id="phasewise-reports">
     <caption>
@@ -24,7 +35,10 @@
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <%= text_field_tag :end_date, "", placeholder: 'End Date',autocomplete: "off" , required: true, class: "form-control input-md end_date_time" %>
       </div>
-     
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="commodity">
+        <%data_value = [["Blank", "Blank"]]%>
+        <%= select_tag "commodity-list", options_for_select(data_value), {multiple: true, id: "commodity-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Show Report</button>
       </div>
@@ -73,27 +87,21 @@
 
     <div class="tab-content">
       <div id="division-loading-info" class="tab-pane active cont">
-        <%=render 'division_listing'%>
         <div id="division_load_form"></div>
       </div>
       <div id="adi-area-loading-info" class="tab-pane cont">
-        <%=render 'adi_listing'%>
         <div id="adi_load_form"></div>
       </div>
       <div id="gimb-area-loading-info" class="tab-pane cont">
-        <%=render 'gimb_listing'%>
         <div id="gimb_load_form"></div>
       </div>
       <div id="division-unloading-info" class="tab-pane cont">
-        <%=render 'division_unloading'%>
         <div id="division_unload_form"></div>
       </div>
       <div id="adi-area-unloading-info" class="tab-pane cont">
-        <%=render 'adi_unloading'%>
         <div id="adi_unload_form"></div>
       </div>
       <div id="gimb-area-unloading-info" class="tab-pane cont">
-        <%=render 'gimb_unloading'%>
         <div id="gimb_unload_form"></div>
       </div>
       <%if false%>
@@ -179,19 +187,36 @@
         $("#date_range_error_msg").css('display','none');
         $("#date_error_msg").css('display','none');
         $("#submit_data").prop('disabled', false);
+        $("#submit_error_msg").css('display','none');
+        commodity_data();
       }
 
     }
 
+  function commodity_data(){
+      effective_from = $("#start_date").val();
+      effective_to = $("#end_date").val();
+        $.ajax({
+          type: "get",
+          url: "/admin/phasewise_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
+        });
+
+    }  
+
   $(".submit").click(function () {
     effective_from = $("#start_date").val();
     effective_to = $("#end_date").val();
-      $.ajax({
-        type: "get",
-        url: "/admin/phasewise_reports.js?from_date=" + effective_from + "&to_date=" + effective_to
-      });
-      old_from_date = effective_from 
-      old_to_date = effective_to
+    selected_commodity = $('#commodity-list').val();
+      
+      if (effective_from != "" && effective_to!="" && selected_commodity != null) {
+        $.ajax({
+            type: "get",
+            url: "/admin/phasewise_reports.js?selected_commodity="+selected_commodity+ "&is_data_filter=" + true + "&from_date=" + effective_from + "&to_date=" + effective_to
+        });
+      }
+      else{
+        $("#submit_error_msg").css('display','');
+      }  
       
   });
 
