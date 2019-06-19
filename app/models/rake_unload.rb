@@ -414,8 +414,10 @@ has_many :rake_unloads_rake_commodities
         total_detn_rl_rm_dp << detention_release_removal_departure
         total_detn_ar_dp << detention_arrival_departure
         
+       
         phasewise_data[key] = {rake_count: rake_count,loaded_unit: loaded_unit, detention_arrival_placement: detention_arrival_placement, detention_placement_release: detention_placement_release,detention_release_removal: detention_release_removal, detention_removal_departure: detention_removal_departure , detention_release_removal_departure: detention_release_removal_departure,detention_arrival_departure:detention_arrival_departure,detention_placement_release_average: detention_placement_release_average, detention_arrival_placement_average: detention_arrival_placement_average,detention_release_removal_average: detention_release_removal_average, detention_removal_departure_average: detention_removal_departure_average, detention_release_removal_departure_average: detention_release_removal_departure_average, detention_arrival_departure_average: detention_arrival_departure_average}
       end
+
         total_detn_arrival_placement = total_detn_ar_pl.reject(&:blank?).sum_strings(':')
         total_detn_placement_release  = total_detn_pm_rl.reject(&:blank?).sum_strings(':')
         total_detn_release_removal = total_detn_rl_rm.reject(&:blank?).sum_strings(':')

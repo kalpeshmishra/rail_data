@@ -27,18 +27,18 @@ class Admin::PhasewiseReportsController < ApplicationController
 	 		rake_load_gimb = gimb_load_unload.map{|load| load.rake_loads.map{|rake| rake if rake_load_data.include?(rake)}}.flatten.compact
 			
 			#Rake loading phasewsie code starts
-	 		temp = rake_load_data.group_by { |rake| rake.load_unload_id }
+	 		temp = rake_load_data.group_by { |rake| rake.load_unload_id } if rake_load_data.present?
 	 		adi_temp = rake_load_adi.group_by { |rake| rake.load_unload_id } if rake_load_adi.present?
 			gimb_temp = rake_load_gimb.group_by { |rake| rake.load_unload_id } if rake_load_gimb.present?
 
 			
-			@adi_rake = rake_load_adi.map{|x|x.rake_count}.compact.sum
-			@gimb_rake =rake_load_gimb.map{|x|x.rake_count}.compact.sum
-			@total_rake = @adi_rake + @gimb_rake
+			@adi_rake = rake_load_adi.map{|x|x.rake_count}.compact.sum rescue nil
+			@gimb_rake =rake_load_gimb.map{|x|x.rake_count}.compact.sum rescue nil
+			@total_rake = @adi_rake + @gimb_rake rescue nil
 
-			@adi_loaded_unit = rake_load_adi.map{|x|x.loaded_unit}.compact.sum
-			@gimb_loaded_unit = rake_load_gimb.map{|x|x.loaded_unit}.compact.sum
-			@total_loaded_unit= @adi_loaded_unit + @gimb_loaded_unit
+			@adi_loaded_unit = rake_load_adi.map{|x|x.loaded_unit}.compact.sum rescue nil
+			@gimb_loaded_unit = rake_load_gimb.map{|x|x.loaded_unit}.compact.sum rescue nil
+			@total_loaded_unit= @adi_loaded_unit + @gimb_loaded_unit rescue nil
 			
 			
 
@@ -67,7 +67,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 	 		temp_unloading = rake_unload_data.group_by { |rake| rake.load_unload_id }
 	 		adi_temp_unloading = rake_unload_adi.group_by { |rake| rake.load_unload_id } if rake_unload_adi.present?
 			gimb_temp_unloading = rake_unload_gimb.group_by { |rake| rake.load_unload_id } if rake_unload_gimb.present?
-		
+			
 			@adi_unloading_rake = rake_unload_adi.map{|x|x.rake_count}.compact.sum
 			@gimb_unloading_rake =rake_unload_gimb.map{|x|x.rake_count}.compact.sum
 			@total_unloading_rake = @adi_unloading_rake + @gimb_unloading_rake
@@ -94,8 +94,8 @@ class Admin::PhasewiseReportsController < ApplicationController
 			@total_division_phasewise_data = RakeUnload.get_phasewise_data(total_temp) if total_temp.present?
 			@total_division_phasewise_data = {} if total_temp.empty?
 			
-			@total_division_rake = @total_division_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
-			@total_division_unit = @total_division_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum
+			@total_division_rake = @total_division_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum rescue nil
+			@total_division_unit = @total_division_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum rescue nil
 
 			total_adi ={}
 			total_adi.merge!(adi_temp) if adi_temp.present?
@@ -110,8 +110,8 @@ class Admin::PhasewiseReportsController < ApplicationController
 			total_gimb.merge!(gimb_temp_unloading){|key,oldval,newval| [*oldval].to_a + [*newval].to_a } if gimb_temp_unloading.present?
 			@total_gimb_phasewise_data = RakeUnload.get_phasewise_data(total_gimb) if total_gimb.present?
 			@total_gimb_phasewise_data = {} if total_gimb.empty?
-			@total_gimb_rake = @total_gimb_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum
-			@total_gimb_unit = @total_gimb_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum
+			@total_gimb_rake = @total_gimb_phasewise_data.map{|k,v|v[:rake_count]}.compact.sum rescue nil
+			@total_gimb_unit = @total_gimb_phasewise_data.map{|k,v|v[:loaded_unit]}.compact.sum rescue nil
 
 			#Total Division phase-wise ends
 
@@ -119,6 +119,7 @@ class Admin::PhasewiseReportsController < ApplicationController
 			@adi_loading_more_than_24_hours_data = RakeLoad.get_more_than_24_hours(rake_load_adi) if rake_load_adi.present?
 			@adi_unloading_more_than_24_hours_data = RakeLoad.get_more_than_24_hours(rake_unload_adi) if rake_unload_adi.present?
 			# Loading--Placement to Release detention More than 24 Hours Ends
+		
 		end
 
 	end
