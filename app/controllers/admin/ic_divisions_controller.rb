@@ -3,7 +3,7 @@ class Admin::IcDivisionsController < ApplicationController
   layout "admin/application"
 
   def index
-    @ic_divisions = IcDivision.all
+    @ic_divisions = IcDivision.includes(:railway_zone,:division)
     @ic_divisions = @ic_divisions.paginate(:page => (params[:page] || 1), :per_page => 20)
     respond_to do |format|
       format.html

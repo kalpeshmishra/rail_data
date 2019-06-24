@@ -3,7 +3,7 @@ class Admin::LoadUnloadsController < ApplicationController
   layout "admin/application"
   
   def index
-    @load_unloads = LoadUnload.all
+    @load_unloads = LoadUnload.includes(:station,:division,:area)
     @load_unloads = @load_unloads.paginate(:page => params[:page] || 1, :per_page => 20)
     respond_to do |format|
       format.html

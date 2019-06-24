@@ -106,9 +106,9 @@
 <script >
 $(function(){
 
-  
+  <%@load_interchange.count.present? ? temp_count = @load_interchange.count: temp_count = 0%>
   <% (0..25).each_with_index do |no,index| %>
-    <%if index >= (@load_interchange.count)%>
+    <%if index >= temp_count %>
       var tr = '<%=".load_interchange_row_#{index}"%>';
       $(tr).hide();
     <%end%> 

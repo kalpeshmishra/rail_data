@@ -51,7 +51,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 			station_list = []
 			data_hash.values.each do |data|
 			 	data.flatten.each do |value|	
-			 		load_unload_code = LoadUnload.find(value.load_unload_id).station.code
+			 		load_unload_code = value.load_unload.station.code
 			 		station_list << [load_unload_code,value.load_unload_id ]
 			 	end
 		 	end	
@@ -73,7 +73,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 			commodity_list = []
 			data_hash.values.each do |data|
 			 	data.flatten.each do |value|	
-			 		commodity_code = MajorCommodity.find(value.major_commodity.id).major_commodity
+			 		commodity_code = value.major_commodity.major_commodity
 			 		commodity_list << [commodity_code,value.major_commodity.id ]
 			 	end
 		 	end	

@@ -3,7 +3,7 @@ class Admin::DivisionsController < ApplicationController
   layout "admin/application"
 	
 	def index
-    @divisions = Division.all
+    @divisions = Division.includes(:railway_zone)
     @divisions = @divisions.paginate(:page => params[:page] || 1, :per_page => 20)
 		respond_to do |format|
       format.html

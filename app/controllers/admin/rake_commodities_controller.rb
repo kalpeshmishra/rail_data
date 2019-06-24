@@ -3,7 +3,7 @@ class Admin::RakeCommoditiesController < ApplicationController
   layout "admin/application"
 
   def index
-    @rake_commodities = RakeCommodity.all
+    @rake_commodities = RakeCommodity.includes(:major_commodity)
     @rake_commodities = @rake_commodities.paginate(:page => params[:page] || 1, :per_page =>20)
     respond_to do |format|
       format.html

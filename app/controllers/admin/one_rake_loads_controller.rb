@@ -37,7 +37,7 @@ class Admin::OneRakeLoadsController < ApplicationController
     @major_commodity = MajorCommodity.all.map{|major|[major.major_commodity,major.id]}
     @wagon_type = WagonType.all.map{|wagon| [wagon.stock_type_code,wagon.id]}
     @rake_commodity = {}
-    MajorCommodity.all.each do |major|
+    MajorCommodity.includes(:rake_commodities).each do |major|
     rake_commodity_array = major.rake_commodities.map{|rake_commodity| ["#{rake_commodity.rake_commodity_code}-#{rake_commodity.rake_commodity_name}",rake_commodity.id]}
       @rake_commodity[major.id] = {data: rake_commodity_array.sort}
     end
