@@ -8,7 +8,8 @@ class Admin::LoadingReportsController < ApplicationController
   end
 
   def get_data(data)
-    @rake_loads = RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data)))
+    
+    @rake_loads = RakeLoad.includes(:load_unload,:station,:wagon_type,:major_commodity).where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data)))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(nil)))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq("")))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].eq(nil).and(RakeLoad.arel_table[:release_date].eq(data)))
@@ -65,9 +66,9 @@ class Admin::LoadingReportsController < ApplicationController
     commodity_day_wise = {}
     stock_day_wise = {}
     summary_data.each do |data|
-      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity rescue nil
-      stock_code = WagonType.find(data.wagon_type_id).wagon_type_code rescue nil
-      stock_type = WagonType.find(data.wagon_type_id).wagon_details_covered_open rescue nil
+      commodity_code = data.major_commodity.major_commodity rescue nil
+      stock_code = data.wagon_type.wagon_type_code rescue nil
+      stock_type = data.wagon_type.wagon_details_covered_open rescue nil
       rake_count = data.rake_count
       loaded_unit = data.loaded_unit
       if commodity_day_wise[commodity_code].blank?

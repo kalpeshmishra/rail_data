@@ -14,7 +14,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 
 		station_list = []
 		commodity_list = []
-		rake_load_data = RakeLoad.where(release_date: from_date..to_date)
+		rake_load_data = RakeLoad.includes(:load_unload).where(release_date: from_date..to_date)
 		rake_load_data.each do |rake_load|
 			station_list << [rake_load.load_unload.station.code,rake_load.load_unload_id ]
 			commodity_list << [rake_load.major_commodity.major_commodity, rake_load.major_commodity.id]
@@ -45,7 +45,7 @@ class Admin::CustomLoadReportsController < ApplicationController
 			 	month_name = month.upcase
 			 	from_date = month.to_date.beginning_of_month 
 			 	to_date =	month.to_date.end_of_month
-			 	rake_load_data = RakeLoad.where(release_date: from_date..to_date)
+			 	rake_load_data = RakeLoad.includes(:load_unload).where(release_date: from_date..to_date)
 				data_hash.merge!("#{month_name}" => [rake_load_data])
 			end
 			station_list = []
@@ -90,20 +90,20 @@ class Admin::CustomLoadReportsController < ApplicationController
 			 	month_name = month.upcase
 			 	from_date = month.to_date.beginning_of_month 
 			 	to_date =	month.to_date.end_of_month
-			 	rake_load_data = RakeLoad.where(release_date: from_date..to_date, load_unload_id: load_unload_ids, major_commodity_id: major_commodity_ids)
+			 	rake_load_data = RakeLoad.includes(:load_unload,:major_commodity).where(release_date: from_date..to_date, load_unload_id: load_unload_ids, major_commodity_id: major_commodity_ids)
 				
 				rake_load_data.each do |data|
-					load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+					load_unload_code = data.load_unload.station.code
 					if params[:selected_report_type] == "Commodity"
-						month_report_type = MajorCommodity.find(data.major_commodity_id).major_commodity
+						month_report_type = data.major_commodity.major_commodity
 					elsif params[:selected_report_type] == "Destination"
-						month_report_type = Station.find(data.station_id).code
+						month_report_type = data.station.code
 					elsif params[:selected_report_type] == "Stock"
-						month_report_type = WagonType.find(data.wagon_type_id).wagon_type_code
+						month_report_type = data.wagon_type.wagon_type_code
 					elsif params[:selected_report_type] == "Divisionwise"
-						month_report_type = Station.find(data.station_id).division.code	
+						month_report_type = data.station.division.code	
 					else params[:selected_report_type] == "Statewise"
-						month_report_type = Station.find(data.station_id).state.code	
+						month_report_type = data.station.state.code	
 					end
 					if data_hash[load_unload_code].present?
 						data_hash[load_unload_code].merge!("#{month_report_type}" => {}) if data_hash[load_unload_code][month_report_type].blank?
@@ -140,11 +140,10 @@ class Admin::CustomLoadReportsController < ApplicationController
 			 	rake_load_data = RakeLoad.where(release_date: from_date..to_date)
 				data_hash.merge!("#{year}" => [rake_load_data])
 			end
-			
 			station_list = []
 			data_hash.values.each do |data|
 			 	data.flatten.each do |value|	
-			 		load_unload_code = LoadUnload.find(value.load_unload_id).station.code
+			 		load_unload_code = value.load_unload.station.code
 			 		station_list << [load_unload_code,value.load_unload_id ]
 			 	end
 		 	end	
