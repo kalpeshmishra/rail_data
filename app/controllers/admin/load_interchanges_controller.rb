@@ -8,7 +8,7 @@ class Admin::LoadInterchangesController < ApplicationController
       from_date = Date.today if from_date.blank?
       to_date = Date.today if to_date.blank?
       
-      interchange_load_data = LoadInterchange.where(interchange_date: from_date..to_date)
+      interchange_load_data = LoadInterchange.where(interchange_date: from_date..to_date).includes(:wagon_type)
     
     if params["is_date_select"].present?
       stock_list = []
