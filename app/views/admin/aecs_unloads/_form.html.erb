@@ -79,7 +79,7 @@
         <td>
           <%= select_tag "major_commodity_#{index}", options_for_select(@major_commodity), {prompt: "Commodity", class: 'form-control editing-family input-md major-commodity-dropdown', id: "major_commodity_#{index}",required: true,style: "width: 100px;", data_live_search: "true"} %>
           <p></p>
-          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md',style: "width: 105px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
+          <%= select_tag "commodity_type_#{index}", options_for_select([["IMPORTED","IMPORTED"],["DOMESTIC","DOMESTIC"]]), {prompt: "Cmdt-type", class: 'form-control input-md', required: true,style: "width: 105px;", id: "commodity_type_#{index}", data_live_search: "true"}%>
         </td>
         <td>
           <%= text_field_tag "bpc_station_#{index}", '',placeholder: 'Bpc issue Stn', id: "bpc_station_#{index}", class: 'form-control input-md', style: "width: 152px; font-size:16px; text-transform:uppercase;"%>
