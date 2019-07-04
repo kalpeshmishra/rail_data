@@ -1,4 +1,4 @@
-<div id="daywise_load_interchange_reports">
+<div class="tab-container"  id="daywise_load_interchange_reports">
 <h3 align="center">Load Interchange Daywise</h3>
 <p id="daywise_load_interchange_heading" style="font-size: 16px;color:#cc3d16;"></p>
 
@@ -28,14 +28,22 @@
   <%end%>  
   <tbody>
   <%if @daywise_load_interchange_data.present? && @select_ic_point.present?%>
+    <%column_total = {"Received"=>{}, "Despatch"=>{}}%>  
+    <%column_total.keys.each do |type|%>
+      <%@select_ic_point.each do |ic_point|%>
+        <%column_total[type][ic_point] = {"rakes"=>[], "units"=>[]}%>
+      <%end%>  
+    <%end%>
     <%@daywise_load_interchange_data.each do |ic_date,data|%>
       <tr style="text-align: center;">
         <td><%=ic_date%></td>
         <%data.keys.each do |ic_type|%>
           <%@select_ic_point.each do |ic_point|%>
             <%if @daywise_load_interchange_data[ic_date][ic_type][ic_point] !=nil%>
-              <td><%=@daywise_load_interchange_data[ic_date][ic_type][ic_point]["rakes"]%></td>
-              <td><%=@daywise_load_interchange_data[ic_date][ic_type][ic_point]["units"]%></td>
+              <td><%=data[ic_type][ic_point]["rakes"]%></td>
+              <td><%=data[ic_type][ic_point]["units"]%></td>
+              <%column_total[ic_type][ic_point]["rakes"] << data[ic_type][ic_point]["rakes"]%>
+              <%column_total[ic_type][ic_point]["units"] << data[ic_type][ic_point]["units"]%>
             <%else%>
               <td></td>
               <td></td>
@@ -44,8 +52,20 @@
         <%end%>
       </tr>
     <%end%>
+    <tr style="text-align: center;font-weight: bold;">
+      <td>Total</td>
+      <%if column_total.present?%>
+        <%column_total.each do |type,data|%>
+          <%data.values.each do |value|%>
+            <td><%=value["rakes"].reject(&:blank?).sum%></td>
+            <td><%=value["units"].reject(&:blank?).sum%></td>
+          <%end%>
+        <%end%>
+      <%end%>
   <%end%>
+
   </tbody>  
+  
 </table>
 </div>
 <script>
