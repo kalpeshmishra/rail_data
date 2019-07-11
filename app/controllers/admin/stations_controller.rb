@@ -5,6 +5,7 @@ class Admin::StationsController < ApplicationController
 	def index
     @stations = Station.includes(:area,:division,:railway_zone,:state)
     @stations = @stations.paginate(:page => params[:page] || 1, :per_page => 20)
+    #@stations = Kaminari.paginate_array(@forum.all_stations).page(params[:page]).per(15)
 		respond_to do |format|
       format.html
       format.js 

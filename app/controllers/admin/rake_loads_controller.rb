@@ -48,6 +48,7 @@ class Admin::RakeLoadsController < ApplicationController
     data = params[:data].to_date if params[:data].present?
     data = Date.today if data.blank?
     # => (lessthan-lt, greater-gt equal-eq)
+    #@rake_loads = RakeLoad.where('arrival_date <= ? and release_date = ? and rakeform_otherform = ?', data, data,"R")
     @rake_loads = RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(data).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq(nil).and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
     @rake_loads += RakeLoad.where(RakeLoad.arel_table[:arrival_date].lteq(data).and(RakeLoad.arel_table[:release_date].eq("").and(RakeLoad.arel_table[:rakeform_otherform].eq("R"))))
