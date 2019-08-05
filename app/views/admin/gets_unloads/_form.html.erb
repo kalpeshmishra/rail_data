@@ -155,7 +155,7 @@
   <%= hidden_field_tag  "date", "", id: "date" %>
   <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="gets_unload_add">
     <div class="modal-footer" style="text-align: center !important;">
-        <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+        <button class="btn btn-primary btn-flat submit" id="submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
   <% end %>
 </div>
@@ -588,13 +588,14 @@ $(function(){
         }else{
           tor_hours = tor_hours
         }
-
         var tor_time = tor_hours+":"+tor_minutes2;
+        $("#submit").prop('disabled', false);
         $(train_on_run_hours).val(tor_time);
        
   
       }
       else{
+        $("#submit").prop('disabled', true);
         $(train_on_run_hours).val("NA");
       }
     //Train-on-run detn_hours(detention)--Ends
