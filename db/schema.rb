@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190606064339) do
+ActiveRecord::Schema.define(version: 20190808102706) do
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"
@@ -83,6 +83,38 @@ ActiveRecord::Schema.define(version: 20190606064339) do
     t.integer  "wagon_type_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "dak_attachments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "dak_id"
+    t.string   "attachment_type"
+    t.string   "attachment_path"
+    t.string   "extra_path"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "dak_receivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "dak_id"
+    t.string   "reciever_user_id"
+    t.boolean  "is_read"
+    t.date     "dak_read_time_date"
+    t.string   "extra"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  create_table "daks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "letter_type"
+    t.string   "letter_number"
+    t.string   "letter_issue_date"
+    t.string   "letter_description"
+    t.string   "creater_user_id"
+    t.string   "dak_create_time"
+    t.date     "dak_create_date"
+    t.string   "extra"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "divisions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

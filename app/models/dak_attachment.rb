@@ -1,0 +1,2 @@
+class DakAttachment < ApplicationRecord
+end
