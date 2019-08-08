@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require_tree ./inputmask
 //= require twitter/bootstrap
-//= require bootstrap
 //= require bootstrap-datepicker/core
 //= require moment
 //= require daterangepicker
