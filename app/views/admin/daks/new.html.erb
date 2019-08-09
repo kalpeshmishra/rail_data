@@ -55,14 +55,18 @@
 			<td colspan="2">Select Files to upload</td>
 		</tr>	
 			<td colspan="2">
-    		<%= file_field_tag "user_attachment", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment",accept: ".xls,.xlsx,.csv,.pdf,.ppt,.pptx,.doc,.docx,.jpeg,.odt",style: "width: 300px;border: 1px solid #888;" %>
-			</td>
+
+  		</td>
 		</tr>
 	</table>
 </div>
 
 
 <script>
+
+
+  
+
 	$("#load_interchange_add").click(function(){
     $(".interchange-row-data:hidden").each(function(i){
       if (i==0) {
