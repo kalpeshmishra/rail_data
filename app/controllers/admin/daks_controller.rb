@@ -6,7 +6,7 @@ class Admin::DaksController < ApplicationController
 	end
 
 	def new
-		
+	
 	end
 
 	def create

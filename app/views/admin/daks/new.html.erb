@@ -12,63 +12,169 @@
   html {
     overflow-x: scroll;
   }
+  .list {
+    list-style: none;
+  }
 
   .table-scroll {
     max-height:500px;
   }
- 
-  
+
+/*  body {
+  padding: 10px;
+ul { 
+  list-style: none;
+  margin: 5px 10px;
+}
+li {
+  margin: 7px 0;
+}*/
 </style>
+<% @method = "POST" %>
+<% @url = admin_daks_path%>
 <div>
-	<h2>Compose</h2>
-	<table>
-		<tr>
-			<td style="width:40%">
+<h2>Compose</h2>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form',remote: true) do |form| %>  
+	<table class="table">
+    <tr>
+			<td style="width:40%" valign="top">
 				<div>
-					<table>
+					<table class="table">
 						<tr>
 							<td>Letter Type:</td>
-							<td><%= (select_tag "letter_type", options_for_select([['Empty', 'Empty'], ['Loaded', 'Loaded']]), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
+							<td><%= (select_tag "letter_type", options_for_select([['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
 						</tr>
 						<tr>
 							<td>Letter No.:</td>
-     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true, style: "width: 280px; font-size:14px;"%></td>
+     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: false, style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Letter Date:</td>
-      				<td><%= text_field_tag "letter_date", '', type: 'date',onfocus: "(this.type='date')", onblur: "if(this.value==''){this.type='text'}",placeholder: 'Letter Date', id: "date",class: 'form-control input-md letter_date', style: "width: 280px; font-size:14px;"%></td>
+      				<td><%= text_field_tag "letter_date", '', type: 'date',onfocus: "(this.type='date')", onblur: "if(this.value==''){this.type='text'}",placeholder: 'Letter Date', id: "date",class: 'form-control input-md letter_date',required: false, style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Subject:</td>
-      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject', style: "width: 280px; height:80px;font-size:14px;"%></td>
+      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: false, style: "width: 280px; height:80px;font-size:14px;"%></td>
 						</tr>
 					</table>
 				</div>
 			</td>
-			<td style="width:60%">
+			<td style="width:60%;">
 				<div style="width: 50%;height: 300px;margin: 0;padding: 0;overflow-y: scroll;">
-					<div style="width:100%" id="tree"></div>
-				</div>
+          <p style="font-weight: bold;">&nbsp;&nbsp;Select Recipients:</p>
+				  <ul class="list">
+            <li class="submenu">
+              <input type="checkbox" name="divn" id="divn">
+              <a href="#" for="divn">AhmedabadDivn</a>
+              <ul class="list">
+                <li>
+                  <input type="checkbox" name="divn-1" id="divn-1">
+                  <label for="divn-1">SrDOM-Office</label>
+                </li>
+                <li class="has-submenu">
+                  <input type="checkbox" name="divn-2" id="divn-2">
+                  <a href="#" for="divn-2">TI</a>
+
+                  <ul class="list">
+                    <li>
+                      <input type="checkbox" name="divn-2-1" id="divn-2-1">
+                      <label for="divn-2-1">ADI-North</label>
+                    </li>
+                    <li>
+                      <input type="checkbox" name="divn-2-2" id="divn-2-2">
+                      <label for="divn-2-2">ADI-South</label>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <input type="checkbox" name="divn-3" id="divn-3">
+                  <label for="divn-3">Control</label>
+                </li>
+              </ul>
+            </li>
+            <li class="submenu">
+              <input type="checkbox" name="short" id="short">
+              <a href="#" for="short">Short Things</a>
+
+              <ul class="list">
+                <li>
+                  <input type="checkbox" name="short-1" id="short-1">
+                  <label for="short-1">Smurfs</label>
+                </li>
+                <li>
+                  <input type="checkbox" name="short-2" id="short-2">
+                  <label for="short-2">Mushrooms</label>
+                </li>
+                <li>
+                  <input type="checkbox" name="short-3" id="short-3">
+                  <label for="short-3">One Sandwich</label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 			</td>
-		</tr>
-		<tr>
-			<td colspan="2">Select Files to upload</td>
-		</tr>	
-			<td colspan="2">
-
-  		</td>
-		</tr>
-	</table>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table class="table">
+          <tr>
+      			<td>Select Files to upload</td>
+      		</tr>	
+          <tr>
+            <td>
+              <table>
+                <%(0..10).each_with_index do |no, index| %>
+                  <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
+                    <td style="width:30%">
+                      <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".xls,.xlsx,.csv,.jpeg",style: "width: 300px;border: 1px solid #888;" %>
+                    </td>
+                    <td style="width:62%"></td>
+                    <td align="center">
+                      <a href="#" class="remove-ip label label-danger" id="<%= index %>-add_files_delete" style="padding:20%"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                <%end%>
+              </table>
+            </td>
+          </tr>
+      	</table>
+      </td>
+    </tr>  
+  </table>  
 </div>
+<p></p>
+<div>
+  <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add More" id="add_files_add">
+</div>
+<div align="center">
+  <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-send submit"></i>SEND</button>
+</div>
+<%end%>  
 
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_files_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
 
 <script>
 
 
   
 
-	$("#load_interchange_add").click(function(){
-    $(".interchange-row-data:hidden").each(function(i){
+	$("#add_files_add").click(function(){
+    $(".files-row-data:hidden").each(function(i){
       if (i==0) {
         $(this).show();
       }
@@ -77,76 +183,175 @@
 
   <% (0..10).each_with_index do |no,index| %>
     <%if index >= 1 %>
-      var tr = '<%=".load_interchange_row_#{index}"%>';
+      var tr = '<%=".add_files_row_#{index}"%>';
       $(tr).hide();
     <%end%> 
   <% end %>
 
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_add_files_id = $("#record_id_"+delete_index).val();
+    var visible_row_count = 0
+    
+    $('.add-files-tr:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    $("#delete-modal").modal('show');
+  });
 
-  var mytree = [
-    {
-      text: "AhmedabadDivision",
-      nodes: [
-        {
-          text: "OPERATING",
-          nodes: [
-            {
-              text: "DTI-PLNG"
-            },
-            {
-              text: "Grandchild 2"
-            }
-          ]
-        },
-        {
-          text: "COMMERCIAL"
-        }
-      ]
-    },
-    {
-      text: "Headquater",
-      nodes: [
-        {
-          text: "General",
-          nodes: [
-            {
-              text: "OS"
-            },
-            {
-              text: "Grandchild 2"
-            }
-          ]
-        },
-        {
-          text: "Hindi"
-        }
-      ]
-    },
-    {
-      text: "Parent 3"
-    },
-    {
-      text: "Parent 4"
-    },
-    {
-      text: "Parent 5"
+  $("#confirm_add_files_delete").click(function () {
+    $("#delete-modal").modal('hide');
+    
+    if (delete_add_files_id != "") {
+          $.ajax({
+          type: "get",
+          url: "/delete_add_files.js?delete_add_files_id=" + delete_add_files_id
+        });
+      }
+
+     $('.add-files-tr:visible').each(function() {
+      if($(this).attr("id").split("_")[4] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+
+  // var mytree = [
+  //   {
+  //     text: "ADI-Divn.",
+  //     nodes: [
+  //       {
+  //         text: "ADI-Area",
+  //         nodes: [
+  //           {
+  //             text: "SrDOM-Office",
+  //             nodes: [
+  //               {
+  //                 text: "RecdDesp"
+  //               }
+  //             ]
+  //           },
+  //           {
+  //             text: "Control",
+  //             nodes: [
+  //               {
+  //                 text: "RecdDesp"
+  //               }
+  //             ]
+  //           },
+  //           {
+  //             text: "TI",
+  //             nodes: [
+  //               {
+  //                 text: "ADI-South"
+  //               },
+  //               {
+  //                 text: "ADI-North"
+  //               }
+  //             ]
+  //           },
+  //           {
+  //             text: "SS",
+  //             nodes: [
+  //               {
+  //                 text: "RecdDesp"
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       },
+        
+  //     ]
+  //   },
+  //   {
+  //     text: "KALP26"
+  //   }
+  // ];
+
+  // function getTree() {
+  //   // Some logic to retrieve, or generate tree structure
+  //   return data;
+  // }
+
+  // $('#tree').treeview({
+  //   data: mytree,
+  //   showCheckbox: true,
+  //   persist: true
+
+  // });
+  
+  // $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
+  // window.onclick = function(){
+  //   $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
+  // };
+
+  $(".submit").click(function () {
+    
+    $(".files-row-data:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+
+  //====================================================
+  $('input[type="checkbox"]').change(function(e) {
+
+  var checked = $(this).prop("checked"),
+      container = $(this).parent(),
+      siblings = container.siblings();
+
+  container.find('input[type="checkbox"]').prop({
+    indeterminate: false,
+    checked: checked
+  });
+
+  function checkSiblings(el) {
+
+    var parent = el.parent().parent(),
+        all = true;
+
+    el.siblings().each(function() {
+      return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+    });
+
+    if (all && checked) {
+
+      parent.children('input[type="checkbox"]').prop({
+        indeterminate: false,
+        checked: checked
+      });
+
+      checkSiblings(parent);
+
+    } else if (all && !checked) {
+
+      parent.children('input[type="checkbox"]').prop("checked", checked);
+      parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+      checkSiblings(parent);
+
+    } else {
+
+      el.parents("li").children('input[type="checkbox"]').prop({
+        indeterminate: true,
+        checked: false
+      });
+
     }
-  ];
 
-  function getTree() {
-    // Some logic to retrieve, or generate tree structure
-    return data;
   }
 
-  $('#tree').treeview({
-    data: mytree,
-    showCheckbox: true
+  checkSiblings(container);
+
+});
+
+  $(".has-submenu ul").hide();
+    $(".has-submenu > a").click(function() {
+    $(this).parent().find('ul').each(function(){$(this).toggle();});
   });
-  
-  $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
-  window.onclick = function(){
-    $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
-  };
+  $(".submenu ul").hide();
+    $(".submenu > a").click(function() {
+    $(this).parent().find('ul').each(function(){$(this).toggle();});
+  });  
 
 
   

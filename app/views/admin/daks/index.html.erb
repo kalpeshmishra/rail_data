@@ -1,1 +1,128 @@
-<h1>Daks</h1>
+<style>
+  body {
+  padding: 20px;
+}
+ul { 
+  list-style: none;
+  }
+/*ul { 
+  list-style: none;
+  margin: 5px 20px;
+}
+li {
+  margin: 10px 0;
+}*/
+</style>
+<h1>Checkboxes</h1>
+<div style="width: 40%"> 
+  <ul>
+    <li class="submenu">
+      <input type="checkbox" name="divn" id="divn">
+      <a href="#" for="divn">AhmedabadDivn</a>
+      <ul>
+        <li>
+          <input type="checkbox" name="divn-1" id="divn-1">
+          <label for="divn-1">SrDOM-Office</label>
+        </li>
+        <li class="has-submenu">
+          <input type="checkbox" name="divn-2" id="divn-2">
+          <a href="#" for="divn-2">TI</a>
+
+          <ul>
+            <li>
+              <input type="checkbox" name="divn-2-1" id="divn-2-1">
+              <label for="divn-2-1">ADI-North</label>
+            </li>
+            <li>
+              <input type="checkbox" name="divn-2-2" id="divn-2-2">
+              <label for="divn-2-2">ADI-South</label>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <input type="checkbox" name="divn-3" id="divn-3">
+          <label for="divn-3">Control</label>
+        </li>
+      </ul>
+    </li>
+    <li class="submenu">
+      <input type="checkbox" name="short" id="short">
+      <a href="#" for="short">Short Things</a>
+
+      <ul>
+        <li>
+          <input type="checkbox" name="short-1" id="short-1">
+          <label for="short-1">Smurfs</label>
+        </li>
+        <li>
+          <input type="checkbox" name="short-2" id="short-2">
+          <label for="short-2">Mushrooms</label>
+        </li>
+        <li>
+          <input type="checkbox" name="short-3" id="short-3">
+          <label for="short-3">One Sandwich</label>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<script>
+  $('input[type="checkbox"]').change(function(e) {
+
+  var checked = $(this).prop("checked"),
+      container = $(this).parent(),
+      siblings = container.siblings();
+
+  container.find('input[type="checkbox"]').prop({
+    indeterminate: false,
+    checked: checked
+  });
+
+  function checkSiblings(el) {
+
+    var parent = el.parent().parent(),
+        all = true;
+
+    el.siblings().each(function() {
+      return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+    });
+
+    if (all && checked) {
+
+      parent.children('input[type="checkbox"]').prop({
+        indeterminate: false,
+        checked: checked
+      });
+
+      checkSiblings(parent);
+
+    } else if (all && !checked) {
+
+      parent.children('input[type="checkbox"]').prop("checked", checked);
+      parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+      checkSiblings(parent);
+
+    } else {
+
+      el.parents("li").children('input[type="checkbox"]').prop({
+        indeterminate: true,
+        checked: false
+      });
+
+    }
+
+  }
+
+  checkSiblings(container);
+
+});
+
+  $(".has-submenu ul").hide();
+    $(".has-submenu > a").click(function() {
+    $(this).parent().find('ul').each(function(){$(this).toggle();});
+  });
+  $(".submenu ul").hide();
+    $(".submenu > a").click(function() {
+    $(this).parent().find('ul').each(function(){$(this).toggle();});
+  });  
+</script>
