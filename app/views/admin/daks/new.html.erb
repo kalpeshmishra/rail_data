@@ -2,8 +2,14 @@
 
     $(document).ready(function () {
       $('.sidebar-remain-open').click();
-    });
 
+    });
+  $(function () {  
+    $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue'
+        });
+  });  
 </script>
 <style>
 .add-cursor {cursor: pointer;}
@@ -59,64 +65,41 @@ li {
 					</table>
 				</div>
 			</td>
-			<td style="width:60%;">
-				<div style="width: 50%;height: 300px;margin: 0;padding: 0;overflow-y: scroll;">
+			<td style="width:30%;">
+				<div style="height: 300px;margin: 0;padding: 0;overflow-y: scroll;">
           <p style="font-weight: bold;">&nbsp;&nbsp;Select Recipients:</p>
-				  <ul class="list">
-            <li class="submenu">
-              <input type="checkbox" name="divn" id="divn">
-              <a href="#" for="divn">AhmedabadDivn</a>
-              <ul class="list">
-                <li>
-                  <input type="checkbox" name="divn-1" id="divn-1">
-                  <label for="divn-1">SrDOM-Office</label>
-                </li>
-                <li class="has-submenu">
-                  <input type="checkbox" name="divn-2" id="divn-2">
-                  <a href="#" for="divn-2">TI</a>
-
+				  <% recipient_list = {"AhmedabadDivision"=>{"SrDomOffice"=>{"RecdDesp"=>1},"ArmOffice"=>{"RecdDesp"=>2},"ADI_CTO"=>{"RecdDesp"=>3},"GIMB_CTO"=>{"RecdDesp"=>4},"TI_ADI"=>{"ADI_North" => 5,"ADI_South" => 6},"TI_GIMB"=>{"TI_MDPT" => 7,"TI_RDHP" => 8}}} %>
+          <% recipient_list.each do |divn,data| %>
+            <ul class="list">
+              <li class="submenu">
+                <input type="checkbox" name="<%=divn%>" id="divn">
+                <a href="#" for="divn"><%=divn%></a>
+                <%data.each do |user_type,user_list|%>
                   <ul class="list">
-                    <li>
-                      <input type="checkbox" name="divn-2-1" id="divn-2-1">
-                      <label for="divn-2-1">ADI-North</label>
+                    <li class="has-submenu">
+                      <input type="checkbox" name="<%=divn%>-<%=user_type%>" id="<%=divn%>-<%=user_type%>">
+                      <a href="#" for="<%=divn%>-<%=user_type%>"><%=user_type%></a>
+                        <ul class="list">
+                          <%user_list.each do |key,value|%>
+                            <li>
+                              <%= check_box_tag("#{key}",'user_list', false, class: 'icheck-list') %>
+                              <label for="<%=key%>-<%=value%>"><%=key%></label>
+                            </li>
+                          <% end %>
+                        </ul>
                     </li>
-                    <li>
-                      <input type="checkbox" name="divn-2-2" id="divn-2-2">
-                      <label for="divn-2-2">ADI-South</label>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <input type="checkbox" name="divn-3" id="divn-3">
-                  <label for="divn-3">Control</label>
-                </li>
-              </ul>
-            </li>
-            <li class="submenu">
-              <input type="checkbox" name="short" id="short">
-              <a href="#" for="short">Short Things</a>
-
-              <ul class="list">
-                <li>
-                  <input type="checkbox" name="short-1" id="short-1">
-                  <label for="short-1">Smurfs</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="short-2" id="short-2">
-                  <label for="short-2">Mushrooms</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="short-3" id="short-3">
-                  <label for="short-3">One Sandwich</label>
-                </li>
-              </ul>
-            </li>
-          </ul>
+                  </ul>  
+                <% end %>
+              </li>
+            </ul>    
+          <% end %>
         </div>
 			</td>
+      <td style="width:30%;">
+      </td>  
     </tr>
     <tr>
-      <td colspan="2">
+      <td colspan="3">
         <table class="table">
           <tr>
       			<td>Select Files to upload</td>
@@ -216,76 +199,6 @@ li {
     });
   });
 
-
-  // var mytree = [
-  //   {
-  //     text: "ADI-Divn.",
-  //     nodes: [
-  //       {
-  //         text: "ADI-Area",
-  //         nodes: [
-  //           {
-  //             text: "SrDOM-Office",
-  //             nodes: [
-  //               {
-  //                 text: "RecdDesp"
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             text: "Control",
-  //             nodes: [
-  //               {
-  //                 text: "RecdDesp"
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             text: "TI",
-  //             nodes: [
-  //               {
-  //                 text: "ADI-South"
-  //               },
-  //               {
-  //                 text: "ADI-North"
-  //               }
-  //             ]
-  //           },
-  //           {
-  //             text: "SS",
-  //             nodes: [
-  //               {
-  //                 text: "RecdDesp"
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       },
-        
-  //     ]
-  //   },
-  //   {
-  //     text: "KALP26"
-  //   }
-  // ];
-
-  // function getTree() {
-  //   // Some logic to retrieve, or generate tree structure
-  //   return data;
-  // }
-
-  // $('#tree').treeview({
-  //   data: mytree,
-  //   showCheckbox: true,
-  //   persist: true
-
-  // });
-  
-  // $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
-  // window.onclick = function(){
-  //   $("#tree").find("[data-nodeid=0]").find(".check-icon").remove();
-  // };
-
   $(".submit").click(function () {
     
     $(".files-row-data:hidden").each(function(i) {
@@ -344,15 +257,16 @@ li {
 
 });
 
-  $(".has-submenu ul").hide();
-    $(".has-submenu > a").click(function() {
-    $(this).parent().find('ul').each(function(){$(this).toggle();});
-  });
   $(".submenu ul").hide();
-    $(".submenu > a").click(function() {
+  $(".submenu > a").click(function() {
     $(this).parent().find('ul').each(function(){$(this).toggle();});
+    $(".has-submenu ul").hide();
   });  
 
+  $(".has-submenu ul").hide();
+  $(".has-submenu > a").click(function() {
+    $(this).parent().find('ul').each(function(){$(this).toggle();});
+  });
 
   
 
