@@ -26,15 +26,6 @@
     max-height:500px;
   }
 
-/*  body {
-  padding: 10px;
-ul { 
-  list-style: none;
-  margin: 5px 10px;
-}
-li {
-  margin: 7px 0;
-}*/
 </style>
 <% @method = "POST" %>
 <% @url = admin_daks_path%>
@@ -68,8 +59,7 @@ li {
 			<td style="width:30%;">
 				<div style="height: 300px;margin: 0;padding: 0;overflow-y: scroll;">
           <p style="font-weight: bold;">&nbsp;&nbsp;Select Recipients:</p>
-				  <% recipient_list = {"AhmedabadDivision"=>{"SrDomOffice"=>{"RecdDesp"=>1},"ArmOffice"=>{"RecdDesp"=>2},"ADI_CTO"=>{"RecdDesp"=>3},"GIMB_CTO"=>{"RecdDesp"=>4},"TI_ADI"=>{"ADI_North" => 5,"ADI_South" => 6},"TI_GIMB"=>{"TI_MDPT" => 7,"TI_RDHP" => 8}}} %>
-          <% recipient_list.each do |divn,data| %>
+				  <% @dak_recipient_list.each do |divn,data| %>
             <ul class="list">
               <li class="submenu">
                 <input type="checkbox" name="<%=divn%>" id="divn">
@@ -81,8 +71,7 @@ li {
                       <a href="#" for="<%=divn%>-<%=user_type%>"><%=user_type%></a>
                         <ul class="list">
                           <%user_list.each do |key,value|%>
-                            <li>
-                              <%= check_box_tag("#{key}",'user_list', false, class: 'icheck-list') %>
+                            <li><%= check_box_tag("#{key}","select_recipient_#{value}", false, class: 'icheck-list dak_recipient') %>
                               <label for="<%=key%>-<%=value%>"><%=key%></label>
                             </li>
                           <% end %>
@@ -266,6 +255,25 @@ li {
   $(".has-submenu ul").hide();
   $(".has-submenu > a").click(function() {
     $(this).parent().find('ul').each(function(){$(this).toggle();});
+  });
+
+
+  $(document).ready(function() {
+    $(".submit").click(function(){
+      var favorite = [];
+      $.each($(".dak_recipient:checked"), function(){            
+          favorite.push($(this).val());
+      });
+    });
+
+    $('.dak_recipient').change(function () {
+      var select_list = [];
+      $.each($(".dak_recipient:checked"), function(){            
+          select_list.push($(this).attr('id'));
+      });
+      
+    });
+
   });
 
   

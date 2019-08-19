@@ -1,3 +1,4 @@
+<!-- Statistics Section Starts-->
 <ul class="sub-menu">
   <%if is_subadmin%>
     <li class="parent">
@@ -122,14 +123,20 @@
         <a <%= "href=#{admin_excel_reports_path }"%> title="Excel Download"><span>Excel Download</span></a>
       </li>
 
-      <!-- Rail Dak Links -->
+    
       <li class="parent">
       </li>   
       
-      <li class="parent">
-        <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
-      </li>
 </ul>
+  <!-- Statistics Section Ends-->
+
+  <!-- Rail Dak Section Starts-->
+<ul class="sub-menu">
+  <li class="parent">
+    <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
+  </li>
+</ul>
+  <!-- Rail Dak Section Ends -->
 
 
 <div class="text-right collapse-button" style="padding:3px 5px;">

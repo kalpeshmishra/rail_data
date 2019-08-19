@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   def set_default_user_roles
     user = self.id
-    user_role = UserRole.create(:user_id => self.id, is_viewable: true, is_admin: true, is_superadmin: false, is_subadmin: false, rake_load_access: false, one_rake_load_access: false, two_rake_load_access: false, other_load_access: false, rake_unload_access: false, one_rake_unload_access: false, aecs_unload_access: false, gets_unload_access: false, unusual_occurrence_report_access: false)
+    user_role = UserRole.create(:user_id => self.id, is_viewable: true, is_admin: true, is_superadmin: false, is_subadmin: false, rake_load_access: false, one_rake_load_access: false, two_rake_load_access: false, other_load_access: false, rake_unload_access: false, one_rake_unload_access: false, aecs_unload_access: false, gets_unload_access: false, unusual_occurrence_report_access: false, is_statistics_access: false, is_dak_access: false, is_block__access: false)
     
   end
 end
