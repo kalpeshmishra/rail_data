@@ -21,12 +21,10 @@ class Admin::DaksController < ApplicationController
 	end
 
 	def create
-		temp_list = params.values.select {|item| item.include?("select_recipient")}
-		select_user_id = []
-		temp_list.each do |v|
-			v = v.split("_")
-			select_user_id << v[2].to_i
-		end	
+	
+		user_id = current_user.id
+		Dak.create_dak_data(params,user_id)
+			
 		
 		
 	end

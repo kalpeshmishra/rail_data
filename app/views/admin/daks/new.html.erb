@@ -18,14 +18,18 @@
   html {
     overflow-x: scroll;
   }
+  label {
+    margin-bottom: 1px;
+  }
   .list {
     list-style: none;
+    padding-left: 22px;
   }
 
-  .table-scroll {
+  /*.table-scroll {
     max-height:500px;
   }
-
+*/
 </style>
 <% @method = "POST" %>
 <% @url = admin_daks_path%>
@@ -62,12 +66,12 @@
 				  <% @dak_recipient_list.each do |divn,data| %>
             <ul class="list">
               <li class="submenu">
-                <input type="checkbox" name="<%=divn%>" id="divn">
+                <input type="checkbox" name="<%=divn%>" id="divn" class="division">
                 <a href="#" for="divn"><%=divn%></a>
                 <%data.each do |user_type,user_list|%>
                   <ul class="list">
                     <li class="has-submenu">
-                      <input type="checkbox" name="<%=divn%>-<%=user_type%>" id="<%=divn%>-<%=user_type%>">
+                      <input type="checkbox" name="<%=divn%>-<%=user_type%>" id="<%=divn%>-<%=user_type%>" class="user_under">
                       <a href="#" for="<%=divn%>-<%=user_type%>"><%=user_type%></a>
                         <ul class="list">
                           <%user_list.each do |key,value|%>
@@ -85,32 +89,30 @@
         </div>
 			</td>
       <td style="width:30%;">
+        <div style="height: 300px;margin: 0;padding: 0;overflow-y: scroll;">
+          <strong>Selected List: </strong>
+          <p id="recipient_select" style="position: relative; word-break: normal"></p>
+        </div>  
       </td>  
     </tr>
     <tr>
       <td colspan="3">
         <table class="table">
           <tr>
-      			<td>Select Files to upload</td>
+      			<td colspan="3">Select Files to upload</td>
       		</tr>	
-          <tr>
-            <td>
-              <table>
-                <%(0..10).each_with_index do |no, index| %>
-                  <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
-                    <td style="width:30%">
-                      <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".xls,.xlsx,.csv,.jpeg",style: "width: 300px;border: 1px solid #888;" %>
-                    </td>
-                    <td style="width:62%"></td>
-                    <td align="center">
-                      <a href="#" class="remove-ip label label-danger" id="<%= index %>-add_files_delete" style="padding:20%"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                  </tr>
-                <%end%>
-              </table>
-            </td>
-          </tr>
-      	</table>
+          <%(0..10).each_with_index do |no, index| %>
+            <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
+              <td style="width:30%;">
+                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".xls,.xlsx,.csv,.jpeg",style: "width: 300px;border: 1px solid #888;" %>
+              </td>
+              <td style="width:62%;"></td>
+              <td align="center" style="vertical-align: middle;width:8%;">
+                <a href="#" class="remove-ip label label-danger" id="<%= index %>-add_files_delete" style="padding:20%"><i class="fa fa-trash-o"></i></a>
+              </td>
+            </tr>
+          <%end%>
+        </table>
       </td>
     </tr>  
   </table>  
@@ -266,12 +268,12 @@
       });
     });
 
-    $('.dak_recipient').change(function () {
+    $('.dak_recipient,.user_under,.division').change(function () {
       var select_list = [];
       $.each($(".dak_recipient:checked"), function(){            
-          select_list.push($(this).attr('id'));
+          select_list.push(" "+$(this).attr('id'));
       });
-      
+      document.getElementById("recipient_select").innerHTML=select_list;
     });
 
   });

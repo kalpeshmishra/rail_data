@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 20190819052345) do
 
   create_table "dak_receivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dak_id"
-    t.string   "reciever_user_id"
+    t.integer  "reciever_user_id"
     t.boolean  "is_read"
     t.date     "dak_read_time_date"
     t.string   "extra"

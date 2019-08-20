@@ -63,6 +63,8 @@ gem 'roo-xls'
 
 gem 'rmagick'
 gem 'carrierwave'
+gem 'fog'
+gem 'aws-sdk'
 gem 'rupees'
 gem 'icheck-rails'
 gem 'link_thumbnailer'
