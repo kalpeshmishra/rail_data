@@ -1343,6 +1343,7 @@ DEPENDENCIES
   currency-in-words
   devise
   fog
+  fog-aws
   font-awesome-rails
   htmltoword
   icheck-rails
