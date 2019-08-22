@@ -12,7 +12,7 @@ class FogUpload
         :body => body,
         :public => false 
       })
-
+      
       @file_object.save
     end
     

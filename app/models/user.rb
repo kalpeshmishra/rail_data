@@ -7,6 +7,7 @@ class User < ApplicationRecord
   # belongs_to :division
   # belongs_to :area
   has_one :user_role
+  has_many :daks
 
   after_create :set_default_user_roles
 

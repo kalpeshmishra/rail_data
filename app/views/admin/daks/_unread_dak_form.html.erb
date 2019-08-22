@@ -1,0 +1,36 @@
+<h4>Load Interchange Daywise</h4>
+<table class="table hover table-bordered" id="daywise-load-interchange-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th>Sr</th>
+      <th>Letter Type</th>
+      <th>Letter Number</th>
+      <th>Letter Date</th>
+      <th>Subject</th>
+      <th>Sender Details</th>
+      <th>Letter Attachment</th>
+      <th>Dispatch Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<%if @all_dak_received.present?%>
+  		<%@all_dak_received.each_with_index do |data,index|%>
+	  		<tr>
+	  			<td><%=index+1%></td>
+	  			<td><%=data.letter_type%></td>	
+	  			<td><%=data.letter_number%></td>	
+	  			<td><%=data.letter_issue_date%></td>	
+	  			<td><%=data.letter_description%></td>
+	  			<td><%=User.find(data.creater_user_id.to_i).first_name%></td>
+	  			<td>
+	  				<%data.dak_attachments.count.times do |n|%>
+	  				
+	  					<a href="#" style="font-weight: bold;"><%=n+1%></a>
+	  				<%end%>	
+	  			</td>
+	  			<td></td>	
+	  		</tr>
+	  	<%end%>
+  	<%end%>
+  </tbody>
+</table>	  

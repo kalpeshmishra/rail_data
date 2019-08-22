@@ -2,7 +2,8 @@ class Admin::DaksController < ApplicationController
 	layout "admin/application"
 	
 	def index
-		
+		all_dak_received_id = DakReceiver.where(reciever_user_id: current_user.id).pluck(:dak_id)
+		@all_dak_received = Dak.find(all_dak_received_id)
 	end
 
 	def new
@@ -40,5 +41,6 @@ class Admin::DaksController < ApplicationController
 	def update
 		
 	end
+	
 
 end

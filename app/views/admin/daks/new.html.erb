@@ -31,11 +31,12 @@
   }
 */
 </style>
+<%letter_type_list = [['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]%>
 <% @method = "POST" %>
 <% @url = admin_daks_path%>
 <div>
 <h2>Compose</h2>
-<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form',remote: true) do |form| %>  
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form', remote: true) do |form| %>  
 	<table class="table">
     <tr>
 			<td style="width:40%" valign="top">
@@ -43,7 +44,7 @@
 					<table class="table">
 						<tr>
 							<td>Letter Type:</td>
-							<td><%= (select_tag "letter_type", options_for_select([['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
+							<td><%= (select_tag "letter_type", options_for_select(letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
 						</tr>
 						<tr>
 							<td>Letter No.:</td>
@@ -104,7 +105,7 @@
           <%(0..10).each_with_index do |no, index| %>
             <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
               <td style="width:30%;">
-                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".xls,.xlsx,.csv,.jpeg,.pdf",style: "width: 300px;border: 1px solid #888;" %>
+                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx csv,.doc,.docx,.odt,.jpg,.jpeg,.png",style: "width: 300px;border: 1px solid #888;" %>
               </td>
               <td style="width:62%;"></td>
               <td align="center" style="vertical-align: middle;width:8%;">
