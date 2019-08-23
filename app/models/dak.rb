@@ -37,18 +37,18 @@ class Dak < ApplicationRecord
 			select_user_id.each do |reciever_id|
 				DakReceiver.create(dak_id: dak_data.id,reciever_user_id: reciever_id,is_read: false)
 			end
-			binding.pry
 			file_list.count.times do |file_count|	
-				# file_count = file_count+1
 				value = params["user_attachment_#{file_count}"]
 	      name = value.original_filename rescue ''
 	      raise 'Unacceptable File Format.' unless accepted_formats.include? File.extname(name).downcase
-	      raise "File size must be less than 7MB." if value.size > 7.megabytes
+	      raise "File size must be less than 10MB." if value.size > 10.megabytes
 	      FileUtils::mkdir_p "public/dak_files/#{user_id}/"
-	      path = File.join("public/dak_files/#{user_id}/", "#{dak_data.id.to_s}-#{file_count.to_s}-#{name}")
+				file_count = file_count+1
+				path = File.join("public/dak_files/#{user_id}/", "#{dak_data.id.to_s}-#{file_count.to_s}-#{name}")
+	      path_save = path.split("public/").last
 	      File.open(path, "wb") { |f| f.write(value.read) }
 	      
-	      DakAttachment.create(dak_id: dak_data.id, attachment_type: File.extname(name).downcase, attachment_path: path) 
+	      DakAttachment.create(dak_id: dak_data.id, attachment_type: File.extname(name).downcase, attachment_path: path_save) 
 		  end 
 
 		end

@@ -63,7 +63,7 @@ gem 'roo-xls'
 
 gem 'rmagick'
 gem 'carrierwave'
-gem 'fog'
+# gem 'fog'
 # gem 'fog-aws'
 # gem 'aws-sdk'
 gem 'rupees'

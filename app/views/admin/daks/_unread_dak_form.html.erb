@@ -1,3 +1,16 @@
+<style>
+	.solid {
+		border-style: double;
+		font-weight: bold;
+		padding: 3px;
+		color: #9c3009;
+	}
+	.solid:hover { 
+	  background-color: #9c3009;
+	  color: white;
+	}
+
+</style>
 <h4>Load Interchange Daywise</h4>
 <table class="table hover table-bordered" id="daywise-load-interchange-reports">
   <thead class="thead-dark">
@@ -9,7 +22,7 @@
       <th>Subject</th>
       <th>Sender Details</th>
       <th>Letter Attachment</th>
-      <th>Dispatch Date</th>
+      <th>Received At</th>
     </tr>
   </thead>
   <tbody>
@@ -19,16 +32,16 @@
 	  			<td><%=index+1%></td>
 	  			<td><%=data.letter_type%></td>	
 	  			<td><%=data.letter_number%></td>	
-	  			<td><%=data.letter_issue_date%></td>	
+	  			<td><%=data.letter_issue_date.to_date.strftime("%d/%m/%Y") rescue nil%></td>	
 	  			<td><%=data.letter_description%></td>
 	  			<td><%=User.find(data.creater_user_id.to_i).first_name%></td>
 	  			<td>
 	  				<%data.dak_attachments.count.times do |n|%>
-	  				
-	  					<a href="#" style="font-weight: bold;"><%=n+1%></a>
+	  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>
+						 
 	  				<%end%>	
 	  			</td>
-	  			<td></td>	
+	  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y")%></td>	
 	  		</tr>
 	  	<%end%>
   	<%end%>
