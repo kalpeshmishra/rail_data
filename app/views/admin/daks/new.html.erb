@@ -48,15 +48,15 @@
 						</tr>
 						<tr>
 							<td>Letter No.:</td>
-     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: false, style: "width: 280px; font-size:14px;"%></td>
+     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true, style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Letter Date:</td>
-      				<td><%= text_field_tag "letter_date", '', type: 'date',onfocus: "(this.type='date')", onblur: "if(this.value==''){this.type='text'}",placeholder: 'Letter Date', id: "date",class: 'form-control input-md letter_date',required: false, style: "width: 280px; font-size:14px;"%></td>
+      				<td><%= text_field_tag "letter_date", '', type: 'date',onfocus: "(this.type='date')", onblur: "if(this.value==''){this.type='text'}",placeholder: 'Letter Date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Subject:</td>
-      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: false, style: "width: 280px; height:80px;font-size:14px;"%></td>
+      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: true, style: "width: 280px; height:80px;font-size:14px;"%></td>
 						</tr>
 					</table>
 				</div>
@@ -67,16 +67,16 @@
 				  <% @dak_recipient_list.each do |divn,data| %>
             <ul class="list">
               <li class="submenu">
-                <input type="checkbox" name="<%=divn%>" id="divn" class="division">
+                <input type="checkbox" name="<%=divn%>" id="divn" class="division check_checkbox">
                 <a href="#" for="divn"><%=divn%></a>
                 <%data.each do |user_type,user_list|%>
                   <ul class="list">
                     <li class="has-submenu">
-                      <input type="checkbox" name="<%=divn%>-<%=user_type%>" id="<%=divn%>-<%=user_type%>" class="user_under">
+                      <input type="checkbox" name="<%=divn%>-<%=user_type%>" id="<%=divn%>-<%=user_type%>" class="user_under check_checkbox" >
                       <a href="#" for="<%=divn%>-<%=user_type%>"><%=user_type%></a>
                         <ul class="list">
                           <%user_list.each do |key,value|%>
-                            <li><%= check_box_tag("#{key}","select_recipient_#{value}", false, class: 'icheck-list dak_recipient') %>
+                            <li><%= check_box_tag("#{key}","select_recipient_#{value}", false, class: 'icheck-list dak_recipient check_checkbox', required: true) %>
                               <label for="<%=key%>-<%=value%>"><%=key%></label>
                             </li>
                           <% end %>
@@ -102,10 +102,10 @@
           <tr>
       			<td colspan="3">Select Files to upload</td>
       		</tr>	
-          <%(0..10).each_with_index do |no, index| %>
+          <%(0..9).each_with_index do |no, index| %>
             <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
               <td style="width:30%;">
-                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: false, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx csv,.doc,.docx,.odt,.jpg,.jpeg,.png",style: "width: 300px;border: 1px solid #888;" %>
+                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx csv,.doc,.docx,.odt,.jpg,.jpeg,.png",style: "width: 300px;border: 1px solid #888;" %>
               </td>
               <td style="width:62%;"></td>
               <td align="center" style="vertical-align: middle;width:8%;">
@@ -156,7 +156,7 @@
     });
   });
 
-  <% (0..10).each_with_index do |no,index| %>
+  <% (0..9).each_with_index do |no,index| %>
     <%if index >= 1 %>
       var tr = '<%=".add_files_row_#{index}"%>';
       $(tr).hide();
@@ -191,12 +191,6 @@
     });
   });
 
-  $(".submit").click(function () {
-    
-    $(".files-row-data:hidden").each(function(i) {
-      $(this).remove('');
-    });
-  });
 
   //====================================================
   $('input[type="checkbox"]').change(function(e) {
@@ -267,7 +261,27 @@
       $.each($(".dak_recipient:checked"), function(){            
           favorite.push($(this).val());
       });
+
+      $(".files-row-data:hidden").each(function(i) {
+        $(this).remove('');
+      });
+      
+      var requiredCheckboxes = $('.check_checkbox');
+        if(requiredCheckboxes.is(':checked')) {
+            requiredCheckboxes.removeAttr('required');
+        } else {
+            requiredCheckboxes.attr('required', 'required');
+        }
+    
     });
+
+
+    // $(".submit").click(function () {
+      
+    //   $(".files-row-data:hidden").each(function(i) {
+    //     $(this).remove('');
+    //   });
+    // });  
 
     $('.dak_recipient,.user_under,.division').change(function () {
       var select_list = [];

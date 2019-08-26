@@ -1,9 +1,31 @@
 class Admin::DaksController < ApplicationController
 	layout "admin/application"
+	require 'will_paginate/array'
 	
 	def index
-		all_dak_received_id = DakReceiver.where(reciever_user_id: current_user.id).pluck(:dak_id)
-		@all_dak_received = Dak.find(all_dak_received_id)
+		all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
+		all_dak_received_id = []
+		read_dak_received_id = []
+		unread_dak_received_id =[]
+		all_dak_received_data.each do |i|
+			all_dak_received_id << i.dak_id 
+			if i.is_read == true
+				read_dak_received_id << i.dak_id
+			else
+				unread_dak_received_id << i.dak_id
+			end
+		end
+		@unread_dak_received = Dak.find(unread_dak_received_id)
+		@read_dak_received = Dak.find(read_dak_received_id)
+		@all_dak_received = (@read_dak_received + @unread_dak_received).reject(&:blank?)	
+		
+		@all_dak_received = @all_dak_received.sort{|a| a.created_at}
+		@all_dak_received = @all_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)
+		@unread_dak_received = @unread_dak_received.sort{|a| a.created_at}
+		@unread_dak_received = @unread_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)
+		@read_dak_received = @read_dak_received.sort{|a| a.created_at}
+		@read_dak_received = @read_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)		
+
 	end
 
 	def new
