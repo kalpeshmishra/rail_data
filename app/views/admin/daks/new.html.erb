@@ -105,7 +105,7 @@
           <%(0..9).each_with_index do |no, index| %>
             <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
               <td style="width:30%;">
-                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx csv,.doc,.docx,.odt,.jpg,.jpeg,.png",style: "width: 300px;border: 1px solid #888;" %>
+                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx .csv,.doc,.docx,.odt,.jpg,.jpeg,.png,.txt",style: "width: 300px;border: 1px solid #888;" %>
               </td>
               <td style="width:62%;"></td>
               <td align="center" style="vertical-align: middle;width:8%;">
@@ -177,12 +177,12 @@
   $("#confirm_add_files_delete").click(function () {
     $("#delete-modal").modal('hide');
     
-    if (delete_add_files_id != "") {
-          $.ajax({
-          type: "get",
-          url: "/delete_add_files.js?delete_add_files_id=" + delete_add_files_id
-        });
-      }
+    // if (delete_add_files_id != "") {
+    //       $.ajax({
+    //       type: "get",
+    //       url: "/delete_add_files.js?delete_add_files_id=" + delete_add_files_id
+    //     });
+    //   }
 
      $('.add-files-tr:visible').each(function() {
       if($(this).attr("id").split("_")[4] == delete_index){

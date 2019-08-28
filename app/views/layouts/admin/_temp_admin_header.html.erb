@@ -135,6 +135,12 @@
   <li class="parent">
     <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
   </li>
+  <li class="parent">
+    <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
+  </li>
+  <li class="parent">
+    <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
+  </li>
 </ul>
   <!-- Rail Dak Section Ends -->
 

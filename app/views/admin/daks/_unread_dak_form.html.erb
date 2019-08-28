@@ -9,9 +9,13 @@
 	  background-color: #9c3009;
 	  color: white;
 	}
+	.read_false{
+		font-weight: bolder;
+		color: #9c1e16;
+	}
 
 </style>
-<h4>Unread Dak Received</h4>
+<h4>All Dak Received</h4>
 <table class="table hover table-bordered" id="unread-dak-received">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
@@ -29,20 +33,28 @@
   <tbody>
   	<%if @unread_dak_received.present?%>
   		<%@unread_dak_received.each.with_index(@unread_dak_received.offset + 1) do |data,index|%>
-	  		<tr id="<%=data.id%>">
+  			<%
+	  				dak_read_details = DakReceiver.find_by(dak_id: data.id).dak_read_time_date
+	  				if dak_read_details.present?
+	  					temp_status = "true"
+	  				else
+	  					temp_status = "false" 
+	  				end	
+	  		%>
+	  		<tr class="read_<%=temp_status%>">
 	  			<td><%=index%></td>
 	  			<td><%=data.letter_type%></td>	
 	  			<td><%=data.letter_number%></td>	
 	  			<td><%=data.letter_issue_date.to_date.strftime("%d/%m/%Y") rescue nil%></td>	
 	  			<td><%=data.letter_description%></td>
 	  			<td><%=User.find(data.creater_user_id.to_i).first_name%></td>
-	  			<td class="read_unread">
+	  			<td class="read_unread status_<%=temp_status%>" id="<%=data.id%>">
 	  				<%data.dak_attachments.count.times do |n|%>
 	  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>
 						<%end%>	
 	  			</td>
-	  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y")%></td>	
-	  			<td><%=DakReceiver.find_by(dak_id: data.id).dak_read_time_date%></td>
+	  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y")%></td>
+	  			<td><%=dak_read_details%></td>		
 	  		</tr>
 	  	<%end%>
   	<%end%>
@@ -50,6 +62,19 @@
 </table>	 
 <div class="row no-margin no-margin unread">
 
-  <div class="col-md-6 col-md-offset-4" id="com-pagination-unread"><%= will_paginate @unread_dak_received, renderer: BootstrapPagination::Rails %></div>
+  <div class="col-md-6 col-md-offset-4" id="com-pagination-unread"><%= will_paginate @unread_dak_received, renderer: BootstrapPagination::Rails, :param_name => "unread" , params: {active_tab: 'unread'}%></div>
   
 </div> 
+<script>
+	$(".read_unread").click(function(){
+		dak_id = $(this).attr('id');
+    dak_status = $(this).attr('class');
+    if (dak_status.split("_").slice(-1)[0] == "false" && dak_id != "")
+      $(this).removeClass('status_false').addClass('status_true');
+    	$.ajax({
+          type: "PUT",
+          url: "/admin/daks/" + dak_id
+        });
+    end	
+  });
+</script>

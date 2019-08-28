@@ -3,28 +3,55 @@ class Admin::DaksController < ApplicationController
 	require 'will_paginate/array'
 	
 	def index
-		all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
-		all_dak_received_id = []
-		read_dak_received_id = []
-		unread_dak_received_id =[]
-		all_dak_received_data.each do |i|
-			all_dak_received_id << i.dak_id 
-			if i.is_read == true
-				read_dak_received_id << i.dak_id
-			else
-				unread_dak_received_id << i.dak_id
-			end
-		end
-		@unread_dak_received = Dak.find(unread_dak_received_id)
-		@read_dak_received = Dak.find(read_dak_received_id)
-		@all_dak_received = (@read_dak_received + @unread_dak_received).reject(&:blank?)	
 		
-		@all_dak_received = @all_dak_received.sort{|a| a.created_at}
-		@all_dak_received = @all_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)
-		@unread_dak_received = @unread_dak_received.sort{|a| a.created_at}
-		@unread_dak_received = @unread_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)
-		@read_dak_received = @read_dak_received.sort{|a| a.created_at}
-		@read_dak_received = @read_dak_received.paginate(:page => (params[:page] || 1), :per_page => 10)		
+		if params[:dak_type] == "received"
+			all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
+			all_dak_received_id = []
+			read_dak_received_id = []
+			unread_dak_received_id =[]
+			all_dak_received_data.each do |i|
+				all_dak_received_id << i.dak_id 
+				if i.is_read == true
+					read_dak_received_id << i.dak_id
+				else
+					unread_dak_received_id << i.dak_id
+				end
+			end
+			@unread_dak_received = Dak.find(unread_dak_received_id)
+			@read_dak_received = Dak.find(read_dak_received_id)
+			@all_dak_received = (@read_dak_received + @unread_dak_received).reject(&:blank?)
+			
+			@all_dak_received = @all_dak_received.sort_by{|a| a.created_at}.reverse
+			@all_dak_received = @all_dak_received.paginate(:page => (params[:all] || 1), :per_page => 15)
+			@read_dak_received = @read_dak_received.sort_by{|a| a.created_at}.reverse
+			@read_dak_received = @read_dak_received.paginate(:page => (params[:read] || 1), :per_page => 15)		
+			@unread_dak_received = @unread_dak_received.sort_by{|a| a.created_at}.reverse
+			@unread_dak_received = @unread_dak_received.paginate(:page => (params[:unread] || 1), :per_page => 15)
+			
+			if params[:active_tab].present? 
+				if params[:active_tab] == "unread"
+					@unread_tab_select = "active"
+					@read_tab_select = ""
+					@all_tab_select = ""
+				elsif params[:active_tab] == "read"
+					@unread_tab_select = ""
+					@read_tab_select = "active"
+					@all_tab_select = ""
+				elsif params[:active_tab] == "all"
+					@unread_tab_select = ""
+					@read_tab_select = ""
+					@all_tab_select = "active"
+				end			
+			else
+				@unread_tab_select = "active"
+				@read_tab_select = ""
+				@all_tab_select = ""
+			end
+
+		elsif params[:dak_type] == "dispatch"
+			
+
+		end
 
 	end
 
@@ -44,12 +71,14 @@ class Admin::DaksController < ApplicationController
 	end
 
 	def create
-	
 		user_id = current_user.id
 		Dak.create_dak_data(params,user_id)
-			
+		# binding.pry
+		# render "admin/daks/new"
+
+		# redirect_to new_admin_dak_path, :notice => 'Message sended successfully .' 
 		
-		
+
 	end
 
 	def show
@@ -61,7 +90,11 @@ class Admin::DaksController < ApplicationController
 	end
 
 	def update
-		
+		update_dak_id = params[:id].to_i
+		DakReceiver.find_by(dak_id: update_dak_id).update(is_read: true, dak_read_time_date: Time.now)
+		respond_to do |format|
+      format.js
+    end
 	end
 	
 

@@ -50,6 +50,6 @@
 </table>	 
 <div class="row no-margin no-margin read">
 
-  <div class="col-md-6 col-md-offset-4" id="com-pagination-read"><%= will_paginate @read_dak_received, renderer: BootstrapPagination::Rails %></div>
+  <div class="col-md-6 col-md-offset-4" id="com-pagination-read"><%= will_paginate @read_dak_received, renderer: BootstrapPagination::Rails, :param_name => "read" , params: {active_tab: 'read'}%></div>
   
 </div> 
