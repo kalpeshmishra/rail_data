@@ -50,7 +50,16 @@ class Admin::DaksController < ApplicationController
 
 		elsif params[:dak_type] == "dispatch"
 			
-
+			all_dak_dispatch_data = Dak.where(creater_user_id: current_user.id)
+			@all_dak_dispatch = all_dak_dispatch_data.sort_by{|a| a.created_at}.reverse
+			@all_dak_dispatch = @all_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
+			@unread_dak_dispatch = []
+			all_dak_dispatch_data.each do |data|
+				if DakReceiver.where(dak_id: data.id).pluck(:is_read).include? false
+				  @unread_dak_dispatch << data
+				end
+			end
+			@unread_dak_dispatch = @unread_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
 		end
 
 	end
@@ -91,7 +100,7 @@ class Admin::DaksController < ApplicationController
 
 	def update
 		update_dak_id = params[:id].to_i
-		DakReceiver.find_by(dak_id: update_dak_id).update(is_read: true, dak_read_time_date: Time.now)
+		DakReceiver.where(dak_id: update_dak_id, reciever_user_id: current_user.id).update(is_read: true, dak_read_time_date: Time.now)
 		respond_to do |format|
       format.js
     end

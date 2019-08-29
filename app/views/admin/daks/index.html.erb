@@ -78,31 +78,23 @@
 
     <div class="tab-container">
      <ul class="nav nav-tabs">
-       <li class="<%#=@unread_tab_select%>">
-         <a href="#unread-dak-info" id="unread-dak-tab" data-toggle="tab">UN-READ</a>
+       <li class="active <%#=@unread_tab_select%>">
+         <a href="#unread-dak-dispatch-info" id="unread-dak-dispatch-tab" data-toggle="tab">UN-READ</a>
        </li>
-       <li class="<%#=@read_tab_select%>">
-         <a href="#read-dak-info" id="read-dak-tab" data-toggle="tab">READ</a>
-       </li>
-        <li class="<%#=@all_tab_select%>">
-         <a href="#all-dak-info" id="all-dak-tab" data-toggle="tab">ALL</a>
+       <li class="<%#=@all_tab_select%>">
+         <a href="#all-dak-dispatch-info" id="all-dak-dispatch-tab" data-toggle="tab">ALL</a>
        </li>
      </ul>
 
      <div class="tab-content">
-       <div id="unread-dak-info" class="tab-pane <%#=@unread_tab_select%> cont">
-         <div id="unread_dak_form">
-           <p>u</p>
+       <div id="unread-dak-dispatch-info" class="tab-pane active<%#=@unread_tab_select%> cont">
+         <div id="unread_dak_dispatch_form">
+           <%= render 'unread_dak_dispatch_form' %>
          </div>
        </div>
-       <div id="read-dak-info" class="tab-pane <%#=@read_tab_select%> cont">
-         <div id="read_dak_form">
-          <p>e</p>
-         </div>
-       </div>
-       <div id="all-dak-info" class="tab-pane <%#=@all_tab_select%> cont">
-         <div id="all_dak_form">
-           <p>a</p>
+       <div id="all-dak-dispatch-info" class="tab-pane <%#=@all_tab_select%> cont">
+         <div id="all_dak_dispatch_form">
+           <%= render 'all_dak_dispatch_form' %>
          </div>
        </div>
        <div id="loading-indicator">

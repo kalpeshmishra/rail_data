@@ -41,8 +41,8 @@
 	  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>
 						<%end%>	
 	  			</td>
-	  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y")%></td>
-	  			<td><%=DakReceiver.find_by(dak_id: data.id).dak_read_time_date%></td>	
+	  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y") rescue nil%></td>
+	  			<td><%=DakReceiver.find_by(dak_id: data.id, reciever_user_id: current_user.id).dak_read_time_date.strftime("%H:%M %d/%m/%Y") rescue nil%></td>	
 	  		</tr>
 	  	<%end%>
   	<%end%>

@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20190819052345) do
     t.integer  "dak_id"
     t.integer  "reciever_user_id"
     t.boolean  "is_read"
-    t.date     "dak_read_time_date"
+    t.datetime "dak_read_time_date"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
@@ -109,9 +109,8 @@ ActiveRecord::Schema.define(version: 20190819052345) do
     t.string   "letter_number"
     t.string   "letter_issue_date"
     t.string   "letter_description"
-    t.string   "creater_user_id"
-    t.string   "dak_create_time"
-    t.date     "dak_create_date"
+    t.integer  "creater_user_id"
+    t.datetime "dak_create_at"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false

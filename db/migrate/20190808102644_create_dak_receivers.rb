@@ -4,7 +4,7 @@ class CreateDakReceivers < ActiveRecord::Migration[5.0]
     	t.integer 	:dak_id
     	t.integer 	:reciever_user_id
     	t.boolean 	:is_read
-    	t.date      :dak_read_time_date
+    	t.datetime  :dak_read_time_date
       t.string		:extra
       t.timestamps
     end

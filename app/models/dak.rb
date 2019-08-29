@@ -42,10 +42,10 @@ class Dak < ApplicationRecord
 	      name = value.original_filename rescue ''
 	      raise 'Unacceptable File Format.' unless accepted_formats.include? File.extname(name).downcase
 	      raise "File size must be less than 50	MB." if value.size > 50.megabytes
-	      # create_date = Time.now.to_date.strftime("%d-%m-%Y")
-	      FileUtils::mkdir_p "public/dak_files/#{user_id}/"
+	      create_month = Time.now.to_date.strftime("%b-%Y")
+	      FileUtils::mkdir_p "public/dak_files/#{create_month}/#{user_id}/"
 				file_count = file_count+1
-				path = File.join("public/dak_files/#{user_id}/", "#{dak_data.id.to_s}-#{file_count.to_s}-#{name}")
+				path = File.join("public/dak_files/#{create_month}/#{user_id}/", "#{dak_data.id.to_s}-#{file_count.to_s}-#{name}")
 	      path_save = path.split("public/").last
 	      File.open(path, "wb") { |f| f.write(value.read) }
 	      DakAttachment.create(dak_id: dak_data.id, attachment_type: File.extname(name).downcase, attachment_path: path_save) 
