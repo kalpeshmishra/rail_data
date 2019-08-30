@@ -33,21 +33,14 @@
   <tbody>
   	<%if @unread_dak_dispatch.present?%>
   		<%@unread_dak_dispatch.each.with_index(@unread_dak_dispatch.offset + 1) do |data,index|%>
-  			<%
-	  				dak_read_details = DakReceiver.find_by(dak_id: data.id).dak_read_time_date
-	  				if dak_read_details.present?
-	  					temp_status = "true"
-	  				else
-	  					temp_status = "false" 
-	  				end	
-	  		%>
+  			<%temp_status = data.dak_receivers.pluck(:is_read).exclude? false%>
 	  		<tr class="read_<%=temp_status%>">
 	  			<td><%=index%></td>
 	  			<td><%=data.letter_type%></td>	
 	  			<td><%=data.letter_number%></td>	
 	  			<td><%=data.letter_issue_date.to_date.strftime("%d/%m/%Y") rescue nil%></td>	
 	  			<td><%=data.letter_description%></td>
-	  			<td class="read_unread status_" id="<%=data.id%>">
+	  			<td class="read_unread status_<%=temp_status%>" id="<%=data.id%>">
 	  				<%data.dak_attachments.count.times do |n|%>
 	  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>
 						<%end%>	
@@ -57,10 +50,10 @@
 	  				<%reader_detail= data.dak_receivers.pluck(:reciever_user_id,:dak_read_time_date)%>
 	  				<table style="border: 1px solid #dadada;">
 	  					<%reader_detail.each do |r|%>
-	  					<tr>
-	  						<td style="width: 155px; font-size: 12px;"><%=User.find(r[0]).first_name%></td>
-	  						<td style="width: 150px;"><%=r[1].strftime("%H:%M %d/%m/%Y") rescue nil%></td>
-	  					</tr>
+		  					<tr class="read_<%=temp_status%>">
+		  						<td style="width: 155px; font-size: 12px;"><%=User.find(r[0]).first_name%></td>
+		  						<td style="width: 150px;"><%=r[1].strftime("%H:%M %d/%m/%Y") rescue nil%></td>
+		  					</tr>
 	  					<% end %>
 	  				</table>
 	  			</td>		

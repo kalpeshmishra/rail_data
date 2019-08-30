@@ -69,12 +69,12 @@
 	$(".read_unread").mouseup(function(){
 		dak_id = $(this).attr('id');
     dak_status = $(this).attr('class').split("_").slice(-1)[0];
-    if (dak_status == "false" && dak_id != "")
-      $(this).removeClass('status_false').addClass('status_true');
-    	$.ajax({
-          type: "PUT",
-          url: "/admin/daks/" + dak_id
-        });
-    end	
+    if (dak_status  == "false" && dak_id != ""){
+	      $(this).removeClass('status_false').addClass('status_true');
+	    	$.ajax({
+	          type: "PUT",
+	          url: "/admin/daks/" + dak_id
+	        });
+	   	}	
   });
 </script>

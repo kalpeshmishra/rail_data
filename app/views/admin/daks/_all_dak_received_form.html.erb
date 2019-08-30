@@ -35,6 +35,7 @@
   		<%@all_dak_received.each.with_index(@all_dak_received.offset + 1) do |data,index|%>
   			<% 
 	  				dak_read_details = DakReceiver.find_by(dak_id: data.id, reciever_user_id: current_user.id).dak_read_time_date
+	  				
 	  				if dak_read_details.present?
 	  					temp_status = "true"
 	  				else
@@ -68,13 +69,13 @@
 <script>
 	$(".read_unread").mouseup(function(){
 		dak_id = $(this).attr('id');
-    dak_status = $(this).attr('class');
-    if (dak_status.split("_").slice(-1)[0] == "false" && dak_id != "")
-      $(this).removeClass('status_false').addClass('status_true');
-    	$.ajax({
-          type: "PUT",
-          url: "/admin/daks/" + dak_id
-        });
-    end	
+    dak_status = $(this).attr('class').split("_").slice(-1)[0];
+    if (dak_status  == "false" && dak_id != ""){
+	      $(this).removeClass('status_false').addClass('status_true');
+	    	$.ajax({
+	          type: "PUT",
+	          url: "/admin/daks/" + dak_id
+	        });
+	   	}
   });
 </script>

@@ -3,7 +3,7 @@ class Admin::DaksController < ApplicationController
 	require 'will_paginate/array'
 	
 	def index
-		
+		form_fields_data
 		if params[:dak_type] == "received"
 			all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
 			all_dak_received_id = []
@@ -59,12 +59,15 @@ class Admin::DaksController < ApplicationController
 				  @unread_dak_dispatch << data
 				end
 			end
+			@unread_dak_dispatch = @unread_dak_dispatch.sort_by{|a| a.created_at}.reverse
 			@unread_dak_dispatch = @unread_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
 		end
 
 	end
 
 	def new
+		form_fields_data  
+
 		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
 
 		dak_user_list = {}
@@ -82,12 +85,26 @@ class Admin::DaksController < ApplicationController
 	def create
 		user_id = current_user.id
 		Dak.create_dak_data(params,user_id)
-		# binding.pry
-		# render "admin/daks/new"
-
-		# redirect_to new_admin_dak_path, :notice => 'Message sended successfully .' 
+		
 		
 
+		# redirect_to new_admin_dak_path, :notice => 'Message sended successfully .' 
+		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
+
+		dak_user_list = {}
+		dak_user_list.merge!("AdiDivision" => {})
+		user_list.each do |user|
+			if user.id != current_user.id
+				dak_user_list["AdiDivision"].merge!("#{user.user_under}" => {}) if dak_user_list["AdiDivision"].keys.exclude?(user.user_under)
+				dak_user_list["AdiDivision"][user.user_under].merge!("#{user.first_name}" => user.id)	
+			end
+		end
+		@dak_recipient_list = dak_user_list	
+		render "new"
+	end
+
+	def form_fields_data
+		@letter_type_list = [['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]
 	end
 
 	def show

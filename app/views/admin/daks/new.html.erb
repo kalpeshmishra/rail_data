@@ -25,13 +25,8 @@
     list-style: none;
     padding-left: 22px;
   }
-
-  /*.table-scroll {
-    max-height:500px;
-  }
-*/
 </style>
-<%letter_type_list = [['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]%>
+
 <% @method = "POST" %>
 <% @url = admin_daks_path%>
 <div>
@@ -44,7 +39,7 @@
 					<table class="table">
 						<tr>
 							<td>Letter Type:</td>
-							<td><%= (select_tag "letter_type", options_for_select(letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
+							<td><%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 280px;font-size:14px;"}).html_safe %></td>
 						</tr>
 						<tr>
 							<td>Letter No.:</td>

@@ -1,0 +1,40 @@
+<div class="table-responsive main-dak-dispatch">
+    <table class="table hover table-dark" id="dak_dispatch_heading">
+      <caption>
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+            <span class="pull-left lead-text">
+              <%="Dispatched Message"%>
+            </span>
+        </div>
+      </caption>
+    </table>
+
+    <div class="tab-container">
+     <ul class="nav nav-tabs">
+       <li class="active <%#=@unread_tab_select%>">
+         <a href="#unread-dak-dispatch-info" id="unread-dak-dispatch-tab" data-toggle="tab">UN-READ</a>
+       </li>
+       <li class="<%#=@all_tab_select%>">
+         <a href="#all-dak-dispatch-info" id="all-dak-dispatch-tab" data-toggle="tab">ALL</a>
+       </li>
+     </ul>
+
+     <div class="tab-content">
+       <div id="unread-dak-dispatch-info" class="tab-pane active<%#=@unread_tab_select%> cont">
+         <div id="unread_dak_dispatch_form">
+           <%= render 'unread_dak_dispatch_form' %>
+         </div>
+       </div>
+       <div id="all-dak-dispatch-info" class="tab-pane <%#=@all_tab_select%> cont">
+         <div id="all_dak_dispatch_form">
+           <%= render 'all_dak_dispatch_form' %>
+         </div>
+       </div>
+       <div id="loading-indicator">
+         <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+       </div>
+      </div>
+   
+    </div>
+
+  </div>
