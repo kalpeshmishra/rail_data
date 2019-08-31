@@ -8,18 +8,18 @@
 <div>
 	<h2>Search Letter's</h2>
 	<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form', remote: true) do |form| %>  
-		<table style="width: 850px; ">
+			<table class="table table-sm" style="width: 70%;">
 			
-		    <tr style="padding: 0px; vertical-align: bottom;">
+		    <tr>
 		    	<td>Letter Type
 		    		<%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 150px;font-size:12px;"}).html_safe %>
 		    				
 		    	</td>
-		    	<td>Letter Date (Between)
+		    	<td>Letter Date (From)
 		    		<%= text_field_tag "letter_date", '', type: 'date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 145px; font-size:12px;"%><p></p>
 		    		
 		    	</td>
-		    	<td>Dispatch Date (Between)
+		    	<td>Letter Date (To)
 		    		<%= text_field_tag "letter_date", '', type: 'date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 145px; font-size:12px;"%><p></p>
 		    		
 		    	</td>
@@ -27,31 +27,24 @@
 		    		<%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true, style: "width: 210px; font-size:12px;"%>
 		    		
 		    	</td>
-		    	<td>
-		    		 <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-send submit"></i>SEND</button>
-		    	</td>
 		    </tr>
 		    <tr>
 		    	<td>
 		    		Receiver
 		    		<%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type",required: true, style: "width: 150px;font-size:12px;"}).html_safe %>
 		    	</td>
-		    	<td>
+		    	<td>Dispatch Date (From)
 		    		<%= text_field_tag "letter_date", '', type: 'date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 145px; font-size:12px;"%>
 		    	</td>
-		    	<td>
+		    	<td>Dispatch Date (To)
 		    		<%= text_field_tag "letter_date", '', type: 'date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 145px; font-size:12px;"%>
 		    	</td>
-		    	<td>
-		    		Letter No.
-		    		<%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true, style: "width: 210px; font-size:12px;"%>
+		    	<td style="text-align: center; vertical-align: middle;"">
+		    		 <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-search submit"></i>Search</button>
 		    	</td>
 		    </tr>
 		  
 	  </table>
-<div align="center">
-		 
 
-</div>		
-	<% end %>  	
-</div>	
+	<% end %>
+</div>
