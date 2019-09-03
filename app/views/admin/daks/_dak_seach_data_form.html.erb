@@ -1,0 +1,41 @@
+<%if @search_dispatch_data.present?%>
+	<h4>Dak Dispatched</h4>
+		<table class="" id="searched-dak-dispatch">
+		  <thead class="thead-dark">
+		    <tr style="color: #fff; background: #4B4B4D;">
+		      <th>Sr</th>
+		      <th>Letter Type</th>
+		      <th>Letter Number</th>
+		      <th>Letter Date</th>
+		      <th>Subject</th>
+		      <th>Letter Attachment</th>
+		      <th>Dispatch  At</th>
+		      <th style="width: 155px;">Receiver</th>
+		      <th style="width: 150px;">Read At</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+	  		<%@search_dispatch_data.each.with_index(@search_dispatch_data.offset + 1) do |data,index|%>
+	  			<%temp_status = data.dak_receivers.pluck(:is_read).exclude? false%>
+		  		<tr class="read_<%=temp_status%>">
+		  			<td><%=index%></td>
+		  			<td><%=data.letter_type%></td>	
+		  			<td><%=data.letter_number%></td>	
+		  			<td><%=data.letter_issue_date.to_date.strftime("%d/%m/%Y") rescue nil%></td>	
+		  			<td><%=data.letter_description%></td>
+		  			<td class="read_unread status_<%=temp_status%>" id="<%=data.id%>">
+		  				<%data.dak_attachments.count.times do |n|%>
+		  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>
+							<%end%>	
+		  			</td>
+		  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y") rescue nil%></td>
+		  			<td colspan="2">
+		  				
+		  			</td>		
+		  		</tr>
+		  	<%end%>
+		  </tbody>
+		</table>  	
+<%else%>
+<h1>No data found</h1>
+<%end%>

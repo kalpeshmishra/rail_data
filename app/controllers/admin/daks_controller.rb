@@ -47,9 +47,9 @@ class Admin::DaksController < ApplicationController
 				@read_tab_select = ""
 				@all_tab_select = ""
 			end
-
-		elsif params[:dak_type] == "dispatch"
-			
+		end	
+		
+		if params[:dak_type] == "dispatch"
 			all_dak_dispatch_data = Dak.where(creater_user_id: current_user.id)
 			@all_dak_dispatch = all_dak_dispatch_data.sort_by{|a| a.created_at}.reverse
 			@all_dak_dispatch = @all_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
@@ -63,22 +63,32 @@ class Admin::DaksController < ApplicationController
 			@unread_dak_dispatch = @unread_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
 		end
 
+		if params[:search_data].present?
+			receiver_user_id = params[:receiver_list]
+			from_dispatch_date = params[:from_dispatch_date]
+			to_dispatch_date = params[:to_dispatch_date]
+			
+			letter_type = params[:letter_type]
+			from_letter_date = params[:from_letter_date]
+			to_letter_date = params[:to_letter_date]
+			letter_number = params[:letter_number]
+
+			search_data = Dak.where("created_at >= ? and created_at <= ? and creater_user_id = ?", from_dispatch_date.to_date , to_dispatch_date.to_date, current_user.id).includes(:dak_receivers) if params[:from_dispatch_date].present? and params[:to_dispatch_date].present?
+			search_data = search_data.where("letter_type = ? ", letter_type) if params[:letter_type].present?
+			search_data = search_data.where("letter_number LIKE ?","%#{letter_number}%") if params[:letter_number].present?
+			@search_dispatch_data = search_data.select { |data|
+				  if data.dak_receivers.pluck(:reciever_user_id)[0] == receiver_user_id.to_i
+						data
+					end	
+				}
+			@search_dispatch_data = @search_dispatch_data.paginate(:page => (params[:all] || 1), :per_page => 15)
+		end	
 	end
 
 	def new
 		form_fields_data  
 
-		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
-
-		dak_user_list = {}
-		dak_user_list.merge!("AdiDivision" => {})
-		user_list.each do |user|
-			if user.id != current_user.id
-				dak_user_list["AdiDivision"].merge!("#{user.user_under}" => {}) if dak_user_list["AdiDivision"].keys.exclude?(user.user_under)
-				dak_user_list["AdiDivision"][user.user_under].merge!("#{user.first_name}" => user.id)	
-			end
-		end
-		@dak_recipient_list = dak_user_list
+		
 
 	end
 
@@ -86,25 +96,28 @@ class Admin::DaksController < ApplicationController
 		user_id = current_user.id
 		Dak.create_dak_data(params,user_id)
 		
-		
-
 		# redirect_to new_admin_dak_path, :notice => 'Message sended successfully .' 
-		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
-
-		dak_user_list = {}
-		dak_user_list.merge!("AdiDivision" => {})
-		user_list.each do |user|
-			if user.id != current_user.id
-				dak_user_list["AdiDivision"].merge!("#{user.user_under}" => {}) if dak_user_list["AdiDivision"].keys.exclude?(user.user_under)
-				dak_user_list["AdiDivision"][user.user_under].merge!("#{user.first_name}" => user.id)	
-			end
-		end
-		@dak_recipient_list = dak_user_list	
+		form_fields_data
 		render "new"
 	end
 
 	def form_fields_data
 		@letter_type_list = [['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]
+		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
+
+		dak_user_list = {}
+		dak_user_list.merge!("AdiDivision" => {})
+		dak_search_user = []
+		user_list.each do |user|
+			if user.id != current_user.id
+				dak_user_list["AdiDivision"].merge!("#{user.user_under}" => {}) if dak_user_list["AdiDivision"].keys.exclude?(user.user_under)
+				dak_user_list["AdiDivision"][user.user_under].merge!("#{user.first_name}" => user.id)	
+				dak_search_user << [user.first_name,user.id]
+			end
+		end
+		
+		@dak_recipient_list = dak_user_list
+		@dak_search_recipient_list = dak_search_user
 	end
 
 	def show
