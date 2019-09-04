@@ -33,6 +33,7 @@ class Dak < ApplicationRecord
 
 		accepted_formats = %w(.pdf .xls .xlsx .csv .doc .docx .odt .jpg .jpeg .png .txt)
 
+		flag = false
 		if dak_data.save
 			select_user_id.each do |reciever_id|
 				DakReceiver.create(dak_id: dak_data.id,reciever_user_id: reciever_id,is_read: false)
@@ -50,9 +51,9 @@ class Dak < ApplicationRecord
 	      File.open(path, "wb") { |f| f.write(value.read) }
 	      DakAttachment.create(dak_id: dak_data.id, attachment_type: File.extname(name).downcase, attachment_path: path_save) 
 		  end 
-		
+		flag = true
 		end
-			
+		return flag	
 	end
 
 

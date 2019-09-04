@@ -4,16 +4,20 @@ $("#gimb_stationwise").remove('');
 $("#gimb_stationwise_form").html('<%= j render 'gimb_stationwise'%>');
 $("#adi_stockwise").remove('');
 $("#adi_stockwise_form").html('<%= j render 'adi_stockwise'%>');
-$("#adi_received_stockwise").remove('');
-$("#adi_received_stockwise_form").html('<%= j render 'adi_received_stockwise'%>');
 $("#gimb_stockwise").remove('');
 $("#gimb_stockwise_form").html('<%= j render 'gimb_stockwise'%>');
-$("#gimb_received_stockwise").remove('');
-$("#gimb_received_stockwise_form").html('<%= j render 'gimb_received_stockwise'%>');
 $("#division_stockwise").remove('');
 $("#division_stockwise_form").html('<%= j render 'division_stockwise'%>');
+
+<%if false%>
+$("#adi_received_stockwise").remove('');
+$("#adi_received_stockwise_form").html('<%= j render 'adi_received_stockwise'%>');
+$("#gimb_received_stockwise").remove('');
+$("#gimb_received_stockwise_form").html('<%= j render 'gimb_received_stockwise'%>');
 $("#division_received_stockwise").remove('');
 $("#division_received_stockwise_form").html('<%= j render 'division_received_stockwise'%>');
+<%end%>
+
 $("#adi_commodity").remove('');
 $("#adi_commodity_form").html('<%= j render 'adi_commodity'%>');
 $("#gimb_commodity").remove('');

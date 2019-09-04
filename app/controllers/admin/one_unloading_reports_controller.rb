@@ -60,21 +60,21 @@ class Admin::OneUnloadingReportsController < ApplicationController
 		#Stockwise Division (PU)-Unloading Ends
 
 		#Stockwise ADI Received (PU)-Unloading Start
-		adi_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_adi)
-		@adi_rake_unload_received_stockwise = adi_stock_received_data_hash.sort.to_h
-		@adi_unload_received_stockwise_header = @adi_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		# adi_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_adi)
+		# @adi_rake_unload_received_stockwise = adi_stock_received_data_hash.sort.to_h
+		# @adi_unload_received_stockwise_header = @adi_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
 		#Stockwise ADI Received (PU)-Unloading Ends
 
 		#Stockwise GIMB Received (PU)-Unloading Start
-		gimb_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_gimb)
-		@gimb_rake_unload_received_stockwise = gimb_stock_received_data_hash.sort.to_h
-		@gimb_unload_received_stockwise_header = @gimb_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		# gimb_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_gimb)
+		# @gimb_rake_unload_received_stockwise = gimb_stock_received_data_hash.sort.to_h
+		# @gimb_unload_received_stockwise_header = @gimb_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
 		#Stockwise GIMB Received (PU)-Unloading Ends
 
 		#Stockwise Division Received (PU)-Unloading Start
-		division_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_data)
-		@division_rake_unload_received_stockwise = division_stock_received_data_hash.sort.to_h
-		@division_unload_received_stockwise_header = @division_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		# division_stock_received_data_hash = RakeLoad.get_received_stockwise_loading(rake_unload_received_data)
+		# @division_rake_unload_received_stockwise = division_stock_received_data_hash.sort.to_h
+		# @division_unload_received_stockwise_header = @division_rake_unload_received_stockwise.map{|k,v|v.keys}.flatten.compact.uniq.sort
 		#Stockwise Division Received (PU)-Unloading Ends
 
 		#Commodity ADI (PU)-Unloading Start

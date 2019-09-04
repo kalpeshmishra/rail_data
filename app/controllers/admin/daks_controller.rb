@@ -4,6 +4,7 @@ class Admin::DaksController < ApplicationController
 	
 	def index
 		form_fields_data
+		delete_dak_without_receiver_or_attachment
 		if params[:dak_type] == "received"
 			all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
 			all_dak_received_id = []
@@ -88,17 +89,12 @@ class Admin::DaksController < ApplicationController
 	def new
 		form_fields_data  
 
-		
-
 	end
 
 	def create
-		user_id = current_user.id
-		Dak.create_dak_data(params,user_id)
-		
-		# redirect_to new_admin_dak_path, :notice => 'Message sended successfully .' 
 		form_fields_data
-		render "new"
+		user_id = current_user.id
+		@dak_save_status = Dak.create_dak_data(params,user_id)
 	end
 
 	def form_fields_data
@@ -118,6 +114,16 @@ class Admin::DaksController < ApplicationController
 		
 		@dak_recipient_list = dak_user_list
 		@dak_search_recipient_list = dak_search_user
+	end
+	def delete_dak_without_receiver_or_attachment
+		dak_data = Dak.last(20)
+		dak_data.each do |data|
+			if data.dak_receivers.blank? or data.dak_attachments.blank?
+				DakReceiver.where(id: data.dak_receivers.pluck(:id)).destroy_all if data.dak_receivers.present?
+				DakAttachment.where(id: data.dak_attachments.pluck(:id)).destroy_all if data.dak_attachments.present?
+				Dak.find(data.id).destroy
+			end
+		end	
 	end
 
 	def show

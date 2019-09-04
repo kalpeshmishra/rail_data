@@ -1,0 +1,11 @@
+<%if @dak_save_status == true%>	
+	$("#send-dak-form").trigger("reset");
+	document.getElementById("recipient_select").innerHTML="";
+	<% (0..9).each_with_index do |no,index| %>
+    <%if index >= 1 %>
+      var tr = '<%=".add_files_row_#{index}"%>';
+      $(tr).hide();
+    <%end%> 
+  <% end %>
+  alert("Dak Successfully Sent");
+<%end%>	

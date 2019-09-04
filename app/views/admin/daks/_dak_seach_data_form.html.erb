@@ -30,7 +30,15 @@
 		  			</td>
 		  			<td><%=data.created_at.to_datetime.strftime("%H:%M %d/%m/%Y") rescue nil%></td>
 		  			<td colspan="2">
-		  				
+		  				<%reader_detail= data.dak_receivers.pluck(:reciever_user_id,:dak_read_time_date)%>
+	  				<table style="border: 1px solid #dadada;">
+	  					<%reader_detail.each do |r|%>
+		  					<tr class="read_<%=temp_status%>">
+		  						<td style="width: 155px; font-size: 12px;"><%=User.find(r[0]).first_name%></td>
+		  						<td style="width: 150px;"><%=r[1].strftime("%H:%M %d/%m/%Y") rescue nil%></td>
+		  					</tr>
+	  					<% end %>
+	  				</table>
 		  			</td>		
 		  		</tr>
 		  	<%end%>

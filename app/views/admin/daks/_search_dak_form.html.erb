@@ -1,10 +1,20 @@
 <style>
 .add-cursor {cursor: pointer;}
 .add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
-tr td{
+.solid {
+		border-style: double;
+		font-weight: bold;
+		padding: 3px;
+		color: #9c3009;
+	}
+	.solid:hover { 
+	  background-color: #9c3009;
+	  color: white;
+	}
+/*tr td{
   padding: 2 !important;
   margin: 0 !important;
-}
+}*/
 
 </style>
 
@@ -14,18 +24,18 @@ tr td{
 	<div>
 		<h2>Search Sent Letter's</h2>
 		<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form', remote: true) do |form| %>  
-				<table class="table table-sm" style="width: 70%;">
+				<table class="table" style="width: 70%;">
 					<tbody>
 					<tr>
 			    	<td>Letter Type
 			    		<%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type", style: "width: 150px;font-size:12px;"}).html_safe %>
 			    	</td>
 			    	<td>Letter Date (From)
-			    		<%= text_field_tag "from_letter_date", '', type: 'date', id: "date",class: 'form-control input-md from_letter_date', style: "width: 145px; font-size:12px;"%>
-			    		<p></p>
+			    		<%= text_field_tag :from_letter_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off',  class: "form-control input-md from_letter_date" %>
+			    		<p></p> 
 			    	</td>
 			    	<td>Letter Date (To)
-			    		<%= text_field_tag "to_letter_date", '', type: 'date', id: "date",class: 'form-control input-md to_letter_date', style: "width: 145px; font-size:12px;"%>
+			    		<%= text_field_tag :to_letter_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off',  class: "form-control input-md to_letter_date" %>
 			    		<p></p>
 			    	</td>
 			    	<td>Letter No.
@@ -37,10 +47,10 @@ tr td{
 			    		<%= (select_tag "receiver_list", options_for_select(@dak_search_recipient_list), {prompt: 'Select', class: "form-control  input-sm receiver_list",required: true, style: "width: 150px;font-size:12px;"}).html_safe %>
 			    	</td>
 			    	<td>Dispatch Date (From)
-			    		<%= text_field_tag "from_dispatch_date", '', type: 'date', id: "date",class: 'form-control input-md from_dispatch_date', required: true, style: "width: 145px; font-size:12px;"%>
+			    		<%= text_field_tag :from_dispatch_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md from_dispatch_date" %>
 			    	</td>
 			    	<td>Dispatch Date (To)
-			    		<%= text_field_tag "to_dispatch_date", '', type: 'date', id: "date",class: 'form-control input-md to_dispatch_date', required: true, style: "width: 145px; font-size:12px;"%>
+			    		<%= text_field_tag :to_dispatch_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md to_dispatch_date" %>
 			    	</td>
 			    	<%= hidden_field_tag(:search_data, true) %>
 			    	<td style="text-align: center; vertical-align: middle;">
@@ -56,3 +66,10 @@ tr td{
 	</div>
 
 </div>
+<script>
+	$(".from_letter_date,.to_letter_date,.from_dispatch_date,.to_dispatch_date").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      todayHighlight: true,
+  });
+</script>
