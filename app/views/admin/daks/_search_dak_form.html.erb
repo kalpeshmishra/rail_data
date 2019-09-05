@@ -11,6 +11,10 @@
 	  background-color: #9c3009;
 	  color: white;
 	}
+	.read_false{
+		font-weight: bolder;
+		color: #9c1e16;
+	}
 /*tr td{
   padding: 2 !important;
   margin: 0 !important;
@@ -22,27 +26,25 @@
 <% @url = admin_daks_path%>
 <div>
 	<div>
-		<h2>Search Sent Letter's</h2>
+		
+		
 		<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form', remote: true) do |form| %>  
-				<table class="table" style="width: 70%;">
-					<tbody>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+				<span style="text-decoration: underline;font-size: 25px; font-style: italic;">Search Letter's</span>
+			</div>	
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="text-align: right; font-weight: bold;font-size: 15px; color: darkred; line-height:35px;">
+				Select Type:
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+				<%= (select_tag "search_dak_type", options_for_select([["Received","Received"],["Dispatched","Dispatched"]]), {prompt: 'Select', class: "form-control  input-sm search_dak_type",required: true, style: "height: 37px;width: 150px;font-size:14px;"}).html_safe %>
+			</div>	
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+				<button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-search submit"></i>Search</button>
+			</div>
+			<p></p>
+			<div id="dispatch-dak-feilds">
+				<table class="table table-sm" style="width: 90%">
 					<tr>
-			    	<td>Letter Type
-			    		<%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type", style: "width: 150px;font-size:12px;"}).html_safe %>
-			    	</td>
-			    	<td>Letter Date (From)
-			    		<%= text_field_tag :from_letter_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off',  class: "form-control input-md from_letter_date" %>
-			    		<p></p> 
-			    	</td>
-			    	<td>Letter Date (To)
-			    		<%= text_field_tag :to_letter_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off',  class: "form-control input-md to_letter_date" %>
-			    		<p></p>
-			    	</td>
-			    	<td>Letter No.
-			    		<%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number', style: "width: 210px; font-size:12px;"%>
-			    	</td>
-			    </tr>
-			    <tr>
 			    	<td>Receiver
 			    		<%= (select_tag "receiver_list", options_for_select(@dak_search_recipient_list), {prompt: 'Select', class: "form-control  input-sm receiver_list",required: true, style: "width: 150px;font-size:12px;"}).html_safe %>
 			    	</td>
@@ -52,14 +54,38 @@
 			    	<td>Dispatch Date (To)
 			    		<%= text_field_tag :to_dispatch_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md to_dispatch_date" %>
 			    	</td>
-			    	<%= hidden_field_tag(:search_data, true) %>
-			    	<td style="text-align: center; vertical-align: middle;">
-			    		 <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-search submit"></i>Search</button>
+			    	<td>Letter No.
+			    		<%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number', style: "width: 210px; font-size:12px;"%>
+			    	</td>
+			    	<td>Letter Type
+			    		<%= (select_tag "letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm letter_type", style: "width: 150px;font-size:12px;"}).html_safe %>
+			    		<%= hidden_field_tag(:receiver_search_data, false) %>
 			    	</td>
 			    </tr>
-			    </tbody>
-			</table>
-
+			  </table>
+			</div>
+			<div id="received-dak-feilds">
+				<table class="table table-sm" style="width: 90%">
+					<tr>
+			    	<td>Sender
+			    		<%= (select_tag "sender_list", options_for_select(@dak_search_recipient_list), {prompt: 'Select', class: "form-control  input-sm sender_list",required: true, style: "width: 150px;font-size:12px;"}).html_safe %>
+			    	</td>
+			    	<td>Received Date (From)
+			    		<%= text_field_tag :sender_from_dispatch_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md sender_from_dispatch_date" %>
+			    	</td>
+			    	<td>Received Date (To)
+			    		<%= text_field_tag :sender_to_dispatch_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md sender_to_dispatch_date" %>
+			    	</td>
+			    	<td>Letter No.
+			    		<%= text_field_tag "sender_letter_number", '',placeholder: 'Enter Letter Number', id: "sender_letter_number", class: 'form-control input-md sender_letter_number', style: "width: 210px; font-size:12px;"%>
+			    	</td>
+			    	<td>Letter Type
+			    		<%= (select_tag "sender_letter_type", options_for_select(@letter_type_list), {prompt: 'Select', class: "form-control  input-sm sender_letter_type", style: "width: 150px;font-size:12px;"}).html_safe %>
+			    		<%= hidden_field_tag(:sender_search_data, false) %>
+			    	</td>
+			    </tr>
+			  </table>
+			</div>
 		<% end %>
 	</div>
 	<div id="dak_seach_data_form">
@@ -67,9 +93,68 @@
 
 </div>
 <script>
-	$(".from_letter_date,.to_letter_date,.from_dispatch_date,.to_dispatch_date").datepicker({
+	$(".from_letter_date,.to_letter_date,.from_dispatch_date,.to_dispatch_date,.sender_from_dispatch_date,.sender_to_dispatch_date").datepicker({
       format: 'dd/mm/yyyy',
       autoclose: true,
       todayHighlight: true,
   });
+
+	$(document).ready(function() {
+    $("#dispatch-dak-feilds").hide();
+   	$("#received-dak-feilds").hide();
+  });
+	$(".search_dak_type").on("change",function(){
+		dak_type_selected = $(this).val();
+		if (dak_type_selected == "Dispatched") {
+      $("#dispatch-dak-feilds").show();
+      $("#received-dak-feilds").hide();
+      change_required_from_received();
+    }
+    else if (dak_type_selected == "Received"){
+      $("#dispatch-dak-feilds").hide(); 
+      $("#received-dak-feilds").show();
+      change_required_from_dispatch()
+    }
+    else{
+    	$("#dispatch-dak-feilds").hide(); 
+      $("#received-dak-feilds").hide();
+    }	
+	});	
+
+		function change_required_from_received(){
+			$('#sender_list').removeAttr('required');
+			$('#sender_from_dispatch_date').removeAttr('required');
+			$('#sender_to_dispatch_date').removeAttr('required');
+			$("#sender_search_data").val(false);
+
+			$('#sender_list').val("");
+			$('#sender_from_dispatch_date').val("");
+			$('#sender_to_dispatch_date').val("");
+			$('#sender_letter_number').val("");
+			$('#sender_letter_type').val("");
+
+			$('#receiver_list').prop('required',true);
+			$('#from_dispatch_date').prop('required',true);
+			$('#to_dispatch_date').prop('required',true);
+			$("#receiver_search_data").val(true);
+		}
+		function change_required_from_dispatch(){
+			$('#receiver_list').removeAttr('required');
+			$('#from_dispatch_date').removeAttr('required');
+			$('#to_dispatch_date').removeAttr('required');
+			$("#receiver_search_data").val(false);
+
+			$('#receiver_list').val("");
+			$('#from_dispatch_date').val("");
+			$('#to_dispatch_date').val("");
+			$('#letter_number').val("");
+			$('#letter_type').val("");
+
+
+			$('#sender_list').prop('required',true);
+			$('#sender_from_dispatch_date').prop('required',true);
+			$('#sender_to_dispatch_date').prop('required',true);
+			$("#sender_search_data").val(true);
+		}
+    
 </script>

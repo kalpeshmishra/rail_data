@@ -5,6 +5,7 @@ class Admin::DaksController < ApplicationController
 	def index
 		form_fields_data
 		delete_dak_without_receiver_or_attachment
+
 		if params[:dak_type] == "received"
 			all_dak_received_data = DakReceiver.where(reciever_user_id: current_user.id)
 			all_dak_received_id = []
@@ -64,17 +65,17 @@ class Admin::DaksController < ApplicationController
 			@unread_dak_dispatch = @unread_dak_dispatch.paginate(:page => (params[:all] || 1), :per_page => 15)
 		end
 
-		if params[:search_data].present?
+		if params[:receiver_search_data].present? && params[:receiver_search_data] == "true"
 			receiver_user_id = params[:receiver_list]
-			from_dispatch_date = params[:from_dispatch_date]
-			to_dispatch_date = params[:to_dispatch_date]
+			from_dispatch_date = params[:from_dispatch_date].to_date
+			to_dispatch_date = params[:to_dispatch_date].to_date
 			
 			letter_type = params[:letter_type]
-			from_letter_date = params[:from_letter_date]
-			to_letter_date = params[:to_letter_date]
+			# from_letter_date = params[:from_letter_date]
+			# to_letter_date = params[:to_letter_date]
 			letter_number = params[:letter_number]
 
-			search_data = Dak.where("created_at >= ? and created_at <= ? and creater_user_id = ?", from_dispatch_date.to_date , to_dispatch_date.to_date, current_user.id).includes(:dak_receivers) if params[:from_dispatch_date].present? and params[:to_dispatch_date].present?
+			search_data = Dak.where("Date(created_at) >= ? and Date(created_at) <= ? and creater_user_id = ?", from_dispatch_date , to_dispatch_date, current_user.id).includes(:dak_receivers) if params[:from_dispatch_date].present? and params[:to_dispatch_date].present?
 			search_data = search_data.where("letter_type = ? ", letter_type) if params[:letter_type].present?
 			search_data = search_data.where("letter_number LIKE ?","%#{letter_number}%") if params[:letter_number].present?
 			@search_dispatch_data = search_data.select { |data|
@@ -84,6 +85,20 @@ class Admin::DaksController < ApplicationController
 				}
 			@search_dispatch_data = @search_dispatch_data.paginate(:page => (params[:all] || 1), :per_page => 15)
 		end	
+		if params[:sender_search_data].present? && params[:sender_search_data] == "true"
+			sender_user_id = params[:sender_list]
+			from_dispatch_date = params[:sender_from_dispatch_date].to_date
+			to_dispatch_date = params[:sender_to_dispatch_date].to_date
+			
+			letter_type = params[:sender_letter_type]
+			letter_number = params[:sender_letter_number]
+			temp_search_data =	DakReceiver.where("Date(created_at) >= ? and Date(created_at) <= ? and reciever_user_id = ?", from_dispatch_date , to_dispatch_date, current_user.id) if params[:sender_from_dispatch_date].present? and params[:sender_to_dispatch_date].present?
+			
+			@search_receive_data = Dak.find(temp_search_data.pluck(:dak_id))
+			
+		end
+
+
 	end
 
 	def new

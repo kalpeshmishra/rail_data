@@ -43,7 +43,12 @@
 		  		</tr>
 		  	<%end%>
 		  </tbody>
-		</table>  	
+		</table>
+	<div class="row no-margin no-margin dispatch">
+		<div class="col-md-6 col-md-offset-4" id="com-pagination-dispatch"><%= will_paginate @search_dispatch_data, renderer: BootstrapPagination::Rails%></div>
+  </div>	  	
+<%elsif @search_receive_data.present?%>
+	
 <%else%>
 <h1>No data found</h1>
 <%end%>

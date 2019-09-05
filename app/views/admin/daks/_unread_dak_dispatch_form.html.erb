@@ -64,7 +64,7 @@
 </table>	 
 <div class="row no-margin no-margin unread">
 
-  <div class="col-md-6 col-md-offset-4" id="com-pagination-unread"><%#= will_paginate @unread_dak_dispatch, renderer: BootstrapPagination::Rails, :param_name => "unread" , params: {active_tab: 'unread'}%></div>
+  <div class="col-md-6 col-md-offset-4" id="com-pagination-unread"><%= will_paginate @unread_dak_dispatch, renderer: BootstrapPagination::Rails, :param_name => "unread" , params: {active_tab: 'unread'}%></div>
   
 </div> 
 <script>
