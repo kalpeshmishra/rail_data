@@ -1,4 +1,5 @@
 <%if @dak_save_status == true%>	
+  $("#loading-indicator").hide();
 	$("#send-dak-form").trigger("reset");
 	document.getElementById("recipient_select").innerHTML="";
 	<% (0..9).each_with_index do |no,index| %>
@@ -7,5 +8,6 @@
       $(tr).hide();
     <%end%> 
   <% end %>
+  
   alert("Dak Successfully Sent");
 <%end%>	

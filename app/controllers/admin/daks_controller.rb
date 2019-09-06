@@ -83,19 +83,23 @@ class Admin::DaksController < ApplicationController
 						data
 					end	
 				}
-			@search_dispatch_data = @search_dispatch_data.paginate(:page => (params[:all] || 1), :per_page => 15)
+			# @search_dispatch_data = @search_dispatch_data.paginate(:page => (params[:receiver_search] || 1), :per_page => 3) rescue nil
 		end	
 		if params[:sender_search_data].present? && params[:sender_search_data] == "true"
-			sender_user_id = params[:sender_list]
+			sender_user_id = params[:sender_list].to_i
 			from_dispatch_date = params[:sender_from_dispatch_date].to_date
 			to_dispatch_date = params[:sender_to_dispatch_date].to_date
 			
 			letter_type = params[:sender_letter_type]
 			letter_number = params[:sender_letter_number]
 			temp_search_data =	DakReceiver.where("Date(created_at) >= ? and Date(created_at) <= ? and reciever_user_id = ?", from_dispatch_date , to_dispatch_date, current_user.id) if params[:sender_from_dispatch_date].present? and params[:sender_to_dispatch_date].present?
+			temp_search_data = Dak.where(id: temp_search_data.pluck(:dak_id), creater_user_id: sender_user_id)
 			
-			@search_receive_data = Dak.find(temp_search_data.pluck(:dak_id))
+			temp_search_data = temp_search_data.where("letter_type = ? ", letter_type) if params[:sender_letter_type].present?
+			temp_search_data = temp_search_data.where("letter_number LIKE ?","%#{letter_number}%") if params[:sender_letter_number].present?
 			
+			@search_receive_data = temp_search_data	
+			# @search_receive_data = @search_receive_data.paginate(:page => (params[:sender_search] || 1), :per_page => 15) rescue nil
 		end
 
 
@@ -131,7 +135,7 @@ class Admin::DaksController < ApplicationController
 		@dak_search_recipient_list = dak_search_user
 	end
 	def delete_dak_without_receiver_or_attachment
-		dak_data = Dak.last(20)
+		dak_data = Dak.last(15)
 		dak_data.each do |data|
 			if data.dak_receivers.blank? or data.dak_attachments.blank?
 				DakReceiver.where(id: data.dak_receivers.pluck(:id)).destroy_all if data.dak_receivers.present?

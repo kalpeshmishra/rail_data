@@ -25,6 +25,12 @@
     list-style: none;
     padding-left: 22px;
   }
+  .loading-image {
+    position: absolute;
+    top: 170px;
+    left: 300px;
+    z-index: 100;
+  }
 </style>
 
 <% @method = "POST" %>
@@ -47,7 +53,7 @@
 						</tr>
 						<tr>
 							<td>Letter Date:</td>
-      				<td><%= text_field_tag "letter_date", '', type: 'date',onfocus: "(this.type='date')", onblur: "if(this.value==''){this.type='text'}",placeholder: 'Letter Date', id: "date",class: 'form-control input-md letter_date',required: true, style: "width: 280px; font-size:14px;"%></td>
+      				<td><%= text_field_tag :letter_date, "", placeholder: 'dd/mm/yyyy',autocomplete: 'off', required: true, class: "form-control input-md letter_date" %></td>
 						</tr>
 						<tr>
 							<td>Subject:</td>
@@ -121,6 +127,9 @@
   <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-send submit"></i>SEND</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-default" type="button" onclick="this.form.reset();"><i class="glyphicon glyphicon-refresh"></i>Reset</button>
 </div>
+      <div id="loading-indicator" class="loading-image" style="vertical-align: center">
+        <%= image_tag("2-load.gif", :id => "loading-indicator") %>
+      </div>
 <%end%>  
 
 <div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
@@ -131,18 +140,22 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" align="center">
-          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_files_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
-     
-     </div>
+        <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_files_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+      </div>
     </div>
   </div>
 </div>
 
 <script>
 
+  $(".letter_date").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      todayHighlight: true,
+  });
 
-  
+  $("#loading-indicator").hide();
 
 	$("#add_files_add").click(function(){
     $(".files-row-data:hidden").each(function(i){
@@ -180,6 +193,8 @@
       }
     });
   });
+
+
 
 
   //====================================================
@@ -265,6 +280,10 @@
     
     });
 
+    $(".submit").submit(function () {
+      $("#loading-indicator").show();
+      return true;
+    });   
 
     // $(".submit").click(function () {
       

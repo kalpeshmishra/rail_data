@@ -26,8 +26,6 @@
 <% @url = admin_daks_path%>
 <div>
 	<div>
-		
-		
 		<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'send-dak-form', remote: true) do |form| %>  
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 				<span style="text-decoration: underline;font-size: 25px; font-style: italic;">Search Letter's</span>
@@ -41,7 +39,9 @@
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 				<button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-search submit"></i>Search</button>
 			</div>
-			<p></p>
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+				<p></p>
+			</div>		
 			<div id="dispatch-dak-feilds">
 				<table class="table table-sm" style="width: 90%">
 					<tr>
@@ -93,7 +93,7 @@
 
 </div>
 <script>
-	$(".from_letter_date,.to_letter_date,.from_dispatch_date,.to_dispatch_date,.sender_from_dispatch_date,.sender_to_dispatch_date").datepicker({
+	$(".from_dispatch_date,.to_dispatch_date,.sender_from_dispatch_date,.sender_to_dispatch_date").datepicker({
       format: 'dd/mm/yyyy',
       autoclose: true,
       todayHighlight: true,
@@ -118,9 +118,14 @@
     else{
     	$("#dispatch-dak-feilds").hide(); 
       $("#received-dak-feilds").hide();
+      $("#dak_seach_data_form").text("");
     }	
 	});	
 
+	$(".receiver_list,.from_dispatch_date,.to_dispatch_date,.receiver_search_data,.sender_list,.sender_from_dispatch_date,.sender_to_dispatch_date,.sender_search_data").on("change",function(){
+		$("#dak_seach_data_form").text("");
+	});	
+		
 		function change_required_from_received(){
 			$('#sender_list').removeAttr('required');
 			$('#sender_from_dispatch_date').removeAttr('required');
@@ -132,6 +137,7 @@
 			$('#sender_to_dispatch_date').val("");
 			$('#sender_letter_number').val("");
 			$('#sender_letter_type').val("");
+			$("#dak_seach_data_form").text("");
 
 			$('#receiver_list').prop('required',true);
 			$('#from_dispatch_date').prop('required',true);
@@ -149,7 +155,7 @@
 			$('#to_dispatch_date').val("");
 			$('#letter_number').val("");
 			$('#letter_type').val("");
-
+			$("#dak_seach_data_form").text("");
 
 			$('#sender_list').prop('required',true);
 			$('#sender_from_dispatch_date').prop('required',true);
