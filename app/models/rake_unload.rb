@@ -40,7 +40,7 @@ has_many :rake_unloads_rake_commodities
       rake_unload.total_unit = value["total_unit"] rescue nil
       rake_unload.wagon_type_id = value["wagon_type"].to_i rescue nil
       rake_unload.rake_count = value["rake_count"] rescue nil
-      rake_unload.stock_description = value["stock_description"] rescue nil
+      rake_unload.stock_description = value["stock_description"].squish rescue nil
 
       rake_unload.major_commodity_id = value["major_commodity"].to_i rescue nil
       mcommodity = MajorCommodity.where(:id => rake_unload.major_commodity_id).pluck(:major_commodity) 
@@ -66,7 +66,7 @@ has_many :rake_unloads_rake_commodities
       rake_unload.release_date = value["release_date"] rescue nil
       rake_unload.detention_arrival_placement = value["detention_arrival_placement"] rescue nil
       rake_unload.detention_placement_release = value["detention_placement_release"] rescue nil
-      rake_unload.remarks = value["remarks"] rescue nil
+      rake_unload.remarks = value["remarks"].squish rescue nil
       rake_unload.form_status = "RAKE"
       rake_unload.save
 
@@ -198,7 +198,7 @@ has_many :rake_unloads_rake_commodities
       gets_unload.wagon_type_id = value["wagon_type"].to_i rescue nil
       gets_unload.rake_count = value["rake_count"] rescue nil
       gets_unload.incoming_power = value["incoming_power"] rescue nil
-      gets_unload.stock_description = value["stock_description"] rescue nil
+      gets_unload.stock_description = value["stock_description"].squish rescue nil
       gets_unload.major_commodity_id = value["major_commodity"].to_i rescue nil
       gets_unload.commodity_type = value["commodity_type"] rescue nil
       gets_unload.bpc_station = value["bpc_station"] rescue nil
@@ -289,7 +289,7 @@ has_many :rake_unloads_rake_commodities
       aecs_unload.wagon_type_id = value["wagon_type"].to_i rescue nil
       aecs_unload.rake_count = value["rake_count"] rescue nil
       aecs_unload.incoming_power = value["incoming_power"] rescue nil
-      aecs_unload.stock_description = value["stock_description"] rescue nil
+      aecs_unload.stock_description = value["stock_description"].squish rescue nil
       aecs_unload.major_commodity_id = value["major_commodity"].to_i rescue nil
       aecs_unload.commodity_type = value["commodity_type"] rescue nil
       aecs_unload.bpc_station = value["bpc_station"] rescue nil
@@ -335,7 +335,7 @@ has_many :rake_unloads_rake_commodities
       aecs_unload.detention_release_removal = release_to_removal_detn rescue nil
       aecs_unload.detention_ger_to_ger_tor = value["detention_ger_to_ger_tor"] rescue nil
       aecs_unload.detention_in_out = value["detention_in_out"] rescue nil
-      aecs_unload.remarks = value["remarks"] rescue nil
+      aecs_unload.remarks = value["remarks"].squish rescue nil
       aecs_unload.form_status = "AECS"
       aecs_unload.save
 

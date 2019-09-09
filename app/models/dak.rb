@@ -27,7 +27,7 @@ class Dak < ApplicationRecord
 		dak_data.letter_type = params["letter_type"] rescue nil
 		dak_data.letter_number = params["letter_number"] rescue nil
 		dak_data.letter_issue_date = params["letter_date"].to_date rescue nil
-		dak_data.letter_description = params["subject"] rescue nil
+		dak_data.letter_description = params["subject"].squish rescue nil
 		dak_data.creater_user_id = user_id.to_i
 		dak_data.save
 

@@ -49,7 +49,7 @@
 						</tr>
 						<tr>
 							<td>Letter No.:</td>
-     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true, style: "width: 280px; font-size:14px;"%></td>
+     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true,pattern: "^[a-zA-Z0-9]+$", style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Letter Date:</td>
@@ -57,7 +57,7 @@
 						</tr>
 						<tr>
 							<td>Subject:</td>
-      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: true, style: "width: 280px; height:80px;font-size:14px;"%></td>
+      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: true, pattern: "^[a-zA-Z0-9]+$",style: "width: 280px; height:80px;font-size:14px;"%></td>
 						</tr>
 					</table>
 				</div>
@@ -108,7 +108,7 @@
               <td style="width:30%;">
                 <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx .csv,.doc,.docx,.odt,.jpg,.jpeg,.png,.txt",style: "width: 300px;border: 1px solid #888;" %>
               </td>
-              <td style="width:62%;"></td>
+              <td style="width:62%;vertical-align: middle;"><span id="file_error_<%=index %>" style="color: red;font-weight: bolder;background: yellow;"></span></td>
               <td align="center" style="vertical-align: middle;width:8%;">
                 <a href="#" class="remove-ip label label-danger" id="<%= index %>-add_files_delete" style="padding:20%"><i class="fa fa-trash-o"></i></a>
               </td>
@@ -301,10 +301,13 @@
     });
 
     $(".attachment-blank").on('change',function(){
-        if(this.files[0].size > 50001){
-          alert("File size is more than 50MB!");
+          var file_no = $(this).attr('id').split("_").slice(-1)[0];
+          var temp = "#file_error_" + file_no
+        if(this.files[0].size > 52428800){
+          $(temp).html("File size is greater than 50MB");
           this.value = "";
-        };
+        }
+        else{$(temp).html("");}
     });  
 
   });

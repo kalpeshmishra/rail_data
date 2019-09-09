@@ -87,7 +87,7 @@ after_destroy :remove_rake_commodity_breakup_data
       rake_load.detention_placement_release = value["detention_placement_release"] rescue nil
       rake_load.short_interchange = value["short_interchange"] rescue nil
       rake_load.short_km = value["short_km"] rescue nil
-      rake_load.remark = value["remarks"] rescue nil
+      rake_load.remark = value["remarks"].squish rescue nil
       rake_load.rakeform_otherform = "R"
       rake_load.save
 
@@ -132,7 +132,7 @@ after_destroy :remove_rake_commodity_breakup_data
       release_time = get_time(value["release_time"])
       other_load.release_time = release_time rescue nil
       other_load.release_date = value["release_date"] rescue nil
-      other_load.remark = value["remarks"] rescue nil
+      other_load.remark = value["remarks"].squish rescue nil
       other_load.rakeform_otherform = "O"
       other_load.save
 

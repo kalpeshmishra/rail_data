@@ -131,20 +131,22 @@
   <!-- Statistics Section Ends-->
 
   <!-- Rail Dak Section Starts-->
-<ul class="sub-menu">
-  <li class="parent">
-    <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
-  </li>
-  <li class="parent">
-    <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
-  </li>
-  <li class="parent">
-    <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
-  </li>
-  <li class="parent">
-    <a <%= "href=#{admin_daks_path(:dak_type => "search")}"%> title="Dak-Search"><span>Dak-Search</span></a>
-  </li>
-</ul>
+<%if is_dak_access%>  
+  <ul class="sub-menu">
+    <li class="parent">
+      <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
+    </li>
+    <li class="parent">
+      <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
+    </li>
+    <li class="parent">
+      <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
+    </li>
+    <li class="parent">
+      <a <%= "href=#{admin_daks_path(:dak_type => "search")}"%> title="Dak-Search"><span>Dak-Search</span></a>
+    </li>
+  </ul>
+<%end%>  
   <!-- Rail Dak Section Ends -->
 
 

@@ -42,9 +42,9 @@ module ApplicationHelper
 		flag = role.present? ? role.one_rake_unload_access : false
 	end
 
-	def rake_unload_access
+	def is_dak_access
 		role = current_user.user_role rescue nil
-		flag = role.present? ? role.one_rake_unload_access : false
+		flag = role.present? ? role.is_dak_access : false
 	end
 
   # def is_one_rake_load_applicable
