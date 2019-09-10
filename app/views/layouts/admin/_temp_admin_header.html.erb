@@ -88,6 +88,7 @@
         <li class="parent">
         </li>   
   <%end%>
+  <%if is_statistics_access%>
    
       <li class="parent">
         <a <%= "href=#{admin_custom_load_reports_path }"%> title="Custom Load Report"><span>Custom Load Report</span></a>
@@ -126,7 +127,7 @@
     
       <li class="parent">
       </li>   
-      
+  <%end%>    
 </ul>
   <!-- Statistics Section Ends-->
 

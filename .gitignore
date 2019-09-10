@@ -4,6 +4,6 @@
 
 # Ignore all logfiles and tempfiles.
 /tmp
-# public/dak_files/*
-# public/downloads/*
+public/dak_files/*
+public/downloads/*
 public/*.xls

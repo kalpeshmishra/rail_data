@@ -88,37 +88,37 @@
       </ul>
     </li>  
   <%end%>
-  
-  <li class="parent">
-    <a href="javascript:void(0);"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
-    <ul class="sub-menu">
-      <li>
-        <a <%= "href=#{admin_custom_load_reports_path }"%> title="Custom Load Report"><span>Custom Load Report</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_loading_reports_path }"%> title="DayWise Loading"><span>DayWise Loading</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_unloading_reports_path }"%> title="DayWise PU Release"><span>DayWise PU</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_phasewise_reports_path }"%> title="Phasewise Reports"><span>Phasewise</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_one_loading_reports_path }"%> title="Loading Reports"><span>Loading Reports</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_one_unloading_reports_path }"%> title="(PU)Unloading Reports"><span>(PU)Unloading Reports</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_custom_reports_path }"%> title="Custom Reports"><span>Custom Reports</span></a>
-      </li>
-      <li>
-        <a <%= "href=#{admin_one_custom_reports_path }"%> title="Custom Reports One"><span>Custom Reports One</span></a>
-      </li>
-    </ul>
-  </li>  
-
+  <%if is_statistics_access%>
+    <li class="parent">
+      <a href="javascript:void(0);"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
+      <ul class="sub-menu">
+        <li>
+          <a <%= "href=#{admin_custom_load_reports_path }"%> title="Custom Load Report"><span>Custom Load Report</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_loading_reports_path }"%> title="DayWise Loading"><span>DayWise Loading</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_unloading_reports_path }"%> title="DayWise PU Release"><span>DayWise PU</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_phasewise_reports_path }"%> title="Phasewise Reports"><span>Phasewise</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_one_loading_reports_path }"%> title="Loading Reports"><span>Loading Reports</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_one_unloading_reports_path }"%> title="(PU)Unloading Reports"><span>(PU)Unloading Reports</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_custom_reports_path }"%> title="Custom Reports"><span>Custom Reports</span></a>
+        </li>
+        <li>
+          <a <%= "href=#{admin_one_custom_reports_path }"%> title="Custom Reports One"><span>Custom Reports One</span></a>
+        </li>
+      </ul>
+    </li>  
+  <%end%>  
 
 
 </ul>
