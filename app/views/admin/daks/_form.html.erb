@@ -106,7 +106,7 @@
           <%(0..9).each_with_index do |no, index| %>
             <tr class="add-files-tr files-row-data add_files_row_<%= index %>", id= "add_files_row_id_<%= index %>">
               <td style="width:30%;">
-                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx .csv,.doc,.docx,.odt,.jpg,.jpeg,.png,.txt",style: "width: 300px;border: 1px solid #888;" %>
+                <%= file_field_tag "user_attachment_#{index}", placeholder: "Attachment", class: 'form-control input-md attachment-blank',required: true, id: "user_attachment_#{index}",accept: ".pdf,.xls,.xlsx, .csv,.doc,.docx,.odt,.jpg,.jpeg,.png,.txt",style: "width: 300px;border: 1px solid #888;" %>
               </td>
               <td style="width:62%;vertical-align: middle;"><span id="file_error_<%=index %>" style="color: red;font-weight: bolder;background: yellow;"></span></td>
               <td align="center" style="vertical-align: middle;width:8%;">
@@ -125,7 +125,7 @@
 </div>
 <div align="center">
   <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-send submit"></i>SEND</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <button class="btn btn-default" type="button" onclick="this.form.reset();"><i class="glyphicon glyphicon-refresh"></i>Reset</button>
+  <button class="btn btn-default reset" type="button" onclick="this.form.reset();"><i class="glyphicon glyphicon-refresh"></i>Reset</button>
 </div>
       <div id="loading-indicator" class="loading-image" style="vertical-align: center">
         <%= image_tag("2-load.gif", :id => "loading-indicator") %>
@@ -266,7 +266,6 @@
       $.each($(".dak_recipient:checked"), function(){            
           favorite.push($(this).val());
       });
-
       $(".files-row-data:hidden").each(function(i) {
         $(this).remove('');
       });
@@ -285,13 +284,10 @@
       return true;
     });   
 
-    // $(".submit").click(function () {
-      
-    //   $(".files-row-data:hidden").each(function(i) {
-    //     $(this).remove('');
-    //   });
-    // });  
-
+    $(".reset").click(function () {
+      $("#recipient_select").html("");
+    });  
+    
     $('.dak_recipient,.user_under,.division').change(function () {
       var select_list = [];
       $.each($(".dak_recipient:checked"), function(){            
