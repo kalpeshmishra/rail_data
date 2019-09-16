@@ -49,7 +49,7 @@
 						</tr>
 						<tr>
 							<td>Letter No.:</td>
-     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true,pattern: "^[a-zA-Z0-9-/()]+$", style: "width: 280px; font-size:14px;"%></td>
+     					<td><%= text_field_tag "letter_number", '',placeholder: 'Enter Letter Number', id: "letter_number", class: 'form-control input-md letter_number',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "width: 280px; font-size:14px;"%></td>
 						</tr>
 						<tr>
 							<td>Letter Date:</td>
@@ -57,7 +57,7 @@
 						</tr>
 						<tr>
 							<td>Subject:</td>
-      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: true, pattern: "^[a-zA-Z0-9]+$",style: "width: 280px; height:80px;font-size:14px;"%></td>
+      				<td><%= text_area_tag "subject", '', placeholder: 'Enter message Subject', id: "subject", class: 'form-control input-md subject',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 280px; height:80px;font-size:14px;"%></td>
 						</tr>
 					</table>
 				</div>
