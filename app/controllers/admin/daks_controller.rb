@@ -79,7 +79,7 @@ class Admin::DaksController < ApplicationController
 			search_data = search_data.where("letter_type = ? ", letter_type) if params[:letter_type].present?
 			search_data = search_data.where("letter_number LIKE ?","%#{letter_number}%") if params[:letter_number].present?
 			@search_dispatch_data = search_data.select { |data|
-				  if data.dak_receivers.pluck(:reciever_user_id)[0] == receiver_user_id.to_i
+					if data.dak_receivers.pluck(:reciever_user_id).include?(receiver_user_id.to_i)
 						data
 					end	
 				}
