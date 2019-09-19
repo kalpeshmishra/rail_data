@@ -1,0 +1,97 @@
+<script>
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<style>
+  .modal-dialog {
+      margin: 30px auto;
+      width: 80%;
+  }
+  .add-cursor tr{
+   height: 5px;
+  }  
+  .table.table-dark tbody td {
+    padding: 5px;
+
+  }
+.add-cursor {cursor: pointer;}
+.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
+.input-group .form-control {
+    float: right;
+    width: 35%;
+  }
+  html {
+    overflow-x: scroll;
+  }
+  select.set-dropdown {
+    display: block !important;
+    opacity: 0;
+    height: 0px;
+  }
+  table th, table td { overflow: hidden; }
+  
+</style>
+
+<div class="table-responsive main-client-ti-position" >
+	<h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  <table class="table hover table-dark" id="ti_position">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
+          <span class="pull-left lead-text">
+            Positions
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Month:<p></p>
+        <%= text_field_tag "ti_position_month", '',placeholder: 'Select Month',autocomplete: "off", id: "datepicker", class: 'form-control input_class ti_position_month'%>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Select Position:<p></p>
+        <%= (select_tag "position_type", options_for_select([['DailyMovement', 'DailyMovement'], ['To-GER', 'To-GER'], ['Ex-VGDC', 'Ex-VGDC'], ['To-VGDC', 'To-VGDC'], ['Ex-DHG', 'Ex-DHG'], ['To-DHG', 'To-DHG'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI'], ['Ex-SIOB', 'Ex-SIOB'], ['To-SIOB', 'To-SIOB']]), {prompt: 'Select', class: "form-control  input-sm position_type"}).html_safe %>
+        </div> 
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+  </caption>
+  </table>
+  </div>
+
+  <div id="position_display_form"></div>
+
+
+<script>
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format: "M-yyyy",
+			    viewMode: "months", 
+			    minViewMode: "months"
+    });
+
+    // $('#datepicker').datepicker('setDate', 'now');
+    $('#datepicker').datepicker('setDate', '');
+    
+  });
+  $(".ti_position_month,.position_type").on("change",function(){
+    $("#submit_error_msg").css('display','none');
+    $("#position_display_form").html('');
+  });  
+  $(".submit_data").click(function () {
+      selected_month = $("#datepicker").val();
+      position = $("#position_type").val();
+      if (selected_month != "" && position != "") {
+        $.ajax({
+          type: "get",
+          url: "/admin/ti_positions/new.js?month=" + selected_month + "&position=" + position
+
+        });
+      }
+      else{
+      	 $("#submit_error_msg").css('display','');
+      }  
+      
+  });
+  
+
+</script>
