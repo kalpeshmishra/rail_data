@@ -48,7 +48,7 @@
         <%= text_field_tag "ti_position_month", '',placeholder: 'Select Month',autocomplete: "off", id: "datepicker", class: 'form-control input_class ti_position_month'%>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Select Position:<p></p>
-        <%= (select_tag "position_type", options_for_select([['DailyMovement', 'DailyMovement'], ['To-GER', 'To-GER'], ['Ex-VGDC', 'Ex-VGDC'], ['To-VGDC', 'To-VGDC'], ['Ex-DHG', 'Ex-DHG'], ['To-DHG', 'To-DHG'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI'], ['Ex-SIOB', 'Ex-SIOB'], ['To-SIOB', 'To-SIOB']]), {prompt: 'Select', class: "form-control  input-sm position_type"}).html_safe %>
+        <%= (select_tag "position_type", options_for_select([['DailyMovement', 'DailyMovement'], ['SafteyDrive', 'SafteyDrive'], ['SafteyBulletin', 'SafteyBulletin'], ['InspectionSummary', 'InspectionSummary'], ['SafetyEquipment', 'SafetyEquipment'], ['SignalFailuresSummary', 'SignalFailuresSummary'], ['Ex-MALB', 'Ex-MALB'], ['To-MALB', 'To-MALB'], ['Ex-PNU', 'Ex-PNU'], ['To-PNU', 'To-PNU'], ['Ex-BLDI', 'Ex-BLDI'], ['To-BLDI', 'To-BLDI'], ['Ex-SIOB', 'Ex-SIOB'], ['To-SIOB', 'To-SIOB']]), {prompt: 'Select', class: "form-control  input-sm position_type"}).html_safe %>
         </div> 
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>

@@ -2,28 +2,38 @@
 <% @url = admin_ti_positions_path %>
 <div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
   
-<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'daily-duty-form',remote: true) do |form| %>
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'safety-drive-form',remote: true) do |form| %>
 	<table class="table hover table-dark span12" style="margin-bottom: 20px !important; overflow-x: scroll; ">
 	  <thead>
 	  <tr>
 	  	<th>SrNo.</th>
-	    <th>Date</th>
-	    <th>Duty Performed</th>
+	  	<th>Saftey Drive No.</th>
+	    <th>From Date</th>
+	    <th>To Date</th>
+	    <th>No. of Inspection</th>
+	    <th>Short coming noticed</th>
+	    <th>Action Taken</th>
+	    <th>No. of staff counseled</th>
 	    <th>Action</th>
 	  </tr>
 	  </thead>
 	  <tbody>
 	    <%(0..45).each_with_index do |no, index| %>
-        <tr class="daily-duty-data daily_duty_row_<%= index %>", id= "daily_duty_row_id_<%= index %>">
+        <tr class="safety-drive-data safety_drive_row_<%= index %>", id= "safety_drive_row_id_<%= index %>">
         	<td style="font-size: 25;text-align: center;"><%= index+1 %></td>
-        	<td style="width: 15%;vertical-align:middle;">
-        		<%= text_field_tag "forecast_date_#{index}",'', type: 'date',placeholder: 'Forecast Date', id: "forecast_date_#{index}", class: 'form-control input-md'%>
+        	<td></td>
+        	<td style="vertical-align:middle;">
+        		<%= text_field_tag "from_date_safety_drive_#{index}",'', type: 'date',placeholder: 'From Date', id: "from_date_safety_drive_#{index}", class: 'form-control input-md',style: "width: 147px;" %>
 	        </td>
-	        <td style="width: 75%;">
-	        	<%= text_area_tag "subject", '', placeholder: 'Enter message  Subject', id: "subject", class: 'form-control input-md subject',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:75px;font-size:14px;"%>
+	        <td style="vertical-align:middle;">
+        		<%= text_field_tag "to_date_safety_drive_#{index}",'', type: 'date',placeholder: 'To Date', id: "to_date_safety_drive_#{index}", class: 'form-control input-md',style: "width: 147px;"%>
 	        </td>
+	        <td></td>
+	        <td></td>
+	        <td></td>
+	        <td></td>
 	        <td align="center" style="width: 10%;">
-          	<a href="#" class="remove-ip label label-danger" id="<%= index %>-daily_duty_delete" style="padding: 10%"><i class="glyphicon glyphicon-trash"></i></a>          
+          	<a href="#" class="remove-ip label label-danger" id="<%= index %>-safety_drive_delete" style="padding: 10%"><i class="glyphicon glyphicon-trash"></i></a>          
         	</td>
 	      </tr>
 
@@ -32,7 +42,7 @@
 	</table>
  
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-      <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="add_more_daily_duty">
+      <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="add_more_safety_drive">
 
       <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
     </div>
@@ -48,7 +58,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" align="center">
-        <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_daily_duty_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_safety_drive_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
       </div>
     </div>
@@ -59,12 +69,12 @@
 	$(document).ready(function(){
 	  <% (0..45).each_with_index do |no,index| %>
 	    <%if index >= 1 %>
-	      var tr = '<%=".daily_duty_row_#{index}"%>';
+	      var tr = '<%=".safety_drive_row_#{index}"%>';
 	      $(tr).hide();
 	    <%end%> 
 	  <% end %>
-	  $("#add_more_daily_duty").click(function(){
-	    $(".daily-duty-data:hidden").each(function(i){
+	  $("#add_more_safety_drive").click(function(){
+	    $(".safety-drive-data:hidden").each(function(i){
 	      if (i==0) {
 	        $(this).show();
 	      }
@@ -73,26 +83,26 @@
 
 	  $(".label-danger").on('click',function(){
 	    delete_index = $(this).attr('id').split("-")[0];
-	    delete_load_interchange_id = $("#record_id_"+delete_index).val();
+	    delete_safety_drive_id = $("#record_id_"+delete_index).val();
 	    var visible_row_count = 0
 	    
-	    $('.daily-duty-data:visible').each(function() {
+	    $('.safety-drive-data:visible').each(function() {
 	      visible_row_count = visible_row_count + 1
 	    });
 	    $("#delete-modal").modal('show');
 	  });
 
-	  $("#confirm_daily_duty_delete").click(function () {
+	  $("#confirm_safety_drive_delete").click(function () {
 	    $("#delete-modal").modal('hide');
 	    
-	    if (delete_load_interchange_id != "") {
+	    if (delete_safety_drive_id != "") {
 	          $.ajax({
 	          type: "get",
-	          url: "/delete_load_interchange.js?delete_load_interchange_id=" + delete_load_interchange_id
+	          url: "/delete_safety_drive.js?delete_safety_drive_id=" + delete_safety_drive_id
 	        });
 	      }
 
-	     $('.daily-duty-data:visible').each(function() {
+	     $('.safety-drive-data:visible').each(function() {
 	      if($(this).attr("id").split("_")[4] == delete_index){
 	        $(this).remove('');
 	      }

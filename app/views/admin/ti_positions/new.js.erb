@@ -1,1 +1,7 @@
-$("#position_display_form").html('<%= j render 'daily_duty_movement'%>')
+<%if params[:month].present? && params[:position].present?%>
+	<%if params[:position] == "DailyMovement"%>
+		$("#position_display_form").html('<%= j render 'daily_duty_movement'%>')
+	<%elsif params[:position] == "SafteyDrive"%>	
+		$("#position_display_form").html('<%= j render 'saftey_drive'%>')
+	<%end%>
+<%end%>
