@@ -1,0 +1,57 @@
+<% @method = "POST" %>
+<% @url = admin_allowances_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'allowance-form',remote: true) do |form| %>
+	<table class="table" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+	  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+	  	<th rowspan="2">Group</th>
+	  	<th rowspan="2">Category</th>
+	  	<th colspan="3">OverTime</th>
+	  	<th colspan="2">Transpotation</th>
+	  	<th>Contingency </th>
+	  </tr>
+	  <tr style="color: #fff; background: #4B4B4D;">
+	  	<th>Hours</th>
+	  	<th>Minutes</th>
+	  	<th>Amount</th>
+	  	<th>Days</th>
+	  	<th>Amount</th>
+	  	<th>Amount</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  	<%@allowance_category_list.each do |station|%>
+	      <tr class="allowance-data allowance_row", id= "allowance_row_id">
+	      	<td>C</td>
+        	<td><%=station[0]%></td>
+        	<td>
+        		<%= number_field_tag "over_time_hours", '', placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours",style: "width: 75px; font-size:16px;" %>
+        	</td>
+        	<td>	
+        		<%= number_field_tag "over_time_minutes", '', placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes",style: "width: 75px; font-size:16px;" %>
+        	</td>
+        	<td>
+        		<%= number_field_tag "over_time_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount",style: "width: 115px; font-size:16px;" %>
+        	</td>
+	        <td>
+	        	<%= number_field_tag "transpotation_days", '', placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days",style: "width: 105px; font-size:16px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "transpotation_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount",style: "width: 115px; font-size:16px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "contingency_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
+	        </td>
+	      </tr>
+	    <%end%>  
+	  </tbody>
+	</table>
+ 
+    <div align="center">
+			<button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+    </div>
+   
+<%end%>
+</div>
