@@ -7,6 +7,7 @@ class Station < ApplicationRecord
   has_many :rake_loads
   has_many :month_rake_loads
   has_many :rake_unloads
+  has_many :station_under_ti_users
 
 
   def self.set_station_upload(params)

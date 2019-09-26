@@ -8,7 +8,8 @@ class User < ApplicationRecord
   # belongs_to :area
   has_one :user_role
   has_many :daks
-
+  has_many :station_under_ti_users
+  
   after_create :set_default_user_roles
 
   
