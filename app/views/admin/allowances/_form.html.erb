@@ -22,29 +22,35 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-	  	<%@allowance_category_list.each do |station|%>
-	      <tr class="allowance-data allowance_row", id= "allowance_row_id">
-	      	<td>C</td>
-        	<td><%=station[0]%></td>
-        	<td>
-        		<%= number_field_tag "over_time_hours", '', placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours",style: "width: 75px; font-size:16px;" %>
-        	</td>
-        	<td>	
-        		<%= number_field_tag "over_time_minutes", '', placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes",style: "width: 75px; font-size:16px;" %>
-        	</td>
-        	<td>
-        		<%= number_field_tag "over_time_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount",style: "width: 115px; font-size:16px;" %>
-        	</td>
-	        <td>
-	        	<%= number_field_tag "transpotation_days", '', placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days",style: "width: 105px; font-size:16px;" %>
-	        </td>
-	        <td>
-	        	<%= number_field_tag "transpotation_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount",style: "width: 115px; font-size:16px;" %>
-	        </td>
-	        <td>
-	        	<%= number_field_tag "contingency_amount", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
-	        </td>
-	      </tr>
+	  	<%@allowance_selected_category_list.each do |group,category|%>
+	  		<%category.each do |cate_name,data|%>
+	  			<tr class="allowance-data allowance_row", id= "allowance_category_id_<%=data[0]%>">
+		      	<%= hidden_field_tag  "category_id_#{data[0]}", "#{data[0]}", id: "category_id_#{data[0]}" %>
+		      	<%= hidden_field_tag  "s_month_#{data[0]}", "", class: 's_month', id: "s_month_#{data[0]}" %>
+		      	<%= hidden_field_tag  "s_station_#{data[0]}", "", class: 's_station', id: "s_station_#{data[0]}" %>
+		      	<%= hidden_field_tag  "s_category", "", class: 's_category', id: "s_category" %>
+		      	<td><%=group%></td>
+	        	<td><%=data[1]%></td>
+	        	<td>
+	        		<%= number_field_tag "over_time_hours_#{data[0]}", '', placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours_#{data[0]}",style: "width: 75px; font-size:16px;" %>
+	        	</td>
+	        	<td>	
+	        		<%= number_field_tag "over_time_minutes_#{data[0]}", '', placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes_#{data[0]}",style: "width: 75px; font-size:16px;" %>
+	        	</td>
+	        	<td>
+	        		<%= number_field_tag "over_time_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount_#{data[0]}",style: "width: 115px; font-size:16px;" %>
+	        	</td>
+		        <td>
+		        	<%= number_field_tag "transpotation_days_#{data[0]}", '', placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days_#{data[0]}",style: "width: 105px; font-size:16px;" %>
+		        </td>
+		        <td>
+		        	<%= number_field_tag "transpotation_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount_#{data[0]}",style: "width: 115px; font-size:16px;" %>
+		        </td>
+		        <td>
+		        	<%= number_field_tag "contingency_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
+		        </td>
+		      </tr>
+	    	<%end%>
 	    <%end%>  
 	  </tbody>
 	</table>
@@ -55,3 +61,17 @@
    
 <%end%>
 </div>
+<script>
+  $(function(){
+    selected_month = $("#allowance_month_list").val();
+    station= $("#allowance_station_list").val();
+    selected_category = $('#allowance-category-list').val();
+
+    $(".s_month").val(selected_month);
+    $(".s_station").val(station);
+    $(".s_category").val(selected_category);
+      
+  });
+  
+
+</script>

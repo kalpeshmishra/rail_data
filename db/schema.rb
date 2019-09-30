@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190926081230) do
+ActiveRecord::Schema.define(version: 20190930072810) do
+
+  create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "employee_category_id"
+    t.integer  "station_id"
+    t.string   "month"
+    t.string   "over_time_hours"
+    t.string   "over_time_minutes"
+    t.string   "over_time_amount"
+    t.string   "transpotation_days"
+    t.string   "transpotation_amount"
+    t.string   "contingency_amount"
+    t.string   "remark"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "areas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "railway_zone_id"

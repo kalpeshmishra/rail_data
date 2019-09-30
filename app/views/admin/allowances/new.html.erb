@@ -1,96 +1,97 @@
+<style>
+  ul.dropdown-menu {
+    min-width: 200px;
+    max-height: 200px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
 <script>
+    $(function () {
+
+      $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue'
+        });
+
+        $('.primary-filters-main-page').multiselect({
+          enableFiltering: true,
+          enableCaseInsensitiveFiltering: true,
+          includeSelectAllOption: true,
+          buttonWidth: '200px',
+          buttonClass: 'btn btn-default',
+          numberDisplayed: 0
+        });
+    });
 
     $(document).ready(function () {
       $('.sidebar-remain-open').click();
     });
 
 </script>
-<style>
-  .modal-dialog {
-      margin: 30px auto;
-      width: 80%;
-  }
-  .add-cursor tr{
-   height: 5px;
-  }  
-  .table.table-dark tbody td {
-    padding: 5px;
-
-  }
-.add-cursor {cursor: pointer;}
-.add-cursor span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}
-.input-group .form-control {
-    float: right;
-    width: 35%;
-  }
-  html {
-    overflow-x: scroll;
-  }
-  select.set-dropdown {
-    display: block !important;
-    opacity: 0;
-    height: 0px;
-  }
-  table th, table td { overflow: hidden; }
-  
-</style>
-
-<div class="table-responsive main-client-allowance" >
-	<h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
-  <table class="table hover table-dark" id="allowance">
+ 
+<div class="table-responsive main-client-allowance">
+  <div>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="allowance-form">
     <caption>
-      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
-          <span class="pull-left lead-text">
-            OT /TA /Contingency details
-          </span>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <span class="pull-left lead-text">
+          OT /TA /Contingency details
+        </span>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Month:<p></p>
-        <%= text_field_tag "allowance_month", '',placeholder: 'Select Month',autocomplete: "off", id: "datepicker", style:"height:30px;", class: 'form-control input_class allowance_month'%>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month:<p></p>
+        <%= (select_tag "allowance_month_list", options_for_select(@allowance_month_list), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm allowance_month_list"}).html_safe %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station:<p></p>
-        <%= (select_tag "allowance_station_list", options_for_select(@allowance_station_list), {prompt: 'Select', class: "form-control  input-sm allowance_station_list"}).html_safe %>
+        <%= (select_tag "allowance_station_list", options_for_select(@allowance_station_list), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm allowance_station_list"}).html_safe %>
       </div>
-       
+      
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="category">Category:<p></p>
+        <%= select_tag "allowance-category-list", options_for_select(@allowance_category_list), {multiple: true, id: "allowance-category-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
       </div>
-  </caption>
+      
+    </caption>
   </table>
+      <div id="allowance_display_form"></div>
+      <div><p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
   </div>
-
-  <div id="allowance_display_form"></div>
-
-
+</div>
 <script>
-  $(function () {
-    $("#datepicker").datepicker({ 
-          autoclose: true, 
-          format: "M-yyyy",
-			    viewMode: "months", 
-			    minViewMode: "months"
-    });
-
-    // $('#datepicker').datepicker('setDate', 'now');
-    $('#datepicker').datepicker('setDate', '');
-    
-  });
   $(".allowance_month,.allowance_station_list,allowance_type").on("change",function(){
     $("#submit_error_msg").css('display','none');
     $("#allowance_display_form").html('');
   });  
   $(".submit_data").click(function () {
-      selected_month = $("#datepicker").val();
+      selected_month = $("#allowance_month_list").val();
       station= $("#allowance_station_list").val();
-      // allowance_type = $("#allowance_type").val();
-      if (selected_month != "" && station != "") {
+      selected_category = $('#allowance-category-list').val();
+      if (selected_month != "" && station != "" && selected_category!= "") {
         $.ajax({
           type: "get",
-          url: "/admin/allowances/new.js?month=" + selected_month + "&station=" + station
+          url: "/admin/allowances/new.js?selected_month=" + selected_month + "&station=" + station+"&selected_category="+selected_category
 
         });
       }
       else{
-      	 $("#submit_error_msg").css('display','');
+         $("#submit_error_msg").css('display','');
       }  
       
   });
