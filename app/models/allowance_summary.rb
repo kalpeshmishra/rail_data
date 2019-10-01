@@ -17,7 +17,7 @@ class AllowanceSummary < ApplicationRecord
       allowance_data[no].merge!("#{new_key}" => value)
     end  
     allowance_data.each do |key,value|
-      data_count = value.values.reject { |c| c.empty? }.count
+    	data_count = value.values.drop(3).reject { |c| c.empty? }.count
       next if data_count == 0
       record_id = value["record_id"].to_i if value["record_id"].present?
       allowance = self.find(record_id) rescue nil if record_id.present?

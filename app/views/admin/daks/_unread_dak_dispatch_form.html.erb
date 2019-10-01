@@ -39,7 +39,7 @@
 	  			<td><%=data.letter_type%></td>	
 	  			<td><%=data.letter_number%></td>	
 	  			<td><%=data.letter_issue_date.to_date.strftime("%d/%m/%Y") rescue nil%></td>	
-	  			<td><%=data.letter_description%></td>
+	  			<td style="max-width:650px;"><%=data.letter_description%></td>
 	  			<td class="read_unread status_<%=temp_status%>" id="<%=data.id%>">
 	  				<%data.dak_attachments.count.times do |n|%>
 	  					<%= link_to n+1, "#{root_url}"+ "#{data.dak_attachments[n].attachment_path}", class: "solid", target: "_blank" %>

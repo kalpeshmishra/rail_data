@@ -22,36 +22,37 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-	  	<%@allowance_selected_category_list.each do |group,category|%>
-	  		<%category.each do |cate_name,data|%>
-	  			<tr class="allowance-data allowance_row", id= "allowance_category_id_<%=data[0]%>">
-		      	<%= hidden_field_tag  "category_id_#{data[0]}", "#{data[0]}", id: "category_id_#{data[0]}" %>
-		      	<%= hidden_field_tag  "s_month_#{data[0]}", "", class: 's_month', id: "s_month_#{data[0]}" %>
-		      	<%= hidden_field_tag  "s_station_#{data[0]}", "", class: 's_station', id: "s_station_#{data[0]}" %>
-		      	<%= hidden_field_tag  "s_category", "", class: 's_category', id: "s_category" %>
-		      	<td><%=group%></td>
-	        	<td><%=data[1]%></td>
-	        	<td>
-	        		<%= number_field_tag "over_time_hours_#{data[0]}", '', placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours_#{data[0]}",style: "width: 75px; font-size:16px;" %>
-	        	</td>
-	        	<td>	
-	        		<%= number_field_tag "over_time_minutes_#{data[0]}", '', placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes_#{data[0]}",style: "width: 75px; font-size:16px;" %>
-	        	</td>
-	        	<td>
-	        		<%= number_field_tag "over_time_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount_#{data[0]}",style: "width: 115px; font-size:16px;" %>
-	        	</td>
-		        <td>
-		        	<%= number_field_tag "transpotation_days_#{data[0]}", '', placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days_#{data[0]}",style: "width: 105px; font-size:16px;" %>
-		        </td>
-		        <td>
-		        	<%= number_field_tag "transpotation_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount_#{data[0]}",style: "width: 115px; font-size:16px;" %>
-		        </td>
-		        <td>
-		        	<%= number_field_tag "contingency_amount_#{data[0]}", '', placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
-		        </td>
-		      </tr>
-	    	<%end%>
+	  <%if @allowance_selected_data.present?%>	
+	  	<%@allowance_selected_data.each do |key,value|%>
+	  		<tr class="allowance-data allowance_row", id= "allowance_category_id_<%=key%>">
+	  			<%= hidden_field_tag  "category_id_#{key}", "#{key}", id: "category_id_#{key}" %>
+	      	<%= hidden_field_tag  "s_month_#{key}", "", class: 's_month', id: "s_month_#{key}" %>
+	      	<%= hidden_field_tag  "s_station_#{key}", "", class: 's_station', id: "s_station_#{key}" %>
+	      	<%= hidden_field_tag  "s_category", "", class: 's_category', id: "s_category" %>
+		      <%= hidden_field_tag  "record_id_#{key}", "#{value.present? ? value.id : ''}", id: "record_id_#{key}" %>	
+	  			<td><%=value.present? ? value.employee_category.group : EmployeeCategory.find(key).group%></td>
+	        <td><%=value.present? ? value.employee_category.employee_posts.pluck(:post_code).join('/ '): EmployeeCategory.find(key).employee_posts.pluck(:post_code).join('/ ')%></td>
+	        <td>
+        		<%= number_field_tag "over_time_hours_#{key}", "#{value.present? ? value.over_time_hours : ''}", placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours_#{key}",style: "width: 75px; font-size:16px;" %>
+        	</td>
+        	<td>	
+        		<%= number_field_tag "over_time_minutes_#{key}", "#{value.present? ? value.over_time_minutes : ''}", placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes_#{key}",style: "width: 75px; font-size:16px;" %>
+        	</td>
+        	<td>
+        		<%= number_field_tag "over_time_amount_#{key}", "#{value.present? ? value.over_time_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount_#{key}",style: "width: 115px; font-size:16px;" %>
+        	</td>
+	        <td>
+	        	<%= number_field_tag "transpotation_days_#{key}", "#{value.present? ? value.transpotation_days : ''}", placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days_#{key}",style: "width: 105px; font-size:16px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "transpotation_amount_#{key}", "#{value.present? ? value.transpotation_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount_#{key}",style: "width: 115px; font-size:16px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "contingency_amount_#{key}", "#{value.present? ? value.contingency_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
+	        </td>	
+	  		</tr>		
 	    <%end%>  
+	  <%end%>  
 	  </tbody>
 	</table>
  

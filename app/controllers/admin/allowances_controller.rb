@@ -19,22 +19,13 @@ class Admin::AllowancesController < ApplicationController
 	  	selected_category = params["selected_category"].split(',').map!{|e| e.to_i}.delete_if {|x| x ==0}
 	  	station = params["station"].to_i
 	  	selected_month = params["selected_month"]
-
-	  	@allowance_selected_category_data = AllowanceSummary.where(month: selected_month, employee_category_id: selected_category, station_id: station) 
-	  	@allowance_selected_category = selected_category
-	  	binding.pry
-
-	  	list = {}
+	  	allowance_data = {}
+	  	selected_category.map{|no|allowance_data[no] = {}}
+	  	data = AllowanceSummary.where(month: selected_month, employee_category_id: selected_category, station_id: station) 
+	  	data.map{ |e| allowance_data[e.employee_category_id] = e }
 	  	
-
-	  	EmployeeCategory.find(selected_category).map{ |emp| 
-	  		if list[emp.group].blank? 
-	  			list[emp.group] = {emp.name => [emp.id,emp.employee_posts.pluck(:post_code).join(' / ')]}
-	  		else
-	  			list[emp.group].merge!(emp.name => [emp.id,emp.employee_posts.pluck(:post_code).join(' / ')])
-	  		end
-	  	}
-	  	@allowance_selected_category_list = list
+	  	@allowance_selected_data = allowance_data
+	  	
 	  end	
 	  
 
