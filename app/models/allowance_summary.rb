@@ -34,8 +34,12 @@ class AllowanceSummary < ApplicationRecord
       allowance.contingency_amount = value["contingency_amount"] rescue nil
       # allowance.remark = 
       allowance.save
+      # if allowance.save
+      #   flag = true
+      # end
+      # return flag
     end
-
+    
 	end	
 
 

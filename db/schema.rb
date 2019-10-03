@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20190930072810) do
     t.string   "transpotation_days"
     t.string   "transpotation_amount"
     t.string   "contingency_amount"
+    t.string   "extra"
     t.string   "remark"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
@@ -145,6 +146,7 @@ ActiveRecord::Schema.define(version: 20190930072810) do
     t.integer  "employee_department_id"
     t.string   "name"
     t.string   "group"
+    t.string   "report_group"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -164,6 +166,7 @@ ActiveRecord::Schema.define(version: 20190930072810) do
     t.string   "pay_band_p6"
     t.string   "grade_pay_p6"
     t.integer  "level_p7"
+    t.string   "report_group"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

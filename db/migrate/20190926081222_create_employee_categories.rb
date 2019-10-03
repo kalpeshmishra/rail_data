@@ -4,7 +4,8 @@ class CreateEmployeeCategories < ActiveRecord::Migration[5.0]
     	t.integer :employee_department_id
     	t.string :name
     	t.string :group
-      t.timestamps
+    	t.string :report_group
+    	t.timestamps
     end
   end
 end

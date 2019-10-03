@@ -1,2 +1,162 @@
-<h1>Allowances</h1>
+<style>
+  ul.dropdown-menu {
+    min-width: 180px;
+    max-height: 200px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<script>
+    $(function () {
+
+      $('.icheck').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+      });
+
+      $('.primary-filters-category').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '130px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-month').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '130px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+ 
+<div class="table-responsive main-client-allowance">
+  <div>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="allowance-report">
+    <caption>
+    	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="category">Category:<p></p>
+        <%= select_tag "allowance-category-list", options_for_select(@allowance_category_list), {multiple: true, id: "allowance-category-list", class: 'primary-filters-category form-control input-sm'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station/TI-Beat<p></p>
+        <%= (select_tag "report-type", options_for_select([['ByTiBeat', 'ByTiBeat'], ['ByStation', 'ByStation']]), {prompt: 'Select', style:"height:35px;",class: "form-control  input-sm report_type"}).html_safe %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month/Year<p></p>  
+        <%= (select_tag "report-period", options_for_select([['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', style:"height:35px;", class: "form-control  input-sm report_period"}).html_safe %>
+      </div> 
+    	<div id ="by-beat-feilds">
+      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">TI-Beat:<p></p>
+      	</div>
+    	</div>
+    	<div id ="by-station-feilds">
+    		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station:<p></p>
+      	</div>
+    	</div>	
+      
+      <div id ="by-month-feilds">
+      	<% 
+      		months = ['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar']
+          month_years_list = []
+          (2019..2020).each do |year|
+          	months.each do |month|
+            	month_years_list << ["#{month}-#{year}"]
+          	end
+        	end 
+        %>    
+      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month:<p></p>
+      		<%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
+      	</div>
+      </div>
+      <div id ="by-year-feilds">
+      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Year:<p></p>
+      	</div>
+      </div>	
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+      
+    </caption>
+  </table>
+      <div id="allowance_report_form"></div>
+      <div><p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+  	 $(document).ready(function() {
+      $("#by-month-feilds").hide();
+      $("#by-year-feilds").hide();
+
+      $("#by-beat-feilds").hide();
+      $("#by-station-feilds").hide();
+    });
+
+  	$(".report_period").on("change",function(){
+  		period_selected = $(this).val();
+      if (period_selected == "ByMonth"){
+        $("#by-month-feilds").show();
+        $("#by-year-feilds").hide();
+        clear_year_fields();
+      } 
+      else if (period_selected == "ByYear"){
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").show();
+        clear_month_fields();
+      }
+      else{
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+        clear_month_fields();
+        clear_year_fields();
+      }
+    });
+
+    $(".report_type").on("change",function(){
+  		period_selected = $(this).val();
+      if (period_selected == "ByTiBeat"){
+        $("#by-beat-feilds").show();
+        $("#by-station-feilds").hide();
+        clear_station_fields();
+      } 
+      else if (period_selected == "ByStation"){
+        $("#by-beat-feilds").hide();
+        $("#by-station-feilds").show();
+        clear_beat_fields();
+      }
+      else{
+        $("#by-beat-feilds").hide();
+        $("#by-station-feilds").hide();
+        clear_beat_fields();
+        clear_station_fields();
+      }
+    });
+
+
+  });	
+</script>
+
 

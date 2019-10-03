@@ -9,6 +9,7 @@ class CreateEmployeePosts < ActiveRecord::Migration[5.0]
     	t.string 		:pay_band_p6   #p6 menas Sixth pay commission	
     	t.string    :grade_pay_p6	
     	t.integer   :level_p7      #p7 means Seventh pay commission 
+      t.string    :report_group   
       t.timestamps
     end
   end

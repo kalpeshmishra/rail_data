@@ -10,6 +10,7 @@ class CreateAllowanceSummaries < ActiveRecord::Migration[5.0]
     	t.string    :transpotation_days
     	t.string    :transpotation_amount
     	t.string    :contingency_amount
+      t.string    :extra
     	t.string    :remark
       t.timestamps
     end

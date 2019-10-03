@@ -1,15 +1,21 @@
 class Admin::AllowancesController < ApplicationController
   layout "admin/application"
+
   def index
+  	get_form_data
+  	month_list = []
+  	7.times do |i|
+  		d = Date.today - i.month
+  		month_list << d.strftime("%b-%y")
+  	end	
+	  @allowance_month_list = month_list.reverse
   end
 
   def new
-  	@allowance_category_list = EmployeeCategory.all.map{ |emp| [[emp.group,emp.name].join("-"),emp.id]}
-	  stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
-	  @allowance_station_list = stn.map{|s| Station.where(id: s).pluck(:code,:id).flatten} rescue nil
-	  
+  	get_form_data
+
 	  month_list = []
-  	3.times do |i|
+  	7.times do |i|
   		d = Date.today - i.month
   		month_list << d.strftime("%b-%y")
   	end	
@@ -32,6 +38,15 @@ class Admin::AllowancesController < ApplicationController
   end
 
   def create
-  	AllowanceSummary.create_or_update_allowance(params)
+  	@allowance_data_status = AllowanceSummary.create_or_update_allowance(params)
+
   end
+
+  def get_form_data
+  	@allowance_category_list = EmployeeCategory.all.map{ |emp| [[emp.group,emp.name].join("-"),emp.id]}
+	  stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
+	  @allowance_station_list = stn.map{|s| Station.where(id: s).pluck(:code,:id).flatten} rescue nil
+	  
+  end
+
 end
