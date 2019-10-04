@@ -9,6 +9,8 @@ class Admin::AllowancesController < ApplicationController
   		month_list << d.strftime("%b-%y")
   	end	
 	  @allowance_month_list = month_list.reverse
+    @allowance_ti_beat_list = User.where(id: StationUnderTiUser.all.pluck(:user_id).uniq).pluck(:first_name, :id)
+    @allowance_station_list = Station.where(id: StationUnderTiUser.all.pluck(:station_id).uniq).pluck(:code, :id)
   end
 
   def new

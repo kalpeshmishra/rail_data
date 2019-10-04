@@ -26,11 +26,47 @@
         numberDisplayed: 0
       });
 
-      $('.primary-filters-month').multiselect({
+      $('.primary-filters-allowance_type').multiselect({
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true,
         includeSelectAllOption: true,
         buttonWidth: '130px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-month').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-year').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-station').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-beat').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
         buttonClass: 'btn btn-default',
         numberDisplayed: 0
       });
@@ -42,49 +78,50 @@
     });
 
 </script>
- 
+<%
+	allowance_type_list = [["OverTime","OverTime"],["Transpotation","Transpotation"],["Contingency","Contingency"]]
+
+	months = ['Jan', 'Feb', 'Mar','Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', ]
+  month_years_list = []
+  financial_year_list = []
+  (2019..Date.today.strftime("%Y").to_i).each do |year|
+  	financial_year_list << ["#{year}-#{year+1}"] 
+  	months.each do |month|
+    	month_years_list << ["#{month}-#{year}"]
+  	end
+	end 
+%>
 <div class="table-responsive main-client-allowance">
   <div>
     <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
   </div>
   <table class="table hover table-dark" id="allowance-report">
-    <caption>
-    	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="category">Category:<p></p>
+    <caption style="height: 140px;">
+    	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="category">Category/Type<p></p>
         <%= select_tag "allowance-category-list", options_for_select(@allowance_category_list), {multiple: true, id: "allowance-category-list", class: 'primary-filters-category form-control input-sm'} %>
+        <%= select_tag "allowance-type", options_for_select(allowance_type_list), {multiple: true, id: "allowance-type", class: 'primary-filters-allowance_type form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station/TI-Beat<p></p>
-        <%= (select_tag "report-type", options_for_select([['ByTiBeat', 'ByTiBeat'], ['ByStation', 'ByStation']]), {prompt: 'Select', style:"height:35px;",class: "form-control  input-sm report_type"}).html_safe %>
+        <%= (select_tag "report-type", options_for_select([['ByTiBeat', 'ByTiBeat'], ['ByStation', 'ByStation']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_type"}).html_safe %><p></p>
+        <div id ="by-beat-feilds">
+        	<%= select_tag "by-beat", options_for_select(@allowance_ti_beat_list), {multiple: true, id: "by-beat", class: 'primary-filters-beat form-control input-sm by_beat'} %>
+	      </div>
+	    	<div id ="by-station-feilds">
+	    		<%= select_tag "by-station", options_for_select(@allowance_station_list), {multiple: true, id: "by-station", class: 'primary-filters-station form-control input-sm by_station'} %>
+	    	</div>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month/Year<p></p>  
-        <%= (select_tag "report-period", options_for_select([['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', style:"height:35px;", class: "form-control  input-sm report_period"}).html_safe %>
+        <%= (select_tag "report-period", options_for_select([['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_period"}).html_safe %><p></p>
+        <div id ="by-month-feilds">
+	      	<%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
+      	</div>
+      	<div id ="by-year-feilds">
+      		<%= select_tag "by-year", options_for_select(financial_year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
+      	</div>	
       </div> 
-    	<div id ="by-beat-feilds">
-      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">TI-Beat:<p></p>
-      	</div>
-    	</div>
-    	<div id ="by-station-feilds">
-    		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station:<p></p>
-      	</div>
-    	</div>	
+    		
       
-      <div id ="by-month-feilds">
-      	<% 
-      		months = ['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar']
-          month_years_list = []
-          (2019..2020).each do |year|
-          	months.each do |month|
-            	month_years_list << ["#{month}-#{year}"]
-          	end
-        	end 
-        %>    
-      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month:<p></p>
-      		<%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
-      	</div>
-      </div>
-      <div id ="by-year-feilds">
-      	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Year:<p></p>
-      	</div>
-      </div>	
+     
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
       </div>
@@ -154,6 +191,31 @@
         clear_station_fields();
       }
     });
+
+    function clear_month_fields(){
+      $('option', $('#by-month')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-month").multiselect('refresh');
+    }
+    function clear_year_fields(){
+      $('option', $('#by-year')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-year").multiselect('refresh');
+    }
+    function clear_beat_fields(){
+      $('option', $('#by-beat')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-beat").multiselect('refresh');
+    }
+    function clear_station_fields(){
+      $('option', $('#by-station')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-station").multiselect('refresh');
+    }
 
 
   });	

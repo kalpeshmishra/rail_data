@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190930072810) do
+ActiveRecord::Schema.define(version: 20191004085015) do
 
   create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_category_id"
@@ -521,6 +521,7 @@ ActiveRecord::Schema.define(version: 20190930072810) do
     t.boolean  "is_statistics_access"
     t.boolean  "is_dak_access"
     t.boolean  "is_block__access"
+    t.boolean  "is_allowance_access"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

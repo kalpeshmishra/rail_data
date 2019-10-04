@@ -15,7 +15,8 @@ class AllowanceSummary < ApplicationRecord
       new_key.delete(key.split("_").last)
       new_key = new_key.join("_")
       allowance_data[no].merge!("#{new_key}" => value)
-    end  
+    end
+    save_status = []  
     allowance_data.each do |key,value|
     	data_count = value.values.drop(3).reject { |c| c.empty? }.count
       next if data_count == 0
@@ -34,12 +35,11 @@ class AllowanceSummary < ApplicationRecord
       allowance.contingency_amount = value["contingency_amount"] rescue nil
       # allowance.remark = 
       allowance.save
-      # if allowance.save
-      #   flag = true
-      # end
-      # return flag
+      if allowance.save
+        save_status << true
+      end
     end
-    
+    return save_status.include?(true)
 	end	
 
 
