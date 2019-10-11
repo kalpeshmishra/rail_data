@@ -44,6 +44,16 @@ class Admin::AllowancesController < ApplicationController
 
   end
 
+  def delete_allowance
+    delete_allowance_id = params[:delete_allowance_id]
+    id = delete_allowance_id.to_i
+    AllowanceSummary.destroy(id)
+    
+      respond_to do |format|
+        format.js
+      end
+  end
+
   def get_form_data
   	@allowance_category_list = EmployeeCategory.all.map{ |emp| [[emp.group,emp.name].join("-"),emp.id]}
 	  stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)

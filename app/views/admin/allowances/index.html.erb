@@ -119,7 +119,9 @@
       		<%= select_tag "by-year", options_for_select(financial_year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
       	</div>	
       </div> 
-    		
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">ReportDetails<p></p>
+      	<%= (select_tag "report-details", options_for_select([['Total', 'Total'], ['StationWise', 'StationWise']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_details"}).html_safe %>
+    	</div>		
       
      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >

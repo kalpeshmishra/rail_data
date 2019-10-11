@@ -6,7 +6,7 @@ class LoadInterchange < ApplicationRecord
    
     (0..25).map{|no|load_interchange_data[no] = {}}
     params.each do |key,value|
-      next if ["utf8","authenticity_token","record_date","interchange_point"].include?(key)
+      next if ["utf8","authenticity_token","record_date","interchange_point","date","controller","action"].include?(key)
       no = key.split("_").last.to_i
       new_key = key.split("_")
       new_key.delete(key.split("_").last)
@@ -14,7 +14,6 @@ class LoadInterchange < ApplicationRecord
       load_interchange_data[no].merge!("#{new_key}" => value)
     end
     
-
     load_interchange_data.each do |key,value|
       data_count = value.values.reject { |c| c.empty? }.count
       next if data_count == 0

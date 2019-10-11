@@ -6,11 +6,12 @@
 	<table class="table" style="margin-bottom: 20px !important; overflow-x: scroll; ">
 	  <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-	  	<th rowspan="2">Group</th>
-	  	<th rowspan="2">Category</th>
-	  	<th colspan="3">OverTime</th>
+	  	<th style="vertical-align: middle;" rowspan="2">Group</th>
+	  	<th style="vertical-align: middle;" rowspan="2">Category</th>
+	  	<th style="vertical-align: middle;" colspan="3">OverTime</th>
 	  	<th colspan="2">Transpotation</th>
 	  	<th>Contingency </th>
+	  	<th style="vertical-align: middle;" rowspan="2">Action</th>
 	  </tr>
 	  <tr style="color: #fff; background: #4B4B4D;">
 	  	<th>Hours</th>
@@ -24,7 +25,7 @@
 	  <tbody>
 	  <%if @allowance_selected_data.present?%>	
 	  	<%@allowance_selected_data.each do |key,value|%>
-	  		<tr class="allowance-data allowance_row", id= "allowance_category_id_<%=key%>">
+	  		<tr class="allowance-data allowance_row" id= "allowance_category_id_<%=key%>">
 	  			<%= hidden_field_tag  "category_id_#{key}", "#{key}", id: "category_id_#{key}" %>
 	      	<%= hidden_field_tag  "s_month_#{key}", "", class: 's_month', id: "s_month_#{key}" %>
 	      	<%= hidden_field_tag  "s_station_#{key}", "", class: 's_station', id: "s_station_#{key}" %>
@@ -50,6 +51,9 @@
 	        <td>
 	        	<%= number_field_tag "contingency_amount_#{key}", "#{value.present? ? value.contingency_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:16px;" %>
 	        </td>	
+	        <td style="vertical-align: middle; text-align: center;">
+          	<a href="#" class="remove-ip label label-danger" id="<%=key%>-allowance_delete" style="padding: 20%" ><i class="fa fa-trash-o"></i></a>
+          </td>
 	  		</tr>		
 	    <%end%>  
 	  <%end%>  
@@ -67,6 +71,22 @@
    
 <%end%>
 </div>
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+        
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_allowance_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
 <script>
   $(function(){
     selected_month = $("#allowance_month_list").val();
@@ -78,4 +98,28 @@
     $(".s_category").val(selected_category);
       
   });
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_allowance_id = $("#record_id_"+delete_index).val();
+    $("#delete-modal").modal('show');
+  });
+
+  $("#confirm_allowance_delete").click(function () {
+  	
+  	$("#delete-modal").modal('hide');
+    if (delete_allowance_id != "") {
+      $.ajax({
+      type: "get",
+      url: "/delete_allowance.js?delete_allowance_id=" + delete_allowance_id
+    	});
+  	}
+
+    $('.allowance-data:visible').each(function() {
+    	if($(this).attr("id").split("_")[3] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
 </script>
