@@ -6,11 +6,37 @@ class Admin::AllowancesController < ApplicationController
   	month_list = []
   	7.times do |i|
   		d = Date.today - i.month
-  		month_list << d.strftime("%b-%y")
+  		month_list << d.strftime("%b-%Y")
   	end	
 	  @allowance_month_list = month_list.reverse
     @allowance_ti_beat_list = User.where(id: StationUnderTiUser.all.pluck(:user_id).uniq).pluck(:first_name, :id)
     @allowance_station_list = Station.where(id: StationUnderTiUser.all.pluck(:station_id).uniq).pluck(:code, :id)
+    if params[:is_data_filter].present?
+      category_ids = params[:selected_category_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+      allowance_type = params[:selected_allowance_type].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_allowance_type].present?
+      ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0} if params[:selected_ti_beat_ids].present?
+      selected_years = params[:selected_years].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_years].present?
+      report_type = params[:report_type]
+      report_period = params[:report_period]
+
+
+      select_allowance_months = []
+      temp_month = [['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],['Jan', 'Feb', 'Mar']]
+
+      selected_years.each do |years|
+        temp_year = years.split("-")
+        2.times do |i| 
+          data = temp_month[i].map { |month| "#{month}-#{temp_year[i]}" }
+          select_allowance_months << data
+        end 
+      end
+      select_allowance_months.flatten!
+
+
+      
+      # binding.pry
+    end
+    
   end
 
   def new
@@ -19,7 +45,7 @@ class Admin::AllowancesController < ApplicationController
 	  month_list = []
   	7.times do |i|
   		d = Date.today - i.month
-  		month_list << d.strftime("%b-%y")
+  		month_list << d.strftime("%b-%Y")
   	end	
 	  @allowance_month_list = month_list.reverse
 	  
