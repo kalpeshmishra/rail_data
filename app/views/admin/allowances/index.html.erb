@@ -119,10 +119,11 @@
       		<%= select_tag "by-year", options_for_select(financial_year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
       	</div>	
       </div> 
+      <%if false%>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">ReportDetails<p></p>
       	<%= (select_tag "report-details", options_for_select([['Total', 'Total'], ['StationWise', 'StationWise']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_details"}).html_safe %>
     	</div>		
-      
+      <%end%>
      
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
@@ -242,11 +243,31 @@
       		}
       	}
       	else if (report_period == "ByMonth") {
-
+          if (selected_category_ids != null && selected_allowance_type != null && selected_ti_beat_ids != null && selected_months != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/allowances.js?selected_category_ids=" + selected_category_ids +"&selected_allowance_type="+selected_allowance_type + "&selected_ti_beat_ids="+ selected_ti_beat_ids + "&selected_months=" + selected_months +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
       	}
       }
       else if (report_type == "ByStation") {
-
+        if (report_period == "ByYear") {
+          if (selected_category_ids != null && selected_allowance_type != null && selected_station_ids != null && selected_years != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/allowances.js?selected_category_ids=" + selected_category_ids +"&selected_allowance_type="+selected_allowance_type + "&selected_station_ids="+ selected_station_ids + "&selected_years=" + selected_years +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
+        }
+        else if (report_period == "ByMonth") {
+          if (selected_category_ids != null && selected_allowance_type != null && selected_station_ids != null && selected_months != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/allowances.js?selected_category_ids=" + selected_category_ids +"&selected_allowance_type="+selected_allowance_type + "&selected_station_ids="+ selected_station_ids + "&selected_months=" + selected_months +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
+        }
       }
 
     });	

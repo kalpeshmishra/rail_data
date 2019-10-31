@@ -122,4 +122,11 @@
     });
   });
 
+  <%if @allowance_data_status.present?%>
+    $("#allowance_data_save").show(); 
+    $("#allowance_data_save").html("Data Saved !");
+    $("#allowance_data_save").hide(8000);
+  <%end%>
+
+
 </script>

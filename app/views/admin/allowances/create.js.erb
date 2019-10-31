@@ -1,5 +1,6 @@
-<%if @allowance_data_status == true%>
+<%if @allowance_data_status.present?%>
 	$("#allowance_data_save").show();	
 	$("#allowance_data_save").html("Data Saved !");
 	$("#allowance_data_save").hide(8000);
+	$("#allowance_display_form").html('<%= j render 'form'%>')
 <%end%>

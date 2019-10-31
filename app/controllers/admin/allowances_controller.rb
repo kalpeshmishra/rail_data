@@ -13,30 +13,38 @@ class Admin::AllowancesController < ApplicationController
     @allowance_station_list = Station.where(id: StationUnderTiUser.all.pluck(:station_id).uniq).pluck(:code, :id)
     if params[:is_data_filter].present?
       category_ids = params[:selected_category_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
-      allowance_type = params[:selected_allowance_type].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_allowance_type].present?
-      ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0} if params[:selected_ti_beat_ids].present?
-      selected_years = params[:selected_years].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_years].present?
+      @allowance_type = params[:selected_allowance_type].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_allowance_type].present?
       report_type = params[:report_type]
       report_period = params[:report_period]
 
-
-      select_allowance_months = []
-      temp_month = [['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],['Jan', 'Feb', 'Mar']]
-
-      selected_years.each do |years|
-        temp_year = years.split("-")
-        2.times do |i| 
-          data = temp_month[i].map { |month| "#{month}-#{temp_year[i]}" }
-          select_allowance_months << data
-        end 
+      if params[:selected_ti_beat_ids].present?
+        ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+        select_station_ids = StationUnderTiUser.where(user_id: ti_beat_ids).pluck(:station_id)
+      elsif params[:selected_station_ids].present?
+        select_station_ids = params[:selected_station_ids].split(",").map{|x| x.to_i}
       end
-      select_allowance_months.flatten!
 
+      if params[:selected_years].present?
+        selected_years = params[:selected_years].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"}
 
-      
-      # binding.pry
+        select_allowance_months = []
+        temp_month = [['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],['Jan', 'Feb', 'Mar']]
+
+        selected_years.each do |years|
+          temp_year = years.split("-")
+          2.times do |i| 
+            data = temp_month[i].map { |month| "#{month}-#{temp_year[i]}" }
+            select_allowance_months << data
+          end 
+        end
+        select_allowance_months = select_allowance_months.flatten
+      elsif params[:selected_months].present?
+        select_allowance_months = params[:selected_months].split(",")
+      end  
+
+      @allowance_reports_data = AllowanceSummary.where(station_id: select_station_ids, employee_category_id: category_ids, month: select_allowance_months)
     end
-    
+
   end
 
   def new
@@ -48,12 +56,12 @@ class Admin::AllowancesController < ApplicationController
   		month_list << d.strftime("%b-%Y")
   	end	
 	  @allowance_month_list = month_list.reverse
-	  
-		if params["selected_category"].present?	
-	  	selected_category = params["selected_category"].split(',').map!{|e| e.to_i}.delete_if {|x| x ==0}
+	  if params["selected_category"].present?	
+	    @@allowance_old_params_data = params 
+    	selected_category = params["selected_category"].split(',').map!{|e| e.to_i}.delete_if {|x| x ==0}
 	  	station = params["station"].to_i
 	  	selected_month = params["selected_month"]
-	  	allowance_data = {}
+      allowance_data = {}
 	  	selected_category.map{|no|allowance_data[no] = {}}
 	  	data = AllowanceSummary.where(month: selected_month, employee_category_id: selected_category, station_id: station) 
 	  	data.map{ |e| allowance_data[e.employee_category_id] = e }
@@ -66,8 +74,16 @@ class Admin::AllowancesController < ApplicationController
   end
 
   def create
-  	@allowance_data_status = AllowanceSummary.create_or_update_allowance(params)
-
+    @allowance_data_status = AllowanceSummary.create_or_update_allowance(params)
+    temp_data = @@allowance_old_params_data
+    selected_category = temp_data["selected_category"].split(',').map!{|e| e.to_i}.delete_if {|x| x ==0}
+    station = temp_data["station"].to_i
+    selected_month = temp_data["selected_month"]
+    allowance_data = {}
+    selected_category.map{|no|allowance_data[no] = {}}
+    data = AllowanceSummary.where(month: selected_month, employee_category_id: selected_category, station_id: station) 
+    data.map{ |e| allowance_data[e.employee_category_id] = e }
+    @allowance_selected_data = allowance_data
   end
 
   def delete_allowance
