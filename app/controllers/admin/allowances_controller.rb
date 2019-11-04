@@ -39,7 +39,7 @@ class Admin::AllowancesController < ApplicationController
         end
         select_allowance_months = select_allowance_months.flatten
       elsif params[:selected_months].present?
-        select_allowance_months = params[:selected_months].split(",")
+        select_allowance_months = params[:selected_months].split(",").map{|x|x}.delete_if {|x| x == "multiselect-all"}
       end  
 
       @allowance_reports_data = AllowanceSummary.where(station_id: select_station_ids, employee_category_id: category_ids, month: select_allowance_months)

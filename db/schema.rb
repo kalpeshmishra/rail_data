@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191004085015) do
+ActiveRecord::Schema.define(version: 20191104062136) do
 
   create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_category_id"
@@ -151,6 +151,15 @@ ActiveRecord::Schema.define(version: 20191004085015) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "employee_category_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "type"
+    t.date     "date_in_level"
+    t.integer  "employee_post_id"
+    t.string   "remark"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "employee_departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -169,6 +178,35 @@ ActiveRecord::Schema.define(version: 20191004085015) do
     t.string   "report_group"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "employees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "father_name"
+    t.string   "spouse_name"
+    t.string   "emp_number"
+    t.string   "pran_number"
+    t.string   "pan_number"
+    t.string   "aadhaar"
+    t.string   "gender"
+    t.string   "religion"
+    t.string   "community"
+    t.date     "birth_date"
+    t.string   "marital_status"
+    t.string   "disability"
+    t.date     "appointment_date"
+    t.string   "permanent_address"
+    t.string   "temporary_address"
+    t.string   "mobile_no"
+    t.string   "alternate_number"
+    t.string   "email_id"
+    t.string   "appointment_mode"
+    t.integer  "employee_post_id"
+    t.integer  "station_id"
+    t.string   "image_path"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "ic_divisions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
