@@ -1,0 +1,177 @@
+<style>
+  .employee_style{
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+    width: 25%;
+  }
+</style>
+<% @method = "POST" %>
+<% @url = admin_employees_path %>
+<div class="table-responsive">
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-basic-detail-form',remote: true) do |form| %>
+  <div style="text-align: right;">
+    <button class="btn btn-primary btn-flat details-submit" type="submit"><i class="fa fa-check details-submit"></i>Save</button>
+  </div>
+<table class="table">
+  <tr>
+    <td class="employee_style">PF / NPS Number:</td>
+    <td>
+      <%= hidden_field_tag  "record_id", "", id: "record_id" %>
+      <%= text_field_tag "pf_nps_number", '',placeholder: 'PF or NPS No.', id: "pf_nps_number", class: 'form-control input-md pf-nps-number',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+    <td class="employee_style">Aadhaar No.:</td>
+    <td>
+      <%= text_field_tag "aadhaar_number", '',placeholder: 'Aadhaar No.', id: "aadhaar_number", class: 'form-control input-md aadhaar_number',minlength:"12",maxlength:"12",required: true,pattern: "^[0-9]+$", style: "width: 100%; font-size:14px;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Employee First Name:</td>
+    <td>
+      <%= text_field_tag "first_name", '',placeholder: 'Employee First Name', id: "first_name", class: 'form-control input-md first-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+    <td class="employee_style">Employee Last (SurName) Name:</td>
+    <td>
+      <%= text_field_tag "last_name", '',placeholder: 'Employee Last Name', id: "last_name", class: 'form-control input-md last-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Employee Father's Name:</td>
+    <td>
+      <%= text_field_tag "father_name", '',placeholder: 'Employee Fathers Name', id: "father_name", class: 'form-control input-md father-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+    <td class="employee_style">Employee Spouse Name:</td>
+    <td>
+      <%= text_field_tag "spouse_name", '',placeholder: 'Employee Spouse Name', id: "spouse_name", class: 'form-control input-md spouse-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">PAN No.:</td>
+    <td>
+      <%= text_field_tag "pan_number", '',placeholder: 'PAN No.', id: "pan_number", class: 'form-control input-md pf-nps-number',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+    <td class="employee_style">PRAN Number:</td>
+    <td>
+      <%= text_field_tag "pran_number", '',placeholder: 'PRAN No.', id: "pran_number", class: 'form-control input-md pran-number', style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Gender:</td>
+    <td>
+      <%= (select_tag "gender", options_for_select([["Male","Male"],["Female","Female"],["Other","Other"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm gender"}).html_safe %>
+    </td>
+    <td class="employee_style">Religion:</td>
+    <td>
+      <%= (select_tag "religion", options_for_select([["Hindu","Hindu"],["Muslim","Muslim"],["Sikh","Sikh"],["Christian","Christian"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm religion"}).html_safe %>
+    </td>
+  </tr>  
+  <tr>
+    <td class="employee_style">Community :</td>
+    <td>
+      <%= (select_tag "community", options_for_select([["GEN","GEN"],["SC","SC"],["ST","ST"],["OBC","OBC"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm community"}).html_safe %>
+    </td>
+    <td class="employee_style">Disability:</td>
+    <td>
+      <%= (select_tag "disability", options_for_select([["YES","YES"],["NO","NO"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm disability"}).html_safe %>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Date Of Birth:</td>
+    <td>
+      <%= text_field_tag "birth_date",'', type: 'date',placeholder: 'DOB', id: "birth_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+    </td>
+    <td class="employee_style">Date Of Appointment:</td>
+    <td>
+      <%= text_field_tag "appointment_date",'', type: 'date',placeholder: 'DOA', id: "appointment_date",required: true, class: 'form-control input-md', style: "width: 100%;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Marital Status:</td>
+    <td>
+      <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
+    </td>
+    <td class="employee_style">Mode Of Appointment:</td>
+    <td>
+      <%= (select_tag "appointment_mode", options_for_select([["RRB","RRB"],["Compassionate","Compassionate"],["Largess","Largess"],["SportsQuota","SportsQuota"]]), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm appointment_mode"}).html_safe %>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Moblie No.:</td>
+    <td>
+      <%= text_field_tag "mobile_no", '',placeholder: 'Mobile No.', id: "mobile_no", class: 'form-control input-md mobile_no',minlength:"10",maxlength:"10",required: true,pattern: "^[0-9]+$", style: "width: 100%; font-size:14px;"%>
+    </td>
+    <td class="employee_style">Emergency Contact Number:</td>
+    <td>
+      <%= number_field_tag "alternate_number", '',placeholder: 'Emergency No.', id: "alternate_number",required: true, class: 'form-control input-md alternate-number', style: "width: 100%; font-size:14px;"%>
+    </td>
+  </tr>  
+  <tr>
+    <td class="employee_style">Employee Post:</td>
+    <td>
+      <%= (select_tag "employee_post", options_for_select(@employee_post_list), {prompt: 'Select',required: true, class: "form-control  input-sm employee_post"}).html_safe %>
+    </td>
+    <td class="employee_style">Current Station:</td>
+    <td>
+      <%= (select_tag "current_station", options_for_select(@employee_station_list), {prompt: 'Select',required: true, class: "form-control  input-sm current_station"}).html_safe %>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style"></td>
+    <td></td>
+    <td class="employee_style">Email Id:</td>
+    <td>
+      <%= email_field_tag "email_id",'', type: 'date',placeholder: 'Email-ID', id: "email_id", class: 'form-control input-md', style: "width: 100%;"%>
+    </td>
+  </tr>
+  <tr>
+    <td class="employee_style">Current Address:</td>
+    <td>
+      <%= text_area_tag "current_address", '', placeholder: 'Current Address', id: "current_address", class: 'form-control input-md current_address',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 280px; height:80px;font-size:14px;"%>
+    </td>
+    <td class="employee_style">Permanent Address:</td>
+    <td>
+      <%= text_area_tag "permanent_address", '', placeholder: 'Permanent Address', id: "permanent_address", class: 'form-control input-md permanent_address',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 280px; height:80px;font-size:14px;"%>
+    </td>
+  </tr>  
+</table>  
+
+  
+
+<% end %>
+</div>
+
+<script>
+  $(function(){
+      
+    <%if @edit_employee_basic_data.present?%>
+      <%data = @edit_employee_basic_data%>
+      $(record_id).val('<%=data.id%>');
+      $(first_name).val('<%=data.first_name%>');
+      $(last_name).val('<%=data.last_name%>');
+      $(father_name).val('<%=data.father_name%>');
+      $(spouse_name).val('<%=data.spouse_name%>');
+      $(pf_nps_number).val('<%=data.emp_number%>');
+      $(pran_number).val('<%=data.pran_number%>');
+      $(pan_number).val('<%=data.pan_number%>');
+      $(aadhaar_number).val('<%=data.aadhaar%>');
+      $(gender).val('<%=data.gender%>');
+      $(religion).val('<%=data.religion%>');
+      $(community).val('<%=data.community%>');
+      $(birth_date).val('<%=data.birth_date%>');
+      $(marital_status).val('<%=data.marital_status%>');
+      $(disability).val('<%=data.disability%>');
+      $(appointment_date).val('<%=data.appointment_date%>');
+      $(current_address).val('<%=data.temporary_address%>');
+      $(permanent_address).val('<%=data.permanent_address%>');
+      $(mobile_no).val('<%=data.mobile_no%>');
+      $(alternate_number).val('<%=data.alternate_number%>');
+      $(email_id).val('<%=data.email_id%>');
+      $(appointment_mode).val('<%=data.appointment_mode%>');
+      $(employee_post).val('<%=data.employee_post_id%>');
+      $(current_station).val('<%=data.station_id%>');
+        
+    <%end%>  
+
+  });
+
+</script>

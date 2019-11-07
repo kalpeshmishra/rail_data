@@ -1,0 +1,31 @@
+<div class="employee-basic-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Employee Basic Details:&nbsp;&nbsp;<b id="employee_basic_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_basic_details_form" class="employee-basic-details-form">
+    <%= render 'employee_new_form' %>
+  </div>
+</div>
+<div class="employee-other-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Employee Other Details:&nbsp;&nbsp;<b id="employee_other_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_other_details_form" class="employee-other-details-form">
+    <%= render 'employee_other_details_form' %>
+  </div>
+</div>
+
+<script>
+  $(".employee-basic-details-form").hide();  
+  $("#employee_basic_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-basic-details-form").toggle();
+  });
+
+  // $(".employee-other-details-form").hide();  
+  $("#employee_other_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-other-details-form").toggle();
+  });
+  
+</script>

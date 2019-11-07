@@ -25,6 +25,7 @@ class CreateEmployees < ActiveRecord::Migration[5.0]
       t.integer   :employee_post_id       #Last post Id of Employee
       t.integer   :station_id             #Last posting station
     	t.string		:image_path
+      t.string    :in_service
       t.timestamps
     end
   end

@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 20191104062136) do
   end
 
   create_table "employee_category_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "employee_id"
     t.string   "type"
     t.date     "date_in_level"
     t.integer  "employee_post_id"
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(version: 20191104062136) do
     t.integer  "employee_post_id"
     t.integer  "station_id"
     t.string   "image_path"
+    t.string   "in_service"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end

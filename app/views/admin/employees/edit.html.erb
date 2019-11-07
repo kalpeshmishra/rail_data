@@ -6,21 +6,18 @@
 .no-border tr td, .no-border tr th {
   border-width: 0;
 </style>
-<% @method = params[:id].present? ? "PATCH" : "POST" %>
-<% @url = params[:id].present? ? admin_employee_path(params[:id]) : admin_employees_path %>
-
-<div class="table-responsive main-client-employee-create" >
+<div class="table-responsive main-client-employee-update" >
   <div id="client-message"></div>
-  <table class="table hover table-dark" id="employee-create">
+  <table class="table hover table-dark" id="employee-update">
   <caption>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
       <span class="pull-left lead-text">
-        Create New Employee
+        Update Employee
       </span>
     </div>
   </caption>
   </table>
   <div>
-    <%= render 'employee_new_form'%>
+    <%= render 'form'%>
   </div>
 </div>
