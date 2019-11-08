@@ -6,14 +6,16 @@
     width: 25%;
   }
 </style>
+<div style="width:10%">
+    <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-category-detail", id="add_category_detail"><i class="fa fa-plus"></i>AddNew</a>
+</div>
 <div class="table-responsive">
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" >  
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >  
   	<table class="table table-sm" id="employee-category-details">
   	<thead>
-	    <tr>
+	    <tr style="color: #fff; background: #4B4B4D;">
 	      <th>Type</th>
-	      <th>Level</th>
-	      <th>Date In Level</th>
+	      <th>Date In Grade</th>
 	      <th>Post Details</th>
   		</tr>
   	</thead>
@@ -23,12 +25,64 @@
   	</table>	
 
   </div>
-  <div>
-  	<%= link_to '<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Employee'.html_safe, new_admin_employee_path,  class: "btn btn-primary btn-block btn-rad", style: "height: 35px;padding: 7px 11px" %>
+</div>
+<!-- Add Category Modal html code start -->
+<div class="modal fade colored-header add-category-modal" id="add_category_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 550px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Category:</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" id="add-category-div">
+        <table>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
+            <td>
+              <%= (select_tag "category_type", options_for_select([["Initial","Initial"],["Promotion","Promotion"],["MedicalDecategorised","MedicalDecategorised"],["Surplus","Surplus"]]), {prompt: 'Select',required: true, class: "form-control  input-sm category_type"}).html_safe %>
+            </td>
+          </tr>
+          <tr>  
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Post</td>
+            <td>
+              <%= (select_tag "add_category_post", options_for_select(@employee_post_list), {prompt: 'Select',required: true, class: "form-control  input-sm add_category_post"}).html_safe %>
+            </td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Date In Grade</td>
+            <td>
+              <%= text_field_tag "category_date",'', type: 'date',placeholder: 'DOB', id: "category_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark</td>
+            <td>
+              <%= text_area_tag "category_remark", '', placeholder: 'Enter Remark if any', id: "category_remark", class: 'form-control input-md category_remark',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:80px;font-size:14px;"%>
+            </td>
+          </tr>
+        </table>  
+        <br>
+        <button class="btn btn-primary btn-flat employee-category-save"><i class="fa fa-check save"></i>Save</button>
+        <p class= "form-group add_category_error" id="add_category_error" style="display: none"></p>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- Add Category Modal html code ends -->
 <script>
-  
+  $(function(){
+    $('.add-category-detail').on('click',function(){
+      $("#add_category_modal").modal('show');
+    });  
+  }); 
+
+  $(document).on('hidden.bs.modal','#add_category_modal', function () {
+    $("#add_category_post").val("");
+    $("#category_type").val("");
+    $("#category_date").val("");
+    $("#category_remark").val("");
+
+  });
 
 </script>

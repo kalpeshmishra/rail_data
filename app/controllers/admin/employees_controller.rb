@@ -18,7 +18,7 @@ class Admin::EmployeesController < ApplicationController
 		get_form_data
 		emp_id = params[:id].to_i
 		@edit_employee_basic_data = Employee.find(emp_id)
-		@edit_employee_category_data = EmployeeCategoryDetail.find(emp_id)
+		@edit_employee_category_data = EmployeeCategoryDetail.where(id: emp_id)
 	end
 
 	def get_form_data

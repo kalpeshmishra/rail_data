@@ -18,6 +18,13 @@
   </caption>
   </table>
   <div>
-    <%= render 'form'%>
+    <div>
+      <%emp = @edit_employee_basic_data rescue nil%>
+      <b style="color: red;">Employee: <%=emp.first_name%> <%=emp.last_name%></b>
+    </div>
+    <div>
+      <%= render 'form'%>
+    </div>
   </div>
+
 </div>
