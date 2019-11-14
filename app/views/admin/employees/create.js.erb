@@ -1,0 +1,8 @@
+<%if params[:is_add_employee_category].present?%>
+	$("#employee_category_details_form").html('');
+	$("#employee_category_details_form").html('<%= j render 'employee_category_details_form'%>');
+<%end%>
+<%if params[:is_add_employee_transfer].present?%>
+	$("#employee_transfer_details_form").html('');
+	$("#employee_transfer_details_form").html('<%= j render 'employee_transfer_details_form'%>');
+<%end%>

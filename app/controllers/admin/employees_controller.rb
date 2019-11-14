@@ -11,14 +11,31 @@ class Admin::EmployeesController < ApplicationController
 	end
 
 	def create
-		Employee.create_or_update_employee(params)
+		get_form_data
+		if params[:is_add_employee_category].present? and params[:is_add_employee_category] == "true"
+			EmployeeCategoryDetail.create_employee_category(params)
+			@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: params[:employee_id].to_i).order(date_in_level: :asc)
+		elsif params[:is_add_employee_transfer].present?
+			EmployeeTransferDetail.create_employee_transfer(params)
+			@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id:  params[:employee_id].to_i).order(resume_date: :asc)
+		else
+			Employee.create_or_update_employee(params)
+		end
+			
+		respond_to do |format|
+      format.js
+    end
+
 	end
 
 	def edit
 		get_form_data
 		emp_id = params[:id].to_i
 		@edit_employee_basic_data = Employee.find(emp_id)
-		@edit_employee_category_data = EmployeeCategoryDetail.where(id: emp_id)
+		@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: emp_id).order(date_in_level: :asc)
+		@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id: emp_id).order(relieve_date: :asc)
+	
+
 	end
 
 	def get_form_data
@@ -33,6 +50,25 @@ class Admin::EmployeesController < ApplicationController
       format.js
     end
 	end
+
+	def delete_employee_category_detail
+    delete_category_detail_id = params[:delete_category_detail_id].to_i
+    EmployeeCategoryDetail.destroy(delete_category_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def delete_employee_transfer_detail
+    delete_transfer_detail_id = params[:delete_transfer_detail_id].to_i
+    EmployeeTransferDetail.destroy(delete_transfer_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
 
 
 end

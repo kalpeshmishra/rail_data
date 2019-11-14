@@ -18,10 +18,12 @@
   </caption>
   </table>
   <div>
-    <div>
+    <div style="font-size: 16px;font-weight: bold;">
       <%emp = @edit_employee_basic_data rescue nil%>
-      <b style="color: red;">Employee: <%=emp.first_name%> <%=emp.last_name%></b>
+      Employee Name: <b style="color: red;"><%=emp.first_name%> <%=emp.last_name%></b>
+      PF/NPS: <b style="color: red;"><%=emp.emp_number%></b>
     </div>
+    <p>____________________________________________________________________________________________________________________</p>
     <div>
       <%= render 'form'%>
     </div>

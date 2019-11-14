@@ -1,0 +1,179 @@
+<div style="width:75%;text-align:right;"><b>Click To Add Transfer:</b>
+    <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-transfer-detail", id="add_transfer_detail"><i class="fa fa-plus"></i>AddNew</a>
+</div>
+<div class="table-responsive">
+  <div style="width:75%;">  
+  	<table class="table table-sm" id="employee-transfer-details">
+  	<thead>
+	    <tr style="color: #fff; background: #4B4B4D;">
+	      <th>Sr</th>
+        <th>Type</th>
+	      <th>Station</th>
+	      <th>TransferDate</th>
+        <th>Letter No.</th>
+	      <th>ResumeDate</th>
+        <th>Remark</th>
+        <th>Action</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%if @employee_transfer_details_data.present?%>
+        <%@employee_transfer_details_data.each_with_index do |data,index|%>
+          <tr class="add-transfer-tr add_transfer_row_<%= data.id %>", id= "add_transfer_row_id_<%= data.id %>">
+            <td><%=index+1%></td>
+            <td><%=data.transfer_type%></td>
+            <td><%=data.station.code%></td>
+            <td><%=data.transfer_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.letter_number%></td>
+            <td><%=data.resume_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.remark%></td>
+            <td id="transfer_id_<%=data.id%>"><a href="#" class="remove-ip label label-danger add-transfer-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
+          </tr> 
+        <%end%>
+      <%end%>
+  	</tbody>
+  	</table>	
+
+  </div>
+</div>
+<!-- Add Transfer Detail Modal html code start -->
+<div class="modal fade colored-header add-transfer-modal" id="add_transfer_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 550px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Transfer Detail:</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" id="add-transfer-div">
+      <form id="add-transfer-form">  
+        <table>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
+            <td>
+              <%= (select_tag "transfer_type", options_for_select([["Schedule","Schedule"],["Initial","Initial"],["Promotion","Promotion"],["Mutual","Mutual"],["OwnRequest","OwnRequest"],["MedicalDecategorised","MedicalDecategorised"],["Surplus","Surplus"],["Administrative","Administrative"]]), {prompt: 'Select',required: true, class: "form-control  input-sm transfer_type"}).html_safe %>
+            </td>
+          </tr>
+          <tr>  
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Station</td>
+            <td>
+              <%= (select_tag "add_transfer_station", options_for_select(@employee_station_list), {prompt: 'Select',required: true, class: "form-control  input-sm add_transfer_station"}).html_safe %>
+            </td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Transfer Date</td>
+            <td>
+              <%= text_field_tag "transfer_date",'', type: 'date',placeholder: 'DOB', id: "transfer_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Letter No.:</td>
+            <td><%= text_field_tag "transfer_letter_number", '',placeholder: 'Enter Letter Number', id: "transfer_letter_number", class: 'form-control input-md transfer_letter_number',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Resume Date</td>
+            <td>
+              <%= text_field_tag "transfer_resume_date",'', type: 'date',placeholder: 'Date', id: "transfer_resume_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark</td>
+            <td>
+              <%= text_area_tag "transfer_remark", '', placeholder: 'Enter Remark if any', id: "transfer_remark", class: 'form-control input-md transfer_remark',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:80px;font-size:14px;"%>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <button class="btn btn-primary btn-flat employee-transfer-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b class= "form-group add_transfer_error" id="add_transfer_error" style="display: none"></b>
+      </form>    
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Transfer Detail Modal html code ends -->
+<!-- Add Transfer Delete- Modal html code starts -->
+<div class="modal fade colored-header" id="add-transfer-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Transfer?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_transfer_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Transfer Delete- Modal html code ends -->
+
+<script>
+  $(function(){
+    $('.add-transfer-detail').on('click',function(){
+      $("#add_transfer_modal").modal('show');
+    });  
+
+    $(".employee-transfer-save").on('click',function(){
+        employee_id = $("#record_id").val();
+        emp_transfer_type = $("#transfer_type").val();
+        emp_station_id = $("#add_transfer_station").val();
+        emp_transfer_date = $("#transfer_date").val();
+        emp_transfer_letter_number = $("#transfer_letter_number").val();
+        emp_transfer_resume_date = $("#transfer_resume_date").val();
+        emp_add_transfer_remark = $("#transfer_remark").val();
+
+      if (emp_station_id!="" && emp_transfer_type!="" && emp_transfer_date!="" && emp_transfer_resume_date!="" && emp_transfer_letter_number!="") {  
+        $.ajax({
+          type: "post",
+          url: "/admin/employees.js?emp_station_id=" + emp_station_id + "&is_add_employee_transfer=" + "true"+ "&employee_id="+ employee_id + "&emp_transfer_type=" + emp_transfer_type + "&emp_transfer_date=" +emp_transfer_date+"&emp_transfer_resume_date="+emp_transfer_resume_date +"&emp_transfer_letter_number="+emp_transfer_letter_number + "&emp_add_transfer_remark=" + emp_add_transfer_remark
+        });
+        $(".add_transfer_error").hide();
+        $("#add_transfer_modal").find('.close').click();
+      }
+      else{
+        var error_msg ="Select All Feilds"
+        $("#add_transfer_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
+        
+        $(".add_transfer_error").show();
+      }  
+
+    });
+
+    $(".add-transfer-danger").on('click',function(){
+      delete_transfer_detail_id = $(this).attr('id')
+      $("#add-transfer-delete-modal").modal('show');
+    });
+
+    $("#confirm_add_transfer_delete").click(function () {
+      $("#add-transfer-delete-modal").modal('hide');
+      remove_row = "#add_transfer_row_id_"+delete_transfer_detail_id
+      $(remove_row).remove('');
+      
+      if (delete_transfer_detail_id != "") {
+        $.ajax({
+          type: "get",
+          url: "/delete_employee_transfer_detail.js?delete_transfer_detail_id=" + delete_transfer_detail_id
+        });
+      }
+    });
+
+
+  }); 
+
+  $(document).on('hidden.bs.modal','#add_transfer_modal', function () {
+    $("#add_transfer_station").val("");
+    $("#transfer_type").val("");
+    $("#transfer_date").val("");
+    $("#transfer_remark").val("");
+    $("#transfer_letter_number").val("");
+		$("#transfer_resume_date").val("");
+    $(".add_transfer_error").hide();
+
+  });
+
+</script>

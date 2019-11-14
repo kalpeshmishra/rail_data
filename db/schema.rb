@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191104062136) do
+ActiveRecord::Schema.define(version: 20191113090646) do
 
   create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_category_id"
@@ -153,9 +153,11 @@ ActiveRecord::Schema.define(version: 20191104062136) do
 
   create_table "employee_category_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_id"
-    t.string   "type"
+    t.string   "category_type"
     t.date     "date_in_level"
     t.integer  "employee_post_id"
+    t.string   "letter_number"
+    t.date     "letter_date"
     t.string   "remark"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
@@ -179,6 +181,19 @@ ActiveRecord::Schema.define(version: 20191104062136) do
     t.string   "report_group"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "employee_transfer_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "employee_id"
+    t.integer  "station_id"
+    t.string   "transfer_type"
+    t.date     "resume_date"
+    t.date     "relieve_date"
+    t.date     "transfer_date"
+    t.string   "letter_number"
+    t.string   "remark"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "employees", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

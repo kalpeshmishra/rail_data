@@ -44,6 +44,11 @@ Rails.application.routes.draw do
   match '/delete_crack_rake', controller: 'admin/crack_rakes', action: 'delete_crack_rake', via: [:get], as: 'delete_crack_rake'
   
   match '/delete_allowance', controller: 'admin/allowances', action: 'delete_allowance', via: [:get], as: 'delete_allowance'
+  
+  match '/delete_employee_category_detail', controller: 'admin/employees', action: 'delete_employee_category_detail', via: [:get], as: 'delete_employee_category_detail'
+  match '/delete_employee_transfer_detail', controller: 'admin/employees', action: 'delete_employee_transfer_detail', via: [:get], as: 'delete_employee_transfer_detail'
+
+
   #--------------Excel Reports Download Starts-----------------
   match '/rake_load_excel_download', controller: 'admin/loading_reports', action: 'rake_load_excel_download', via: [:get], as: 'rake_load_excel_download'
   match '/custom_load_report_excel_download', controller: 'admin/custom_load_reports', action: 'custom_load_report_excel_download', via: [:get], as: 'custom_load_report_excel_download'

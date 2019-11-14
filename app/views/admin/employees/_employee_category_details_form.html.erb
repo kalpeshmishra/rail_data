@@ -1,0 +1,177 @@
+<div style="width:75%;text-align:right;"><b>Click To Add Category:</b>
+    <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-category-detail", id="add_category_detail"><i class="fa fa-plus"></i>AddNew</a>
+</div>
+<div class="table-responsive">
+  <div style="width:75%;">  
+  	<table class="table table-sm" id="employee-category-details">
+  	<thead>
+	    <tr style="color: #fff; background: #4B4B4D;">
+	      <th>Sr</th>
+        <th>Type</th>
+	      <th>Date In Grade</th>
+	      <th>Post Details</th>
+        <th>Letter No.</th>
+        <th>Letter Dt.</th>
+        <th>Action</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%if @employee_category_details_data.present?%>
+        <%@employee_category_details_data.each_with_index do |data,index|%>
+          <tr class="add-category-tr add_category_row_<%= data.id %>", id= "add_category_row_id_<%= data.id %>">
+            <td><%=index+1%></td>
+            <td><%=data.category_type%></td>
+            <td style="width:20%;"><%=data.date_in_level.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%="#{data.employee_post.post} / Level-#{data.employee_post.level_p7} / GP-#{data.employee_post.grade_pay_p6} /Group-#{data.employee_post.group}"%></td>
+            <td><%=data.letter_number%></td>
+            <td><%=data.letter_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td id="category_id_<%=data.id%>"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 20%;"><i class="fa fa-trash-o"></i></a></td>
+          </tr> 
+        <%end%>
+      <%end%>
+  	</tbody>
+  	</table>	
+
+  </div>
+</div>
+<!-- Add Category Modal html code start -->
+<div class="modal fade colored-header add-category-modal" id="add_category_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 550px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Category:</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" id="add-category-div">
+      <form id="add-category-form">  
+        <table>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
+            <td>
+              <%= (select_tag "category_type", options_for_select([["Initial","Initial"],["Promotion","Promotion"],["MedicalDecategorised","MedicalDecategorised"],["Surplus","Surplus"]]), {prompt: 'Select',required: true, class: "form-control  input-sm category_type"}).html_safe %>
+            </td>
+          </tr>
+          <tr>  
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Post</td>
+            <td>
+              <%= (select_tag "add_category_post", options_for_select(@employee_post_list), {prompt: 'Select',required: true, class: "form-control  input-sm add_category_post"}).html_safe %>
+            </td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Date In Grade</td>
+            <td>
+              <%= text_field_tag "category_date",'', type: 'date',placeholder: 'DOB', id: "category_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Letter No.:</td>
+            <td><%= text_field_tag "category_letter_number", '',placeholder: 'Enter Letter Number', id: "category_letter_number", class: 'form-control input-md category_letter_number',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Letter's Date</td>
+            <td>
+              <%= text_field_tag "category_letter_date",'', type: 'date',placeholder: 'Date', id: "category_letter_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark</td>
+            <td>
+              <%= text_area_tag "category_remark", '', placeholder: 'Enter Remark if any', id: "category_remark", class: 'form-control input-md category_remark',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:80px;font-size:14px;"%>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <button class="btn btn-primary btn-flat employee-category-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b class= "form-group add_category_error" id="add_category_error" style="display: none"></b>
+      </form>    
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Category Modal html code ends -->
+<!-- Add Category Delete- Modal html code starts -->
+<div class="modal fade colored-header" id="add-category-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Category?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_category_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Category Delete- Modal html code ends -->
+
+<script>
+  $(function(){
+    $('.add-category-detail').on('click',function(){
+      $("#add_category_modal").modal('show');
+    });  
+
+    $(".employee-category-save").on('click',function(){
+        employee_id = $("#record_id").val();
+        emp_post_id = $("#add_category_post").val();
+        emp_category_type = $("#category_type").val();
+        emp_in_category_date = $("#category_date").val();
+        emp_category_letter_date = $("#category_letter_date").val();
+        emp_category_letter_number = $("#category_letter_number").val();
+        emp_add_category_remark = $("#category_remark").val();
+
+      if (emp_post_id!="" && emp_category_type!="" && emp_in_category_date!="" && emp_category_letter_date!="" && emp_category_letter_number!="") {  
+        $.ajax({
+          type: "post",
+          url: "/admin/employees.js?emp_post_id=" + emp_post_id + "&is_add_employee_category=" + "true"+ "&employee_id="+ employee_id + "&emp_category_type=" + emp_category_type + "&emp_in_category_date=" +emp_in_category_date+"&emp_category_letter_date="+emp_category_letter_date +"&emp_category_letter_number="+emp_category_letter_number + "&emp_add_category_remark=" + emp_add_category_remark
+        });
+        $(".add_category_error").hide();
+        $("#add_category_modal").find('.close').click();
+      }
+      else{
+        var error_msg ="Select All Feilds"
+        $("#add_category_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
+        
+        $(".add_category_error").show();
+      }  
+
+    });
+
+    $(".add-category-danger").on('click',function(){
+      delete_category_detail_id = $(this).attr('id')
+      $("#add-category-delete-modal").modal('show');
+    });
+
+    $("#confirm_add_category_delete").click(function () {
+      $("#add-category-delete-modal").modal('hide');
+      remove_row = "#add_category_row_id_"+delete_category_detail_id
+      $(remove_row).remove('');
+      
+      if (delete_category_detail_id != "") {
+        $.ajax({
+          type: "get",
+          url: "/delete_employee_category_detail.js?delete_category_detail_id=" + delete_category_detail_id
+        });
+      }
+    });
+
+
+  }); 
+
+  $(document).on('hidden.bs.modal','#add_category_modal', function () {
+    $("#add_category_post").val("");
+    $("#category_type").val("");
+    $("#category_date").val("");
+    $("#category_remark").val("");
+    $("#category_letter_date").val("");
+    $("#category_letter_number").val("");
+    $(".add_category_error").hide();
+
+  });
+
+</script>

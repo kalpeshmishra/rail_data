@@ -5,11 +5,25 @@
     <%= render 'employee_new_form' %>
   </div>
 </div>
-<div class="employee-other-details" >
+<div class="employee-category-details" >
   <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Other Details:&nbsp;&nbsp;<b id="employee_other_data" style="font-style: italic;color: blue;">Show</b></span><br>
-  <div id="employee_other_details_form" class="employee-other-details-form">
-    <%= render 'employee_other_details_form' %>
+    Category Details:&nbsp;&nbsp;<b id="employee_category_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_category_details_form" class="employee-category-details-form">
+    <%= render 'employee_category_details_form' %>
+  </div>
+</div>
+<div class="employee-transfer-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Transfer Details:&nbsp;&nbsp;<b id="employee_transfer_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_transfer_details_form" class="employee-transfer-details-form">
+    <%= render 'employee_transfer_details_form' %>
+  </div>
+</div>
+<div class="employee-training-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Training Details:&nbsp;&nbsp;<b id="employee_training_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_training_details_form" class="employee-training-details-form">
+    <%= render 'employee_training_details_form' %>
   </div>
 </div>
 
@@ -21,11 +35,25 @@
       $(".employee-basic-details-form").toggle();
   });
 
-  // $(".employee-other-details-form").hide();  
-  $("#employee_other_data").click(function () {
+  $(".employee-category-details-form").hide();  
+  $("#employee_category_data").click(function () {
       var sign = $(this).text();
       sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-other-details-form").toggle();
+      $(".employee-category-details-form").toggle();
+  });
+
+  $(".employee-transfer-details-form").hide();  
+  $("#employee_transfer_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-transfer-details-form").toggle();
+  });
+
+  // $(".employee-training-details-form").hide();  
+  $("#employee_training_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-training-details-form").toggle();
   });
   
 </script>
