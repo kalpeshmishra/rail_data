@@ -41,6 +41,7 @@ class Admin::EmployeesController < ApplicationController
 	def get_form_data
 		@employee_station_list = Station.where(division_id: current_user.division_id).map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
 		@employee_post_list = EmployeePost.all.map{|emp| ["Group-#{emp.group}-#{emp.post}-Level-#{emp.level_p7}-GradePay-#{emp.grade_pay_p6}",emp.id]}		
+		@employee_category_list = EmployeeCategory.all.map{|category| ["Group-#{category.group}-#{category.name}",category.id]}		
 		
 	end
 
