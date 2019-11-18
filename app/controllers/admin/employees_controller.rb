@@ -18,6 +18,9 @@ class Admin::EmployeesController < ApplicationController
 		elsif params[:is_add_employee_transfer].present?
 			EmployeeTransferDetail.create_employee_transfer(params)
 			@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id:  params[:employee_id].to_i).order(resume_date: :asc)
+		elsif params[:is_add_employee_training].present?
+			EmployeeTrainingDetail.create_employee_training(params)
+			@employee_training_details_data = EmployeeTrainingDetail.where(employee_id:  params[:employee_id].to_i).order(end_date: :asc)
 		else
 			Employee.create_or_update_employee(params)
 		end
@@ -34,7 +37,7 @@ class Admin::EmployeesController < ApplicationController
 		@edit_employee_basic_data = Employee.find(emp_id)
 		@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: emp_id).order(date_in_level: :asc)
 		@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id: emp_id).order(relieve_date: :asc)
-	
+		@employee_training_details_data = EmployeeTrainingDetail.where(employee_id: emp_id).order(end_date: :asc)
 
 	end
 
@@ -64,6 +67,15 @@ class Admin::EmployeesController < ApplicationController
   def delete_employee_transfer_detail
     delete_transfer_detail_id = params[:delete_transfer_detail_id].to_i
     EmployeeTransferDetail.destroy(delete_transfer_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def delete_employee_training_detail
+  	delete_training_detail_id = params[:delete_training_detail_id].to_i
+    EmployeeTrainingDetail.destroy(delete_training_detail_id)
     respond_to do |format|
       format.js
     end

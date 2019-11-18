@@ -1,0 +1,2 @@
+class EmployeeMedicalDetail < ApplicationRecord
+end

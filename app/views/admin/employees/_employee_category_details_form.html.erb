@@ -1,8 +1,8 @@
-<div style="width:75%;text-align:right;"><b>Click To Add Category:</b>
+<div style="width:90%;text-align:right;"><b>Click To Add Category:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-category-detail", id="add_category_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:75%;">  
+  <div style="width:90%;">  
   	<table class="table table-sm" id="employee-category-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -25,7 +25,7 @@
             <td><%="#{data.employee_post.post} / Level-#{data.employee_post.level_p7} / GP-#{data.employee_post.grade_pay_p6} /Group-#{data.employee_post.group}"%></td>
             <td><%=data.letter_number%></td>
             <td><%=data.letter_date.strftime('%d-%m-%y') rescue nil%></td>
-            <td id="category_id_<%=data.id%>"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 20%;"><i class="fa fa-trash-o"></i></a></td>
+            <td id="category_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 10%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
         <%end%>
       <%end%>

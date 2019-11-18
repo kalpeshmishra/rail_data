@@ -26,6 +26,13 @@
     <%= render 'employee_training_details_form' %>
   </div>
 </div>
+<div class="employee-medical-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Medical Details:&nbsp;&nbsp;<b id="employee_medical_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_medical_details_form" class="employee-medical-details-form">
+    <%= render 'employee_medical_details_form' %>
+  </div>
+</div>
 
 <script>
   $(".employee-basic-details-form").hide();  
@@ -49,11 +56,18 @@
       $(".employee-transfer-details-form").toggle();
   });
 
-  // $(".employee-training-details-form").hide();  
+  $(".employee-training-details-form").hide();  
   $("#employee_training_data").click(function () {
       var sign = $(this).text();
       sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
       $(".employee-training-details-form").toggle();
+  });
+
+  $(".employee-medical-details-form").hide();  
+  $("#employee_medical_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-medical-details-form").toggle();
   });
   
 </script>

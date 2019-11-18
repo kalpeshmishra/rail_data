@@ -1,8 +1,8 @@
-<div style="width:75%;text-align:right;"><b>Click To Add Transfer:</b>
+<div style="width:90%;text-align:right;"><b>Click To Add Transfer:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-transfer-detail", id="add_transfer_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:75%;">  
+  <div style="width:90%;">  
   	<table class="table table-sm" id="employee-transfer-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -27,7 +27,7 @@
             <td><%=data.letter_number%></td>
             <td><%=data.resume_date.strftime('%d-%m-%y') rescue nil%></td>
             <td><%=data.remark%></td>
-            <td id="transfer_id_<%=data.id%>"><a href="#" class="remove-ip label label-danger add-transfer-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
+            <td id="transfer_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-transfer-danger" id="<%= data.id %>" style="padding: 10%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
         <%end%>
       <%end%>

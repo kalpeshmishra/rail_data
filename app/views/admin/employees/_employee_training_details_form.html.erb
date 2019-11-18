@@ -1,8 +1,8 @@
-<div style="width:75%;text-align:right;"><b>Click To Add Training:</b>
+<div style="width:90%;text-align:right;"><b>Click To Add Training:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-training-detail", id="add_training_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:75%;">  
+  <div style="width:90%;">  
   	<table class="table table-sm" id="employee-training-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -26,13 +26,14 @@
             <td><%=index+1%></td>
             <td><%=data.start_date.strftime('%d-%m-%y')%></td>
             <td><%=data.end_date.strftime('%d-%m-%y')%></td>
-            <td><%=data.employee_category_id%></td>
+            <td><%=data.employee_category.name%></td>
             <td><%=data.training_type%></td>
             <td><%=data.certificate_no rescue nil%></td>
+            <td><%=data.grade_received%></td>
             <td><%=data.training_center%></td>
-            <td><%=data.due_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.next_due_date.strftime('%d-%m-%y') rescue nil%></td>
             <td><%=data.remark%></td>
-            <td id="training_id_<%=data.id%>"><a href="#" class="remove-ip label label-danger add-training-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
+            <td id="training_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-training-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
         <%end%>
       <%end%>
