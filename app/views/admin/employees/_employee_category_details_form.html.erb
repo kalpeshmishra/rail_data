@@ -12,6 +12,7 @@
 	      <th>Post Details</th>
         <th>Letter No.</th>
         <th>Letter Dt.</th>
+        <th>Remark.</th>
         <th>Action</th>
   		</tr>
   	</thead>
@@ -21,11 +22,12 @@
           <tr class="add-category-tr add_category_row_<%= data.id %>", id= "add_category_row_id_<%= data.id %>">
             <td><%=index+1%></td>
             <td><%=data.category_type%></td>
-            <td style="width:20%;"><%=data.date_in_level.strftime('%d-%m-%y') rescue nil%></td>
+            <td style="width:10%;"><%=data.date_in_level.strftime('%d-%m-%y') rescue nil%></td>
             <td><%="#{data.employee_post.post} / Level-#{data.employee_post.level_p7} / GP-#{data.employee_post.grade_pay_p6} /Group-#{data.employee_post.group}"%></td>
             <td><%=data.letter_number%></td>
             <td><%=data.letter_date.strftime('%d-%m-%y') rescue nil%></td>
-            <td id="category_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 10%;"><i class="fa fa-trash-o"></i></a></td>
+            <td><%=data.remark%></td>
+            <td id="category_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
         <%end%>
       <%end%>

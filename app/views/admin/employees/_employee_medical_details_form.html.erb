@@ -7,14 +7,14 @@
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
 	      <th>Sr</th>
-        <th>From Date</th>
-	      <th>TO Date</th>
+        <th>Emp Category</th>
+	      <th>Type</th>
 	      <th>Category</th>
-        <th>Type</th>
-	      <th>CertificateNo</th>
-        <th>GradeRecd</th>
-        <th>Center</th>
-        <th>DueDate</th>
+        <th>Medical Date</th>
+        <th>Fit Date</th>
+        <th>Next Due Date</th>
+        <th>CertificateNo</th>
+        <th>Medical Done At</th>
         <th>Remark</th>
         <th>Action</th>
   		</tr>
@@ -24,14 +24,14 @@
         <%@employee_medical_details_data.each_with_index do |data,index|%>
           <tr class="add-medical-tr add_medical_row_<%= data.id %>", id= "add_medical_row_id_<%= data.id %>">
             <td><%=index+1%></td>
-            <td><%=data.start_date.strftime('%d-%m-%y')%></td>
-            <td><%=data.end_date.strftime('%d-%m-%y')%></td>
             <td><%=data.employee_category.name%></td>
             <td><%=data.medical_type%></td>
-            <td><%=data.certificate_no rescue nil%></td>
-            <td><%=data.grade_received%></td>
-            <td><%=data.medical_center%></td>
+            <td><%=data.medical_category%></td>
+            <td><%=data.medical_date.strftime('%d-%m-%y')%></td>
+            <td><%=data.fit_date.strftime('%d-%m-%y')%></td>
             <td><%=data.next_due_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.certificate_no rescue nil%></td>
+            <td><%=data.issued_by%></td>
             <td><%=data.remark%></td>
             <td id="medical_id_<%=data.id%>"  style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-medical-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
@@ -53,42 +53,46 @@
       <div class="modal-body" id="add-medical-div">
       <form id="add-medical-form">  
         <table>
-          <tr>    
-            <td style="color: #fff; background: #4B4B4D;text-align: center;height: 1px;">From Date</td>
-            <td>
-              <%= text_field_tag "medical_start_date",'', type: 'date',placeholder: 'StartDate', id: "medical_start_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
-            </td>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">To Date</td>
-            <td>
-              <%= text_field_tag "medical_end_date",'', type: 'date',placeholder: 'EndDate', id: "medical_end_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
-            </td>
-          </tr>  
           <tr>  
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Category</td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Category:</td>
             <td>
-              <%= (select_tag "medical_category", options_for_select(@employee_category_list), {prompt: 'Select',required: true, class: "form-control  input-sm medical_category"}).html_safe %>
+              <%= (select_tag "medical_employee_category", options_for_select(@employee_category_list), {prompt: 'Select',required: true, class: "form-control  input-sm medical_employee_category"}).html_safe %>
             </td>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Type:</td>
             <td>
-              <%= (select_tag "medical_type", options_for_select([["Initial","Initial"],["Promotion","Promotion"],["Refresher","Refresher"],["Other","Other"]]), {prompt: 'Select',required: true, class: "form-control  input-sm medical_type"}).html_safe %>
+              <%= (select_tag "medical_type", options_for_select([["Initial","Initial"],["Periodic","Periodic"],["Special","Special"],["Other","Other"]]), {prompt: 'Select',required: true, class: "form-control  input-sm medical_type"}).html_safe %>
             </td>
           </tr>
           <tr>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Certificate No.:</td>
-            <td><%= text_field_tag "medical_certificate_no", '',placeholder: 'Certificate Number', id: "medical_certificate_no", class: 'form-control input-md medical_certificate_no',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Grade Recd:</td>
-            <td><%= text_field_tag "medical_grade", '',placeholder: 'Grade', id: "medical_grade", class: 'form-control input-md medical_grade',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Medical Category:</td>
+            <td>
+              <%= (select_tag "medical_category", options_for_select([["A1","A1"],["A2","A2"],["A3","A3"],["B1","B1"],["B2","B2"],["B3","B3"],["C1","C1"],["C2","C2"],["C3","C3"]]), {prompt: 'Select',required: true, class: "form-control  input-sm medical_category"}).html_safe %>
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;height: 1px;">Medical Date:</td>
+            <td>
+              <%= text_field_tag "medical_date",'', type: 'date',placeholder: 'Medical Date', id: "medical_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
           </tr>
-          <tr>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Trng. Center:</td>
-            <td><%= text_field_tag "medical_center", '',placeholder: 'Center', id: "medical_center", class: 'form-control input-md medical_center',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Due Date</td>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;height: 1px;">Fit Date:</td>
+            <td>
+              <%= text_field_tag "medical_fit_date",'', type: 'date',placeholder: 'FitDate', id: "medical_fit_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Due Date:</td>
             <td>
               <%= text_field_tag "medical_due_date",'', type: 'date',placeholder: 'Date', id: "medical_due_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
             </td>
           </tr>  
           <tr>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark</td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Certificate No.:</td>
+            <td><%= text_field_tag "medical_certificate_no", '',placeholder: 'Certificate Number', id: "medical_certificate_no", class: 'form-control input-md medical_certificate_no',required: true,pattern: "^[a-zA-Z0-9-/().]+$", style: "font-size:14px;"%></td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Medical Done At:</td>
+            <td>
+              <%= (select_tag "medical_done_at", options_for_select([["ADI","ADI"],["SBI","SBI"],["MSH","MSH"],["PNU","PNU"],["GIM","GIM"]]), {prompt: 'Select',required: true, class: "form-control  input-sm medical_done_at"}).html_safe %>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark:</td>
             <td colspan="3">
               <%= text_area_tag "medical_remark", '', placeholder: 'Enter Remark if any', id: "medical_remark", class: 'form-control input-md medical_remark', pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:70px;font-size:14px;"%>
             </td>
@@ -132,20 +136,20 @@
 
     $(".employee-medical-save").on('click',function(){
         employee_id = $("#record_id").val();
-        emp_medical_start_date = $("#medical_start_date").val();
-        emp_medical_end_date = $("#medical_end_date").val();
+        emp_medical_employee_category_id = $("#medical_employee_category").val();
         emp_medical_type = $("#medical_type").val();
-        emp_medical_category_id = $("#medical_category").val();
+        emp_medical_category = $("#medical_category").val();
+        emp_medical_date = $("#medical_date").val();
+        emp_medical_fit_date = $("#medical_fit_date").val();
         emp_medical_due_date = $("#medical_due_date").val();
         emp_medical_certificate_no = $("#medical_certificate_no").val();
-        emp_medical_grade = $("#medical_grade").val();
-        emp_medical_center = $("#medical_center").val();
+        emp_medical_done_at = $("#medical_done_at").val();
         emp_medical_remark = $("#medical_remark").val();
 
-      if (emp_medical_start_date!="" && emp_medical_end_date!="" && emp_medical_type!="" && emp_medical_category_id!="" && emp_medical_due_date!="" && emp_medical_certificate_no!="" && emp_medical_grade!=""&& emp_medical_center!="") {  
+      if (emp_medical_employee_category_id!= "" && emp_medical_type!= "" && emp_medical_category!= "" && emp_medical_date!= "" && emp_medical_fit_date!= "" && emp_medical_due_date!= "" && emp_medical_certificate_no!= "" && emp_medical_done_at!= "") {  
         $.ajax({
           type: "post",
-          url: "/admin/employees.js?emp_medical_start_date=" + emp_medical_start_date + "&is_add_employee_medical=" + "true"+ "&employee_id="+ employee_id + "&emp_medical_end_date=" + emp_medical_end_date + "&emp_medical_type=" +emp_medical_type+"&emp_medical_category_id="+emp_medical_category_id +"&emp_medical_due_date="+emp_medical_due_date+"&emp_medical_certificate_no="+emp_medical_certificate_no + "&emp_medical_grade=" + emp_medical_grade+ "&emp_medical_center=" + emp_medical_center+ "&emp_medical_remark=" + emp_medical_remark
+          url: "/admin/employees.js?is_add_employee_medical=" + "true"+ "&employee_id="+ employee_id + "&emp_medical_employee_category_id=" + emp_medical_employee_category_id + "&emp_medical_type=" + emp_medical_type + "&emp_medical_category=" + emp_medical_category + "&emp_medical_date=" + emp_medical_date + "&emp_medical_fit_date=" + emp_medical_fit_date + "&emp_medical_due_date=" + emp_medical_due_date + "&emp_medical_certificate_no=" + emp_medical_certificate_no + "&emp_medical_done_at=" + emp_medical_done_at +"&emp_medical_remark=" + emp_medical_remark
         });
         $(".add_medical_error").hide();
         $("#add_medical_modal").find('.close').click();

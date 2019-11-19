@@ -21,6 +21,9 @@ class Admin::EmployeesController < ApplicationController
 		elsif params[:is_add_employee_training].present?
 			EmployeeTrainingDetail.create_employee_training(params)
 			@employee_training_details_data = EmployeeTrainingDetail.where(employee_id:  params[:employee_id].to_i).order(end_date: :asc)
+		elsif params[:is_add_employee_medical].present?
+			EmployeeMedicalDetail.create_employee_medical(params)
+			@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  params[:employee_id].to_i).order(fit_date: :asc)
 		else
 			Employee.create_or_update_employee(params)
 		end
@@ -38,7 +41,7 @@ class Admin::EmployeesController < ApplicationController
 		@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: emp_id).order(date_in_level: :asc)
 		@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id: emp_id).order(relieve_date: :asc)
 		@employee_training_details_data = EmployeeTrainingDetail.where(employee_id: emp_id).order(end_date: :asc)
-
+		@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  emp_id).order(fit_date: :asc)
 	end
 
 	def get_form_data
@@ -82,6 +85,14 @@ class Admin::EmployeesController < ApplicationController
 
   end
 
+  def delete_employee_medical_detail
+  	delete_medical_detail_id = params[:delete_medical_detail_id].to_i
+    EmployeeMedicalDetail.destroy(delete_medical_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
 
 
 end

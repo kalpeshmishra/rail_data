@@ -6,3 +6,11 @@
 	$("#employee_transfer_details_form").html('');
 	$("#employee_transfer_details_form").html('<%= j render 'employee_transfer_details_form'%>');
 <%end%>
+<%if params[:is_add_employee_training].present?%>
+	$("#employee_training_details_form").html('');
+	$("#employee_training_details_form").html('<%= j render 'employee_training_details_form'%>');
+<%end%>
+<%if params[:is_add_employee_medical].present?%>
+	$("#employee_medical_details_form").html('');
+	$("#employee_medical_details_form").html('<%= j render 'employee_medical_details_form'%>');
+<%end%>
