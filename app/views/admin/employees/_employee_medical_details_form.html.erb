@@ -185,12 +185,15 @@
   }); 
 
   $(document).on('hidden.bs.modal','#add_medical_modal', function () {
-    $("#add_medical_station").val("");
+    $("#medical_employee_category").val("");
     $("#medical_type").val("");
+    $("#medical_category").val("");
     $("#medical_date").val("");
+    $("#medical_fit_date").val("");
+    $("#medical_due_date").val("");
+    $("#medical_certificate_no").val("");
+    $("#medical_done_at").val("");
     $("#medical_remark").val("");
-    $("#medical_letter_number").val("");
-		$("#medical_resume_date").val("");
     $(".add_medical_error").hide();
 
   });

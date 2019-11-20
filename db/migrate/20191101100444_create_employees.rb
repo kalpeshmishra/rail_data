@@ -5,6 +5,7 @@ class CreateEmployees < ActiveRecord::Migration[5.0]
     	t.string		:last_name
     	t.string  	:father_name
     	t.string 		:spouse_name
+      t.string    :mother_name
     	t.string 		:emp_number   #PF number OR NPS number
     	t.string 		:pran_number
     	t.string		:pan_number

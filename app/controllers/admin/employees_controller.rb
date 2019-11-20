@@ -25,12 +25,14 @@ class Admin::EmployeesController < ApplicationController
 			EmployeeMedicalDetail.create_employee_medical(params)
 			@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  params[:employee_id].to_i).order(fit_date: :asc)
 		else
-			Employee.create_or_update_employee(params)
-		end
+			@employee_save = Employee.create_or_update_employee(params)
 			
-		respond_to do |format|
-      format.js
-    end
+		end
+		
+			respond_to do |format|
+	      format.js
+	    end
+			
 
 	end
 

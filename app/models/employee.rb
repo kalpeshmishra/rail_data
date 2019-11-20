@@ -12,6 +12,7 @@ class Employee < ApplicationRecord
     employee.first_name = params["first_name"] rescue nil
 		employee.last_name = params["last_name"] rescue nil
 		employee.father_name = params["father_name"] rescue nil
+		employee.mother_name = params["mother_name"] rescue nil
 		employee.spouse_name = params["spouse_name"] rescue nil
 		employee.emp_number = params["pf_nps_number"] rescue nil
 		employee.pran_number = params["pran_number"] rescue nil

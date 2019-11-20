@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(version: 20191118101607) do
     t.string   "last_name"
     t.string   "father_name"
     t.string   "spouse_name"
+    t.string   "mother_name"
     t.string   "emp_number"
     t.string   "pran_number"
     t.string   "pan_number"

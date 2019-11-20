@@ -40,9 +40,9 @@
     <td>
       <%= text_field_tag "father_name", '',placeholder: 'Employee Fathers Name', id: "father_name", class: 'form-control input-md father-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
-    <td class="employee_style">Employee Spouse Name:</td>
+    <td class="employee_style">Employee Mother Name:</td>
     <td>
-      <%= text_field_tag "spouse_name", '',placeholder: 'Employee Spouse Name', id: "spouse_name", class: 'form-control input-md spouse-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+      <%= text_field_tag "mother_name", '',placeholder: 'Employee Mothers Name', id: "mother_name", class: 'form-control input-md mother-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
   </tr>
   <tr>
@@ -90,9 +90,9 @@
     <td>
       <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
     </td>
-    <td class="employee_style">Mode Of Appointment:</td>
+    <td class="employee_style">Employee Spouse Name:</td>
     <td>
-      <%= (select_tag "appointment_mode", options_for_select([["RRB","RRB"],["Compassionate","Compassionate"],["Largess","Largess"],["SportsQuota","SportsQuota"]]), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm appointment_mode"}).html_safe %>
+      <%= text_field_tag "spouse_name", '',placeholder: 'Employee Spouse Name', id: "spouse_name", class: 'form-control input-md spouse-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
   </tr>
   <tr>
@@ -116,8 +116,10 @@
     </td>
   </tr>
   <tr>
-    <td class="employee_style"></td>
-    <td></td>
+    <td class="employee_style">Mode Of Appointment:</td>
+    <td>
+      <%= (select_tag "appointment_mode", options_for_select([["RRB","RRB"],["Compassionate","Compassionate"],["Largess","Largess"],["SportsQuota","SportsQuota"]]), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm appointment_mode"}).html_safe %>
+    </td>
     <td class="employee_style">Email Id:</td>
     <td>
       <%= email_field_tag "email_id",'', type: 'date',placeholder: 'Email-ID', id: "email_id", class: 'form-control input-md', style: "width: 100%;"%>
@@ -149,6 +151,7 @@
       $(first_name).val('<%=data.first_name%>');
       $(last_name).val('<%=data.last_name%>');
       $(father_name).val('<%=data.father_name%>');
+      $(mother_name).val('<%=data.mother_name%>');
       $(spouse_name).val('<%=data.spouse_name%>');
       $(pf_nps_number).val('<%=data.emp_number%>');
       $(pran_number).val('<%=data.pran_number%>');

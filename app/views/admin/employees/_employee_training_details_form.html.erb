@@ -181,13 +181,17 @@
   }); 
 
   $(document).on('hidden.bs.modal','#add_training_modal', function () {
-    $("#add_training_station").val("");
+    $("#training_start_date").val("");
+    $("#training_end_date").val("");
     $("#training_type").val("");
-    $("#training_date").val("");
+    $("#training_category").val("");
+    $("#training_due_date").val("");
+    $("#training_certificate_no").val("");
+    $("#training_grade").val("");
+    $("#training_center").val("");
     $("#training_remark").val("");
-    $("#training_letter_number").val("");
-		$("#training_resume_date").val("");
     $(".add_training_error").hide();
+
 
   });
 
