@@ -24,9 +24,11 @@ class Admin::EmployeesController < ApplicationController
 		elsif params[:is_add_employee_medical].present?
 			EmployeeMedicalDetail.create_employee_medical(params)
 			@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  params[:employee_id].to_i).order(fit_date: :asc)
+		elsif params[:is_add_employee_dar].present?
+			EmployeeDarDetail.create_employee_dar(params)
+			@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  params[:employee_id].to_i).order(issue_date: :asc)
 		else
-			@employee_save = Employee.create_or_update_employee(params)
-			
+			@employee_save_status = Employee.create_or_update_employee(params)
 		end
 		
 			respond_to do |format|
@@ -44,6 +46,7 @@ class Admin::EmployeesController < ApplicationController
 		@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id: emp_id).order(relieve_date: :asc)
 		@employee_training_details_data = EmployeeTrainingDetail.where(employee_id: emp_id).order(end_date: :asc)
 		@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  emp_id).order(fit_date: :asc)
+		@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  emp_id).order(issue_date: :asc)
 	end
 
 	def get_form_data

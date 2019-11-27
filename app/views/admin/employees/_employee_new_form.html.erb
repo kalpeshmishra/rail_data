@@ -11,6 +11,9 @@
 <div class="table-responsive">
 <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-basic-detail-form',remote: true) do |form| %>
   <div style="text-align: right;">
+    <%if @employee_save_status%>
+      <b style="font-size: 14px;font-weight: bold;color: red;" id="emp_status_msg">Employee created.</b>
+    <%end%>  
     <button class="btn btn-primary btn-flat details-submit" type="submit"><i class="fa fa-check details-submit"></i>Save</button>
   </div>
 <table class="table">
@@ -174,6 +177,9 @@
       $(current_station).val('<%=data.station_id%>');
         
     <%end%>  
+
+    $('#emp_status_msg').delay(3000).fadeOut(800); 
+
 
   });
 

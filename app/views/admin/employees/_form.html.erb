@@ -33,6 +33,13 @@
     <%= render 'employee_medical_details_form' %>
   </div>
 </div>
+<div class="employee-dar-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    DAR Details:&nbsp;&nbsp;<b id="employee_dar_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_dar_details_form" class="employee-dar-details-form">
+    <%= render 'employee_dar_details_form' %>
+  </div>
+</div>
 
 <script>
   $(".employee-basic-details-form").hide();  
@@ -68,6 +75,13 @@
       var sign = $(this).text();
       sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
       $(".employee-medical-details-form").toggle();
+  });
+
+  // $(".employee-dar-details-form").hide();  
+  $("#employee_dar_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-dar-details-form").toggle();
   });
   
 </script>
