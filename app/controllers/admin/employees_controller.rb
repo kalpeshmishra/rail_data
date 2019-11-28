@@ -99,5 +99,19 @@ class Admin::EmployeesController < ApplicationController
 
   end
 
+  def delete_employee_dar_detail
+  	delete_dar_detail_id = params[:delete_dar_detail_id].to_i
+    EmployeeDarDetail.destroy(delete_dar_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def find_employee_number
+  	emp_no = params[:emp_number]
+  	@is_emp_number_exist = Employee.find_by_emp_number(emp_no).present?
+  end
+
 
 end

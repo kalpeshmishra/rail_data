@@ -1,0 +1,10 @@
+<%if(@is_emp_number_exist == true)%>
+	var error_msg ="PF/NPS Number Already Exists"
+  $("#employee_number_error_msg").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'width':'170px'});
+  $(".employee_number_error_msg").show();
+  $(pf_nps_number).focus(); 
+  
+<%else%>
+  $("#employee_number_error_msg").text("");
+  $(".employee_number_error_msg").hide();
+<%end%>

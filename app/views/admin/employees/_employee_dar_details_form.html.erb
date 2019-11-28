@@ -161,7 +161,12 @@
 <script>
   $(function(){ 
     $('.add-dar-detail, .add-dar-edit').on('click',function(){
-      dar_edit_id = ".add_dar_row_"+$(this).attr('id');
+      if ($(this).attr('id') != "add_dar_detail") {
+        dar_edit_id = ".add_dar_row_"+$(this).attr('id');
+      }
+      else{
+        dar_edit_id = ""
+      }
       if (dar_edit_id != "") {
         $(emp_dar_record_id).val($(this).attr('id'));
         $(dar_type).val($(dar_edit_id).find('td:eq(1)').html());
@@ -184,6 +189,7 @@
 
     $(".employee-dar-save").on('click',function(){
         employee_id = $("#record_id").val();
+        emp_dar_record_id = $("#emp_dar_record_id").val();
         emp_dar_type = $("#dar_type").val();
         emp_dar_issue_date = $("#dar_issue_date").val();
         emp_received_at_station_date = $("#received_at_station_date").val();
@@ -200,7 +206,7 @@
       if (emp_dar_type!="" && emp_dar_issue_date!="" && emp_received_at_station_date!="" && emp_employee_acknowledge_date!="") { 
         $.ajax({
           type: "post",
-          url: "/admin/employees.js?is_add_employee_dar=" + "true"+ "&employee_id="+ employee_id +"&emp_dar_type=" + emp_dar_type + "&emp_dar_issue_date=" + emp_dar_issue_date + "&emp_received_at_station_date=" + emp_received_at_station_date + "&emp_employee_acknowledge_date=" + emp_employee_acknowledge_date + "&emp_defense_submit_by_employee_date=" + emp_defense_submit_by_employee_date + "&emp_defense_acknowledge_sent_to_dar_date=" + emp_defense_acknowledge_sent_to_dar_date + "&emp_nip_received_date=" + emp_nip_received_date + "&emp_nip_acknowledge_sent_to_dar_date=" + emp_nip_acknowledge_sent_to_dar_date + "&emp_sf_7_issue_date=" + emp_sf_7_issue_date + "&emp_finding_report_issue_date=" + emp_finding_report_issue_date + "&emp_acknowledge_finding_report=" + emp_acknowledge_finding_report+ "&emp_dar_remark=" + emp_dar_remark
+          url: "/admin/employees.js?is_add_employee_dar=" + "true"+ "&employee_id="+ employee_id + "&emp_dar_record_id=" + emp_dar_record_id +"&emp_dar_type=" + emp_dar_type + "&emp_dar_issue_date=" + emp_dar_issue_date + "&emp_received_at_station_date=" + emp_received_at_station_date + "&emp_employee_acknowledge_date=" + emp_employee_acknowledge_date + "&emp_defense_submit_by_employee_date=" + emp_defense_submit_by_employee_date + "&emp_defense_acknowledge_sent_to_dar_date=" + emp_defense_acknowledge_sent_to_dar_date + "&emp_nip_received_date=" + emp_nip_received_date + "&emp_nip_acknowledge_sent_to_dar_date=" + emp_nip_acknowledge_sent_to_dar_date + "&emp_sf_7_issue_date=" + emp_sf_7_issue_date + "&emp_finding_report_issue_date=" + emp_finding_report_issue_date + "&emp_acknowledge_finding_report=" + emp_acknowledge_finding_report+ "&emp_dar_remark=" + emp_dar_remark
         });
         
         $(".add_dar_error").hide(); 
@@ -237,14 +243,23 @@
   }); 
 
   $(document).on('hidden.bs.modal','#add_dar_modal', function () {
-    $("#add_dar_post").val("");
+   
+    $("#emp_dar_record_id").val("");
     $("#dar_type").val("");
-    $("#dar_date").val("");
+    $("#dar_issue_date").val("");
+    $("#received_at_station_date").val("");
+    $("#employee_acknowledge_date").val("");
+    $("#defense_submit_by_employee_date").val("");
+    $("#defense_acknowledge_sent_to_dar_date").val("");
+    $("#nip_received_date").val("");
+    $("#nip_acknowledge_sent_to_dar_date").val("");
+    $("#sf_7_issue_date").val("");
+    $("#finding_report_issue_date").val("");
+    $("#acknowledge_finding_report").val("");
     $("#dar_remark").val("");
-    $("#dar_letter_date").val("");
-    $("#dar_letter_number").val("");
     $(".add_dar_error").hide();
 
   });
 
+   
 </script>

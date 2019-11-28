@@ -21,4 +21,6 @@
 <%if @employee_save_status%>
 	$("#employee_new_form_div").html('');
 	$("#employee_new_form_div").html('<%= j render 'employee_new_form'%>');
+	$("#emp_status_msg").show().delay(3000).fadeOut(800);
+	
 <%end%>

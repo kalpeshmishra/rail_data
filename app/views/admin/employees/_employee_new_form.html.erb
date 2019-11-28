@@ -11,9 +11,8 @@
 <div class="table-responsive">
 <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-basic-detail-form',remote: true) do |form| %>
   <div style="text-align: right;">
-    <%if @employee_save_status%>
-      <b style="font-size: 14px;font-weight: bold;color: red;" id="emp_status_msg">Employee created.</b>
-    <%end%>  
+    <b class= "text-center employee_number_error_msg" id="employee_number_error_msg" style="display: none"></b>
+    <b style="font-size: 14px;font-weight: bold;color: red;display: none" id="emp_status_msg">Data saved successfully!</b>
     <button class="btn btn-primary btn-flat details-submit" type="submit"><i class="fa fa-check details-submit"></i>Save</button>
   </div>
 <table class="table">
@@ -175,12 +174,25 @@
       $(appointment_mode).val('<%=data.appointment_mode%>');
       $(employee_post).val('<%=data.employee_post_id%>');
       $(current_station).val('<%=data.station_id%>');
-        
+      
+      $("#pf_nps_number").prop('readonly', true);  
     <%end%>  
 
-    $('#emp_status_msg').delay(3000).fadeOut(800); 
-
-
   });
+
+  // Finds From station
+  $('.pf-nps-number').on('focusout', function () {
+    if ($(record_id).val() == "") {
+      var emp_number = $(this).val();
+      if (emp_number != "") {
+        $.ajax({
+          type: "get",
+          url: "/find_employee_number.js?emp_number=" + emp_number
+        });
+      }
+    }
+  });
+
+
 
 </script>
