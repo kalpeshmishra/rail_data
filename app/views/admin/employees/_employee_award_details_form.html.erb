@@ -1,0 +1,151 @@
+<div style="width:90%;text-align:right;"><b>Click To Add Award:</b>
+    <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-award-detail", id="add_award_detail"><i class="fa fa-plus"></i>AddNew</a>
+</div>
+<div class="table-responsive">
+  <div style="width:90%;">  
+  	<table class="table table-sm" id="employee-award-details">
+  	<thead>
+	    <tr style="color: #fff; background: #4B4B4D;">
+	      <th>Sr</th>
+        <th>Category</th>
+        <th>Award Date</th>
+	      <th>Reason</th>
+        <th>Action</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%if @employee_award_details_data.present?%>
+        <%@employee_award_details_data.each_with_index do |data,index|%>
+          <tr class="add-award-tr add_award_row_<%= data.id %>", id= "add_award_row_id_<%= data.id %>">
+            <td><%=index+1%></td>
+            <td><%=data.award_category%></td>
+            <td><%=data.award_date.strftime('%d-%m-%y')%></td>
+            <td style="max-width: 400px;"><%=data.reason%></td>
+            <td id="award_id_<%=data.id%>"  style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-award-danger" id="<%= data.id %>" style="padding: 4%;"><i class="fa fa-trash-o"></i></a></td>
+          </tr> 
+        <%end%>
+      <%end%>
+  	</tbody>
+  	</table>	
+
+  </div>
+</div>
+<!-- Add Award Detail Modal html code start -->
+<div class="modal fade colored-header add-award-modal" id="add_award_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 550px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Award Detail:</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" id="add-award-div">
+      <form id="add-award-form">  
+        <table>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Award Category:</td>
+            <td>
+              <%= (select_tag "award_category", options_for_select([["MR","MR"],["GM","GM"],["PCOM","PCOM"],["PCSO","PCSO"],["DRM","DRM"],["SAFTEY","SAFTEY"],["GoodWork","GoodWork"],["EmployeeOfMonth","EmployeeOfMonth"]]), {prompt: 'Select',required: true, class: "form-control  input-sm award_category"}).html_safe %>
+            </td>
+          </tr>
+          <tr>    
+            <td style="color: #fff; background: #4B4B4D;text-align: center;height: 1px;">Award Date:</td>
+            <td>
+              <%= text_field_tag "award_date",'', type: 'date',placeholder: 'Award Date', id: "award_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Reason:</td>
+            <td>
+              <%= text_area_tag "award_reason", '', placeholder: 'Enter Reason if any', id: "award_reason", class: 'form-control input-md award_reason', pattern: "^[a-zA-Z0-9-/().,]+$",required: true,style: "height:90px;font-size:14px;"%>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <button class="btn btn-primary btn-flat employee-award-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b class= "form-group add_award_error" id="add_award_error" style="display: none"></b>
+      </form>    
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Award Detail Modal html code ends -->
+<!-- Add Award Delete- Modal html code starts -->
+<div class="modal fade colored-header" id="add-award-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Award?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_award_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Award Delete- Modal html code ends -->
+
+<script>
+  $(function(){
+    $('.add-award-detail').on('click',function(){
+      $("#add_award_modal").modal('show');
+    });  
+
+    $(".employee-award-save").on('click',function(){
+        employee_id = $("#record_id").val();
+        emp_award_category = $("#award_category").val();
+        emp_award_date = $("#award_date").val();
+        emp_award_reason = $("#award_reason").val();
+
+      if (emp_award_category!= "" && emp_award_date!= "" && emp_award_reason!= "") {  
+        $.ajax({
+          type: "post",
+          url: "/admin/employees.js?is_add_employee_award=" + "true"+ "&employee_id="+ employee_id + "&emp_award_category=" + emp_award_category + "&emp_award_date=" + emp_award_date +"&emp_award_reason=" + emp_award_reason
+        });
+        $(".add_award_error").hide();
+        $("#add_award_modal").find('.close').click();
+      }
+      else{
+        var error_msg ="Select All Feilds"
+        $("#add_award_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
+        
+        $(".add_award_error").show();
+      }  
+
+    });
+
+    $(".add-award-danger").on('click',function(){
+      delete_award_detail_id = $(this).attr('id')
+      $("#add-award-delete-modal").modal('show');
+    });
+
+    $("#confirm_add_award_delete").click(function () {
+      $("#add-award-delete-modal").modal('hide');
+      remove_row = "#add_award_row_id_"+delete_award_detail_id
+      $(remove_row).remove('');
+      
+      if (delete_award_detail_id != "") {
+        $.ajax({
+          type: "get",
+          url: "/delete_employee_award_detail.js?delete_award_detail_id=" + delete_award_detail_id
+        });
+      }
+    });
+
+
+  }); 
+
+  $(document).on('hidden.bs.modal','#add_award_modal', function () {
+    $("#award_category").val("");
+    $("#award_date").val("");
+    $("#award_reason").val("");
+    $(".add_award_error").hide();
+
+  });
+
+</script>

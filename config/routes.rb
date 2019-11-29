@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   match '/delete_employee_training_detail', controller: 'admin/employees', action: 'delete_employee_training_detail', via: [:get], as: 'delete_employee_training_detail'
   match '/delete_employee_medical_detail', controller: 'admin/employees', action: 'delete_employee_medical_detail', via: [:get], as: 'delete_employee_medical_detail'
   match '/delete_employee_dar_detail', controller: 'admin/employees', action: 'delete_employee_dar_detail', via: [:get], as: 'delete_employee_dar_detail'
+  match '/delete_employee_award_detail', controller: 'admin/employees', action: 'delete_employee_award_detail', via: [:get], as: 'delete_employee_award_detail'
   match '/find_employee_number', controller: 'admin/employees', action: 'find_employee_number', via: [:get], as: 'find_employee_number'
   
 

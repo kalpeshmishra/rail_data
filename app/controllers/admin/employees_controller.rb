@@ -27,6 +27,9 @@ class Admin::EmployeesController < ApplicationController
 		elsif params[:is_add_employee_dar].present?
 			EmployeeDarDetail.create_employee_dar(params)
 			@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  params[:employee_id].to_i).order(issue_date: :asc)
+		elsif params[:is_add_employee_award].present?
+			EmployeeAwardDetail.create_employee_award(params)
+			@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  params[:employee_id].to_i).order(award_date: :asc)
 		else
 			@employee_save_status = Employee.create_or_update_employee(params)
 		end
@@ -47,6 +50,7 @@ class Admin::EmployeesController < ApplicationController
 		@employee_training_details_data = EmployeeTrainingDetail.where(employee_id: emp_id).order(end_date: :asc)
 		@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  emp_id).order(fit_date: :asc)
 		@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  emp_id).order(issue_date: :asc)
+		@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  emp_id).order(award_date: :asc)
 	end
 
 	def get_form_data
@@ -102,6 +106,15 @@ class Admin::EmployeesController < ApplicationController
   def delete_employee_dar_detail
   	delete_dar_detail_id = params[:delete_dar_detail_id].to_i
     EmployeeDarDetail.destroy(delete_dar_detail_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+  def delete_employee_award_detail
+  	delete_award_detail_id = params[:delete_award_detail_id].to_i
+    EmployeeAwardDetail.destroy(delete_award_detail_id)
     respond_to do |format|
       format.js
     end

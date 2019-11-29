@@ -40,9 +40,16 @@
     <%= render 'employee_dar_details_form' %>
   </div>
 </div>
+<div class="employee-award-details" >
+  <span class="lead-text add-cursor" style="font-size: 18px !important;">
+    Award Details:&nbsp;&nbsp;<b id="employee_award_data" style="font-style: italic;color: blue;">Show</b></span><br>
+  <div id="employee_award_details_form" class="employee-award-details-form">
+    <%= render 'employee_award_details_form' %>
+  </div>
+</div>
 
 <script>
-  // $(".employee-basic-details-form").hide();  
+  $(".employee-basic-details-form").hide();  
   $("#employee_basic_data").click(function () {
       var sign = $(this).text();
       sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
@@ -82,6 +89,13 @@
       var sign = $(this).text();
       sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
       $(".employee-dar-details-form").toggle();
+  });
+
+  $(".employee-award-details-form").hide();  
+  $("#employee_award_data").click(function () {
+      var sign = $(this).text();
+      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
+      $(".employee-award-details-form").toggle();
   });
   
 </script>
