@@ -85,12 +85,18 @@
       effective_from = $("#datepicker").val();
       interchange_point = $("#interchange-point").val();
       
+      if (effective_from != "" && interchange_point != "") {
         $.ajax({
           type: "get",
           url: "/admin/load_interchanges/new.js?date=" + effective_from + "&interchange_point=" + interchange_point
 
         });
-      
+      }
+      else {
+        alert("Select date and interchange ");
+      }
+
+
   });
   
 

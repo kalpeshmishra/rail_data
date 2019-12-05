@@ -115,22 +115,22 @@ $(function(){
   <% end %>
 
   <%if @load_interchange.present?%>
-      <%@load_interchange.each_with_index do |data,index|%>
-          
-          empty_loaded = "#empty_loaded_"+<%=index%>
-          rakes = "#rakes_"+<%=index%>
-          units = "#units_"+<%=index%>
-          wagon_type = "#wagon_type_"+<%=index%>
-          load_id = "#record_id_"+<%=index%>
+    <%@load_interchange.each_with_index do |data,index|%>
+        
+        empty_loaded = "#empty_loaded_"+<%=index%>
+        rakes = "#rakes_"+<%=index%>
+        units = "#units_"+<%=index%>
+        wagon_type = "#wagon_type_"+<%=index%>
+        load_id = "#record_id_"+<%=index%>
 
-          $(empty_loaded).val('<%=data.stock_details%>');
-          $(rakes).val('<%=data.rakes%>');
-          $(units).val('<%=data.units%>');
-          $(wagon_type).val('<%=data.wagon_type_id%>');
-          $(load_id).val('<%=data.id%>');
-          
-      <%end%>
+        $(empty_loaded).val('<%=data.stock_details%>');
+        $(rakes).val('<%=data.rakes%>');
+        $(units).val('<%=data.units%>');
+        $(wagon_type).val('<%=data.wagon_type_id%>');
+        $(load_id).val('<%=data.id%>');
+        
     <%end%>
+  <%end%>
  
 
   $("#load_interchange_add").click(function(){

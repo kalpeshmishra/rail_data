@@ -1,0 +1,165 @@
+<% @method = "POST" %>
+<% @url = admin_employee_cadres_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-cadre-form',remote: true) do |form| %>
+<table class="table table-sm" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+  <thead>
+    <tr style="color: #fff; background: #4B4B4D;">
+    <th>SR NO</th>
+    <th>Category(Post)</th>
+    <th>Number of post</th>
+    <th>Remark</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+      <%= hidden_field_tag  "selected_station", id: "selected_station" %>
+      <%(0..20).each_with_index do |no, index| %>
+        <tr class="employee-cadre-tr employee-cadre-row-data employee_cadre_row_<%= index %>", id= "employee_cadre_row_id_<%= index %>">
+
+        <td align="center" style="font-size: 25;vertical-align:middle;"><%= index+1 %>
+        </td>
+        <td style="vertical-align:middle;">
+           <%= (select_tag "employee_cadre_post_#{index}", options_for_select(@employee_cader_post_list), {prompt: 'Select',required: true, class: "form-control  input-sm employee_cadre_post_#{index}"}).html_safe %>
+        </td>
+        <td style="vertical-align:middle;">
+          <%= number_field_tag "post_number_#{index}", '', placeholder: "No. of post", class: 'form-control input-md post_number',title: 'Enter Total Units', id: "post_number_#{index}",required: true, style: "width: 140px; font-size:16px;" %>
+        </td>
+        <td style="vertical-align:middle;">
+          <%= text_area_tag "remarks_#{index}", '', placeholder: 'enter remarks if any', id: "remarks_#{index}", class: 'form-control input-md', style: "width: 240px; height:60px;"%>
+          <%= hidden_field_tag  "record_id_#{index}", "", id: "record_id_#{index}" %>
+        </td>
+        <td align="center" style="font-size: 20;vertical-align:middle;">
+          <a href="#" class="remove-ip label label-danger" id="<%= index %>-employee_cadre_delete" style="padding: 20%;"><i class="fa fa-trash-o"></i></a>          
+        </td>
+        
+      </tr>    
+    <%end%>  
+  </tbody>
+</table>
+ 
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+    <input type="button" class="btn btn-success btn-flat fa-input" value="&#xf067;&nbsp;&nbsp;Add Row" id="employee_cadre_add">
+
+    <button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+  </div>
+    
+    
+<%end%>
+</div>
+
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_employee_cadre_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+<script >
+$(function(){
+
+  <%@employee_cadre.present? ? temp_count = @employee_cadre.count: temp_count = 0%>
+  <% (0..20).each_with_index do |no,index| %>
+    <%if index >= temp_count %>
+      var tr = '<%=".employee_cadre_row_#{index}"%>';
+      $(tr).hide();
+    <%end%> 
+  <% end %>
+
+  <%if @employee_cadre.present?%>
+    <%@employee_cadre.each_with_index do |data,index|%>
+        
+        record_id = "#record_id_"+<%=index%>
+        employee_cadre_post = "#employee_cadre_post_"+<%=index%>
+        post_number = "#post_number_"+<%=index%>
+        remarks = "#remarks_"+<%=index%>
+        
+        $(record_id).val('<%=data.id%>');
+        $(employee_cadre_post).val('<%=data.employee_post_id%>');
+        $(post_number).val('<%=data.number_of_post%>');
+        $(remarks).val('<%=data.remark%>');
+        
+        
+    <%end%>
+  <%end%>
+
+
+
+  $("#employee_cadre_add").click(function(){
+    $(".employee-cadre-row-data:hidden").each(function(i){
+      if (i==0) {
+        $(this).show();
+      }
+    });
+  });
+
+  $(".submit").click(function () {
+    $(".employee-cadre-row-data:hidden").each(function(i) {
+      $(this).remove('');
+    });
+  });
+  
+  $('#employee-cadre-form').submit(function(){
+    $("button[type='submit']", this)
+      .text("Please Wait...")
+      .attr('disabled', 'disabled');
+    return true;
+  });
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_employee_cadre_id = $("#record_id_"+delete_index).val();
+    var visible_row_count = 0
+    
+    $('.employee-cadre-tr:visible').each(function() {
+      visible_row_count = visible_row_count + 1
+    });
+    $("#delete-modal").modal('show');
+  });
+
+  $("#confirm_employee_cadre_delete").click(function () {
+    $("#delete-modal").modal('hide');
+    
+    if (delete_employee_cadre_id != "") {
+          $.ajax({
+          type: "get",
+          url: "/delete_employee_cadre.js?delete_employee_cadre_id=" + delete_employee_cadre_id
+        });
+      }
+
+     $('.employee-cadre-tr:visible').each(function() {
+      if($(this).attr("id").split("_")[4] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+  $("#station-list").on("change",function(){
+    $("#employee_cadre_form").empty();
+
+  });
+
+
+  $(document).ready(function(){
+    selected_stn = $("#station-list").val();
+    
+    $("#selected_station").val(selected_stn);
+    
+  });
+
+  
+
+});
+
+
+</script>

@@ -1,0 +1,108 @@
+<style>
+  ul.dropdown-menu {
+    min-width: 250px;
+    max-height: 180px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<script>
+    $(function () {
+
+    	$('.icheck').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue'
+      });
+
+      $('.primary-filters-station').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-post').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '300px;',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+ 
+<div class="table-responsive main-client-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="employee-cadre">
+    <caption>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <span class="pull-left lead-text">
+          Report
+        </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
+        <%= select_tag "station-list", options_for_select(@employee_cadre_station_list), {multiple: true, id: "station-list", class: 'primary-filters-station form-control input-sm'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="post">
+      	<%= select_tag "post-list", options_for_select(@employee_cader_post_list), {multiple: true, id: "post-list", class: 'primary-filters-post form-control input-sm'} %>
+      </div>
+
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="odr_type">
+         <label class="with-total-selection-label"><%= check_box_tag("with_total", 'with_total', false, class: 'icheck-with-total') %> &nbsp;&nbsp;&nbsp;Total</label>
+      </div>
+      
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit" id="submit_data" type="submit">Display</button>
+      </div>
+      
+    </caption>
+  </table>
+      
+      <div id="employee_cadre_report_form"></div>
+      <div><br><br><br><br><br><br><br><br></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    
+    $(".submit").on("click",function(){
+      selected_stations = $('#station-list').val();
+      selected_post = $('#post-list').val();
+      with_total_selected = $('.icheck-with-total').is(':checked') ? true : false
+      if (selected_stations!= null && selected_post != null && with_total_selected == true) {
+        $.ajax({
+            type: "get",
+            url: "/admin/employee_cadres.js?selected_stations=" + selected_stations +"&selected_post="+selected_post+ "&is_data_with_total_filter=" + true 
+        });
+        
+      }
+      else if (selected_stations!= null && selected_post != null && with_total_selected == false){
+
+      }
+      else{
+        alert("Select all feilds");
+      }
+      
+    });
+
+   
+  });
+</script>

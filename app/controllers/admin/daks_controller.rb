@@ -119,14 +119,15 @@ class Admin::DaksController < ApplicationController
 	def form_fields_data
 		@letter_type_list = [['General', 'General'], ['Safety', 'Safety'], ['SafetyBulletin', 'SafetyBulletin'], ['MonthlySafteyRule', 'MonthlySafteyRule'], ['GeneralCircular', 'GeneralCircular'], ['ManPowerPlanning', 'ManPowerPlanning'], ['DivisionOfficeOrder', 'DivisionOfficeOrder'], ['ControlOfficeOrder', 'ControlOfficeOrder']]
 		user_list = User.find(UserRole.where(is_dak_access: true).pluck(:user_id))
-
+		
+		user_division = Division.find(current_user.division_id).code+"-Division"
 		dak_user_list = {}
-		dak_user_list.merge!("ADI-Division" => {})
+		dak_user_list.merge!(user_division => {})
 		dak_search_user = []
 		user_list.each do |user|
 			if user.id != current_user.id
-				dak_user_list["ADI-Division"].merge!("#{user.user_under}" => {}) if dak_user_list["ADI-Division"].keys.exclude?(user.user_under)
-				dak_user_list["ADI-Division"][user.user_under].merge!("#{user.first_name}" => user.id)	
+				dak_user_list[user_division].merge!("#{user.user_under}" => {}) if dak_user_list[user_division].keys.exclude?(user.user_under)
+				dak_user_list[user_division][user.user_under].merge!("#{user.first_name}" => user.id)	
 				dak_search_user << [user.first_name,user.id]
 			end
 		end

@@ -1,0 +1,79 @@
+<style>
+  ul.dropdown-menu {
+    width: 200px;
+    max-height: 200px;
+    overflow: auto;
+
+  }
+  
+  .no-border tr td, .no-border tr th {
+  vertical-align: top;
+  border-width: 0;
+  }
+</style>
+<script>
+  $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+  });
+
+     
+
+</script>
+
+<% @method = params[:id].present? ? "PATCH" : "POST" %>
+<% @url = params[:id].present? ? admin_employee_cadre_path(params[:id]) : admin_employee_cadres_path %>
+
+<div class="table-responsive main-client-cadre" >
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="employee_cadre">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >
+          <span class="pull-left lead-text">
+            Employee Sanction Cadre
+          </span>
+      </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Months<p></p>
+          <%= (select_tag "station-list", options_for_select(@employee_cadre_station_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm station_list"}).html_safe %><p></p>
+        </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+  </caption>
+  </table>
+
+    <div id="employee_cadre_new_form">
+    </div>
+    <div><br><br><br><br><br><br></div>
+
+
+  </div>
+<script>
+  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
+  $(function () {
+    $("#datepicker").datepicker({ 
+          autoclose: true, 
+          format:"dd/mm/yyyy",
+          todayHighlight: true,
+    });
+
+    $('#datepicker').datepicker('setDate', '');
+    
+  });
+  $(".submit_data").click(function () {
+    
+    selected_station = $("#station-list").val();
+    if (selected_station != "") {
+      $.ajax({
+        type: "get",
+        url: "/admin/employee_cadres/new.js?selected_station=" + selected_station 
+
+      });
+    }
+    else {
+      alert("Select station "); 
+    }  
+      
+  });
+  
+
+</script>
