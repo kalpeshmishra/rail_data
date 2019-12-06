@@ -61,5 +61,41 @@ class EmployeeCadre < ApplicationRecord
     return data_hash
   end
 
+  def self.get_cadre_station_data(sanction_cadre,man_on_roll)
+    cadre_post_ids = (man_on_roll.pluck(:employee_post_id) + sanction_cadre.pluck(:employee_post_id)).uniq.sort
+    cadre_station_ids = (man_on_roll.pluck(:station_id) + sanction_cadre.pluck(:station_id)).uniq.sort
+    cadre_post = EmployeePost.where(id: cadre_post_ids)
+    header_hash = {}
+    cadre_post.each do |data|
+      if header_hash[data.employee_category].blank?
+        header_hash[data.employee_category] = [data]
+      else
+        header_hash[data.employee_category] << data
+      end  
+    end  
+
+    data_hash = {}
+    cadre_station_ids.map{|stn| data_hash[stn] = {} }
+    
+    cadre_post_ids.each do |no|
+      data = sanction_cadre.find_by(employee_post_id: no).present? ?sanction_cadre.find_by(employee_post_id: no) : man_on_roll.find_by(employee_post_id: no)
+      emp_category_id = data.employee_post.employee_category_id
+      emp_post_id = data.employee_post_id
+      emp_station_id = data.station_id
+
+
+      # binding.pry
+
+
+      data_hash
+    end  
+
+
+   return {header_hash: header_hash}
+
+  end
+
+
+
 
 end

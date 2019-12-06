@@ -11,12 +11,27 @@ class Admin::EmployeeCadresController < ApplicationController
       sanction_cadre_data = EmployeeCadre.where(station_id: station_ids, employee_post_id: emp_post_ids)
       man_on_roll_data = Employee.where(station_id: station_ids, employee_post_id: emp_post_ids)
       cadre_hash_data = EmployeeCadre.get_cadre_with_total(sanction_cadre_data,man_on_roll_data)
-      
-
-
-
       @employee_cadre_report_data = cadre_hash_data
     end  
+
+
+    if params[:is_data_station_filter].present?
+      station_ids = params[:selected_stations].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+      emp_post_ids = params[:selected_post].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+
+      sanction_cadre_data = EmployeeCadre.where(station_id: station_ids, employee_post_id: emp_post_ids)
+      man_on_roll_data = Employee.where(station_id: station_ids, employee_post_id: emp_post_ids)
+      
+      cadre_data_hash = EmployeeCadre.get_cadre_station_data(sanction_cadre_data,man_on_roll_data)
+      @cadre_station_header = cadre_data_hash[:header_hash]
+
+
+
+
+
+    end
+
+
 
   end
 

@@ -1,3 +1,5 @@
 <%if params[:is_data_with_total_filter].present?%>
 	$("#employee_cadre_report_form").html('<%= j render 'cadre_with_total'%>');
+<%elsif params[:is_data_station_filter].present?%>	
+	$("#employee_cadre_report_form").html('<%= j render 'cadre_station'%>');
 <%end%>	

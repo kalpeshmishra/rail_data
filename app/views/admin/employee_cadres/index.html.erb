@@ -7,6 +7,7 @@
   }
   html {
     overflow-x: scroll;
+    overflow-y: scroll;
   }
 </style>
 <script>
@@ -95,7 +96,10 @@
         
       }
       else if (selected_stations!= null && selected_post != null && with_total_selected == false){
-
+        $.ajax({
+            type: "get",
+            url: "/admin/employee_cadres.js?selected_stations=" + selected_stations +"&selected_post="+selected_post+ "&is_data_station_filter=" + true 
+        });
       }
       else{
         alert("Select all feilds");
