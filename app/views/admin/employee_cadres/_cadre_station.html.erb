@@ -1,3 +1,11 @@
+<style >
+  .red {
+    color: red;
+  }
+  .blue {
+    color: blue;
+  }
+</style>
 <div id="cadre_with_total" >
 <h3 align="left">Station Cadre Details  </h3>
 <p id="cadre_with_total_heading" style="font-size: 16px;color:#cc3d16;"></p>
@@ -5,20 +13,106 @@
 <table class="table hover table-bordered" id="cadre-station">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      <th style="vertical-align: middle;">Sr</th>
-      <th style="vertical-align: middle;">STN Code</th>
+      <th style="vertical-align: middle;" rowspan="2">Sr</th>
+      <th style="vertical-align: middle;" rowspan="2">STN Code</th>
       <%if @cadre_station_header.present?%>
       	<%@cadre_station_header.each do |category,post|%>
       		<%post.each do |tmp|%>
-      			<th style="vertical-align: middle;"><%="#{tmp.post_code} |GP-#{tmp.grade_pay_p6}| L-#{tmp.level_p7}"%></th>
+      			<th style="vertical-align: middle;" colspan="3"><%="#{tmp.post_code} |GP-#{tmp.grade_pay_p6}| L-#{tmp.level_p7}"%></th>
 	     		<%end%>
-      			<th style="vertical-align: middle;">Total</th>
+      			<th style="vertical-align: middle;" colspan="3">Total</th>
 	     	<%end%>
       <%end%>
+      <th style="vertical-align: middle;" colspan="3">G-Total</th>
     </tr>
+    <tr style="color: #fff; background: #4B4B4D;">
+      <%if @cadre_station_header.present?%>
+        <%@cadre_station_header.each do |category,post|%>
+          <%post.each do |tmp|%>
+            <th>SC</th>
+            <th>MOR</th>
+            <th>V/E</th>
+          <%end%>
+            <th>SC-Ttl</th>
+            <th>Mor-Ttl</th>
+            <th>V/E</th>
+        <%end%>
+          <th>SC-G-Ttl</th>
+          <th>Mor-G-Ttl</th>
+          <th>V/E</th>
+      <%end%>
+    </tr>  
+
   </thead>
   <tbody>
-    	
+    <%i=0%>
+    <%catgeory_total = {}%>
+    <%if @cadre_station_data.present?%>
+      <%@cadre_station_data.each do |stn_id,stn_data|%>
+      <%stn_cadre_total = []%>
+      <%stn_mor_total = []%>
+        <tr>
+          <td><%=i+=1%></td>
+          <td><%=Station.find(stn_id).code%></td>
+          <%@cadre_station_header.each do |category,post_detail|%>
+          <%cadre_total = []%>
+          <%mor_total = []%>
+            <%post_detail.each do |post_data|%>
+              <%cadre = stn_data[category.id][post_data.id].present? ? stn_data[category.id][post_data.id][0] : 0  rescue nil%>
+              <%mor = stn_data[category.id][post_data.id].present? ? stn_data[category.id][post_data.id][1] : 0 rescue nil%>
+              <td><%=cadre%></td>
+              <td><%=mor%></td>
+              <td class="<%=cadre - mor>-1 ? 'blue' : 'red' rescue nil%>"><%=cadre-mor rescue nil%></td>
+              <%cadre_total << cadre%>
+              <%mor_total << mor%>
+              <%stn_cadre_total << cadre%>
+              <%stn_mor_total << mor%>
+              <%catgeory_total[category.id] = {} if catgeory_total[category.id].blank?%>
+              <%catgeory_total[category.id].merge!(post_data.id => [[],[]]) if catgeory_total[category.id][post_data.id].blank?%>
+              <%catgeory_total[category.id][post_data.id][0]<<cadre%>
+              <%catgeory_total[category.id][post_data.id][1]<<mor%>
+            <%end%>
+              <%c_ttl = cadre_total.reject(&:blank?).sum%>
+              <%m_ttl = mor_total.reject(&:blank?).sum%>
+              <%catgeory_total[category.id].merge!("Total" => [[],[]]) if catgeory_total[category.id]["Total"].blank?%>
+              <%catgeory_total[category.id]["Total"][0]<<c_ttl%>
+              <%catgeory_total[category.id]["Total"][1]<<m_ttl%>
+              <td><%=c_ttl%></td>
+              <td><%=m_ttl%></td>
+              <td class="<%=c_ttl - m_ttl>-1 ? 'blue' : 'red' rescue nil%>"><%=c_ttl - m_ttl rescue nil%></td>
+          <%end%>
+          <% s_ca_ttl = stn_cadre_total.reject(&:blank?).sum%></td>
+          <% s_mor_ttl = stn_mor_total.reject(&:blank?).sum%></td>
+          <td style="font-weight: bold;"><%=s_ca_ttl%></td>
+          <td style="font-weight: bold;"><%=s_mor_ttl%></td>
+          <td style="font-weight: bold;" class="<%=s_ca_ttl - s_mor_ttl>-1 ? 'blue' : 'red' rescue nil%>"><%=s_ca_ttl - s_mor_ttl rescue nil%></td>
+        </tr>
+      <%end%>	
+    <%end%> 
+    <tr>
+      <td colspan="2" style="text-align: center;font-weight: bold;">Total</td>
+      <%grand_cat_sc_total = []%>
+      <%grand_cat_mor_total = []%>
+      <%if catgeory_total.present?%>
+        <%catgeory_total.each do |cat_id,post_ttl|%>
+          <%post_ttl.each do |k,v|%>
+              <%cat_sc_total = v[0].reject(&:blank?).sum%>
+              <%cat_mor_total = v[1].reject(&:blank?).sum%>
+            <td><%=cat_sc_total%></td>
+            <td><%=cat_mor_total%></td>
+            <td style="font-weight: bold;" class="<%=cat_sc_total-cat_mor_total>-1 ? 'blue' : 'red' rescue nil%>"><%=cat_sc_total-cat_mor_total rescue nil%></td>
+            <%if k == "Total"%>
+              <%grand_cat_sc_total << v[0].reject(&:blank?).sum%>
+              <%grand_cat_mor_total << v[1].reject(&:blank?).sum%>
+            <%end%>
+          <%end%>
+        <%end%>
+          <td><%=grand_cat_sc_total.reject(&:blank?).sum%></td>
+          <td><%=grand_cat_mor_total.reject(&:blank?).sum%></td>
+          <%g_ttl = grand_cat_sc_total.reject(&:blank?).sum-grand_cat_mor_total.reject(&:blank?).sum rescue nil%>
+          <td style="font-weight: bold;" class="<%=g_ttl>-1 ? 'blue' : 'red' rescue nil%>"><%=g_ttl%></td>
+      <%end%>
+    </tr>
   </tbody>
 </table>
 </div>

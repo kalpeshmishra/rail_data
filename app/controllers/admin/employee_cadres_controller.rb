@@ -24,6 +24,7 @@ class Admin::EmployeeCadresController < ApplicationController
       
       cadre_data_hash = EmployeeCadre.get_cadre_station_data(sanction_cadre_data,man_on_roll_data)
       @cadre_station_header = cadre_data_hash[:header_hash]
+      @cadre_station_data = cadre_data_hash[:data_hash]
 
 
 
@@ -50,6 +51,15 @@ class Admin::EmployeeCadresController < ApplicationController
   	@employee_cadre_station_list = Station.where(division_id: current_user.division_id).map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
   	@employee_cader_post_list = EmployeePost.all.map{|emp| ["#{emp.post}-Level-#{emp.level_p7}-GradePay-#{emp.grade_pay_p6}-Group-#{emp.group}",emp.id]}
     @employee_cadre = EmployeeCadre.where(station_id: params[:selected_station].to_i)
+  end
+
+  def delete_employee_cadre
+    delete_cadre_id = params[:delete_employee_cadre_id].to_i
+    EmployeeCadre.destroy(delete_cadre_id)
+    respond_to do |format|
+      format.js
+    end
+    
   end
 
 

@@ -38,7 +38,8 @@ class EmployeeCadre < ApplicationRecord
       data = sanction_cadre.find_by(employee_post_id: no).present? ?sanction_cadre.find_by(employee_post_id: no) : man_on_roll.find_by(employee_post_id: no)
     
       emp_category = data.employee_post.employee_category
-      cadre_count = sanction_cadre.find_by(employee_post_id: no).present? ? data.number_of_post : 0
+      
+      cadre_count = sanction_cadre.where(employee_post_id: no).present? ? sanction_cadre.where(employee_post_id: no).map{|x| x.number_of_post}.sum : 0
       mor_count = man_on_roll.where(employee_post_id: no).count
       
       if data_hash[emp_category].present?
@@ -63,7 +64,6 @@ class EmployeeCadre < ApplicationRecord
 
   def self.get_cadre_station_data(sanction_cadre,man_on_roll)
     cadre_post_ids = (man_on_roll.pluck(:employee_post_id) + sanction_cadre.pluck(:employee_post_id)).uniq.sort
-    cadre_station_ids = (man_on_roll.pluck(:station_id) + sanction_cadre.pluck(:station_id)).uniq.sort
     cadre_post = EmployeePost.where(id: cadre_post_ids)
     header_hash = {}
     cadre_post.each do |data|
@@ -75,23 +75,20 @@ class EmployeeCadre < ApplicationRecord
     end  
 
     data_hash = {}
-    cadre_station_ids.map{|stn| data_hash[stn] = {} }
+    cadre_stn_post_data = (man_on_roll.pluck(:station_id,:employee_post_id) + sanction_cadre.pluck(:station_id,:employee_post_id)).uniq.sort
+
+    cadre_stn_post_data.each do |no|
+      cadre_count = sanction_cadre.where(station_id: no[0],employee_post_id: no[1]).present? ? sanction_cadre.where(station_id: no[0],employee_post_id: no[1]).map{|x| x.number_of_post}.sum : 0
+      mor_count = man_on_roll.where(station_id: no[0],employee_post_id: no[1]).count
+
+      cat_id = cadre_post.find(no[1]).employee_category_id
+      data_hash[no[0]] = {} if data_hash[no[0]].blank?
+      data_hash[no[0]].merge![cat_id] = {} if data_hash[no[0]][cat_id].blank?
+      data_hash[no[0]][cat_id].merge!(no[1] => [cadre_count,mor_count]) if data_hash[no[0]][cat_id][no[1]].blank?
+
+    end
     
-    cadre_post_ids.each do |no|
-      data = sanction_cadre.find_by(employee_post_id: no).present? ?sanction_cadre.find_by(employee_post_id: no) : man_on_roll.find_by(employee_post_id: no)
-      emp_category_id = data.employee_post.employee_category_id
-      emp_post_id = data.employee_post_id
-      emp_station_id = data.station_id
-
-
-      # binding.pry
-
-
-      data_hash
-    end  
-
-
-   return {header_hash: header_hash}
+   return {header_hash: header_hash, data_hash: data_hash}
 
   end
 

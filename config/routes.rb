@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   match '/delete_employee_award_detail', controller: 'admin/employees', action: 'delete_employee_award_detail', via: [:get], as: 'delete_employee_award_detail'
   match '/find_employee_number', controller: 'admin/employees', action: 'find_employee_number', via: [:get], as: 'find_employee_number'
   
+  match '/delete_employee_cadre', controller: 'admin/employee_cadres', action: 'delete_employee_cadre', via: [:get], as: 'delete_employee_cadre'
+  
 
   #--------------Excel Reports Download Starts-----------------
   match '/rake_load_excel_download', controller: 'admin/loading_reports', action: 'rake_load_excel_download', via: [:get], as: 'rake_load_excel_download'
