@@ -12,48 +12,46 @@
 
 <table class="table hover table-bordered" id="cadre-station">
   <thead class="thead-dark">
+  <%if @cadre_station_header.present?%>
     <tr style="color: #fff; background: #4B4B4D;">
       <th style="vertical-align: middle;" rowspan="2">Sr</th>
       <th style="vertical-align: middle;" rowspan="2">STN Code</th>
-      <%if @cadre_station_header.present?%>
       	<%@cadre_station_header.each do |category,post|%>
       		<%post.each do |tmp|%>
       			<th style="vertical-align: middle;" colspan="3"><%="#{tmp.post_code} |GP-#{tmp.grade_pay_p6}| L-#{tmp.level_p7}"%></th>
 	     		<%end%>
       			<th style="vertical-align: middle;" colspan="3">Total</th>
 	     	<%end%>
-      <%end%>
       <th style="vertical-align: middle;" colspan="3">G-Total</th>
     </tr>
     <tr style="color: #fff; background: #4B4B4D;">
-      <%if @cadre_station_header.present?%>
-        <%@cadre_station_header.each do |category,post|%>
-          <%post.each do |tmp|%>
-            <th>SC</th>
-            <th>MOR</th>
-            <th>V/E</th>
-          <%end%>
-            <th>SC-Ttl</th>
-            <th>Mor-Ttl</th>
-            <th>V/E</th>
+      <%@cadre_station_header.each do |category,post|%>
+        <%post.each do |tmp|%>
+          <th>SC</th>
+          <th>MOR</th>
+          <th>V/E</th>
         <%end%>
-          <th>SC-G-Ttl</th>
-          <th>Mor-G-Ttl</th>
+          <th>SC-Ttl</th>
+          <th>Mor-Ttl</th>
           <th>V/E</th>
       <%end%>
+        <th>SC-G-Ttl</th>
+        <th>Mor-G-Ttl</th>
+        <th>V/E</th>
     </tr>  
-
+  <%end%>
   </thead>
   <tbody>
     <%i=0%>
     <%catgeory_total = {}%>
-    <%if @cadre_station_data.present?%>
+   <%if @cadre_station_data.present?%>
+    <%stn_hash = @employee_cadre_station_hash%>
       <%@cadre_station_data.each do |stn_id,stn_data|%>
       <%stn_cadre_total = []%>
       <%stn_mor_total = []%>
         <tr>
           <td><%=i+=1%></td>
-          <td><%=Station.find(stn_id).code%></td>
+          <td title="<%=stn_hash[stn_id][1]%>"><%=stn_hash[stn_id][0]%></td>
           <%@cadre_station_header.each do |category,post_detail|%>
           <%cadre_total = []%>
           <%mor_total = []%>
