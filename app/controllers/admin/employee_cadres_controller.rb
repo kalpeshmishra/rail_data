@@ -47,8 +47,9 @@ class Admin::EmployeeCadresController < ApplicationController
   end
 
   def employee_cader_form_data
-  	 # @employee_cadre_station_list = Station.where(id: StationUnderTiUser.all.pluck(:station_id).uniq).pluck(:code, :id)
-  	temp_cadre_stn = Station.where(division_id: current_user.division_id)
+  	# binding.pry
+    stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
+    temp_cadre_stn = Station.where(id: stn)
     @employee_cadre_station_list = temp_cadre_stn.map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
     @employee_cadre_station_hash = {}
     temp_cadre_stn.map{|station| @employee_cadre_station_hash[station.id] = [station.code,station.name]}

@@ -51,6 +51,11 @@ module ApplicationHelper
 		role = current_user.user_role rescue nil
 		flag = role.present? ? role.is_statistics_access : false
 	end
+
+	def is_allowance_access
+		role = current_user.user_role rescue nil
+		flag = role.present? ? role.is_allowance_access : false
+	end
   # def is_one_rake_load_applicable
   #   current_user.user_role.one_rake_load_access
   # end
