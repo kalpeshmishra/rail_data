@@ -112,9 +112,9 @@ ActiveRecord::Schema.define(version: 20191202073931) do
 
   create_table "dak_receivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dak_id"
-    t.integer  "reciever_user_id"
+    t.string   "reciever_user_id"
     t.boolean  "is_read"
-    t.datetime "dak_read_time_date"
+    t.date     "dak_read_time_date"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
@@ -125,8 +125,9 @@ ActiveRecord::Schema.define(version: 20191202073931) do
     t.string   "letter_number"
     t.string   "letter_issue_date"
     t.string   "letter_description"
-    t.integer  "creater_user_id"
-    t.datetime "dak_create_at"
+    t.string   "creater_user_id"
+    t.string   "dak_create_time"
+    t.date     "dak_create_date"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false

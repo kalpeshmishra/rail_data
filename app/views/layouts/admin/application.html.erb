@@ -7,93 +7,74 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type='text/css'>
   <%= javascript_include_tag 'application' %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-  
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <script type="text/javascript">
-      //      var link = $('link[href="assets/style.css"]');
-      $(function () {
-          setTimeout(function () {
-              $('.hide-10').hide();
-          }, 10000);
+    var link = $('link[href="assets/style.css"]');
+    $(function () {
+      setTimeout(function () {
+          $('.hide-10').hide();
+      }, 10000);
 
-          var tabClicked = getQueryStringParams('tab');
-          $('#' + tabClicked).click();
+      var tabClicked = getQueryStringParams('tab');
+      $('#' + tabClicked).click();
 
-          $(document).on('click', '.cancel-btn', function () {
-              $(this).closest("form")[0].reset();
-          });
+      $(document).on('click', '.cancel-btn', function () {
+          $(this).closest("form")[0].reset();
       });
-      
-
-
+    });
   </script>
 
-  <%= stylesheet_link_tag 'application', media: 'all' %>
+  
   <style>
-      #cl-wrapper {
-          display: table;
-          height: 100%;
-          margin-left: -20px;
-          opacity: 1;
-          position: absolute;
-          transition: margin-left 600ms ease 0s, opacity 600ms ease 0s;
-          width: 100%;
-      }
+    #cl-wrapper {
+      display: table;
+      height: 100%;
+      margin-left: -20px;
+      opacity: 1;
+      position: absolute;
+      transition: margin-left 600ms ease 0s, opacity 600ms ease 0s;
+      width: 100%;
+    }
 
-      .table-responsive {
+    .table-responsive {
 
-      }
+    }
 
-      .table-dark {
-          margin-bottom: 60px;
-      }
+    .table-dark {
+      margin-bottom: 60px;
+    }
 
-      .datepicker {
-          z-index: 1151 !important;
-      }
+    .datepicker {
+      z-index: 1151 !important;
+    }
   </style>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="cl-wrapper">
-
-  <% if true %>
-      <div class="cl-sidebar">
-        <div class="cl-toggle"><i class="fa fa-bars"></i></div>
-        <div class="cl-navblock">
-          <div class="menu-space">
-            <div class="content">
-              <div class="sidebar-logo">
-                <div class="logo">
-                  <a href="<%= root_url %>">
-                    <%custom_url = (Company.find(session[:current_company_id]).custom_brand_setting.image_url rescue nil) ? Company.find(session[:current_company_id]).custom_brand_setting.image_url : "raildata-logo.png"%>
-                    <%= image_tag custom_url, height: '54px', width: '180px', id: 'raildata-logo' %>
-                  </a>
-                </div>
+  <div id="cl-wrapper">
+    <div class="cl-sidebar">
+      <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+      <div class="cl-navblock">
+        <div class="menu-space">
+          <div class="content">
+            <div class="sidebar-logo">
+              <div class="logo">
+                <a href="<%= root_url %>">
+                  <%custom_url = "raildata-logo.png"%>
+                  <%= image_tag custom_url, height: '54px', width: '180px', id: 'raildata-logo' %>
+                </a>
               </div>
-              <% @user_info = current_user.user_info rescue nil%>
-              <% if false and current_user.email.downcase == 'siteadmin@raildata.in' %>
-                <ul class="cl-vnavigation">
-                  <li title="Company List">
-                    <a href="<%= admin_root_url %>"><i class="fa fa-dashboard"></i><span>Company List</span></a>
-                  </li>
-                  <li title="Biometric Sync Status">
-                    <a href="<%= biometric_sync_status_path %>"><i class="fa fa-check"></i><span>Biometric Sync Status</span></a>
-                  </li>
-                  <% if @company %>
-                    <li title="Company Settings">
-                      <a href="<%= company_setup_setting_path(@company) %>"><i class="fa fa-cog"></i><span>Company Settings</span></a>
-                    </li>
-                  <%end%>
-                </ul>
-              <% else %>
-                <%= render 'layouts/admin/temp_admin_header' %>
-                <%= render 'layouts/admin/admin_header' %>
-              <% end %>
             </div>
+            <% @user_info = current_user.user_info rescue nil%>
+            <%if false%>
+              <%= render 'layouts/admin/temp_admin_header' %>
+            <%end%>
+            <%= render 'layouts/admin/admin_header' %>
           </div>
         </div>
       </div>
-  <% end %>
+    </div>
+  
   
   <div class="container-fluid" id="pcont">
     <!-- TOP NAVBAR -->
@@ -120,49 +101,9 @@
               <% end %>
           <% end %>
           <% if current_user %>
-              <!--<div class="text-center col-md-9">-->
-              <!--<h3 class="navbar-text col-md-12"><%#= @company.name %></h3>-->
-              <!--</div>-->
+            
               <ul class="nav navbar-nav navbar-right user-nav">
-                <% if session[:current_employee_id] %>
-                    <li class="button dropdown" style="height: 0px;">
-                      <a href="javascript:;" class="dropdown-toggle" id="read_all_notification" data-toggle="dropdown" style="height: auto;"><i class="fa fa-globe"></i><span class="" id="notification_count"></span></a>
-                      <%if false%>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <div class="nano nscroller" style="min-width: 287px;height: 100px;">
-                              <div class="content">
-                                <ul>
-                                  <% notification_count=0 %>
-                                  <% Employee.find(session[:current_employee_id]).notifications.only(:id, :seen, :description, :created_at).order(created_at: :desc).limit(2).each do |notification| %>
-                                      <% if notification.created_at.to_date <= Date.today %>
-                                      
-                                          <% if notification.seen %>
-                                              <li style="cursor: pointer;">
-                                                <a style="width: 280px; white-space: normal;" class="notification" id="alert_<%= notification.id.to_s %>"><i class="fa fa-cloud-upload info"></i><b><%= notification.description %></b><br><span class="notification-date"><%= time_ago_in_words(notification.created_at) + " ago" %></span><br></a>
-                                              </li>
-                                          <% else %>
-                                              <li>
-                                                <a style="width: 280px;background-color: #dcdcdc;white-space: normal;" class="notification" id="alert_<%= notification.id.to_s %>"><i class="fa fa-cloud-upload info"></i><b style="font-weight: 600"><%= notification.description %></b><br><span class="notification-date"><%= time_ago_in_words(notification.created_at) + " ago" %></span><br></a>
-                                              </li>
-                                          <% end %>
-                                      <% end %>
-                                  <% end %>
-                                </ul>
-                              </div>
-                            </div>
-                            <ul class="foot show_all_notifications">
-                              <li>
-                              <%if false%>
-                              <%= link_to 'View all activity', company_employee_notifications_path(session[:current_company_id].to_s, session[:current_employee_id].to_s), remote: true, class: 'btn btn-primary btn-flat', style: 'font-weight: 600;font-size: 14px;color: #4CAF50' %>
-                              <%end%>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      <%end%>
-                    </li>
-                <% end %>
+                
                 <li class="dropdown profile_menu">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span><%= current_user.first_name %></span>
                     <b class="caret user-caret"></b></a>
@@ -183,20 +124,7 @@
     <div class="cl-mcont">
       <div class="content">
         <div id="ajax-notice"></div>
-        <% if flash[:alert] %>
-            <div class="alert alert-danger alert-white rounded">
-              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-              <div class="icon"><i class="fa fa-times-circle"></i></div>
-              <strong>Error!</strong> <%= flash[:alert] %>
-            </div>
-        <% end %>
-        <% if flash[:notice] %>
-            <div class="alert alert-success alert-white rounded hide-10">
-              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-              <div class="icon"><i class="fa fa-check"></i></div>
-              <strong>Success!</strong> <%= flash[:notice] %>
-            </div>
-        <% end %>
+        
         <div id="contact_us_flash_message" class="alert alert-success alert-white rounded hide-10" style="display: none;">
           <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
           <div class="icon"><i class="fa fa-check"></i></div>
@@ -204,11 +132,9 @@
         </div>
         
         <%= yield %>
-        <%= yield :charts_js %> 
+       
         <div id="loading-icon">
-          <!--<div class="progress progress-striped active" style='width: 60%;margin-top: 250px !important;margin-left: 20%;overflow: visible'>-->
-          <!--<div class="progress-bar progress-bar-primary" style="width: 100%">Loading</div>-->
-          <!--</div>-->
+        
 
         </div>
         <div style="display: none">
@@ -219,113 +145,8 @@
 
   </div>
 
-</div>
-<%if session[:current_employee_id]%>
-  <script>
-    !function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"//raildata.helpscoutdocs.com/"},contact:{enabled:!1,formId:"c4ec0bc2-9137-11e7-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
-    HS.beacon.config({
-      color: '#f16e3f',
-      icon: 'question'
-    });
-  </script>
-<%end%>
+  </div>
+
 </body>
 
-<div style="overflow-y: auto;">
-  <div class="modal fade colored-header" id="show-notifications-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Your Notifications</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body" style="max-height: 450px;overflow-y: auto;overflow-x: hidden;padding: 0px !important;">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade colored-header primary " id="custom-confirm-box" tabindex="-1" role="dialog">
-  <div class="modal-dialog custom-width" style="width: 30%">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Are you sure?</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center">
-          <h4 class="no-margin confirm-message" style="text-align: center"></h4>
-        </div>
-        <br>
-        <br>
-
-        <div class="modal-footer" style="text-align: center !important;">
-          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-remove"></i>&nbsp;Cancel
-          </button>
-          <a href="#" type="button" data-method="get" class="btn btn-primary  delete btn-flat" data-dismiss="modal"><i class="fa fa-check"></i>&nbsp;Confirm</a>
-        </div>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade colored-header danger" id="exception-popup" tabindex="-1" role="dialog">
-  <div class="modal-dialog custom-width" style="width: 30%">
-    <div class="modal-content">
-      <div class="modal-header" style="height: 70px !important;border-bottom: none !important;">
-        <h3 class="hide">Sorry...!</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center">
-          <h4 class="no-margin" id="exception-alert">Can you say supercalifragilisticoexpialidoso?</h4>
-        </div>
-        <br>
-        <br>
-
-        <div class="modal-footer" style="text-align: center !important;">
-          <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-remove"></i>&nbsp;Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div style="overflow-y: auto;">
-  <div class="modal fade colored-header" id="show-notifications-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Your Notifications</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body" style="max-height: 450px;overflow-y: auto;overflow-x: hidden;padding: 0px !important;">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade colored-header" id="contactModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Submit a Ticket</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      </div>
-      <div class="modal-body">
-        <%if false%>
-        <%=render 'shared/contact_us'%>
-        <%end%>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div><!-- /.modal -->
 

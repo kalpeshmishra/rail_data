@@ -61,7 +61,7 @@ gem 'roo' # For Spreadsheets
 gem 'spreadsheet' # For Spreadsheets
 gem 'roo-xls'
 
-gem 'rmagick'
+# gem 'rmagick'
 gem 'carrierwave'
 # gem 'fog'
 # gem 'fog-aws'
