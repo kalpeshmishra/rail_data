@@ -1,0 +1,54 @@
+<%if @employees.present?%>
+  <table class="table-sm hover table-dark" id="employee-listing">
+    <thead>
+      <tr>
+        <th>SrNo</th>
+        <th>Employee's Name</th>
+        <th>PF or NPS No.</th>
+        <th>Aadhaar No.</th>
+        <th>Mobile No.</th>
+        <th>Current Post</th>
+        <th>Group</th>
+        <th>Level</th>
+        <th>GradePay</th>
+        <th>Current Station</th>
+        <%if is_viewable%>
+          <th>Actions</th>
+        <%end%>
+      </tr>
+    </thead>
+    <tbody>
+      <%count = ((params[:page] || 1).to_i - 1) * 20%>
+      <%@employees.each_with_index do |emp,index|%>
+    		<tr id=<%=emp.id.to_s%>>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= count + index+1%></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= "#{emp.first_name} #{emp.last_name}" rescue '' %></span></td>
+          <td class="text-center"><span class="view-location-<%= index %>"><%= emp.emp_number rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.aadhaar rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.mobile_no rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.post_code rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.group rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.level_p7 rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.grade_pay_p6 rescue '' %></span></td>
+  		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.station.code rescue '' %></span></td>
+  		  	<%if is_viewable%>
+  			    <td class="text-center" style="white-space: nowrap">
+  			      <span class="view-location-<%= index %>">
+  			        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_employee_path(emp),  class: "label label-default", title: "Edit Employee" %>
+  			       
+  			        <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger employee-delete', data: {toggle: "modal", method_type: "delete", link: admin_employee_path(emp.id), message: "You really want to delete this Employee?", target: "#custom-confirm-box"}, remote: true, title: "Delete Employee" %>
+  			      </span>
+  			    </td>
+  			  <%end%>
+  		  </tr>	
+    	<%end%> 
+    </tbody>
+  </table>
+
+  <div class="row text-center no-margin">
+    <div id="employee-pagination" class="custom-pagination"><%= will_paginate @employees,link_options: {'data-remote': true}, renderer: BootstrapPagination::Rails %></div>
+  </div>
+
+<%else%>
+  <h2>No Record Found</h2> 
+<%end%> 

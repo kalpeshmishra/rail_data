@@ -10,6 +10,7 @@ class Admin::EmployeeCadresController < ApplicationController
 
       sanction_cadre_data = EmployeeCadre.where(station_id: station_ids, employee_post_id: emp_post_ids)
       man_on_roll_data = Employee.where(station_id: station_ids, employee_post_id: emp_post_ids)
+      # binding.pry
       cadre_hash_data = EmployeeCadre.get_cadre_with_total(sanction_cadre_data,man_on_roll_data)
       @employee_cadre_report_data = cadre_hash_data
     end  
@@ -47,12 +48,12 @@ class Admin::EmployeeCadresController < ApplicationController
   end
 
   def employee_cader_form_data
-  	# binding.pry
     stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
     temp_cadre_stn = Station.where(id: stn)
     @employee_cadre_station_list = temp_cadre_stn.map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
     @employee_cadre_station_hash = {}
     temp_cadre_stn.map{|station| @employee_cadre_station_hash[station.id] = [station.code,station.name]}
+  	
   	@employee_cader_post_list = EmployeePost.all.map{|emp| ["#{emp.post}-Level-#{emp.level_p7}-GradePay-#{emp.grade_pay_p6}-Group-#{emp.group}",emp.id]}
     @employee_cadre = EmployeeCadre.where(station_id: params[:selected_station].to_i)
   end

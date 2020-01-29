@@ -53,10 +53,10 @@
           Report
         </span>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="station">Select Station
         <%= select_tag "station-list", options_for_select(@employee_cadre_station_list), {multiple: true, id: "station-list", class: 'primary-filters-station form-control input-sm'} %>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="post">
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="post">Select Category
       	<%= select_tag "post-list", options_for_select(@employee_cader_post_list), {multiple: true, id: "post-list", class: 'primary-filters-post form-control input-sm'} %>
       </div>
 

@@ -32,9 +32,9 @@
             Employee Sanction Cadre
           </span>
       </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Months<p></p>
-          <%= (select_tag "station-list", options_for_select(@employee_cadre_station_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm station_list"}).html_safe %><p></p>
-        </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" >Select Station<p></p>
+        <%= (select_tag "station-list", options_for_select(@employee_cadre_station_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm station_list"}).html_safe %><p></p>
+      </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
       </div>
@@ -48,17 +48,7 @@
 
   </div>
 <script>
-  var old_date = '<%=Date.today.strftime("%d/%m/%Y")%>';
-  $(function () {
-    $("#datepicker").datepicker({ 
-          autoclose: true, 
-          format:"dd/mm/yyyy",
-          todayHighlight: true,
-    });
-
-    $('#datepicker').datepicker('setDate', '');
-    
-  });
+ 
   $(".submit_data").click(function () {
     
     selected_station = $("#station-list").val();

@@ -9,15 +9,21 @@
   <div id="client-message"></div>
   <table class="table hover table-dark" id="employee-listing">
     <caption>
-      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
           <span class="pull-left lead-text">
             <%="Employee :  "%>
           </span>
       </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Station<p></p>
+        <%= (select_tag "station-list", options_for_select(@employee_station_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm station_list"}).html_safe %><p></p>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search"></i></span>
-          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or Code">
+          <input aria-invalid="false" aria-required="true" class="form-control input-md valid " type="text" id="primary-search" placeholder="Search by name or number">
         </div>
       </div>
       <%if is_viewable%>
@@ -26,61 +32,38 @@
         </div>
       <%end%>
     </caption>
-    <thead>
-    <tr>
-      <th>SrNo</th>
-      <th>Employee's Name</th>
-      <th>PF or NPS No.</th>
-      <th>Aadhaar No.</th>
-      <th>Mobile No.</th>
-      <th>Current Post</th>
-      <th>Group</th>
-      <th>Level</th>
-      <th>GradePay</th>
-      <th>Current Station</th>
-      <%if is_viewable%>
-        <th>Actions</th>
-      <%end%>
-    </tr>
-    </thead>
-    <tbody>
-    <%if @employees.present?%>
-    	<%@employees.each_with_index do |emp,index|%>
-    		<tr id=<%=emp.id.to_s%>>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= index+1 rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= "#{emp.first_name} #{emp.last_name}" rescue '' %></span></td>
-          <td class="text-center"><span class="view-location-<%= index %>"><%= emp.emp_number rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.aadhaar rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.mobile_no rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.post_code rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.group rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.level_p7 rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.grade_pay_p6 rescue '' %></span></td>
-			  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.station.code rescue '' %></span></td>
-			  	<%if is_viewable%>
-				    <td class="text-center" style="white-space: nowrap">
-				      <span class="view-location-<%= index %>">
-				        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_employee_path(emp),  class: "label label-default", title: "Edit Employee" %>
-				       
-				        <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger employee-delete', data: {toggle: "modal", method_type: "delete", link: admin_employee_path(emp.id), message: "You really want to delete this Employee?", target: "#custom-confirm-box"}, remote: true, title: "Delete Employee" %>
-				      </span>
-				    </td>
-				  <%end%>
-			  </tr>	
-    	<%end%> 
-    <%end%> 
-    </tbody>
+    
   </table>
 </div>
-<div class="row no-margin no-margin">
-	<div class="col-md-9 col-md-offset-2" id="com-pagination"><%= will_paginate @employees, renderer: BootstrapPagination::Rails %></div>
+
+<div id="employee-lisiting">
+  
 </div>
 
-<div id="employee-popup"></div>
+
+
 
 
 <script>
   $('.employee-delete').on('click', function () {
     $('#custom-confirm-box').find('.delete').attr("data-remote", true);
   });
+
+  $(".submit_data").click(function () {
+    
+    selected_station = $("#station-list").val();
+    if (selected_station != "") {
+      $.ajax({
+        type: "get",
+        url: "/admin/employees.js?selected_station=" + selected_station + "&is_data_filter=" + true
+      });
+    }
+    else {
+      alert("Select station "); 
+    }  
+      
+  });
+  
+
+
 </script>

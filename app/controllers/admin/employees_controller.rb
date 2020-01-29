@@ -1,9 +1,20 @@
 class Admin::EmployeesController < ApplicationController
 	layout "admin/application"
 
+
 	def index
-		@employees = Employee.all
-    @employees = @employees.paginate(:page => params[:page] || 1, :per_page => 20)
+		get_form_data
+		if params[:is_data_filter].present?
+			@employees = Employee.where(station_id: params[:selected_station].to_i)
+			@employees = @employees.paginate(:page => params[:page] || 1, :per_page => 20)
+		end
+    # 	binding.pry
+    # respond_to do |format|
+    #   format.js
+    #   format.html
+    # end	
+
+
 	end
 
 	def new
