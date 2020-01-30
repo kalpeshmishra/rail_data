@@ -5,15 +5,10 @@ class Admin::EmployeesController < ApplicationController
 	def index
 		get_form_data
 		if params[:is_data_filter].present?
-			@employees = Employee.where(station_id: params[:selected_station].to_i)
+			@employees = Employee.where(station_id: params[:selected_station].to_i).order(employee_post_id: :asc)
 			@employees = @employees.paginate(:page => params[:page] || 1, :per_page => 20)
 		end
-    # 	binding.pry
-    # respond_to do |format|
-    #   format.js
-    #   format.html
-    # end	
-
+    
 
 	end
 
@@ -77,6 +72,15 @@ class Admin::EmployeesController < ApplicationController
       format.js
     end
 	end
+
+	def delete_employee
+    emp_id = params[:employee_id].to_i
+    Employee.destroy(emp_id)
+    respond_to do |format|
+      format.js
+    end
+
+  end
 
 	def delete_employee_category_detail
     delete_category_detail_id = params[:delete_category_detail_id].to_i

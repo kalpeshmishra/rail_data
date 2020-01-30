@@ -20,7 +20,7 @@
     <tbody>
       <%count = ((params[:page] || 1).to_i - 1) * 20%>
       <%@employees.each_with_index do |emp,index|%>
-    		<tr id=<%=emp.id.to_s%>>
+    		<tr id="employee_row_id_<%=emp.id.to_s%>">
   		  	<td class="text-center"><span class="view-location-<%= index %>"><%= count + index+1%></span></td>
   		  	<td class="text-center"><span class="view-location-<%= index %>"><%= "#{emp.first_name} #{emp.last_name}" rescue '' %></span></td>
           <td class="text-center"><span class="view-location-<%= index %>"><%= emp.emp_number rescue '' %></span></td>
@@ -36,7 +36,10 @@
   			      <span class="view-location-<%= index %>">
   			        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_employee_path(emp),  class: "label label-default", title: "Edit Employee" %>
   			       
-  			        <%= link_to "<i class='fa fa-trash-o'></i>".html_safe, "javascript:;", class: 'label label-danger employee-delete', data: {toggle: "modal", method_type: "delete", link: admin_employee_path(emp.id), message: "You really want to delete this Employee?", target: "#custom-confirm-box"}, remote: true, title: "Delete Employee" %>
+  			        <a href="#" class="label label-danger employee-delete" id="<%= emp.id %>"><i class="fa fa-trash-o"></i></a>
+
+
+
   			      </span>
   			    </td>
   			  <%end%>
@@ -49,6 +52,53 @@
     <div id="employee-pagination" class="custom-pagination"><%= will_paginate @employees,link_options: {'data-remote': true}, renderer: BootstrapPagination::Rails %></div>
   </div>
 
+<!-- Add Training Delete- Modal html code starts -->
+<div class="modal fade colored-header" id="employee-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Employee?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_employee_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Training Delete- Modal html code ends -->  
+
 <%else%>
   <h2>No Record Found</h2> 
 <%end%> 
+
+
+<script>
+   $(function(){
+
+    $(".employee-delete").on('click',function(){
+      employee_id = $(this).attr('id')
+      $("#employee-delete-modal").modal('show');
+    });
+
+    $("#confirm_employee_delete").click(function () {
+      $("#employee-delete-modal").modal('hide');
+      remove_row = "#employee_row_id_"+employee_id
+      $(remove_row).remove('');
+      
+      if (employee_id != "") {
+        $.ajax({
+          type: "get",
+          url: "/delete_employee.js?employee_id=" + employee_id
+        });
+      }
+    });
+
+  });  
+
+
+</script>
