@@ -1,0 +1,102 @@
+<style>
+  ul.dropdown-menu {
+    min-width: 200px;
+    max-height: 200px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<script>
+    $(function () {
+
+      $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue'
+        });
+
+        $('.primary-filters-main-page').multiselect({
+          enableFiltering: true,
+          enableCaseInsensitiveFiltering: true,
+          includeSelectAllOption: true,
+          buttonWidth: '200px',
+          buttonClass: 'btn btn-default',
+          numberDisplayed: 0
+        });
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+ 
+<div class="table-responsive main-client-allowance">
+  <div>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="employee-allowance-form">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <span class="pull-left lead-text">
+          Employee OT / TA / Contingency details
+        </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month:<p></p>
+        <%= (select_tag "employee_allowance_month_list", options_for_select(@employee_allowance_month_list), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm employee_allowance_month_list"}).html_safe %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station:<p></p>
+        <%= (select_tag "employee_allowance_station_list", options_for_select(@employee_allowance_station_list), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm employee_allowance_station_list"}).html_safe %>
+      </div>
+      
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" id="category">Category:<p></p>
+        <%= select_tag "employee-allowance-category-list", options_for_select(""), {multiple: true, id: "employee-allowance-category-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+      
+    </caption>
+  </table>
+      <div id="employee_allowance_display_form"></div>
+      <div><p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(".employee_allowance_station_list").on("change",function(){
+    
+  });  
+
+
+
+  $(".submit_data").click(function () {
+      selected_month = $("#employee_allowance_month_list").val();
+      station= $("#employee_allowance_station_list").val();
+      selected_category = $('#employee-allowance-category-list').val();
+      if (selected_month != "" && station != "" && selected_category!= "") {
+        $.ajax({
+          type: "get",
+          url: "/admin/employee_allowances/new.js?selected_month=" + selected_month + "&station=" + station+"&selected_category="+selected_category
+
+        });
+      }
+      else{
+         $("#submit_error_msg").css('display','');
+      }  
+      
+  });
+  
+  
+</script>

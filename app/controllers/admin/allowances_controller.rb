@@ -51,11 +51,10 @@ class Admin::AllowancesController < ApplicationController
   	get_form_data
 
 	  month_list = []
-  	7.times do |i|
-  		d = Date.today - i.month
-  		month_list << d.strftime("%b-%Y")
-  	end	
-	  @allowance_month_list = month_list.reverse
+    date_range = (Date.parse('2020-01-01')..Date.today).uniq
+    date_range.map{ |x| month_list << x.strftime("%b-%Y") if month_list.exclude?(x.strftime("%b-%Y"))}
+	  @allowance_month_list = month_list
+    
 	  if params["selected_category"].present?	
 	    @@allowance_old_params_data = params 
     	selected_category = params["selected_category"].split(',').map!{|e| e.to_i}.delete_if {|x| x ==0}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191202073931) do
+ActiveRecord::Schema.define(version: 20200131071441) do
 
   create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_category_id"
@@ -112,9 +112,9 @@ ActiveRecord::Schema.define(version: 20191202073931) do
 
   create_table "dak_receivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "dak_id"
-    t.string   "reciever_user_id"
+    t.integer  "reciever_user_id"
     t.boolean  "is_read"
-    t.date     "dak_read_time_date"
+    t.datetime "dak_read_time_date"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
@@ -125,9 +125,8 @@ ActiveRecord::Schema.define(version: 20191202073931) do
     t.string   "letter_number"
     t.string   "letter_issue_date"
     t.string   "letter_description"
-    t.string   "creater_user_id"
-    t.string   "dak_create_time"
-    t.date     "dak_create_date"
+    t.integer  "creater_user_id"
+    t.datetime "dak_create_at"
     t.string   "extra"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
@@ -141,6 +140,24 @@ ActiveRecord::Schema.define(version: 20191202073931) do
     t.integer  "railway_zone_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+  end
+
+  create_table "employee_allowances", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "employee_id"
+    t.integer  "employee_category_id"
+    t.integer  "station_id"
+    t.string   "month"
+    t.string   "over_time_hours"
+    t.string   "over_time_minutes"
+    t.string   "over_time_amount"
+    t.string   "transpotation_days"
+    t.string   "transpotation_amount"
+    t.string   "contingency_amount"
+    t.string   "extra"
+    t.string   "reason"
+    t.string   "remark"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "employee_award_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
