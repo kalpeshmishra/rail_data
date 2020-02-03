@@ -1,0 +1,7 @@
+<%if params[:is_station_filter].present?%>	
+	$("#employee").empty();
+	$("#employee").html('<%= j render partial: 'employee_list_filter', :locals => {:employee_list => @employee_list} %>');
+<%end%>
+<%if params[:is_data_filter].present?%>
+	$("#employee_allowance_feed_form").html('<%= j render 'employee_allowance_feed_form'%>');
+<%end%>	

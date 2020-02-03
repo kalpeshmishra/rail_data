@@ -1,0 +1,26 @@
+Employee<p></p>
+<%= select_tag "employee_allowance_employee_list", options_for_select(employee_list), {multiple: true, id: "employee_allowance_employee_list", class: 'primary-filters-main-page form-control input-lg'} %>
+
+<script>
+  count = 0
+  $(document).ready(function() {
+    $('#employee_allowance_employee_list').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '300px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0,
+        onChange: function(){
+          $("#submit_error_msg").hide();
+        }
+        
+    });
+
+  });
+
+  
+
+   
+
+</script>

@@ -1,0 +1,88 @@
+<% @method = "POST" %>
+<% @url = admin_employee_allowances_path %>
+<div class="table-responsive" style="overflow-x: scroll; overflow-y: scroll;">
+  
+<%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-allowance-form',remote: true) do |form| %>
+	<table class="table" style="margin-bottom: 20px !important; overflow-x: scroll; ">
+	  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+	  	<th style="vertical-align: middle;" rowspan="2">Employee Name / Number</th>
+	  	<th style="vertical-align: middle;" colspan="3">OverTime</th>
+	  	<th colspan="2">Transpotation</th>
+	  	<th>Contingency </th>
+	  	<th style="vertical-align: middle;" rowspan="2">   Remarks   </th>
+	  	<th style="vertical-align: middle;" rowspan="2">Action</th>
+	  </tr>
+	  <tr style="color: #fff; background: #4B4B4D;">
+	  	<th>Hours</th>
+	  	<th>Minutes</th>
+	  	<th>Amount</th>
+	  	<th>Days</th>
+	  	<th>Amount</th>
+	  	<th>Amount</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+
+	  <%if @employee_allowance_selected_data.present?%>	
+	  	<%@employee_allowance_selected_data.each do |key,value|%>
+	  		<tr class="allowance-data allowance_row" id= "allowance_category_id">
+	  			<%= hidden_field_tag  "record_id", "", id: "record_id" %>	
+	  			<td id="<%=key[0][0]%>"><%=key[0][1]%>-<%=key[0][2]%> [<%=key[0][3]%>]</td>
+	        <td>
+        		<%= number_field_tag "over_time_hours", "", placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours",style: "width: 75px; font-size:14px;" %>
+        	</td>
+        	<td>	
+        		<%= number_field_tag "over_time_minutes", "", placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes",style: "width: 75px; font-size:14px;" %>
+        	</td>
+        	<td>
+        		<%= number_field_tag "over_time_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount",style: "width: 115px; font-size:14px;" %>
+        	</td>
+	        <td>
+	        	<%= number_field_tag "transpotation_days", "", placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days",style: "width: 105px; font-size:14px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "transpotation_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount",style: "width: 115px; font-size:14px;" %>
+	        </td>
+	        <td>
+	        	<%= number_field_tag "contingency_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:14px;" %>
+	        </td>	
+	        <td>
+	        	<%= text_area_tag "subject", '', placeholder: 'Enter remarks if any', id: "subject", class: 'form-control input-md remarks', pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 220px; height:70px;font-size:12px;"%>
+	        </td>
+	        <td style="vertical-align: middle; text-align: center;">
+          	<a href="#" class="remove-ip label label-danger" id="allowance_delete" style="padding: 20%" ><i class="fa fa-trash-o"></i></a>
+          </td>
+	  		</tr>		
+	    <%end%>  
+	  <%end%>  
+	  </tbody>
+	</table>
+ 
+  <div>
+  	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="right">
+			<button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" align="left">	
+			<p style="color: red;font-weight: bold;" id="allowance_data_save"></p>
+  	</div>
+  </div>
+   
+<%end%>
+</div>
+<div class="modal fade colored-header" id="delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Row?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+        
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_allowance_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>

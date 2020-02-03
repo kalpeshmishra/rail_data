@@ -11,20 +11,21 @@
 </style>
 <script>
     $(function () {
+    	$('.icheck').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue'
+      });
 
-      $('.icheck').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue'
-        });
+      $('.primary-filters-main-page').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '300px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
 
-        $('.primary-filters-main-page').multiselect({
-          enableFiltering: true,
-          enableCaseInsensitiveFiltering: true,
-          includeSelectAllOption: true,
-          buttonWidth: '200px',
-          buttonClass: 'btn btn-default',
-          numberDisplayed: 0
-        });
+      });
+
     });
 
     $(document).ready(function () {
@@ -51,8 +52,8 @@
         <%= (select_tag "employee_allowance_station_list", options_for_select(@employee_allowance_station_list), {prompt: 'Select', style:"height:36px;",class: "form-control  input-sm employee_allowance_station_list"}).html_safe %>
       </div>
       
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" id="category">Category:<p></p>
-        <%= select_tag "employee-allowance-category-list", options_for_select(""), {multiple: true, id: "employee-allowance-category-list", class: 'primary-filters-main-page form-control input-sm'} %>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" id="employee">Employee:<p></p>
+        <%= select_tag "employee_allowance_employee_list", options_for_select(""), {multiple: true, id: "employee_allowance_employee_list", class: 'primary-filters-main-page form-control input-sm'} %>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
         <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
@@ -60,7 +61,7 @@
       
     </caption>
   </table>
-      <div id="employee_allowance_display_form"></div>
+      <div id="employee_allowance_feed_form"></div>
       <div><p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -76,19 +77,25 @@
 </div>
 <script>
   $(".employee_allowance_station_list").on("change",function(){
-    
+		selected_station_id = $(this).val();
+    $.ajax({
+      type: "get",
+      url: "/admin/employee_allowances/new.js?selected_station_id=" + selected_station_id + "&is_station_filter=" + true 
+    });
+
   });  
 
-
-
+  $(".employee_allowance_station_list,.employee_allowance_month_list").on("change",function(){
+    $("#submit_error_msg").hide();
+  });  
   $(".submit_data").click(function () {
       selected_month = $("#employee_allowance_month_list").val();
       station= $("#employee_allowance_station_list").val();
-      selected_category = $('#employee-allowance-category-list').val();
-      if (selected_month != "" && station != "" && selected_category!= "") {
+      selected_employee = $('#employee_allowance_employee_list').val();
+      if (selected_month != "" && station != "" && selected_employee!= null) {
         $.ajax({
           type: "get",
-          url: "/admin/employee_allowances/new.js?selected_month=" + selected_month + "&station=" + station+"&selected_category="+selected_category
+          url: "/admin/employee_allowances/new.js?selected_month=" + selected_month + "&station=" + station+"&selected_employee="+selected_employee + "&is_data_filter=" + true
 
         });
       }
