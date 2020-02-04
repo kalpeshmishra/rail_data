@@ -5,15 +5,15 @@
 <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-allowance-form',remote: true) do |form| %>
 	<table class="table" style="margin-bottom: 20px !important; overflow-x: scroll; ">
 	  <thead class="thead-dark">
-    <tr style="color: #fff; background: #4B4B4D;">
+    <tr style="color: #fff; background: #656060;">
 	  	<th style="vertical-align: middle;" rowspan="2">Employee Name / Number</th>
 	  	<th style="vertical-align: middle;" colspan="3">OverTime</th>
 	  	<th colspan="2">Transpotation</th>
 	  	<th>Contingency </th>
-	  	<th style="vertical-align: middle;" rowspan="2">   Remarks   </th>
+	  	<th style="vertical-align: middle;" rowspan="2">Remarks</th>
 	  	<th style="vertical-align: middle;" rowspan="2">Action</th>
 	  </tr>
-	  <tr style="color: #fff; background: #4B4B4D;">
+	  <tr style="color: #fff; background: #656060;">
 	  	<th>Hours</th>
 	  	<th>Minutes</th>
 	  	<th>Amount</th>
@@ -23,35 +23,39 @@
 	  </tr>
 	  </thead>
 	  <tbody>
-
 	  <%if @employee_allowance_selected_data.present?%>	
+	    <%= hidden_field_tag  "select_employee", "", class: 'select_employee', id: "select_employee" %>
 	  	<%@employee_allowance_selected_data.each do |key,value|%>
-	  		<tr class="allowance-data allowance_row" id= "allowance_category_id">
-	  			<%= hidden_field_tag  "record_id", "", id: "record_id" %>	
-	  			<td id="<%=key[0][0]%>"><%=key[0][1]%>-<%=key[0][2]%> [<%=key[0][3]%>]</td>
+	    	<tr class="employee-allowance-data employee_allowance_row" id= "employee_allowance_id_<%=key%>">
+	  			<%= hidden_field_tag  "record_id_#{key}", "#{value[1].present? ? value[1].id : ''}", id: "record_id_#{key}" %>	
+	  			<%= hidden_field_tag  "select_month_#{key}", "", class: 'select_month', id: "select_month_#{key}" %>
+	      	<%= hidden_field_tag  "select_station_#{key}", "", class: 'select_station', id: "select_station_#{key}" %>
+	      	<%= hidden_field_tag  "category_id_#{key}", "#{key}", class: 'category_id', id: "category_id_#{key}" %>
+	      	<%= hidden_field_tag  "employee_id_#{key}", "#{key}", class: 'employee_id', id: "employee_id_#{key}" %>
+	  			<td id="<%=key%>"><%=value[0][1]%>-<%=value[0][2]%> [<%=value[0][3]%>] Desig-<%=value[0][5]%></td>
 	        <td>
-        		<%= number_field_tag "over_time_hours", "", placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours",style: "width: 75px; font-size:14px;" %>
+        		<%= number_field_tag "over_time_hours_#{key}", "#{value[1].present? ? value[1].over_time_hours : ''}", placeholder: "Hr", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_hours_#{key}",style: "width: 75px; font-size:14px;" %>
         	</td>
         	<td>	
-        		<%= number_field_tag "over_time_minutes", "", placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes",style: "width: 75px; font-size:14px;" %>
+        		<%= number_field_tag "over_time_minutes_#{key}", "#{value[1].present? ? value[1].over_time_minutes : ''}", placeholder: "Mi", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_minutes_#{key}",style: "width: 75px; font-size:14px;" %>
         	</td>
         	<td>
-        		<%= number_field_tag "over_time_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount",style: "width: 115px; font-size:14px;" %>
+        		<%= number_field_tag "over_time_amount_#{key}", "#{value[1].present? ? value[1].over_time_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Hours', id: "over_time_amount_#{key}",style: "width: 115px; font-size:14px;" %>
         	</td>
 	        <td>
-	        	<%= number_field_tag "transpotation_days", "", placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days",style: "width: 105px; font-size:14px;" %>
+	        	<%= number_field_tag "transpotation_days_#{key}", "#{value[1].present? ? value[1].transpotation_days : ''}", placeholder: "Day", class: 'form-control input-md',min:1,title: 'Days', id: "transpotation_days_#{key}",style: "width: 105px; font-size:14px;" %>
 	        </td>
 	        <td>
-	        	<%= number_field_tag "transpotation_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount",style: "width: 115px; font-size:14px;" %>
+	        	<%= number_field_tag "transpotation_amount_#{key}", "#{value[1].present? ? value[1].transpotation_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "transpotation_amount_#{key}",style: "width: 115px; font-size:14px;" %>
 	        </td>
 	        <td>
-	        	<%= number_field_tag "contingency_amount", "", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount",style: "width: 115px; font-size:14px;" %>
+	        	<%= number_field_tag "contingency_amount_#{key}", "#{value[1].present? ? value[1].contingency_amount : ''}", placeholder: "Amt", class: 'form-control input-md',min:1,title: 'Amount', id: "contingency_amount_#{key}",style: "width: 115px; font-size:14px;" %>
 	        </td>	
 	        <td>
-	        	<%= text_area_tag "subject", '', placeholder: 'Enter remarks if any', id: "subject", class: 'form-control input-md remarks', pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 220px; height:70px;font-size:12px;"%>
+	        	<%= text_area_tag "remark_#{key}", "#{value[1].present? ? value[1].remark : ''}", placeholder: 'Enter remarks if any', id: "remark_#{key}", class: 'form-control input-md remark', pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 220px; height:70px;font-size:12px;"%>
 	        </td>
 	        <td style="vertical-align: middle; text-align: center;">
-          	<a href="#" class="remove-ip label label-danger" id="allowance_delete" style="padding: 20%" ><i class="fa fa-trash-o"></i></a>
+          	<a href="#" class="remove-ip label label-danger" id="<%=key%>-employee_allowance_delete" style="padding: 20%" ><i class="fa fa-trash-o"></i></a>
           </td>
 	  		</tr>		
 	    <%end%>  
@@ -64,7 +68,7 @@
 			<button class="btn btn-primary btn-flat submit" type="submit"><i class="fa fa-check submit"></i>Save</button>
 		</div>
 		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" align="left">	
-			<p style="color: red;font-weight: bold;" id="allowance_data_save"></p>
+			<p style="color: red;font-weight: bold;" id="employee_allowance_data_save"></p>
   	</div>
   </div>
    
@@ -78,11 +82,49 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" align="center">
-        
-          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_allowance_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
-     
-     </div>
+        <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_employee_allowance_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+      </div>
     </div>
   </div>
 </div>
+<script>
+  $(function(){
+    selected_month = $("#employee_allowance_month_list").val();
+    station = $("#employee_allowance_station_list").val();
+    employee = $("#employee_allowance_employee_list").val();
+    $(".select_month").val(selected_month);
+    $(".select_station").val(station);
+    $(".select_employee").val(employee);
+
+  });
+
+  $(".label-danger").on('click',function(){
+    delete_index = $(this).attr('id').split("-")[0];
+    delete_employee_allowance_id = $("#record_id_"+delete_index).val();
+    $("#delete-modal").modal('show');
+  });
+
+  $("#confirm_employee_allowance_delete").click(function () {
+  	
+  	$("#delete-modal").modal('hide');
+    if (delete_employee_allowance_id != "") {
+      $.ajax({
+      type: "get",
+      url: "/delete_employee_allowance.js?delete_employee_allowance_id=" + delete_employee_allowance_id
+    	});
+  	}
+
+    $('.employee-allowance-data:visible').each(function() {
+    	if($(this).attr("id").split("_")[3] == delete_index){
+        $(this).remove('');
+      }
+    });
+  });
+
+  <%if @employee_allowance_data_status.present?%>
+    $("#employee_allowance_data_save").show(); 
+    $("#employee_allowance_data_save").html("Data Saved !");
+    $("#employee_allowance_data_save").hide(8000);
+  <%end%>
+</script>  

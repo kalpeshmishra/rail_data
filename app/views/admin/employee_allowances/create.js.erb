@@ -1,0 +1,6 @@
+<%if @employee_allowance_data_status.present?%>
+	$("#employee_allowance_data_save").show();	
+	$("#employee_allowance_data_save").html("Data Saved !");
+	$("#employee_allowance_data_save").hide(8000);
+	$("#employee_allowance_display_form").html('<%= j render 'employee_allowance_feed_form'%>')
+<%end%>

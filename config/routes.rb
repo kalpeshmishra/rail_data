@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   
   match '/delete_allowance', controller: 'admin/allowances', action: 'delete_allowance', via: [:get], as: 'delete_allowance'
   
+  match '/delete_employee_allowance', controller: 'admin/employee_allowances', action: 'delete_employee_allowance', via: [:get], as: 'delete_employee_allowance'
+  
   match '/delete_employee', controller: 'admin/employees', action: 'delete_employee', via: [:get], as: 'delete_employee'
   match '/delete_employee_category_detail', controller: 'admin/employees', action: 'delete_employee_category_detail', via: [:get], as: 'delete_employee_category_detail'
   match '/delete_employee_transfer_detail', controller: 'admin/employees', action: 'delete_employee_transfer_detail', via: [:get], as: 'delete_employee_transfer_detail'

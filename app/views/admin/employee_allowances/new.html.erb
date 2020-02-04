@@ -87,6 +87,7 @@
 
   $(".employee_allowance_station_list,.employee_allowance_month_list").on("change",function(){
     $("#submit_error_msg").hide();
+    $("#employee_allowance_feed_form").html('');
   });  
   $(".submit_data").click(function () {
       selected_month = $("#employee_allowance_month_list").val();
@@ -100,7 +101,7 @@
         });
       }
       else{
-         $("#submit_error_msg").css('display','');
+        $("#submit_error_msg").css('display','');
       }  
       
   });
