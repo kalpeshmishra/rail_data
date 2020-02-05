@@ -30,7 +30,7 @@
 	  			<%= hidden_field_tag  "record_id_#{key}", "#{value[1].present? ? value[1].id : ''}", id: "record_id_#{key}" %>	
 	  			<%= hidden_field_tag  "select_month_#{key}", "", class: 'select_month', id: "select_month_#{key}" %>
 	      	<%= hidden_field_tag  "select_station_#{key}", "", class: 'select_station', id: "select_station_#{key}" %>
-	      	<%= hidden_field_tag  "category_id_#{key}", "#{key}", class: 'category_id', id: "category_id_#{key}" %>
+	      	<%= hidden_field_tag  "post_id_#{key}", "#{value[0][4]}", class: 'post_id', id: "post_id_#{key}" %>
 	      	<%= hidden_field_tag  "employee_id_#{key}", "#{key}", class: 'employee_id', id: "employee_id_#{key}" %>
 	  			<td id="<%=key%>"><%=value[0][1]%>-<%=value[0][2]%> [<%=value[0][3]%>] Desig-<%=value[0][5]%></td>
 	        <td>

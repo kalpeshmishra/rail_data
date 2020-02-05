@@ -3,6 +3,55 @@ class Admin::EmployeeAllowancesController < ApplicationController
 
 
   def index
+  	get_form_data
+  	month_list = []
+	  date_range = (Date.parse('2020-01-01')..Date.today).uniq
+    date_range.map{ |x| month_list << x.strftime("%b-%Y") if month_list.exclude?(x.strftime("%b-%Y"))}
+
+	  @employee_allowance_month_list = month_list
+    @employee_allowance_ti_beat_list = User.where(id: StationUnderTiUser.all.pluck(:user_id).uniq.reject{|x| x==1}).pluck(:first_name, :id)
+    @employee_allowance_station_list = Station.where(id: StationUnderTiUser.all.pluck(:station_id).uniq).pluck(:code, :id)
+    @employee_allowance_category_list = EmployeeCategory.all.map{ |emp| [[emp.group,emp.name].join("-"),emp.id]}
+
+    if params[:is_data_filter].present?
+    	category_ids = params[:selected_category_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+    	post_ids = EmployeePost.where(employee_category_id: category_ids).pluck(:id)
+
+      @employee_allowance_type = params[:selected_employee_allowance_type].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"} if params[:selected_employee_allowance_type].present?
+      report_type = params[:report_type]
+      report_period = params[:report_period]
+
+      if params[:selected_ti_beat_ids].present?
+        ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+        select_station_ids = StationUnderTiUser.where(user_id: ti_beat_ids).pluck(:station_id)
+      elsif params[:selected_station_ids].present?
+        select_station_ids = params[:selected_station_ids].split(",").map{|x| x.to_i}
+      end
+
+      if params[:selected_years].present?
+        selected_years = params[:selected_years].split(',').map{|x|x}.delete_if {|x| x == "multiselect-all"}
+
+        select_allowance_months = []
+        temp_month = [['Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],['Jan', 'Feb', 'Mar']]
+
+        selected_years.each do |years|
+          temp_year = years.split("-")
+          2.times do |i| 
+            data = temp_month[i].map { |month| "#{month}-#{temp_year[i]}" }
+            select_allowance_months << data
+          end 
+        end
+        select_allowance_months = select_allowance_months.flatten
+      elsif params[:selected_months].present?
+        select_allowance_months = params[:selected_months].split(",").map{|x|x}.delete_if {|x| x == "multiselect-all"}
+      end  
+      @employee_allowance_reports_data = EmployeeAllowance.where(station_id: select_station_ids, employee_post_id: post_ids, month: select_allowance_months)
+
+      
+
+    end
+
+
   end
 
   def new

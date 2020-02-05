@@ -131,34 +131,29 @@
 </ul>
   <!-- Statistics Section Ends-->
 
-  <!-- Rail Dak Section Starts-->
-<%if is_dak_access%>  
-  <ul class="sub-menu">
-    <li class="parent">
-      <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
-    </li>
-    <li class="parent">
-      <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
-    </li>
-    <li class="parent">
-      <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
-    </li>
-    <li class="parent">
-      <a <%= "href=#{admin_daks_path(:dak_type => "search")}"%> title="Dak-Search"><span>Dak-Search</span></a>
-    </li>
-    <li class="parent">
-    </li>   
-    <li class="parent">
-      <a <%= "href=#{admin_allowances_path}"%> title="Allowance"><span>Allowance</span></a>
-    </li>
-    <li class="parent">
-      <a <%= "href=#{new_admin_allowance_path}"%> title="Allowance(Feed)"><span>Allowance(Feed)</span></a>
-    </li>
-    <li class="parent">
-    </li>   
-    
-  </ul>
-<%end%>  
+<!-- Rail Dak Section Starts-->
+  <%if is_dak_access%>  
+    <ul class="sub-menu">
+      <li class="parent">
+        <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
+      </li>
+      <li class="parent">
+        <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
+      </li>
+      <li class="parent">
+        <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
+      </li>
+      <li class="parent">
+        <a <%= "href=#{admin_daks_path(:dak_type => "search")}"%> title="Dak-Search"><span>Dak-Search</span></a>
+      </li>
+      <li class="parent">
+      </li>   
+      <li class="parent">
+      </li>   
+      
+    </ul>
+  <%end%>  
+<!-- Rail Dak Section Ends -->
 <%if is_allowance_access%>
   <ul>
     <li class="parent">
@@ -166,6 +161,12 @@
     </li>
     <li class="parent">
       <a <%= "href=#{new_admin_allowance_path}"%> title="Allowance(Feed)"><span>Allowance(Feed)</span></a>
+    </li>
+    <li class="parent">
+      <a <%= "href=#{admin_employee_allowances_path}"%> title="EmployeeAllowance"><span>Employee Allowance</span></a>
+    </li>
+    <li class="parent">
+      <a <%= "href=#{new_admin_employee_allowance_path}"%> title="EmployeeAllowance(Feed)"><span>Employee Allowance(Feed)</span></a>
     </li>
     <li class="parent">
     </li>   
@@ -186,7 +187,7 @@
    
     
   </ul>
-  <!-- Rail Dak Section Ends -->
+  
 
 
 <div class="text-right collapse-button" style="padding:3px 5px;">

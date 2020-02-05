@@ -1,2 +1,278 @@
-<h1>Admin::EmployeeAllowances#index</h1>
-<p>Find me in app/views/admin/employee_allowances/index.html.erb</p>
+<style>
+  ul.dropdown-menu {
+    min-width: 180px;
+    max-height: 200px;
+    overflow: auto;
+
+  }
+  html {
+    overflow-x: scroll;
+  }
+</style>
+<script>
+    $(function () {
+
+      $('.icheck').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue'
+      });
+
+      $('.primary-filters-category').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '130px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-employee_allowance_type').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '130px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-month').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-year').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-station').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+      $('.primary-filters-beat').multiselect({
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        includeSelectAllOption: true,
+        buttonWidth: '135px',
+        buttonClass: 'btn btn-default',
+        numberDisplayed: 0
+      });
+
+    });
+
+    $(document).ready(function () {
+      $('.sidebar-remain-open').click();
+    });
+
+</script>
+<%
+	employee_allowance_type_list = [["OverTime","OverTime"],["Transpotation","Transpotation"],["Contingency","Contingency"]]
+
+	months = ['Jan', 'Feb', 'Mar','Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+  month_years_list = []
+  financial_year_list = []
+  (2020..Date.today.strftime("%Y").to_i).each do |year|
+  	financial_year_list << ["#{year}-#{year+1}"] 
+  	months.each do |month|
+    	month_years_list << ["#{month}-#{year}"]
+  	end
+	end 
+%>
+<div class="table-responsive main-client-allowance">
+  <div>
+    <h4 class="no-margin" id="submit_error_msg" style="color:#FF0000;display:none">Select All Options to get data</h4>
+  </div>
+  <table class="table hover table-dark" id="employee-allowance-report">
+    <caption style="height: 140px;">
+    	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" id="category">Category/Type<p></p>
+        <%= select_tag "employee-allowance-category-list", options_for_select(@employee_allowance_category_list), {multiple: true, id: "employee-allowance-category-list", class: 'primary-filters-category form-control input-sm employee-allowance-category-list'} %>
+        <%= select_tag "employee-allowance-type", options_for_select(employee_allowance_type_list), {multiple: true, id: "employee-allowance-type", class: 'primary-filters-employee_allowance_type form-control input-sm employee-allowance-type'} %>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Station/TI-Beat<p></p>
+        <%= (select_tag "report-type", options_for_select([['ByTiBeat', 'ByTiBeat'], ['ByStation', 'ByStation']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_type"}).html_safe %><p></p>
+        <div id ="by-beat-feilds">
+        	<%= select_tag "by_beat", options_for_select(@employee_allowance_ti_beat_list), {multiple: true, id: "by-beat", class: 'primary-filters-beat form-control input-sm by_beat'} %>
+	      </div>
+	    	<div id ="by-station-feilds">
+	    		<%= select_tag "by_station", options_for_select(@employee_allowance_station_list), {multiple: true, id: "by-station", class: 'primary-filters-station form-control input-sm by_station'} %>
+	    	</div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Month/Year<p></p>  
+        <%= (select_tag "report-period", options_for_select([['ByMonth', 'ByMonth'], ['ByYear', 'ByYear']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_period"}).html_safe %><p></p>
+        <div id ="by-month-feilds">
+	      	<%= select_tag "by-month", options_for_select(month_years_list), {multiple: true, id: "by-month", class: 'primary-filters-month form-control input-sm by_month'} %>
+      	</div>
+      	<div id ="by-year-feilds">
+      		<%= select_tag "by-year", options_for_select(financial_year_list), {multiple: true, id: "by-year", class: 'primary-filters-year form-control input-sm by_year'} %>
+      	</div>	
+      </div> 
+      <%if false%>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">ReportDetails<p></p>
+      	<%= (select_tag "report-details", options_for_select([['Total', 'Total'], ['StationWise', 'StationWise']]), {prompt: 'Select', style: "height:37px;", class: "form-control  input-sm report_details"}).html_safe %>
+    	</div>		
+      <%end%>
+     
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+      
+    </caption>
+  </table>
+      <div id="employee_allowance_report_form"></div>
+      <div><p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p></div>
+      <div id="loading-indicator">
+        <%#= image_tag("728.GIF", :id => "loading-indicator") %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+  	 $(document).ready(function() {
+      $("#by-month-feilds").hide();
+      $("#by-year-feilds").hide();
+
+      $("#by-beat-feilds").hide();
+      $("#by-station-feilds").hide();
+    });
+
+  	$(".report_period").on("change",function(){
+  		period_selected = $(this).val();
+      if (period_selected == "ByMonth"){
+        $("#by-month-feilds").show();
+        $("#by-year-feilds").hide();
+        clear_year_fields();
+      } 
+      else if (period_selected == "ByYear"){
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").show();
+        clear_month_fields();
+      }
+      else{
+        $("#by-month-feilds").hide();
+        $("#by-year-feilds").hide();
+        clear_month_fields();
+        clear_year_fields();
+      }
+    });
+
+    $(".report_type").on("change",function(){
+  		period_selected = $(this).val();
+      if (period_selected == "ByTiBeat"){
+        $("#by-beat-feilds").show();
+        $("#by-station-feilds").hide();
+        clear_station_fields();
+      } 
+      else if (period_selected == "ByStation"){
+        $("#by-beat-feilds").hide();
+        $("#by-station-feilds").show();
+        clear_beat_fields();
+      }
+      else{
+        $("#by-beat-feilds").hide();
+        $("#by-station-feilds").hide();
+        clear_beat_fields();
+        clear_station_fields();
+      }
+    });
+
+    function clear_month_fields(){
+      $('option', $('#by-month')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-month").multiselect('refresh');
+    }
+    function clear_year_fields(){
+      $('option', $('#by-year')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-year").multiselect('refresh');
+    }
+    function clear_beat_fields(){
+      $('option', $('#by-beat')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-beat").multiselect('refresh');
+    }
+    function clear_station_fields(){
+      $('option', $('#by-station')).each(function(element) {
+        $(this).removeAttr('selected').prop('selected', false);
+      });
+      $("#by-station").multiselect('refresh');
+    }
+
+
+    $(".submit_data").on("click",function(){
+    	selected_category_ids = $("#employee-allowance-category-list").val();
+      selected_employee_allowance_type = $("#employee-allowance-type").val();
+
+      report_type = $('#report-type').val();
+      selected_ti_beat_ids = $('#by-beat').val();
+      selected_station_ids = $('#by-station').val();
+
+      report_period = $('#report-period').val();
+      selected_years = $('#by-year').val();
+      selected_months = $('#by-month').val();
+      
+      if (report_type == "ByTiBeat") {
+      	if (report_period == "ByYear") {
+      		if (selected_category_ids != null && selected_employee_allowance_type != null && selected_ti_beat_ids != null && selected_years != null) {
+						$.ajax({
+		          type: "get",
+		          url: "/admin/employee_allowances.js?selected_category_ids=" + selected_category_ids +"&selected_employee_allowance_type="+selected_employee_allowance_type + "&selected_ti_beat_ids="+ selected_ti_beat_ids + "&selected_years=" + selected_years +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+			      });      			
+      		}
+      	}
+      	else if (report_period == "ByMonth") {
+          if (selected_category_ids != null && selected_employee_allowance_type != null && selected_ti_beat_ids != null && selected_months != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/employee_allowances.js?selected_category_ids=" + selected_category_ids +"&selected_employee_allowance_type="+selected_employee_allowance_type + "&selected_ti_beat_ids="+ selected_ti_beat_ids + "&selected_months=" + selected_months +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
+      	}
+      }
+      else if (report_type == "ByStation") {
+        if (report_period == "ByYear") {
+          if (selected_category_ids != null && selected_employee_allowance_type != null && selected_station_ids != null && selected_years != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/employee_allowances.js?selected_category_ids=" + selected_category_ids +"&selected_employee_allowance_type="+selected_employee_allowance_type + "&selected_station_ids="+ selected_station_ids + "&selected_years=" + selected_years +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
+        }
+        else if (report_period == "ByMonth") {
+          if (selected_category_ids != null && selected_employee_allowance_type != null && selected_station_ids != null && selected_months != null) {
+            $.ajax({
+              type: "get",
+              url: "/admin/employee_allowances.js?selected_category_ids=" + selected_category_ids +"&selected_employee_allowance_type="+selected_employee_allowance_type + "&selected_station_ids="+ selected_station_ids + "&selected_months=" + selected_months +"&report_type="+report_type+"&report_period="+ report_period + "&is_data_filter=" + true 
+            });           
+          }
+        }
+      }
+
+    });	
+
+  });	
+</script>
+
+

@@ -1,0 +1,71 @@
+<div id="display_employee_allowance_reports">
+<span style="font-size: 16px;color:#cc3d16;">Employee Allowance Report&nbsp;&nbsp;</span>
+
+<table class="table hover table-bordered" id="allowance-reports">
+  <thead class="thead-dark">
+    <tr style="color: #fff; background: #4B4B4D;">
+      <th style="vertical-align: middle;" rowspan="2">SrNo</th>
+      <th style="vertical-align: middle;" rowspan="2">Station</th>
+      <th style="vertical-align: middle;" rowspan="2">TI-Beat</th>
+      <th style="vertical-align: middle;" rowspan="2">Month</th>
+      <th style="vertical-align: middle;" rowspan="2">Category</th>
+      <th style="vertical-align: middle;" rowspan="2">Group</th>
+      <%@employee_allowance_type.each do |all_type|%>
+      	<th 
+      		style="vertical-align: middle;" 
+      		<%if all_type== "OverTime"%>
+      			colspan="3"
+      		<%elsif all_type== "Transpotation"%>
+      			colspan="2"
+      		<%end%>
+      	>
+      		<%=all_type%>
+      	</th>
+      <%end%>
+    </tr>
+    <tr style="color: #fff; background: #4B4B4D;">
+    	<%@employee_allowance_type.each do |all_type|%>
+      	<%if all_type=="OverTime"%>
+      		<th>Hrs</th>
+      		<th>Min</th>
+      		<th>Amt</th>
+      	<%elsif all_type== "Transpotation"%>	
+      		<th>Days</th>
+      		<th>Amt</th>
+      	<%elsif all_type== "Contingency"%>	
+      		<th>Amt</th>
+    		<%end%>
+    	<%end%>
+    </tr>
+  </thead>
+  <tbody>
+  <%if @employee_allowance_reports_data.present?%>
+  	<%@employee_allowance_reports_data.each_with_index do |data,index|%>
+  		<tr>
+  			<td><%=index+1%></td>
+  			<td><%=data.station.code%></td>
+  			<td><%=User.find(data.station.station_under_ti_users.pluck(:user_id)[0]).first_name%></td>
+  			<td><%=data.month%></td>
+  			<td><%=data.employee_post.employee_category.name%></td>
+  			<td><%=data.employee_post.employee_category.group%></td>
+				<%if @employee_allowance_type.include?("OverTime")%>
+	  			<td><%=data.over_time_hours%></td>
+	  			<td><%=data.over_time_minutes%></td>
+	  			<td><%=data.over_time_amount%></td>
+	  		<%end%>
+				<%if @employee_allowance_type.include?("Transpotation")%>
+	  			<td><%=data.transpotation_days%></td>
+	  			<td><%=data.transpotation_amount%></td>
+	  		<%end%>
+				<%if @employee_allowance_type.include?("Contingency")%>
+	  			<td><%=data.contingency_amount%></td>
+  			<%end%>
+	  	</tr>	
+  	<%end%>
+  <%end%>
+  </tbody>
+</table>
+</div>
+<script>
+  
+</script>

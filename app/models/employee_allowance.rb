@@ -1,6 +1,6 @@
 class EmployeeAllowance < ApplicationRecord
 	belongs_to :employee
-	belongs_to :employee_category
+	belongs_to :employee_post
 	belongs_to :station
 
 	def self.create_or_update_emp_allowance(params)
@@ -25,7 +25,7 @@ class EmployeeAllowance < ApplicationRecord
       emp_allowance = self.find(record_id) rescue nil if record_id.present?
       emp_allowance = self.new if emp_allowance.blank?
       
-      emp_allowance.employee_category_id = value["select_category"].to_i rescue nil
+      emp_allowance.employee_post_id = value["post_id"].to_i rescue nil
       emp_allowance.employee_id = value["employee_id"].to_i rescue nil
       emp_allowance.station_id =  value["select_station"].to_i rescue nil
       emp_allowance.month = value["select_month"] rescue nil

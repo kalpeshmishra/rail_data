@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(version: 20200131071441) do
 
   create_table "employee_allowances", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_id"
-    t.integer  "employee_category_id"
+    t.integer  "employee_post_id"
     t.integer  "station_id"
     t.string   "month"
     t.string   "over_time_hours"

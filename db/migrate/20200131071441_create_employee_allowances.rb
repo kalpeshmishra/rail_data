@@ -2,7 +2,7 @@ class CreateEmployeeAllowances < ActiveRecord::Migration[5.0]
   def change
     create_table :employee_allowances do |t|
     	t.integer		:employee_id	
-    	t.integer		:employee_category_id	
+    	t.integer		:employee_post_id	
     	t.integer   :station_id
     	t.string    :month
     	t.string    :over_time_hours
