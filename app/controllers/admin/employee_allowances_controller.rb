@@ -22,9 +22,11 @@ class Admin::EmployeeAllowancesController < ApplicationController
       report_period = params[:report_period]
 
       if params[:selected_ti_beat_ids].present?
+      	# binding.pry
         ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
         select_station_ids = StationUnderTiUser.where(user_id: ti_beat_ids).pluck(:station_id)
       elsif params[:selected_station_ids].present?
+        # binding.pry
         select_station_ids = params[:selected_station_ids].split(",").map{|x| x.to_i}
       end
 
@@ -45,9 +47,27 @@ class Admin::EmployeeAllowancesController < ApplicationController
       elsif params[:selected_months].present?
         select_allowance_months = params[:selected_months].split(",").map{|x|x}.delete_if {|x| x == "multiselect-all"}
       end  
-      @employee_allowance_reports_data = EmployeeAllowance.where(station_id: select_station_ids, employee_post_id: post_ids, month: select_allowance_months)
+      temp_data= EmployeeAllowance.where(station_id: select_station_ids, employee_post_id: post_ids, month: select_allowance_months)
 
-      
+      final_data = {}
+      temp_data.each do |data|
+      	final_data[data.station] = {} if final_data[data.station].blank?
+      	final_data[data.station][data.month] = {} if final_data[data.station][data.month].blank?
+      	
+      	if final_data[data.station][data.month][data.employee_post.employee_category].blank?
+      	  final_data[data.station][data.month][data.employee_post.employee_category] = {"over_time_hours" => data.over_time_hours.to_i ,"over_time_minutes" => data.over_time_minutes.to_i, "over_time_amount" => data.over_time_amount.to_i,"transpotation_days" => data.transpotation_days.to_i,"transpotation_amount" => data.transpotation_amount.to_i,"contingency_amount" => data.contingency_amount.to_i}
+      	else
+      		final_data[data.station][data.month][data.employee_post.employee_category]["over_time_hours"]+= data.over_time_hours.to_i
+      		final_data[data.station][data.month][data.employee_post.employee_category]["over_time_minutes"]+= data.over_time_minutes.to_i
+      		final_data[data.station][data.month][data.employee_post.employee_category]["over_time_amount"]+= data.over_time_amount.to_i
+      		final_data[data.station][data.month][data.employee_post.employee_category]["transpotation_days"]+= data.transpotation_days.to_i
+      		final_data[data.station][data.month][data.employee_post.employee_category]["transpotation_amount"]+= data.transpotation_amount.to_i
+      		final_data[data.station][data.month][data.employee_post.employee_category]["contingency_amount"]+= data.contingency_amount.to_i
+
+      	end
+
+      end	
+      @employee_allowance_reports_data = final_data
 
     end
 
@@ -81,7 +101,11 @@ class Admin::EmployeeAllowancesController < ApplicationController
 
 
   def get_form_data
-  	stn_list = StationUnderTiUser.where(user_id: current_user.id).joins(:station).pluck(:code,:station_id)
+  	if User.find(current_user.id).user_role.is_superadmin
+  		stn_list = Station.where(division_id: current_user.division_id).map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
+  	else
+  		stn_list = StationUnderTiUser.where(user_id: current_user.id).joins(:station).pluck(:code,:station_id)
+  	end
 	  @employee_allowance_station_list = stn_list.uniq.sort
 	  
 	  month_list = []

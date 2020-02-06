@@ -4,7 +4,6 @@
 <table class="table hover table-bordered" id="allowance-reports">
   <thead class="thead-dark">
     <tr style="color: #fff; background: #4B4B4D;">
-      <th style="vertical-align: middle;" rowspan="2">SrNo</th>
       <th style="vertical-align: middle;" rowspan="2">Station</th>
       <th style="vertical-align: middle;" rowspan="2">TI-Beat</th>
       <th style="vertical-align: middle;" rowspan="2">Month</th>
@@ -40,27 +39,34 @@
   </thead>
   <tbody>
   <%if @employee_allowance_reports_data.present?%>
-  	<%@employee_allowance_reports_data.each_with_index do |data,index|%>
+  	<%@employee_allowance_reports_data.each do |stn,stn_data|%>
   		<tr>
-  			<td><%=index+1%></td>
-  			<td><%=data.station.code%></td>
-  			<td><%=User.find(data.station.station_under_ti_users.pluck(:user_id)[0]).first_name%></td>
-  			<td><%=data.month%></td>
-  			<td><%=data.employee_post.employee_category.name%></td>
-  			<td><%=data.employee_post.employee_category.group%></td>
-				<%if @employee_allowance_type.include?("OverTime")%>
-	  			<td><%=data.over_time_hours%></td>
-	  			<td><%=data.over_time_minutes%></td>
-	  			<td><%=data.over_time_amount%></td>
-	  		<%end%>
-				<%if @employee_allowance_type.include?("Transpotation")%>
-	  			<td><%=data.transpotation_days%></td>
-	  			<td><%=data.transpotation_amount%></td>
-	  		<%end%>
-				<%if @employee_allowance_type.include?("Contingency")%>
-	  			<td><%=data.contingency_amount%></td>
-  			<%end%>
-	  	</tr>	
+  			<td rowspan="<%=stn_data.keys.count+1+stn_data.values[0].keys.count+1%>"><%=stn.code%></td>
+        <td rowspan="<%=stn_data.keys.count+1+stn_data.values[0].keys.count+1%>"><%=StationUnderTiUser.find_by_station_id(stn.id).user.first_name rescue nil%></td>
+  		</tr>	
+      <%stn_data.each do |mnth,mnth_data|%>
+        <tr>
+          <td rowspan="<%=mnth_data.keys.count+1%>"><%=mnth%></td>
+        </tr>
+        <%mnth_data.each do |category,category_data|%>
+          <tr>
+            <td><%=category.name%></td>
+            <td><%=category.group%></td>
+            <%if @employee_allowance_type.include?("OverTime")%>
+              <td><%=category_data["over_time_hours"]%></td>
+              <td><%=category_data["over_time_minutes"]%></td>
+              <td><%=category_data["over_time_amount"]%></td>
+            <%end%>
+            <%if @employee_allowance_type.include?("Transpotation")%>
+              <td><%=category_data["transpotation_days"]%></td>
+              <td><%=category_data["transpotation_amount"]%></td>
+            <%end%>
+            <%if @employee_allowance_type.include?("Contingency")%>
+              <td><%=category_data["contingency_amount"]%></td>
+            <%end%>
+          </tr>
+        <%end%>
+      <%end%>
   	<%end%>
   <%end%>
   </tbody>
