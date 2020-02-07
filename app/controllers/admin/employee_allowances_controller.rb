@@ -22,11 +22,9 @@ class Admin::EmployeeAllowancesController < ApplicationController
       report_period = params[:report_period]
 
       if params[:selected_ti_beat_ids].present?
-      	# binding.pry
-        ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
+      	ti_beat_ids = params[:selected_ti_beat_ids].split(',').map{|x|x.to_i}.delete_if {|x| x ==0}
         select_station_ids = StationUnderTiUser.where(user_id: ti_beat_ids).pluck(:station_id)
       elsif params[:selected_station_ids].present?
-        # binding.pry
         select_station_ids = params[:selected_station_ids].split(",").map{|x| x.to_i}
       end
 
