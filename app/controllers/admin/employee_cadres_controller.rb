@@ -48,9 +48,14 @@ class Admin::EmployeeCadresController < ApplicationController
   end
 
   def employee_cader_form_data
-    stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
-    temp_cadre_stn = Station.where(id: stn)
-    @employee_cadre_station_list = temp_cadre_stn.map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
+    if User.find(current_user.id).user_role.is_superadmin
+      temp_cadre_stn = Station.where(division_id: current_user.division_id) #.map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
+       # @employee_cadre_station_list = temp_cadre_stn
+    else  
+      stn = StationUnderTiUser.where(user_id: current_user.id).pluck(:station_id)
+      temp_cadre_stn = Station.where(id: stn)
+    end
+      @employee_cadre_station_list = temp_cadre_stn.map{|stn| ["#{stn.code}-#{stn.name}",stn.id]}
     @employee_cadre_station_hash = {}
     temp_cadre_stn.map{|station| @employee_cadre_station_hash[station.id] = [station.code,station.name]}
   	
