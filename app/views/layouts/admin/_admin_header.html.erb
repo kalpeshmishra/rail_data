@@ -1,53 +1,53 @@
-<div class="">
+<div >
 <ul class="cl-vnavigation custom-sidebar">
 
   <!-- Admin Section Start--> 
   <%if is_subadmin%>
     <li class="parent">
-      <a href="javascript:void(0);"><i class="fa fa-exclamation-triangle"></i><span class="sidebar-remain-close">Admin</span></a>
+      <a href="#"><i class="fa fa-exclamation-triangle"></i><span class="admin-remain-open">Admin</span></a>
       <ul class="sub-menu">
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_users_path}"%> title="User"><span>User</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_states_path}"%> title="State"><span>State</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_railway_zones_path}"%> title="RailwayZone"><span>RailwayZone</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_divisions_path}"%> title="Division"><span>Division</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_areas_path}"%> title="Area"><span>Area</span></a>
         </li>
         
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_stations_path}"%> title="Station"><span>Station</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_load_unloads_path}"%> title="Loading/Unloading Station"><span>LoadUnload</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_short_routes_path}"%> title="Add Short Route"><span>Add Short Route</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_ic_divisions_path}"%> title="InterChange Point"><span>InterChange Point</span></a>
         </li>
-         <li class="parent">
+         <li>
           <a <%= "href=#{admin_major_commodities_path}"%> title="MajorCommodity"><span>MajorCommodity</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_rake_commodities_path}"%> title="RakeCommodity"><span>RakeCommodity</span></a>
         </li>
 
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_wagon_types_path}"%> title="WagonType"><span>WagonType</span></a>
         </li>
       
@@ -59,39 +59,39 @@
   <!-- Rake loading and unloading Feeding Section Start-->
   <%if is_subadmin%>
     <li class="parent">
-      <a href="javascript:void(0);"><i class="fa fa-database"></i><span class="sidebar-remain-close">Loading</span></a>
+      <a href="javascript:void(0);"><i class="fa fa-database"></i><span class="loading-remain-open">Loading</span></a>
       <ul class="sub-menu">
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_rake_load_path}"%> title="Loading-One"><span>RakeLoading</span></a>
         </li>
-        <li class="parent">
-            <a <%= "href=#{new_admin_one_rake_load_path}"%> title="RakeLoadingOne"><span>RakeLoadingOne</span></a>
-          </li>
-        <li class="parent">
+        <li>
+          <a <%= "href=#{new_admin_one_rake_load_path}"%> title="RakeLoadingOne"><span>RakeLoadingOne</span></a>
+        </li>
+        <li>
           <a <%= "href=#{new_admin_two_rake_load_path}"%> title="RakeLoadingTwo"><span>RakeLoadingTwo</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_other_load_path}"%> title="Other Loading"><span>OtherLoads</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_rake_unload_path}"%> title="UnLoading(PU)-One"><span>RakePU(Unload)</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_one_rake_unload_path}"%> title="Rake-UnloadOne"><span>Rake-UnloadOne</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_other_unload_path}"%> title="Other-Unload"><span>Other-Unload</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_gets_unload_path}"%> title="GETS-Unload"><span>GETS-Unload</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_aecs_unload_path}"%> title="AECS-Unload"><span>AECS-Unload</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_load_interchange_path}"%> title="Interchange"><span>Interchange</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_crack_rake_path}"%> title="Crack Rake"><span>CrackRake</span></a>
         </li>
         
@@ -103,39 +103,39 @@
   <!-- Rake loading and unloading Reports Section Start-->
   <%if is_statistics_access%>
     <li class="parent">
-      <a href="javascript:void(0);"><i class="fa fa-bar-chart-o nav-icon"></i><span class="sidebar-remain-close">Reports</span></a>
+      <a href="javascript:void(0);"><i class="fa fa-bar-chart-o nav-icon"></i><span class="reports-remain-open">Reports</span></a>
       <ul class="sub-menu">
-        <li class="parent">
+        <li>
         <a <%= "href=#{admin_custom_load_reports_path }"%> title="Custom Load Report"><span>Custom Load Report</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_custom_reports_path }"%> title="Custom Reports"><span>Custom Reports</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_one_custom_reports_path }"%> title="Custom Reports One"><span>Custom Reports One</span></a>
       </li> 
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_loading_reports_path }"%> title="DayWise Loading"><span>DayWise Loading</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_unloading_reports_path }"%> title="DayWise PU Release"><span>DayWise PU</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_phasewise_reports_path }"%> title="Phasewise Reports"><span>Phasewise</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_one_loading_reports_path }"%> title="Loading Reports"><span>Loading Reports</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_one_unloading_reports_path }"%> title="(PU)Unloading Reports"><span>(PU)Unloading Reports</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_load_interchanges_path}"%> title="Interchange Reports"><span>Interchange Reports</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_crack_rakes_path}"%> title="Interchange Reports"><span>CrackRakeReport</span></a>
       </li>
-      <li class="parent">
+      <li>
         <a <%= "href=#{admin_excel_reports_path }"%> title="Excel Download"><span>Excel Download</span></a>
       </li>
       </ul>
@@ -146,18 +146,18 @@
   <!-- Dak Section Start-->
   <%if is_dak_access%>
     <li class="parent">
-      <a href="javascript:void(0);"><i class="glyphicon glyphicon-envelope"></i><span class="sidebar-remain-close">Dak</span></a>
+      <a href="javascript:void(0);"><i class="glyphicon glyphicon-envelope"></i><span class="dak-remain-open">Dak</span></a>
       <ul class="sub-menu">
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_dak_path}"%> title="Dak-New"><span>Dak-Compose</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_daks_path(:dak_type => "received")}"%> title="Dak-Received"><span>Dak-Received</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_daks_path(:dak_type => "dispatch")}"%> title="Dak-Dispatched"><span>Dak-Dispatched</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_daks_path(:dak_type => "search")}"%> title="Dak-Search"><span>Dak-Search</span></a>
         </li>
       </ul>
@@ -168,21 +168,21 @@
   <!-- Employee Data Section Start-->
   <%if is_allowance_access%>
     <li class="parent">
-      <a href="javascript:void(0);"><i class="fa fa-user"></i><span class="sidebar-remain-close">EmployeeData</span></a>
+      <a href="javascript:void(0);"><i class="fa fa-user"></i><span class="employee-remain-open">EmployeeData</span></a>
       <ul class="sub-menu">
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_employees_path}"%> title="Employee"><span>Employee</span></a>
         </li>
-         <li class="parent">
+         <li>
           <a <%= "href=#{admin_employee_cadres_path}"%> title="Cadre"><span>Cadre</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_employee_cadre_path}"%> title="New Cadre"><span>New Cadre</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{admin_employee_allowances_path}"%> title="EmployeeAllowance"><span>Employee Allowance</span></a>
         </li>
-        <li class="parent">
+        <li>
           <a <%= "href=#{new_admin_employee_allowance_path}"%> title="EmployeeAllowance(Feed)"><span>Employee Allowance(Feed)</span></a>
         </li>
       </ul>
