@@ -124,6 +124,7 @@ class Admin::EmployeeAllowancesController < ApplicationController
   		emp = Employee.where(id: no).joins(:employee_post).pluck(:id,:first_name,:last_name,:emp_number,:employee_post_id,:post_code)
   		employee_allowance_data[no] = emp
   	}
+    
   	data = EmployeeAllowance.where(month: selected_month, employee_id: selected_employee_id, station_id: station) 
   	data.map{ |e| employee_allowance_data[e.employee_id]<< e }
 
