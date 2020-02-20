@@ -10,8 +10,8 @@ class Admin::OneUnloadingReportsController < ApplicationController
 				
 		adi_area = Area.find_by(area_code: "ADI")
 	 	gimb_area = Area.find_by(area_code: "GIMB")
-	 	adi_load_unload = LoadUnload.where(area_id: adi_area.id)
-	 	gimb_load_unload = LoadUnload.where(area_id: gimb_area.id)
+	 	adi_load_unload = LoadUnload.where(area_id: adi_area.id).includes([:rake_unloads]).includes([:station])
+	 	gimb_load_unload = LoadUnload.where(area_id: gimb_area.id).includes([:rake_unloads]).includes([:station])
 
 	 	
 		rake_unload_data = RakeUnload.where(release_date: from_date..to_date)
@@ -97,6 +97,16 @@ class Admin::OneUnloadingReportsController < ApplicationController
 		@division_unload_commodity_header = @division_rake_unload_commodity.map{|k,v|v.keys}.flatten.compact.uniq.sort
 		
 		#Commodity Division (PU)-Unloading Ends
+
+		#Rake-Station-Commodity-Loading & Loaded-Unit-Station-Commodity-Loading Start
+		adi_station_commodity_data_hash = RakeLoad.get_station_commodity_rake_load(rake_unload_adi)
+		gimb_station_commodity_data_hash = RakeLoad.get_station_commodity_rake_load(rake_unload_gimb)
+		@adi_station_commodity_rake = adi_station_commodity_data_hash.sort.to_h
+		@gimb_station_commodity_rake = gimb_station_commodity_data_hash.sort.to_h
+		@adi_station_commodity_header = @adi_station_commodity_rake.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		@gimb_station_commodity_header = @gimb_station_commodity_rake.map{|k,v|v.keys}.flatten.compact.uniq.sort
+		@rake_load_station_commodity_header = (@gimb_station_commodity_header+@adi_station_commodity_header).uniq.sort
+		#Rake-Station-Commodity-Loading & Loaded-Unit-Station-Commodity-Loading Ends
 	end
 
 

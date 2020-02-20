@@ -18,6 +18,7 @@ class Admin::EmployeesController < ApplicationController
 
 	def create
 		get_form_data
+
 		if params[:is_add_employee_category].present? and params[:is_add_employee_category] == "true"
 			EmployeeCategoryDetail.create_employee_category(params)
 			@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: params[:employee_id].to_i).order(date_in_level: :asc)

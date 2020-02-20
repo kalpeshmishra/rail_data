@@ -7,6 +7,7 @@
 <% @method = "POST" %>
 <% @url = admin_employees_path %>
 <div class="table-responsive">
+<br>
 <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'employee-basic-detail-form',remote: true) do |form| %>
   <div style="text-align: left;">
     <button class="btn btn-primary btn-flat details-submit" type="submit"><i class="fa fa-check details-submit"></i>Save</button>

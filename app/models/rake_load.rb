@@ -325,8 +325,8 @@ after_destroy :remove_rake_commodity_breakup_data
     rake_load.each do |data|
       release_date = data.release_date.strftime("%d-%m-%Y")
       date_array << release_date
-      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
-      major_commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      load_unload_code = data.load_unload.station.code
+      major_commodity_code = data.major_commodity.major_commodity
       odr_type = data.odr_type
       if data.release_date.present? and data_hash[release_date].present?
         data_hash[release_date].merge!("#{load_unload_code}" => {}) if data_hash[release_date][load_unload_code].blank?
@@ -398,7 +398,7 @@ after_destroy :remove_rake_commodity_breakup_data
     data_hash = {}
     rake_load.each do |data|
       release_date = data.release_date.strftime("%d-%m-%Y")
-      load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+      load_unload_code = data.load_unload.station.code
 
       if data.release_date.present?
         if data_hash[release_date].present?
@@ -420,7 +420,8 @@ after_destroy :remove_rake_commodity_breakup_data
     data_hash = {}
     rake_load.each do |data|
     release_date = data.release_date.strftime("%d-%m-%Y")
-    wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
+    # wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
+    wagon_code = data.wagon_type.wagon_type_code
 
       if data.release_date.present?
         if data_hash[release_date].present?
@@ -443,8 +444,8 @@ after_destroy :remove_rake_commodity_breakup_data
     data_hash = {}
     rake_load.each do |data|
     arrival_date = data.arrival_date.strftime("%d-%m-%Y")
-    wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
-
+    # wagon_code = WagonType.find(data.wagon_type_id).wagon_type_code
+    wagon_code = data.wagon_type.wagon_type_code
       if data.arrival_date.present?
         if data_hash[arrival_date].present?
 
@@ -466,7 +467,7 @@ after_destroy :remove_rake_commodity_breakup_data
     data_hash = {}
     rake_load.each do |data|
       release_date = data.release_date.strftime("%d-%m-%Y")
-      commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+      commodity_code = data.major_commodity.major_commodity
 
       if data.release_date.present?
         if data_hash[release_date].present?
@@ -489,8 +490,9 @@ after_destroy :remove_rake_commodity_breakup_data
     data_hash = {}
     rake_load.each do |data|
     release_date = data.release_date.strftime("%d-%m-%Y")
-    load_unload_code = LoadUnload.find(data.load_unload_id).station.code
-    commodity_code = MajorCommodity.find(data.major_commodity_id).major_commodity
+    # load_unload_code = LoadUnload.find(data.load_unload_id).station.code
+    load_unload_code = data.load_unload.station.code
+    commodity_code = data.major_commodity.major_commodity
     
       if data.load_unload_id.present?
         if data_hash[load_unload_code].present?

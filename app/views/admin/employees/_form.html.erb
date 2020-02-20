@@ -1,48 +1,81 @@
-<div class="employee-basic-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Basic Details:&nbsp;&nbsp;<b id="employee_basic_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<style>
+  .emp_div_style{
+    border: 2px solid grey;
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 5px;
+    width: 97%;
+  }
+  .emp_div_style:hover{
+    border: 2px solid #525252;
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 5px;
+    width: 97%;
+  }
+  .emp_text{
+    font-size: 18px !important;
+    cursor: pointer;
+  }
+  .emp_text:hover{
+    font-size: 18px !important;
+    font-weight: bold;
+    cursor: pointer;
+    color: red;
+  }
+</style>
+<div class="emp_div_style employee-basic-details" >
+  <div id="employee_basic_data" class="row emp_text">
+    &nbsp;&nbsp;&nbsp;Basic Details:&nbsp;&nbsp;<br>
+  </div>    
   <div id="employee_basic_details_form" class="employee-basic-details-form">
     <%= render 'employee_new_form' %>
   </div>
 </div>
-<div class="employee-category-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Category Details:&nbsp;&nbsp;<b id="employee_category_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-category-details" >
+  <div id="employee_category_data" class="row emp_text">
+    &nbsp;&nbsp;&nbsp;Category Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_category_details_form" class="employee-category-details-form">
     <%= render 'employee_category_details_form' %>
   </div>
 </div>
-<div class="employee-transfer-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Transfer Details:&nbsp;&nbsp;<b id="employee_transfer_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-transfer-details" >
+  <div id="employee_transfer_data" class="row emp_text">
+    &nbsp;&nbsp;&nbsp;Transfer Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_transfer_details_form" class="employee-transfer-details-form">
     <%= render 'employee_transfer_details_form' %>
   </div>
 </div>
-<div class="employee-training-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Training Details:&nbsp;&nbsp;<b id="employee_training_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-training-details" >
+  <div id="employee_training_data" class="row emp_text">
+  &nbsp;&nbsp;&nbsp;Training Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_training_details_form" class="employee-training-details-form">
     <%= render 'employee_training_details_form' %>
   </div>
 </div>
-<div class="employee-medical-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Medical Details:&nbsp;&nbsp;<b id="employee_medical_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-medical-details" >
+  <div id="employee_medical_data" class="row emp_text">
+  &nbsp;&nbsp;&nbsp;Medical Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_medical_details_form" class="employee-medical-details-form">
     <%= render 'employee_medical_details_form' %>
   </div>
 </div>
-<div class="employee-dar-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    DAR Details:&nbsp;&nbsp;<b id="employee_dar_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-dar-details" >
+  <div id="employee_dar_data" class="row emp_text">
+  &nbsp;&nbsp;&nbsp;DAR Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_dar_details_form" class="employee-dar-details-form">
     <%= render 'employee_dar_details_form' %>
   </div>
 </div>
-<div class="employee-award-details" >
-  <span class="lead-text add-cursor" style="font-size: 18px !important;">
-    Award Details:&nbsp;&nbsp;<b id="employee_award_data" style="font-style: italic;color: blue;">Show</b></span><br>
+<div class="emp_div_style employee-award-details" >
+  <div id="employee_award_data" class="row emp_text">
+  &nbsp;&nbsp;&nbsp;Award Details:&nbsp;&nbsp;<br>
+  </div>
   <div id="employee_award_details_form" class="employee-award-details-form">
     <%= render 'employee_award_details_form' %>
   </div>
@@ -51,51 +84,37 @@
 <script>
   $(".employee-basic-details-form").hide();  
   $("#employee_basic_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-basic-details-form").toggle();
+    $(".employee-basic-details-form").toggle();
   });
 
   $(".employee-category-details-form").hide();  
   $("#employee_category_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-category-details-form").toggle();
+    $(".employee-category-details-form").toggle();
   });
 
   $(".employee-transfer-details-form").hide();  
   $("#employee_transfer_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-transfer-details-form").toggle();
+    $(".employee-transfer-details-form").toggle();
   });
 
   $(".employee-training-details-form").hide();  
   $("#employee_training_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-training-details-form").toggle();
+    $(".employee-training-details-form").toggle();
   });
 
   $(".employee-medical-details-form").hide();  
   $("#employee_medical_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-medical-details-form").toggle();
+    $(".employee-medical-details-form").toggle();
   });
 
   $(".employee-dar-details-form").hide();  
   $("#employee_dar_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-dar-details-form").toggle();
+    $(".employee-dar-details-form").toggle();
   });
 
   $(".employee-award-details-form").hide();  
   $("#employee_award_data").click(function () {
-      var sign = $(this).text();
-      sign == 'Hide' ? $(this).text('Show') : $(this).text('Hide')
-      $(".employee-award-details-form").toggle();
+    $(".employee-award-details-form").toggle();
   });
   
 </script>
