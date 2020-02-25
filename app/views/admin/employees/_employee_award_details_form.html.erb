@@ -31,6 +31,9 @@
   </div>
 </div>
 <!-- Add Award Detail Modal html code start -->
+<% @method = "POST" %>
+<% @url = admin_employees_path %>
+
 <div class="modal fade colored-header add-award-modal" id="add_award_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width: 550px;">
     <div class="modal-content">
@@ -39,9 +42,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-award-div">
-      <form id="add-award-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-award-form',remote: true) do |form| %>
         <table>
           <tr>
+            <%= hidden_field_tag  "is_add_employee_award", true, id: "is_add_employee_award" %>  
+            <%= hidden_field_tag  "award_employee_id", "", id: "award_employee_id" %>  
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Award Category:</td>
             <td>
               <%= (select_tag "award_category", options_for_select([["MR","MR"],["GM","GM"],["PCOM","PCOM"],["PCSO","PCSO"],["DRM","DRM"],["SAFTEY","SAFTEY"],["GoodWork","GoodWork"],["EmployeeOfMonth","EmployeeOfMonth"]]), {prompt: 'Select',required: true, class: "form-control  input-sm award_category"}).html_safe %>
@@ -61,9 +66,9 @@
           </tr>
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-award-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary btn-flat employee-award-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b class= "form-group add_award_error" id="add_award_error" style="display: none"></b>
-      </form>    
+      <% end %>    
       </div>
     </div>
   </div>
@@ -95,29 +100,29 @@
     $('.add-award-detail').on('click',function(){
       $("#add_award_modal").modal('show');
     });  
+    $("#award_employee_id").val($("#record_id").val());
+    // $(".employee-award-save").on('click',function(){
+    //     employee_id = $("#record_id").val();
+    //     emp_award_category = $("#award_category").val();
+    //     emp_award_date = $("#award_date").val();
+    //     emp_award_reason = $("#award_reason").val();
 
-    $(".employee-award-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_award_category = $("#award_category").val();
-        emp_award_date = $("#award_date").val();
-        emp_award_reason = $("#award_reason").val();
-
-      if (emp_award_category!= "" && emp_award_date!= "" && emp_award_reason!= "") {  
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?is_add_employee_award=" + "true"+ "&employee_id="+ employee_id + "&emp_award_category=" + emp_award_category + "&emp_award_date=" + emp_award_date +"&emp_award_reason=" + emp_award_reason
-        });
-        $(".add_award_error").hide();
-        $("#add_award_modal").find('.close').click();
-      }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_award_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
+    //   if (emp_award_category!= "" && emp_award_date!= "" && emp_award_reason!= "") {  
+    //     $.ajax({
+    //       type: "post",
+    //       url: "/admin/employees.js?is_add_employee_award=" + "true"+ "&employee_id="+ employee_id + "&emp_award_category=" + emp_award_category + "&emp_award_date=" + emp_award_date +"&emp_award_reason=" + emp_award_reason
+    //     });
+    //     $(".add_award_error").hide();
+    //     $("#add_award_modal").find('.close').click();
+    //   }
+    //   else{
+    //     var error_msg ="Select All Feilds"
+    //     $("#add_award_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
         
-        $(".add_award_error").show();
-      }  
+    //     $(".add_award_error").show();
+    //   }  
 
-    });
+    // });
 
     $(".add-award-danger").on('click',function(){
       delete_award_detail_id = $(this).attr('id')
