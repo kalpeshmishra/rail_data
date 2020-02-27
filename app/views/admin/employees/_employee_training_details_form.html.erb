@@ -1,8 +1,8 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Training:</b>
+<div style="text-align:right;"><b>Click To Add Training:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-training-detail", id="add_training_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
+  <div>  
   	<table class="table table-sm" id="employee-training-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -24,14 +24,14 @@
         <%@employee_training_details_data.each_with_index do |data,index|%>
           <tr class="add-training-tr add_training_row_<%= data.id %>", id= "add_training_row_id_<%= data.id %>">
             <td><%=index+1%></td>
-            <td><%=data.start_date.strftime('%d-%m-%y')%></td>
-            <td><%=data.end_date.strftime('%d-%m-%y')%></td>
+            <td><%=data.start_date.strftime('%d/%m/%y')%></td>
+            <td><%=data.end_date.strftime('%d/%m/%y')%></td>
             <td><%=data.employee_category.name%></td>
             <td><%=data.training_type%></td>
             <td><%=data.certificate_no rescue nil%></td>
             <td><%=data.grade_received%></td>
             <td><%=data.training_center%></td>
-            <td><%=data.next_due_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.next_due_date.strftime('%d/%m/%y') rescue nil%></td>
             <td><%=data.remark%></td>
             <td id="training_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-training-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
@@ -51,9 +51,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-training-div">
-      <form id="add-training-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-training-form',remote: true) do |form| %>  
         <table>
-          <tr>    
+          <%= hidden_field_tag  "is_add_employee_training", true, id: "is_add_employee_training" %>  
+          <%= hidden_field_tag  "training_employee_id", "", id: "training_employee_id" %>     
+          <tr> 
             <td style="color: #fff; background: #4B4B4D;text-align: center;height: 1px;">From Date</td>
             <td>
               <%= text_field_tag "training_start_date",'', type: 'date',placeholder: 'StartDate', id: "training_start_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
@@ -95,9 +97,8 @@
           </tr>
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-training-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b class= "form-group add_training_error" id="add_training_error" style="display: none"></b>
-      </form>    
+        <button class="btn btn-primary btn-flat employee-training-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
+      <%end%>    
       </div>
     </div>
   </div>
@@ -129,34 +130,12 @@
     $('.add-training-detail').on('click',function(){
       $("#add_training_modal").modal('show');
     });  
-
+    $("#training_employee_id").val($("#record_id").val());
     $(".employee-training-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_training_start_date = $("#training_start_date").val();
-        emp_training_end_date = $("#training_end_date").val();
-        emp_training_type = $("#training_type").val();
-        emp_training_category_id = $("#training_category").val();
-        emp_training_due_date = $("#training_due_date").val();
-        emp_training_certificate_no = $("#training_certificate_no").val();
-        emp_training_grade = $("#training_grade").val();
-        emp_training_center = $("#training_center").val();
-        emp_training_remark = $("#training_remark").val();
-
-      if (emp_training_start_date!="" && emp_training_end_date!="" && emp_training_type!="" && emp_training_category_id!="" && emp_training_due_date!="" && emp_training_certificate_no!="" && emp_training_grade!=""&& emp_training_center!="") {  
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?emp_training_start_date=" + emp_training_start_date + "&is_add_employee_training=" + "true"+ "&employee_id="+ employee_id + "&emp_training_end_date=" + emp_training_end_date + "&emp_training_type=" +emp_training_type+"&emp_training_category_id="+emp_training_category_id +"&emp_training_due_date="+emp_training_due_date+"&emp_training_certificate_no="+emp_training_certificate_no + "&emp_training_grade=" + emp_training_grade+ "&emp_training_center=" + emp_training_center+ "&emp_training_remark=" + emp_training_remark
-        });
-        $(".add_training_error").hide();
+      if ($("#add-training-form").valid()) {
         $("#add_training_modal").find('.close').click();
       }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_training_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-        $(".add_training_error").show();
-      }  
-
+      
     });
 
     $(".add-training-danger").on('click',function(){
@@ -190,9 +169,7 @@
     $("#training_grade").val("");
     $("#training_center").val("");
     $("#training_remark").val("");
-    $(".add_training_error").hide();
-
-
+    
   });
 
 </script>

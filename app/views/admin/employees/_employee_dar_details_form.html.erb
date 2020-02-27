@@ -1,15 +1,15 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Dar:</b>
+<div style="width:auto;text-align:right;"><b>Click To Add Dar:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-dar-detail", id="add_dar_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
-  	<table class="table table-sm" id="employee-dar-details">
-  	<thead>
-	    <tr style="color: #fff; background: #4B4B4D;">
-	      <th>Sr</th>
+  <div style="width:auto;">  
+    <table class="table table-sm" id="employee-dar-details">
+    <thead>
+      <tr style="color: #fff; background: #4B4B4D;">
+        <th>Sr</th>
         <th>Type</th>
-	      <th>Issue Date</th>
-	      <th>Date Redc At Stn.</th>
+        <th>Issue Date</th>
+        <th>Date Redc At Stn.</th>
         <th>Emp Ackn. Date</th>
         <th>Defense Submit Date</th>
         <th>Defense Ackn. sent to DAR Date</th>
@@ -20,25 +20,25 @@
         <th>Finding Report Ackn. Date</th>
         <th>Remark</th>
         <th>Edit_Delete</th>
-  		</tr>
-  	</thead>
-  	<tbody>
+      </tr>
+    </thead>
+    <tbody>
       <%if @employee_dar_details_data.present?%>
         <%@employee_dar_details_data.each_with_index do |data,index|%>
           <tr class="add-dar-tr add_dar_row_<%= data.id %>", id= "add_dar_row_id_<%= data.id %>">
             <td><%=index+1%></td>
             <td style="text-overflow: ellipsis;"><%=data.dar_type%></td>
-            <td><%=data.issue_date.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.received_at_station.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.acknowledge_by_employee.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.defense_submit_by_employee.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.employee_defense_sent_to_dar.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.nip_received_date.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.nip_acknowledge_sent_to_dar.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.sf_7_issue.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.finding_report_issue_date.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.acknowledge_finding_report.strftime('%d-%m-%y') rescue nil%></td>
-            <td><%=data.remark%></td>
+            <td><%=data.issue_date.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.received_at_station.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.acknowledge_by_employee.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.defense_submit_by_employee.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.employee_defense_sent_to_dar.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.nip_received_date.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.nip_acknowledge_sent_to_dar.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.sf_7_issue.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.finding_report_issue_date.strftime('%d/%m/%y') rescue nil%></td>
+            <td><%=data.acknowledge_finding_report.strftime('%d/%m/%y') rescue nil%></td>
+            <td style="max-width: 400px;"><%=data.remark%></td>
             <td id="dar_id_<%=data.id%>" style="text-align: center;vertical-align: middle;">
               <a href="#"class="label label-default add-dar-edit" id="<%= data.id %>" ><i class="fa fa fa-pencil"></i></a>
               <a href="#" class="remove-ip label label-danger add-dar-danger" id="<%= data.id %>" ><i class="fa fa-trash-o"></i></a>
@@ -46,27 +46,32 @@
           </tr> 
         <%end%>
       <%end%>
-  	</tbody>
-  	</table>	
+    </tbody>
+    </table>  
 
   </div>
 </div>
-<!-- Add Dar Modal html code start -->
+<!-- Add Dar Detail Modal html code start -->
+
 <div class="modal fade colored-header add-dar-modal" id="add_dar_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width: 750px;">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Add/Edit Dar:</h3>
+        <h3>Add Dar Detail:</h3>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-dar-div">
-      <form id="add-dar-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-dar-form',remote: true) do |form| %>
         <table>
+            <%= hidden_field_tag  "dar_rec_id", "", id: "dar_rec_id" %>  
+            <%= hidden_field_tag  "is_add_employee_dar", true, id: "is_add_employee_dar" %>  
+            <%= hidden_field_tag  "dar_employee_id", "", id: "dar_employee_id" %>  
           <tr>
+
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
             <td>
               <%= hidden_field_tag  "emp_dar_record_id", "", id: "emp_dar_record_id" %>
-              <%= (select_tag "dar_type", options_for_select([["RecordedWarning(Minor)","RecordedWarning(Minor)"],["SF-11(Minor)","SF-11(Minor)"],["SF-5(Major)","SF-5(Major)"]]), {prompt: 'Select',required: true, class: "form-control  input-sm dar_type"}).html_safe %>
+              <%= (select_tag "dar_type", options_for_select([["Recorded-Warning-(Minor)","Recorded-Warning-(Minor)"],["SF11-(Minor)","SF11-(Minor)"],["SF5-(Major)","SF5-(Major)"]]), {prompt: 'Select',required: true, class: "form-control  input-sm dar_type"}).html_safe %>
             </td>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Issue Date</td>
             <td>
@@ -126,16 +131,16 @@
               <%= text_area_tag "dar_remark", '', placeholder: 'Enter Remark if any', id: "dar_remark", class: 'form-control input-md dar_remark', pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:80px;font-size:14px;"%>
             </td>
           </tr>
-         
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-dar-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b class= "form-group add_dar_error" id="add_dar_error" style="display: none"></b>
-      </form>    
+        <button class="btn btn-primary btn-flat employee-dar-save"  type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
+      <% end %>    
       </div>
     </div>
   </div>
 </div>
+
+
 
 <!-- Add Dar Modal html code ends -->
 <!-- Add Dar Delete- Modal html code starts -->
@@ -168,7 +173,8 @@
         dar_edit_id = ""
       }
       if (dar_edit_id != "") {
-        $(emp_dar_record_id).val($(this).attr('id'));
+        dar_record_id = $(this).attr('id');
+        $("#dar_rec_id").val($(this).attr('id'));
         $(dar_type).val($(dar_edit_id).find('td:eq(1)').html());
         $(dar_issue_date).val(moment($(dar_edit_id).find('td:eq(2)').html(), "DD-MM-YYYY").format("YYYY-MM-DD"));
         $(received_at_station_date).val(moment($(dar_edit_id).find('td:eq(3)').html(), "DD-MM-YYYY").format("YYYY-MM-DD"));
@@ -186,39 +192,12 @@
        
       $("#add_dar_modal").modal('show');
     });  
-
+    
+    $("#dar_employee_id").val($("#record_id").val());
     $(".employee-dar-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_dar_record_id = $("#emp_dar_record_id").val();
-        emp_dar_type = $("#dar_type").val();
-        emp_dar_issue_date = $("#dar_issue_date").val();
-        emp_received_at_station_date = $("#received_at_station_date").val();
-        emp_employee_acknowledge_date = $("#employee_acknowledge_date").val();
-        emp_defense_submit_by_employee_date = $("#defense_submit_by_employee_date").val();
-        emp_defense_acknowledge_sent_to_dar_date = $("#defense_acknowledge_sent_to_dar_date").val();
-        emp_nip_received_date = $("#nip_received_date").val();
-        emp_nip_acknowledge_sent_to_dar_date = $("#nip_acknowledge_sent_to_dar_date").val();
-        emp_sf_7_issue_date = $("#sf_7_issue_date").val();
-        emp_finding_report_issue_date = $("#finding_report_issue_date").val();
-        emp_acknowledge_finding_report = $("#acknowledge_finding_report").val();
-        emp_dar_remark = $("#dar_remark").val();
-      
-      if (emp_dar_type!="" && emp_dar_issue_date!="" && emp_received_at_station_date!="" && emp_employee_acknowledge_date!="") { 
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?is_add_employee_dar=" + "true"+ "&employee_id="+ employee_id + "&emp_dar_record_id=" + emp_dar_record_id +"&emp_dar_type=" + emp_dar_type + "&emp_dar_issue_date=" + emp_dar_issue_date + "&emp_received_at_station_date=" + emp_received_at_station_date + "&emp_employee_acknowledge_date=" + emp_employee_acknowledge_date + "&emp_defense_submit_by_employee_date=" + emp_defense_submit_by_employee_date + "&emp_defense_acknowledge_sent_to_dar_date=" + emp_defense_acknowledge_sent_to_dar_date + "&emp_nip_received_date=" + emp_nip_received_date + "&emp_nip_acknowledge_sent_to_dar_date=" + emp_nip_acknowledge_sent_to_dar_date + "&emp_sf_7_issue_date=" + emp_sf_7_issue_date + "&emp_finding_report_issue_date=" + emp_finding_report_issue_date + "&emp_acknowledge_finding_report=" + emp_acknowledge_finding_report+ "&emp_dar_remark=" + emp_dar_remark
-        });
-        
-        $(".add_dar_error").hide(); 
+      if ($("#add-dar-form").valid()) {
         $("#add_dar_modal").find('.close').click();
       }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_dar_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-        $(".add_dar_error").show();
-      }  
-
     });
 
     $(".add-dar-danger").on('click',function(){
@@ -257,8 +236,7 @@
     $("#finding_report_issue_date").val("");
     $("#acknowledge_finding_report").val("");
     $("#dar_remark").val("");
-    $(".add_dar_error").hide();
-
+   
   });
 
    

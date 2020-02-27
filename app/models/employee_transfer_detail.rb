@@ -15,7 +15,7 @@ class EmployeeTransferDetail < ApplicationRecord
 	end
 
 	def self.create_employee_transfer(params)
-		EmployeeTransferDetail.create(employee_id: params[:employee_id],station_id: params[:emp_station_id], transfer_type: params[:emp_transfer_type],transfer_date: params[:emp_transfer_date], letter_number: params[:emp_transfer_letter_number], resume_date: params[:emp_transfer_resume_date] , remark: params[:emp_add_transfer_remark])
+		EmployeeTransferDetail.create(employee_id: params[:transfer_employee_id],station_id: params[:add_transfer_station], transfer_type: params[:transfer_type],transfer_date: params[:transfer_date], letter_number: params[:transfer_letter_number], resume_date: params[:transfer_resume_date] , remark: params[:add_transfer_remark])
 	end
 
 end

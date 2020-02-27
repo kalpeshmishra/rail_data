@@ -1,8 +1,8 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Award:</b>
+<div style="text-align:right;"><b>Click To Add Award:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-award-detail", id="add_award_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
+  <div>  
   	<table class="table table-sm" id="employee-award-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -19,7 +19,7 @@
           <tr class="add-award-tr add_award_row_<%= data.id %>", id= "add_award_row_id_<%= data.id %>">
             <td><%=index+1%></td>
             <td><%=data.award_category%></td>
-            <td><%=data.award_date.strftime('%d-%m-%y')%></td>
+            <td><%=data.award_date.strftime('%d/%m/%y')%></td>
             <td style="max-width: 400px;"><%=data.reason%></td>
             <td id="award_id_<%=data.id%>"  style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-award-danger" id="<%= data.id %>" style="padding: 4%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
@@ -31,9 +31,6 @@
   </div>
 </div>
 <!-- Add Award Detail Modal html code start -->
-<% @method = "POST" %>
-<% @url = admin_employees_path %>
-
 <div class="modal fade colored-header add-award-modal" id="add_award_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" style="width: 550px;">
     <div class="modal-content">
@@ -66,8 +63,7 @@
           </tr>
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-award-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b class= "form-group add_award_error" id="add_award_error" style="display: none"></b>
+        <button class="btn btn-primary btn-flat employee-award-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
       <% end %>    
       </div>
     </div>
@@ -101,28 +97,11 @@
       $("#add_award_modal").modal('show');
     });  
     $("#award_employee_id").val($("#record_id").val());
-    // $(".employee-award-save").on('click',function(){
-    //     employee_id = $("#record_id").val();
-    //     emp_award_category = $("#award_category").val();
-    //     emp_award_date = $("#award_date").val();
-    //     emp_award_reason = $("#award_reason").val();
-
-    //   if (emp_award_category!= "" && emp_award_date!= "" && emp_award_reason!= "") {  
-    //     $.ajax({
-    //       type: "post",
-    //       url: "/admin/employees.js?is_add_employee_award=" + "true"+ "&employee_id="+ employee_id + "&emp_award_category=" + emp_award_category + "&emp_award_date=" + emp_award_date +"&emp_award_reason=" + emp_award_reason
-    //     });
-    //     $(".add_award_error").hide();
-    //     $("#add_award_modal").find('.close').click();
-    //   }
-    //   else{
-    //     var error_msg ="Select All Feilds"
-    //     $("#add_award_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-    //     $(".add_award_error").show();
-    //   }  
-
-    // });
+    $(".employee-award-save").on('click',function(){
+      if ($("#add-award-form").valid()) {
+        $("#add_award_modal").find('.close').click();
+      }
+    });
 
     $(".add-award-danger").on('click',function(){
       delete_award_detail_id = $(this).attr('id')
@@ -149,8 +128,7 @@
     $("#award_category").val("");
     $("#award_date").val("");
     $("#award_reason").val("");
-    $(".add_award_error").hide();
-
+  
   });
 
 </script>

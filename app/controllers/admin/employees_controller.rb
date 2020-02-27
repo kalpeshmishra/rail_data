@@ -18,30 +18,30 @@ class Admin::EmployeesController < ApplicationController
 
 	def create
 		get_form_data
-		# binding.pry
 		if params[:is_add_employee_category].present? and params[:is_add_employee_category] == "true"
 			EmployeeCategoryDetail.create_employee_category(params)
-			@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: params[:employee_id].to_i).order(date_in_level: :asc)
+			@employee_category_details_data = EmployeeCategoryDetail.where(employee_id: params[:category_employee_id].to_i).order(date_in_level: :asc)
 		elsif params[:is_add_employee_transfer].present?
 			EmployeeTransferDetail.create_employee_transfer(params)
-			@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id:  params[:employee_id].to_i).order(resume_date: :asc)
+			@employee_transfer_details_data = EmployeeTransferDetail.where(employee_id:  params[:transfer_employee_id].to_i).order(resume_date: :asc)
 		elsif params[:is_add_employee_training].present?
 			EmployeeTrainingDetail.create_employee_training(params)
-			@employee_training_details_data = EmployeeTrainingDetail.where(employee_id:  params[:employee_id].to_i).order(end_date: :asc)
+			@employee_training_details_data = EmployeeTrainingDetail.where(employee_id:  params[:training_employee_id].to_i).order(end_date: :asc)
 		elsif params[:is_add_employee_medical].present?
 			EmployeeMedicalDetail.create_employee_medical(params)
-			@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  params[:employee_id].to_i).order(fit_date: :asc)
+			@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  params[:medical_employee_id].to_i).order(fit_date: :asc)
 		elsif params[:is_add_employee_dar].present?
 			EmployeeDarDetail.create_employee_dar(params)
-			@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  params[:employee_id].to_i).order(issue_date: :asc)
+			@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  params[:dar_employee_id].to_i).order(issue_date: :asc)
 		elsif params[:is_add_employee_award].present?
 			EmployeeAwardDetail.create_employee_award(params)
-			@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  params[:employee_id].to_i).order(award_date: :asc)
+			@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  params[:award_employee_id].to_i).order(award_date: :asc)
 		else
 			@employee_save_status = Employee.create_or_update_employee(params)
 		end
 		
 			respond_to do |format|
+				format.html
 	      format.js
 	    end
 			
@@ -58,6 +58,10 @@ class Admin::EmployeesController < ApplicationController
 		@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  emp_id).order(fit_date: :asc)
 		@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  emp_id).order(issue_date: :asc)
 		@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  emp_id).order(award_date: :asc)
+		
+		# respond_to do |format|
+	 #    format.js
+	 #  end	
 	end
 
 	def get_form_data

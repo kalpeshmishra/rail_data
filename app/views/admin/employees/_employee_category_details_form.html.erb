@@ -1,8 +1,8 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Category:</b>
+<div style="text-align:right;"><b>Click To Add Category:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-category-detail", id="add_category_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
+  <div>  
   	<table class="table table-sm" id="employee-category-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -22,10 +22,10 @@
           <tr class="add-category-tr add_category_row_<%= data.id %>", id= "add_category_row_id_<%= data.id %>">
             <td><%=index+1%></td>
             <td><%=data.category_type%></td>
-            <td style="width:10%;"><%=data.date_in_level.strftime('%d-%m-%y') rescue nil%></td>
+            <td style="width:10%;"><%=data.date_in_level.strftime('%d/%m/%y') rescue nil%></td>
             <td><%="#{data.employee_post.post} / Level-#{data.employee_post.level_p7} / GP-#{data.employee_post.grade_pay_p6} /Group-#{data.employee_post.group}"%></td>
             <td><%=data.letter_number%></td>
-            <td><%=data.letter_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.letter_date.strftime('%d/%m/%y') rescue nil%></td>
             <td><%=data.remark%></td>
             <td id="category_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-category-danger" id="<%= data.id %>" style="padding: 12%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
@@ -45,8 +45,10 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-category-div">
-      <form id="add-category-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-category-form',remote: true) do |form| %>  
         <table>
+          <%= hidden_field_tag  "is_add_employee_category", true, id: "is_add_employee_category" %>  
+          <%= hidden_field_tag  "category_employee_id", "", id: "category_employee_id" %>  
           <tr>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
             <td>
@@ -85,7 +87,7 @@
         <br>
         <button class="btn btn-primary btn-flat employee-category-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <b class= "form-group add_category_error" id="add_category_error" style="display: none"></b>
-      </form>    
+      <%end%>    
       </div>
     </div>
   </div>
@@ -117,31 +119,12 @@
     $('.add-category-detail').on('click',function(){
       $("#add_category_modal").modal('show');
     });  
-
+    $("#category_employee_id").val($("#record_id").val());
     $(".employee-category-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_post_id = $("#add_category_post").val();
-        emp_category_type = $("#category_type").val();
-        emp_in_category_date = $("#category_date").val();
-        emp_category_letter_date = $("#category_letter_date").val();
-        emp_category_letter_number = $("#category_letter_number").val();
-        emp_add_category_remark = $("#category_remark").val();
-
-      if (emp_post_id!="" && emp_category_type!="" && emp_in_category_date!="" && emp_category_letter_date!="" && emp_category_letter_number!="") {  
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?emp_post_id=" + emp_post_id + "&is_add_employee_category=" + "true"+ "&employee_id="+ employee_id + "&emp_category_type=" + emp_category_type + "&emp_in_category_date=" +emp_in_category_date+"&emp_category_letter_date="+emp_category_letter_date +"&emp_category_letter_number="+emp_category_letter_number + "&emp_add_category_remark=" + emp_add_category_remark
-        });
-        $(".add_category_error").hide();
+      if ($("#add-category-form").valid()) {
         $("#add_category_modal").find('.close').click();
       }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_category_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-        $(".add_category_error").show();
-      }  
-
+      
     });
 
     $(".add-category-danger").on('click',function(){

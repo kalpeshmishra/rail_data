@@ -1,8 +1,8 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Medical:</b>
+<div style="text-align:right;"><b>Click To Add Medical:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-medical-detail", id="add_medical_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
+  <div>  
   	<table class="table table-sm" id="employee-medical-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -27,9 +27,9 @@
             <td><%=data.employee_category.name%></td>
             <td><%=data.medical_type%></td>
             <td><%=data.medical_category%></td>
-            <td><%=data.medical_date.strftime('%d-%m-%y')%></td>
-            <td><%=data.fit_date.strftime('%d-%m-%y')%></td>
-            <td><%=data.next_due_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.medical_date.strftime('%d/%m/%y')%></td>
+            <td><%=data.fit_date.strftime('%d/%m/%y')%></td>
+            <td><%=data.next_due_date.strftime('%d/%m/%y') rescue nil%></td>
             <td><%=data.certificate_no rescue nil%></td>
             <td><%=data.issued_by%></td>
             <td><%=data.remark%></td>
@@ -51,9 +51,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-medical-div">
-      <form id="add-medical-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-medical-form',remote: true) do |form| %>
         <table>
           <tr>  
+            <%= hidden_field_tag  "is_add_employee_medical", true, id: "is_add_employee_medical" %>  
+            <%= hidden_field_tag  "medical_employee_id", "", id: "medical_employee_id" %>  
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Category:</td>
             <td>
               <%= (select_tag "medical_employee_category", options_for_select(@employee_category_list), {prompt: 'Select',required: true, class: "form-control  input-sm medical_employee_category"}).html_safe %>
@@ -99,9 +101,8 @@
           </tr>
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-medical-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b class= "form-group add_medical_error" id="add_medical_error" style="display: none"></b>
-      </form>    
+        <button class="btn btn-primary btn-flat employee-medical-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
+      <%end%>    
       </div>
     </div>
   </div>
@@ -133,32 +134,10 @@
     $('.add-medical-detail').on('click',function(){
       $("#add_medical_modal").modal('show');
     });  
-
+    $("#medical_employee_id").val($("#record_id").val());
     $(".employee-medical-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_medical_employee_category_id = $("#medical_employee_category").val();
-        emp_medical_type = $("#medical_type").val();
-        emp_medical_category = $("#medical_category").val();
-        emp_medical_date = $("#medical_date").val();
-        emp_medical_fit_date = $("#medical_fit_date").val();
-        emp_medical_due_date = $("#medical_due_date").val();
-        emp_medical_certificate_no = $("#medical_certificate_no").val();
-        emp_medical_done_at = $("#medical_done_at").val();
-        emp_medical_remark = $("#medical_remark").val();
-
-      if (emp_medical_employee_category_id!= "" && emp_medical_type!= "" && emp_medical_category!= "" && emp_medical_date!= "" && emp_medical_fit_date!= "" && emp_medical_due_date!= "" && emp_medical_certificate_no!= "" && emp_medical_done_at!= "") {  
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?is_add_employee_medical=" + "true"+ "&employee_id="+ employee_id + "&emp_medical_employee_category_id=" + emp_medical_employee_category_id + "&emp_medical_type=" + emp_medical_type + "&emp_medical_category=" + emp_medical_category + "&emp_medical_date=" + emp_medical_date + "&emp_medical_fit_date=" + emp_medical_fit_date + "&emp_medical_due_date=" + emp_medical_due_date + "&emp_medical_certificate_no=" + emp_medical_certificate_no + "&emp_medical_done_at=" + emp_medical_done_at +"&emp_medical_remark=" + emp_medical_remark
-        });
-        $(".add_medical_error").hide();
+      if ($("#add-medical-form").valid()) {
         $("#add_medical_modal").find('.close').click();
-      }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_medical_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-        $(".add_medical_error").show();
       }  
 
     });
@@ -194,8 +173,7 @@
     $("#medical_certificate_no").val("");
     $("#medical_done_at").val("");
     $("#medical_remark").val("");
-    $(".add_medical_error").hide();
-
+    
   });
 
 </script>

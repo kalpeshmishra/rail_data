@@ -12,9 +12,7 @@
         <th>Level</th>
         <th>GradePay</th>
         <th>Current Station</th>
-        <%if is_viewable%>
-          <th>Actions</th>
-        <%end%>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -31,18 +29,17 @@
   		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.level_p7 rescue '' %></span></td>
   		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.employee_post.grade_pay_p6 rescue '' %></span></td>
   		  	<td class="text-center"><span class="view-location-<%= index %>"><%= emp.station.code rescue '' %></span></td>
-  		  	<%if is_viewable%>
+  		  	
   			    <td class="text-center" style="white-space: nowrap">
   			      <span class="view-location-<%= index %>">
-  			        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_admin_employee_path(emp),  class: "label label-default", title: "Edit Employee" %>
-  			       
+  			        <%= link_to '<i class="fa fa-eye"></i>'.html_safe, edit_admin_employee_path(emp),  class: "label label-default", title: "View or Update Employee" %>
+  			      <%if is_viewable%>
   			        <a href="#" class="label label-danger employee-delete" id="<%= emp.id %>"><i class="fa fa-trash-o"></i></a>
-
-
+              <%end%> 
 
   			      </span>
   			    </td>
-  			  <%end%>
+  			  
   		  </tr>	
     	<%end%> 
     </tbody>

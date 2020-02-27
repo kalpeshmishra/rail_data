@@ -1,8 +1,8 @@
-<div style="width:90%;text-align:right;"><b>Click To Add Transfer:</b>
+<div style="text-align:right;"><b>Click To Add Transfer:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-transfer-detail", id="add_transfer_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
 <div class="table-responsive">
-  <div style="width:90%;">  
+  <div>  
   	<table class="table table-sm" id="employee-transfer-details">
   	<thead>
 	    <tr style="color: #fff; background: #4B4B4D;">
@@ -23,9 +23,9 @@
             <td><%=index+1%></td>
             <td><%=data.transfer_type%></td>
             <td><%=data.station.code%></td>
-            <td><%=data.transfer_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.transfer_date.strftime('%d/%m/%y') rescue nil%></td>
             <td><%=data.letter_number%></td>
-            <td><%=data.resume_date.strftime('%d-%m-%y') rescue nil%></td>
+            <td><%=data.resume_date.strftime('%d/%m/%y') rescue nil%></td>
             <td><%=data.remark%></td>
             <td id="transfer_id_<%=data.id%>" style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-transfer-danger" id="<%= data.id %>" style="padding: 10%;"><i class="fa fa-trash-o"></i></a></td>
           </tr> 
@@ -45,8 +45,10 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body" id="add-transfer-div">
-      <form id="add-transfer-form">  
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-transfer-form',remote: true) do |form| %> 
         <table>
+          <%= hidden_field_tag  "is_add_employee_transfer", true, id: "is_add_employee_transfer" %>  
+          <%= hidden_field_tag  "transfer_employee_id", "", id: "transfer_employee_id" %>  
           <tr>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
             <td>
@@ -83,9 +85,8 @@
           </tr>
         </table>
         <br>
-        <button class="btn btn-primary btn-flat employee-transfer-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b class= "form-group add_transfer_error" id="add_transfer_error" style="display: none"></b>
-      </form>    
+        <button class="btn btn-primary btn-flat employee-transfer-save" ><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
+      <%end%>    
       </div>
     </div>
   </div>
@@ -117,31 +118,12 @@
     $('.add-transfer-detail').on('click',function(){
       $("#add_transfer_modal").modal('show');
     });  
-
+    $("#transfer_employee_id").val($("#record_id").val());
     $(".employee-transfer-save").on('click',function(){
-        employee_id = $("#record_id").val();
-        emp_transfer_type = $("#transfer_type").val();
-        emp_station_id = $("#add_transfer_station").val();
-        emp_transfer_date = $("#transfer_date").val();
-        emp_transfer_letter_number = $("#transfer_letter_number").val();
-        emp_transfer_resume_date = $("#transfer_resume_date").val();
-        emp_add_transfer_remark = $("#transfer_remark").val();
-
-      if (emp_station_id!="" && emp_transfer_type!="" && emp_transfer_date!="" && emp_transfer_resume_date!="" && emp_transfer_letter_number!="") {  
-        $.ajax({
-          type: "post",
-          url: "/admin/employees.js?emp_station_id=" + emp_station_id + "&is_add_employee_transfer=" + "true"+ "&employee_id="+ employee_id + "&emp_transfer_type=" + emp_transfer_type + "&emp_transfer_date=" +emp_transfer_date+"&emp_transfer_resume_date="+emp_transfer_resume_date +"&emp_transfer_letter_number="+emp_transfer_letter_number + "&emp_add_transfer_remark=" + emp_add_transfer_remark
-        });
-        $(".add_transfer_error").hide();
+      if ($("#add-transfer-form").valid()) {
         $("#add_transfer_modal").find('.close').click();
       }
-      else{
-        var error_msg ="Select All Feilds"
-        $("#add_transfer_error").text(error_msg).css({'color': 'red', 'background-color': 'yellow', 'font-weight' : 'bold'});
-        
-        $(".add_transfer_error").show();
-      }  
-
+      
     });
 
     $(".add-transfer-danger").on('click',function(){
@@ -172,8 +154,7 @@
     $("#transfer_remark").val("");
     $("#transfer_letter_number").val("");
 		$("#transfer_resume_date").val("");
-    $(".add_transfer_error").hide();
-
+  
   });
 
 </script>
