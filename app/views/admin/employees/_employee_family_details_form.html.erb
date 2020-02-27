@@ -1,0 +1,160 @@
+<div style="text-align:right;"><b>Click To Add Family Member:</b>
+    <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-family-detail", id="add_family_detail"><i class="fa fa-plus"></i>AddNew</a>
+</div>
+<div class="table-responsive">
+  <div>  
+  	<table class="table table-sm" id="employee-family-details">
+  	<thead>
+	    <tr style="color: #fff; background: #4B4B4D;">
+	      <th>Sr</th>
+        <th>Name</th>
+        <th>Relation</th>
+	      <th>Gender</th>
+        <th>Marital Status</th>
+        <th>Dependancy</th>
+        <th>Phy/Medic Challanged</th>
+        <th>Blood Group</th>
+        <th>Aadhaar No.</th>
+        <th>Mobile No.</th>
+        <th>Date Of Birth</th>
+        <th>Remark</th>
+        <th>Action</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%if @employee_family_details_data.present?%>
+        <%@employee_family_details_data.each_with_index do |data,index|%>
+          <tr class="add-family-tr add_family_row_<%= data.id %>", id= "add_family_row_id_<%= data.id %>">
+            <td><%=index+1%></td>
+            <td><%=data.name%></td>
+            <td><%=data.relation%></td>
+            <td><%=data.gender%></td>
+            <td><%=data.marital_status%></td>
+            <td><%=data.dependancy%></td>
+            <td><%=data.physicaly_challanged%></td>
+            <td><%=data.blood_group%></td>
+            <td><%=data.aadhaar%></td>
+            <td><%=data.mobile%></td>
+            <td><%=data.birth_date.strftime('%d/%m/%y') rescue nil%></td>
+            <td style="max-width: 400px;"><%=data.remarks%></td>
+            <td id="family_id_<%=data.id%>"  style="text-align: center;vertical-align: middle;"><a href="#" class="remove-ip label label-danger add-family-danger" id="<%= data.id %>" style="padding: 4%;"><i class="fa fa-trash-o"></i></a></td>
+          </tr> 
+        <%end%>
+      <%end%>
+  	</tbody>
+  	</table>	
+
+  </div>
+</div>
+<!-- Add Family Detail Modal html code start -->
+<div class="modal fade colored-header add-family-modal" id="add_family_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 650px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Family Detail:</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" id="add-family-div">
+      <%= form_tag(@url, method: @method, class: 'form-horizontal', id: 'add-family-form',remote: true) do |form| %>
+        <table>
+            <%= hidden_field_tag  "is_add_employee_family", true, id: "is_add_employee_family" %>  
+            <%= hidden_field_tag  "family_employee_id", "", id: "family_employee_id" %>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Name</td>
+            <td><%= text_field_tag "member_name", '',placeholder: 'Certificate Number', id: "member_name", class: 'form-control input-md member_name',required: true,pattern: "^[a-zA-Z ]+$", style: "font-size:14px;"%></td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Relation</td>
+            <td>
+              <%= (select_tag "relation", options_for_select([["Father","Father"],["Mother","Mother"],["Brother","Brother"],["Sister","Sister"],["Wife","Wife"],["Son","Son"],["Daughter","Daughter"],["Step Mother","Mother"],["Step Brother","Brother"],["Step Sister","Sister"],["Step Son","Son"],["Step Daughter","Daughter"]]), {prompt: 'Select',required: true, class: "form-control  input-sm relation"}).html_safe %>
+            </td>
+          </tr>  
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Gender</td>
+            <td>
+              <%= (select_tag "gender", options_for_select([["Male","Male"],["Female","Female"],["Other","Other"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm gender"}).html_safe %>
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Marital Status</td>
+            <td>
+              <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"],["Divorced","Divorced"],["Widow","Widow"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
+            </td>
+          </tr>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Gender</td>
+            <td>
+              
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark:</td>
+            <td>
+              <%= text_area_tag "family_remark", '', placeholder: 'Enter Remark if any', id: "family_remark", class: 'form-control input-md family_remark', pattern: "^[a-zA-Z0-9-/().,]+$",required: true,style: "height:90px;font-size:14px;"%>
+            </td>
+          </tr>
+        </table>
+        <br>
+        <button class="btn btn-primary btn-flat employee-family-save" type="submit"><i class="fa fa-check save" onclick="return validateForm(this)"></i>Save</button>
+      <% end %>    
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Family Detail Modal html code ends -->
+<!-- Add Family Delete- Modal html code starts -->
+<div class="modal fade colored-header" id="add-family-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width: 350px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>You really want to delete this Family?</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body" align="center">
+          <input type="button" class="btn btn-danger btn-lg" value="Delete" id="confirm_add_family_delete">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="button" class="btn btn-default btn-lg" data-dismiss="modal" value="Cancel"id="cancel">
+     
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Family Delete- Modal html code ends -->
+
+<script>
+  $(function(){
+    $('.add-family-detail').on('click',function(){
+      $("#add_family_modal").modal('show');
+    });  
+    $("#family_employee_id").val($("#record_id").val());
+    $(".employee-family-save").on('click',function(){
+      if ($("#add-family-form").valid()) {
+        $("#add_family_modal").find('.close').click();
+      }
+    });
+
+    $(".add-family-danger").on('click',function(){
+      delete_family_detail_id = $(this).attr('id')
+      $("#add-family-delete-modal").modal('show');
+    });
+
+    $("#confirm_add_family_delete").click(function () {
+      $("#add-family-delete-modal").modal('hide');
+      remove_row = "#add_family_row_id_"+delete_family_detail_id
+      $(remove_row).remove('');
+      
+      if (delete_family_detail_id != "") {
+        $.ajax({
+          type: "get",
+          url: "/delete_employee_family_detail.js?delete_family_detail_id=" + delete_family_detail_id
+        });
+      }
+    });
+
+
+  }); 
+
+  $(document).on('hidden.bs.modal','#add_family_modal', function () {
+    $("#family_category").val("");
+    $("#family_date").val("");
+    $("#family_reason").val("");
+  
+  });
+
+</script>

@@ -36,6 +36,9 @@ class Admin::EmployeesController < ApplicationController
 		elsif params[:is_add_employee_award].present?
 			EmployeeAwardDetail.create_employee_award(params)
 			@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  params[:award_employee_id].to_i).order(award_date: :asc)
+		elsif params[:is_add_employee_family].present?
+			EmployeeFamilyDetail.create_employee_family(params)
+			@employee_family_details_data = EmployeeFamilyDetail.where(employee_id:  params[:family_employee_id].to_i)
 		else
 			@employee_save_status = Employee.create_or_update_employee(params)
 		end
@@ -58,6 +61,7 @@ class Admin::EmployeesController < ApplicationController
 		@employee_medical_details_data = EmployeeMedicalDetail.where(employee_id:  emp_id).order(fit_date: :asc)
 		@employee_dar_details_data = EmployeeDarDetail.where(employee_id:  emp_id).order(issue_date: :asc)
 		@employee_award_details_data = EmployeeAwardDetail.where(employee_id:  emp_id).order(award_date: :asc)
+		@employee_family_details_data = EmployeeFamilyDetail.where(employee_id:  emp_id)
 		
 		# respond_to do |format|
 	 #    format.js

@@ -67,10 +67,8 @@
             <%= hidden_field_tag  "is_add_employee_dar", true, id: "is_add_employee_dar" %>  
             <%= hidden_field_tag  "dar_employee_id", "", id: "dar_employee_id" %>  
           <tr>
-
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Type</td>
             <td>
-              <%= hidden_field_tag  "emp_dar_record_id", "", id: "emp_dar_record_id" %>
               <%= (select_tag "dar_type", options_for_select([["Recorded-Warning-(Minor)","Recorded-Warning-(Minor)"],["SF11-(Minor)","SF11-(Minor)"],["SF5-(Major)","SF5-(Major)"]]), {prompt: 'Select',required: true, class: "form-control  input-sm dar_type"}).html_safe %>
             </td>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Issue Date</td>
@@ -223,7 +221,7 @@
 
   $(document).on('hidden.bs.modal','#add_dar_modal', function () {
    
-    $("#emp_dar_record_id").val("");
+    $("#dar_rec_id").val("");
     $("#dar_type").val("");
     $("#dar_issue_date").val("");
     $("#received_at_station_date").val("");

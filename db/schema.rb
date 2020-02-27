@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200131071441) do
+ActiveRecord::Schema.define(version: 20200227085808) do
 
   create_table "allowance_summaries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "employee_category_id"
@@ -221,6 +221,24 @@ ActiveRecord::Schema.define(version: 20200131071441) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "employee_family_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "employee_id"
+    t.string   "name"
+    t.string   "relation"
+    t.string   "gender"
+    t.string   "marital_status"
+    t.string   "dependancy"
+    t.string   "physicaly_challanged"
+    t.string   "blood_group"
+    t.string   "aadhaar"
+    t.string   "mobile"
+    t.date     "birth_date"
+    t.string   "remarks"
+    t.string   "extra"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "employee_medical_details", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

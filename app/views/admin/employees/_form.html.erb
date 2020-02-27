@@ -80,6 +80,14 @@
     <%= render 'employee_award_details_form' %>
   </div>
 </div>
+<div class="emp_div_style employee-family-details" >
+  <div id="employee_family_data" class="row emp_text">
+  &nbsp;&nbsp;&nbsp;Family Details:&nbsp;&nbsp;<br>
+  </div>
+  <div id="employee_family_details_form" class="employee-family-details-form">
+    <%= render 'employee_family_details_form' %>
+  </div>
+</div>
 
 <script>
   $(".employee-basic-details-form").hide();  
@@ -115,6 +123,11 @@
   $(".employee-award-details-form").hide();  
   $("#employee_award_data").click(function () {
     $(".employee-award-details-form").toggle();
+  });
+
+  $(".employee-family-details-form").hide();  
+  $("#employee_family_data").click(function () {
+    $(".employee-family-details-form").toggle();
   });
   
 </script>
