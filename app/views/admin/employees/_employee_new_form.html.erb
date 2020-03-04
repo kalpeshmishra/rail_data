@@ -3,6 +3,11 @@
     font-weight: bold;
     text-align: left;
   }
+  .required-field::after {
+    content: " *";
+    color: red;
+    font-size: 20px;
+  }
 </style>
 <% @method = "POST" %>
 <% @url = admin_employees_path %>
@@ -18,95 +23,95 @@
   <tr>
     <td>
       <%= hidden_field_tag  "record_id", "", id: "record_id" %>
-      <b class="employee_style">PF / NPS Number:</b>
+      <b class="employee_style required-field">PF / NPS Number:</b>
       <%= text_field_tag "pf_nps_number", '',placeholder: 'PF or NPS No.', id: "pf_nps_number", class: 'form-control input-md pf-nps-number',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
-      <b class="employee_style">Aadhaar No.:</b>
+      <b class="employee_style required-field">Aadhaar No.:</b>
       <%= text_field_tag "aadhaar_number", '',placeholder: 'Aadhaar No.', id: "aadhaar_number", class: 'form-control input-md aadhaar_number',minlength:"12",maxlength:"12",required: true,pattern: "^[0-9]+$", style: "width: 100%; font-size:14px;"%>
     </td>
     <td>
       <b class="employee_style">PAN No.:</b>
-      <%= text_field_tag "pan_number", '',placeholder: 'PAN No.', id: "pan_number", class: 'form-control input-md pf-nps-number',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+      <%= text_field_tag "pan_number", '',placeholder: 'PAN No.', id: "pan_number", class: 'form-control input-md pf-nps-number',required: false, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
   </tr>
   <tr>
     <td>
-      <b class="employee_style">Employee First Name:</b>
+      <b class="employee_style required-field">Employee First Name:</b>
       <%= text_field_tag "first_name", '',placeholder: 'Employee First Name', id: "first_name", class: 'form-control input-md first-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
-      <b class="employee_style">Employee Last (SurName) Name:</b>
+      <b class="employee_style required-field">Employee Last (SurName) Name:</b>
       <%= text_field_tag "last_name", '',placeholder: 'Employee Last Name', id: "last_name", class: 'form-control input-md last-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
       <b class="employee_style">Employee Father's Name:</b>
-      <%= text_field_tag "father_name", '',placeholder: 'Employee Fathers Name', id: "father_name", class: 'form-control input-md father-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+      <%= text_field_tag "father_name", '',placeholder: 'Employee Fathers Name', id: "father_name", class: 'form-control input-md father-name',required: false, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
   </tr>
   <tr>
     <td>
       <b class="employee_style">Employee Mother Name:</b>
-      <%= text_field_tag "mother_name", '',placeholder: 'Employee Mothers Name', id: "mother_name", class: 'form-control input-md mother-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+      <%= text_field_tag "mother_name", '',placeholder: 'Employee Mothers Name', id: "mother_name", class: 'form-control input-md mother-name',required: false, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
       <b class="employee_style">PRAN Number:</b>
       <%= text_field_tag "pran_number", '',placeholder: 'PRAN No.', id: "pran_number", class: 'form-control input-md pran-number', style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
-      <b class="employee_style">Gender:</b>
+      <b class="employee_style required-field">Gender:</b>
       <%= (select_tag "gender", options_for_select([["Male","Male"],["Female","Female"],["Other","Other"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm gender"}).html_safe %>
     </td>
   </tr>
   <tr>
     <td>
       <b class="employee_style">Religion:</b>
-      <%= (select_tag "religion", options_for_select([["Hindu","Hindu"],["Muslim","Muslim"],["Sikh","Sikh"],["Christian","Christian"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm religion"}).html_safe %>
+      <%= (select_tag "religion", options_for_select([["Hindu","Hindu"],["Muslim","Muslim"],["Sikh","Sikh"],["Christian","Christian"]]), {prompt: 'Select',required: false, style:"height:36px;",class: "form-control  input-sm religion"}).html_safe %>
     </td>
     <td>
-      <b class="employee_style">Community :</b>
+      <b class="employee_style required-field">Community :</b>
       <%= (select_tag "community", options_for_select([["GEN","GEN"],["SC","SC"],["ST","ST"],["OBC","OBC"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm community"}).html_safe %>
     </td>
     <td>
-      <b class="employee_style">Disability:</b>
+      <b class="employee_style required-field">Disability:</b>
       <%= (select_tag "disability", options_for_select([["YES","YES"],["NO","NO"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm disability"}).html_safe %>
     </td>
   </tr>
   <tr>
     <td>
-      <b class="employee_style">Date Of Birth:</b>
+      <b class="employee_style required-field">Date Of Birth:</b>
       <%= text_field_tag "birth_date",'', type: 'date',placeholder: 'DOB', id: "birth_date", class: 'form-control input-md',required: true, style: "width: 100%;"%>
     </td>
     <td>
-      <b class="employee_style">Date Of Appointment:</b>
+      <b class="employee_style required-field">Date Of Appointment:</b>
       <%= text_field_tag "appointment_date",'', type: 'date',placeholder: 'DOA', id: "appointment_date",required: true, class: 'form-control input-md', style: "width: 100%;"%>
     </td>
     <td>
       <b class="employee_style">Marital Status:</b>
-      <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
+      <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"]]), {prompt: 'Select', required: false,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
     </td>
   </tr>
   <tr>
     <td>
       <b class="employee_style">Employee Spouse Name:</b>
-      <%= text_field_tag "spouse_name", '',placeholder: 'Employee Spouse Name', id: "spouse_name", class: 'form-control input-md spouse-name',required: true, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
+      <%= text_field_tag "spouse_name", '',placeholder: 'Employee Spouse Name', id: "spouse_name", class: 'form-control input-md spouse-name',required: false, style: "width: 100%; font-size:14px; text-transform:uppercase;"%>
     </td>
     <td>
-      <b class="employee_style">Moblie No.:</b>
+      <b class="employee_style required-field">Moblie No.:</b>
       <%= text_field_tag "mobile_no", '',placeholder: 'Mobile No.', id: "mobile_no", class: 'form-control input-md mobile_no',minlength:"10",maxlength:"10",required: true,pattern: "^[0-9]+$", style: "width: 100%; font-size:14px;"%>
     </td>
     <td>
       <b class="employee_style">Emergency Contact Number:</b>
-      <%= number_field_tag "alternate_number", '',placeholder: 'Emergency No.', id: "alternate_number",required: true, class: 'form-control input-md alternate-number', style: "width: 100%; font-size:14px;"%>
+      <%= number_field_tag "alternate_number", '',placeholder: 'Emergency No.', id: "alternate_number",required: false, class: 'form-control input-md alternate-number', style: "width: 100%; font-size:14px;"%>
     </td>
   </tr>  
   <tr>
     <td>
-      <b class="employee_style">Employee Post:</b>
+      <b class="employee_style required-field">Employee Post:</b>
       <%= (select_tag "employee_post", options_for_select(@employee_post_list), {prompt: 'Select',required: true, class: "form-control  input-sm employee_post"}).html_safe %>
     </td>
     <td>
-      <b class="employee_style">Current Station:</b>
+      <b class="employee_style required-field">Current Station:</b>
       <%= (select_tag "current_station", options_for_select(@employee_station_list), {prompt: 'Select',required: true, class: "form-control  input-sm current_station"}).html_safe %>
     </td>
     <td>
@@ -121,11 +126,11 @@
     </td>
     <td>
       <b class="employee_style">Current Address:</b>
-      <%= text_area_tag "current_address", '', placeholder: 'Current Address', id: "current_address", class: 'form-control input-md current_address',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 100%; height:90px;font-size:14px;"%>
+      <%= text_area_tag "current_address", '', placeholder: 'Current Address', id: "current_address", class: 'form-control input-md current_address',required: false, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 100%; height:90px;font-size:14px;"%>
     </td>
     <td>
       <b class="employee_style">Permanent Address:</b>
-      <%= text_area_tag "permanent_address", '', placeholder: 'Permanent Address', id: "permanent_address", class: 'form-control input-md permanent_address',required: true, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 320px; height:90px;font-size:14px;"%>
+      <%= text_area_tag "permanent_address", '', placeholder: 'Permanent Address', id: "permanent_address", class: 'form-control input-md permanent_address',required: false, pattern: "^[a-zA-Z0-9-/().,]+$",style: "width: 320px; height:90px;font-size:14px;"%>
     </td>
   </tr>  
 </table>  
@@ -166,7 +171,7 @@
       $(employee_post).val('<%=data.employee_post_id%>');
       $(current_station).val('<%=data.station_id%>');
       
-      $("#pf_nps_number").prop('readonly', true);  
+      // $("#pf_nps_number").prop('readonly', true);  
     <%end%>  
 
   });

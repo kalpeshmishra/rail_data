@@ -1,3 +1,45 @@
+<style type="text/css">
+    input[type="date"] {
+        position: relative;
+    }
+
+    /* create a new arrow, because we are going to mess up the native one
+    see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
+    input[type="date"]:after {
+        content: "\25BC"; 
+        color: #555;
+        padding: 0 5px;
+    }
+
+    /* change color of symbol on hover */
+    input[type="date"]:hover:after {
+        color: #bf1400;
+    }
+
+    /* make the native arrow invisible and stretch it over the whole field so you can click anywhere in the input field to trigger the native datepicker*/
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        height: auto;
+        color: transparent;
+        background: transparent;
+    }
+
+    /* adjust increase/decrease button */
+    input[type="date"]::-webkit-inner-spin-button {
+        z-index: 1;
+    }
+
+     /* adjust clear button */
+     input[type="date"]::-webkit-clear-button {
+         z-index: 1;
+     }
+
+</style>
 <div style="text-align:right;"><b>Click To Add Family Member:</b>
     <a href="#" style = "height: 24px;padding: 2px 7px", class="btn btn-primary add-family-detail", id="add_family_detail"><i class="fa fa-plus"></i>AddNew</a>
 </div>
@@ -61,30 +103,56 @@
             <%= hidden_field_tag  "family_employee_id", "", id: "family_employee_id" %>  
           <tr>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Name</td>
-            <td><%= text_field_tag "member_name", '',placeholder: 'Certificate Number', id: "member_name", class: 'form-control input-md member_name',required: true,pattern: "^[a-zA-Z ]+$", style: "font-size:14px;"%></td>
+            <td><%= text_field_tag "member_name", '',placeholder: 'Full Name', id: "member_name", class: 'form-control input-md member_name',required: true,pattern: "^[a-zA-Z ]+$", style: "font-size:14px;"%></td>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Relation</td>
             <td>
-              <%= (select_tag "relation", options_for_select([["Father","Father"],["Mother","Mother"],["Brother","Brother"],["Sister","Sister"],["Wife","Wife"],["Son","Son"],["Daughter","Daughter"],["Step Mother","Mother"],["Step Brother","Brother"],["Step Sister","Sister"],["Step Son","Son"],["Step Daughter","Daughter"]]), {prompt: 'Select',required: true, class: "form-control  input-sm relation"}).html_safe %>
+              <%= (select_tag "family_relation", options_for_select([["Father","Father"],["Mother","Mother"],["Brother","Brother"],["Sister","Sister"],["Wife","Wife"],["Son","Son"],["Daughter","Daughter"],["Step Mother","Step Mother"],["Step Brother","Step Brother"],["Step Sister","Step Sister"],["Step Son","Step Son"],["Step Daughter","Step Daughter"]]), {prompt: 'Select',required: true, class: "form-control  input-sm family_relation"}).html_safe %>
             </td>
           </tr>  
           <tr>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Gender</td>
             <td>
-              <%= (select_tag "gender", options_for_select([["Male","Male"],["Female","Female"],["Other","Other"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm gender"}).html_safe %>
+              <%= (select_tag "family_gender", options_for_select([["Male","Male"],["Female","Female"],["Other","Other"]]), {prompt: 'Select',required: true, style:"height:36px;",class: "form-control  input-sm family_gender"}).html_safe %>
             </td>
             <td style="color: #fff; background: #4B4B4D;text-align: center;">Marital Status</td>
             <td>
-              <%= (select_tag "marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"],["Divorced","Divorced"],["Widow","Widow"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm marital_status"}).html_safe %>
+              <%= (select_tag "family_marital_status", options_for_select([["Married","Married"],["Un-married","Un-married"],["Divorced","Divorced"],["Widow","Widow"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm family_marital_status"}).html_safe %>
             </td>
           </tr>
           <tr>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Gender</td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Dependancy</td>
             <td>
-              
+              <%= (select_tag "family_dependancy", options_for_select([["YES","YES"],["NO","NO"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm family_dependancy"}).html_safe %> 
             </td>
-            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark:</td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Phy/Medic Challanged</td>
             <td>
-              <%= text_area_tag "family_remark", '', placeholder: 'Enter Remark if any', id: "family_remark", class: 'form-control input-md family_remark', pattern: "^[a-zA-Z0-9-/().,]+$",required: true,style: "height:90px;font-size:14px;"%>
+              <%= (select_tag "family_physicaly_challanged", options_for_select([["No","No"],["Mentally Invalid","Mentally Invalid"],["Physically Invalid","Physically Invalid"]]), {prompt: 'Select', required: true,style:"height:36px;",class: "form-control  input-sm family_physicaly_challanged"}).html_safe %>
+            </td>
+          </tr>
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Blood Group</td>
+            <td>
+               <%= (select_tag "family_blood_group", options_for_select([["A+","A+"],["AB-","AB-"],["AB+","AB+"],["B-","B-"],["B+","B+"],["O-","O-"],["O+","O+"],["A1+","A1+"],["A1-","A1-"]]), {prompt: 'Select', class: "form-control  input-sm family_blood_group"}).html_safe %>
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Aadhaar No.</td>
+            <td>
+              <%= text_field_tag "family_aadhaar_number", '',placeholder: 'Aadhaar No.', id: "family_aadhaar_number", class: 'form-control input-md family_aadhaar_number',minlength:"12",maxlength:"12",pattern: "^[0-9]+$", style: "width: 100%; font-size:14px;"%>
+            </td>
+          </tr> 
+          <tr>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Mobile No.</td>
+            <td>
+               <%= number_field_tag "family_mobile_number", '',placeholder: 'Mobile No.', id: "family_mobile_number", class: 'form-control input-md family_mobile_number',minlength:"10",maxlength:"10", style: "width: 100%; font-size:14px;"%>
+            </td>
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Date Of Birth</td>
+            <td>
+              <%= text_field_tag "family_date_of_birth",'', type: 'date',placeholder: 'Date', id: "family_date_of_birth", class: 'form-control input-md',required: true, style: "width: 100%;"%>
+            </td>
+          </tr> 
+          <tr>  
+            <td style="color: #fff; background: #4B4B4D;text-align: center;">Remark:</td>
+            <td colspan="3">
+              <%= text_area_tag "family_remark", '', placeholder: 'Enter Remark if any', id: "family_remark", class: 'form-control input-md family_remark', pattern: "^[a-zA-Z0-9-/().,]+$",style: "height:60px;font-size:14px;"%>
             </td>
           </tr>
         </table>

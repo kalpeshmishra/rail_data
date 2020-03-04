@@ -10,7 +10,7 @@ class Admin::EmployeeCadresController < ApplicationController
 
       sanction_cadre_data = EmployeeCadre.where(station_id: station_ids, employee_post_id: emp_post_ids)
       man_on_roll_data = Employee.where(station_id: station_ids, employee_post_id: emp_post_ids)
-      # binding.pry
+      
       cadre_hash_data = EmployeeCadre.get_cadre_with_total(sanction_cadre_data,man_on_roll_data)
       @employee_cadre_report_data = cadre_hash_data
     end  
