@@ -27,8 +27,11 @@
 	$("#employee_family_details_form").html('<%= j render 'employee_family_details_form'%>');
 <%end%>
 <%if @employee_save_status%>
-	$("#employee_new_form_div").html('');
-	$("#employee_new_form_div").html('<%= j render 'employee_new_form'%>');
+	// $("#employee_basic_details_form").html('');
+	// $("#employee_basic_details_form").html('<%= j render 'employee_new_form'%>');
 	$("#emp_status_msg").show().delay(3000).fadeOut(800);
+	$(".details-submit")
+      .text("Save")
+      .removeAttr('disabled', 'disabled');
 	
 <%end%>

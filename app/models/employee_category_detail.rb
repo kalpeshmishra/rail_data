@@ -15,7 +15,7 @@ class EmployeeCategoryDetail < ApplicationRecord
 	end
 	
 	def self.create_employee_category(params)
-		EmployeeCategoryDetail.create(employee_id: params[:category_employee_id],employee_post_id: params[:add_category_post], category_type: params[:category_type],date_in_level: params[:in_category_date], letter_number: params[:category_letter_number], letter_date: params[:category_letter_date] , remark: params[:add_category_remark])
+		EmployeeCategoryDetail.create(employee_id: params[:category_employee_id],employee_post_id: params[:add_category_post], category_type: params[:category_type],date_in_level: params[:category_date], letter_number: params[:category_letter_number], letter_date: params[:category_letter_date] , remark: params[:add_category_remark])
 	end
 
 end

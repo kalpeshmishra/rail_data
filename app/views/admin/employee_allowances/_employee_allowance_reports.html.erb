@@ -39,17 +39,13 @@
   </thead>
   <tbody>
   <%if @employee_allowance_reports_data.present?%>
-  	<%@employee_allowance_reports_data.each do |stn,stn_data|%>
-  		<tr>
-  			<td rowspan="<%=stn_data.keys.count+1+stn_data.values[0].keys.count+1%>"><%=stn.code%></td>
-        <td rowspan="<%=stn_data.keys.count+1+stn_data.values[0].keys.count+1%>"><%=StationUnderTiUser.find_by_station_id(stn.id).user.first_name rescue nil%></td>
-  		</tr>	
+    <%@employee_allowance_reports_data.each do |stn,stn_data|%>
       <%stn_data.each do |mnth,mnth_data|%>
-        <tr>
-          <td rowspan="<%=mnth_data.keys.count+1%>"><%=mnth%></td>
-        </tr>
         <%mnth_data.each do |category,category_data|%>
-          <tr>
+          <tr class="text-center">
+            <td rowspan=""><%=stn.code%></td>
+            <td rowspan=""><%=stn.station_under_ti_users[0].user.first_name rescue nil%></td>
+            <td rowspan=""><%=mnth%></td>
             <td><%=category.name%></td>
             <td><%=category.group%></td>
             <%if @employee_allowance_type.include?("OverTime")%>
@@ -67,7 +63,7 @@
           </tr>
         <%end%>
       <%end%>
-  	<%end%>
+    <%end%>
   <%end%>
   </tbody>
 </table>
