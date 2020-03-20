@@ -1,0 +1,43 @@
+<script>
+
+    $(document).ready(function () {
+      $('.employee-remain-open').click();
+    });
+
+</script>
+<%
+	@station_data_year_list  = []
+	(2020..Date.today.strftime("%Y").to_i).each do |year|
+		@station_data_year_list << year	
+	end	
+%>
+
+<div class="table-responsive station-data-main-listing">
+  <div id="client-message"></div>
+  <table class="table hover table-dark" id="station-data-listing">
+    <caption>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <span class="pull-left lead-text">
+            Station Data
+          </span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Month<p></p>
+        <%= (select_tag "year-list", options_for_select(@station_data_year_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm year_list"}).html_safe %><p></p>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >Select Station<p></p>
+        <%= (select_tag "station-list", options_for_select(@station_data_station_list), {prompt: 'Select', required: true, style: "height:37px;", class: "form-control  input-sm station_list"}).html_safe %><p></p>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+        <button class="btn btn-primary btn-flat submit_data" id="submit_data" type="submit">Display</button>
+      </div>
+    </caption>
+    
+  </table>
+</div>
+
+<div id="station-data-lisiting">
+	<div id="station-data-infrastructure">
+		
+	</div>
+  
+</div>

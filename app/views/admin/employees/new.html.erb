@@ -6,6 +6,13 @@
 .no-border tr td, .no-border tr th {
   border-width: 0;
 </style>
+<script>
+
+    $(document).ready(function () {
+      $('.employee-remain-open').click();
+    });
+
+</script>
 <% @method = params[:id].present? ? "PATCH" : "POST" %>
 <% @url = params[:id].present? ? admin_employee_path(params[:id]) : admin_employees_path %>
 

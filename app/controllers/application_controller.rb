@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource_or_scope)
     if current_user.present? and current_user.admin?
-      new_admin_rake_load_path
+      root_path  
     else
       root_path
     end

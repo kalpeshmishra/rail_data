@@ -74,7 +74,7 @@
     });
 
     $(document).ready(function () {
-      $('.sidebar-remain-open').click();
+      $('.employee-remain-open').click();
     });
 
 </script>
@@ -84,7 +84,7 @@
 	months = ['Jan', 'Feb', 'Mar','Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
   month_years_list = []
   financial_year_list = []
-  (2020..Date.today.strftime("%Y").to_i).each do |year|
+  (2019..Date.today.strftime("%Y").to_i).each do |year|
   	financial_year_list << ["#{year}-#{year+1}"] 
   	months.each do |month|
     	month_years_list << ["#{month}-#{year}"]
