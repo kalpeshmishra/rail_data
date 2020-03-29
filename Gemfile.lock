@@ -199,8 +199,8 @@ GEM
       method_source (~> 0.9.0)
       spoon (~> 0.0)
     public_suffix (4.0.2)
-    puma (3.12.2)
-    puma (3.12.2-java)
+    puma (3.12.4)
+    puma (3.12.4-java)
     rack (2.0.8)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -355,7 +355,7 @@ DEPENDENCIES
   mysql2 (>= 0.3.18, < 0.5)
   nested_form
   pry
-  puma (~> 3.0)
+  puma (~> 3.12)
   rails (~> 5.0.6)
   remotipart (~> 1.2)
   roo
