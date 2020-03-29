@@ -2,8 +2,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password: root12345
+  username: 
+  password: 
   socket: /var/run/mysqld/mysqld.sock
 
 development:
@@ -19,6 +19,6 @@ production:
   adapter: mysql2
   reconnect: false
   database: rail_data_production
-  username: root
-  password: root12345
+  username: 
+  password: 
 
